@@ -16,13 +16,13 @@ public class Setting {
     private Integer id;
 
     @Column(name = "type_id")
-    private String subjectManagerId;
+    private String typeId;
 
     @Column(name = "setting_title")
-    private String subjectName;
+    private String settingTitle;
 
     @Column(name = "status")
-    private String subjectCode;
+    private String status;
 
     @Column(name = "create_by")
     private String createBy;
