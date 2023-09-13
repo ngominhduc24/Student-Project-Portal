@@ -15,9 +15,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "role_id")
-    private String roleId;
-
     @Column(name = "email")
     private String email;
 
@@ -54,4 +51,7 @@ public class User {
     @Column(name = "update_at")
     private String updateAt;
 
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private Setting setting;
 }

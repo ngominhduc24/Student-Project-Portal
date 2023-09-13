@@ -15,9 +15,6 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "subject_manager_id")
-    private String subjectManagerId;
-
     @Column(name = "subject_name")
     private String subjectName;
 
@@ -41,4 +38,8 @@ public class Subject {
 
     @Column(name = "update_at")
     private String updateAt;
+
+    @OneToOne
+    @JoinColumn(name = "subject_manager_id")
+    private User user;
 }
