@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
   `status` BIT(1) NULL,
   `full_name` VARCHAR(255) NULL,
   `gender` BIT(1) NULL,
-  `date_of_birth` DATETIME NULL,
+  `date_of_birth` DATE NULL,
   `avatar_url` TEXT NULL,
   `role_id` INT NULL,
   `create_by` INT NULL,
