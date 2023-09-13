@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,23 +19,23 @@ public class Setting {
     private Integer id;
 
     @Column(name = "type_id")
-    private String typeId;
+    private int typeId;
 
     @Column(name = "setting_title")
     private String settingTitle;
 
     @Column(name = "status")
-    private String status;
+    private boolean status;
 
     @Column(name = "create_by")
-    private String createBy;
+    private int createBy;
 
     @Column(name = "create_at")
-    private String createAt;
+    private Timestamp createAt;
 
     @Column(name = "update_by")
-    private String updateBy;
+    private int updateBy;
 
     @Column(name = "update_at")
-    private String updateAt;
+    private Timestamp updateAt;
 }

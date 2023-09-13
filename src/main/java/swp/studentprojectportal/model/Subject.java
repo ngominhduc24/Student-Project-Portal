@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,22 +24,22 @@ public class Subject {
     private String subjectCode;
 
     @Column(name = "status")
-    private String status;
+    private boolean status;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "create_by")
-    private String createBy;
+    private int createBy;
 
     @Column(name = "create_at")
-    private String createAt;
+    private Timestamp createAt;
 
     @Column(name = "update_by")
-    private String updateBy;
+    private int updateBy;
 
     @Column(name = "update_at")
-    private String updateAt;
+    private Timestamp updateAt;
 
     @OneToOne
     @JoinColumn(name = "subject_manager_id")

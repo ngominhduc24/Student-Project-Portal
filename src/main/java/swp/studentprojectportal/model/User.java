@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,31 +28,31 @@ public class User {
     private String password;
 
     @Column(name = "status")
-    private String status;
+    private boolean status;
 
     @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "gender")
-    private String gender;
+    private boolean gender;
 
     @Column(name = "date_of_birth")
-    private String dateOfBirth;
+    private Date dateOfBirth;
 
     @Column(name = "avatar_url")
     private String avatarUrl;
 
     @Column(name = "create_by")
-    private String createBy;
+    private int createBy;
 
     @Column(name = "create_at")
-    private String createAt;
+    private Timestamp createAt;
 
     @Column(name = "update_by")
-    private String updateBy;
+    private int updateBy;
 
     @Column(name = "update_at")
-    private String updateAt;
+    private Timestamp updateAt;
 
     @OneToOne
     @JoinColumn(name = "role_id")
