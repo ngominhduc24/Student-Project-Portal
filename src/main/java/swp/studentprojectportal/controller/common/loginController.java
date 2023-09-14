@@ -54,7 +54,7 @@ public class loginController {
             User account = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
             if(account==null) {
                 //User newAcc = userService.registerAccount(googlePojo);
-                session.setAttribute("account", newAcc);
+                //session.setAttribute("account", newAcc);
                 return "redirect:/home";
             } else{
                 session.setAttribute("account", account);
