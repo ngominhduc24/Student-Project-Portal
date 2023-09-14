@@ -48,19 +48,20 @@
                 <div class="card login-page bg-white shadow mt-4 rounded border-0">
                     <div class="card-body">
                         <h4 class="text-center">Sign In</h4>
-                        <form action="" class="login-form mt-4">
+                        <form action="login" class="login-form mt-4" method="post">
+                            <h5 th:text="${errmsg}"></h5>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control" placeholder="Email" name="email" required="">
+                                        <label class="form-label">Your Email Or Phone Number  <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" placeholder="Email or phone number" name="username" required="">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label">Password <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="Password" required="">
+                                        <input type="password" class="form-control" placeholder="Password" name="password" required="">
                                     </div>
                                 </div>
 
@@ -77,7 +78,7 @@
                                 </div>
                                 <div class="col-lg-12 mb-0">
                                     <div class="d-grid">
-                                        <button class="btn btn-primary">Sign in</button>
+                                        <input type="submit" class="btn btn-primary" value="Sign in">
                                     </div>
                                 </div>
 
