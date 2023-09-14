@@ -6,4 +6,5 @@ import swp.studentprojectportal.model.Setting;
 
 @Repository
 public interface ISettingRepository extends JpaRepository<Setting, Integer> {
+    Setting findSettingByTypeIdAndSettingTitle(Integer typeId, String settingTitle);
 }
