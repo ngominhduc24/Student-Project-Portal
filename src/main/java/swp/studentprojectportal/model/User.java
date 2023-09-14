@@ -42,14 +42,17 @@ public class User {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Column(name = "token")
+    private String token;
+
     @Column(name = "create_by")
-    private int createBy;
+    private Integer createBy;
 
     @Column(name = "create_at")
     private Timestamp createAt;
 
     @Column(name = "update_by")
-    private int updateBy;
+    private Integer updateBy;
 
     @Column(name = "update_at")
     private Timestamp updateAt;

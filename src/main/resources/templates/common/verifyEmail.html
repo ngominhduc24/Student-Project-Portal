@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Student project portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
+    <meta name="author" content="Shreethemes" />
+    <meta name="email" content="support@shreethemes.in" />
+    <meta name="website" content="https://shreethemes.in" />
+    <meta name="Version" content="v1.2.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}" />
+    <!-- Bootstrap -->
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css" />
+    <!-- Css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.min.css}">
+
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Loader -->
+
+    <div class="back-to-home rounded d-none d-sm-block">
+        <a href="landingPage.html" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+    </div>
+
+    <!-- Hero Start -->
+    <section class="bg-home d-flex bg-light align-items-center"
+        style="background: url('../../static/images/bg/bg-lines-one.png') center;">
+        <div class="container">
+            <div class="card login-page bg-white shadow mt-4 rounded border-0 align-items-center"
+                style="padding: 120px 20px">
+                <h3 class="text-center">Please verify your email</h3>
+                <p>You're almost there! We sent an email to </p>
+                <h5 th:text="${email}"></h5>
+                <p>Just click on the link in that email to complete your signup. If you don't
+                    see it, you may need to check your spam folder.</p>
+                <button class="btn btn-primary"> <a href=""> Resend Verification Email</a></button>
+            </div><!---->
+        </div> <!--end container-->
+    </section><!--end section-->
+    <!-- Hero End -->
+
+    <!-- javascript -->
+    <script th:src="@{js/bootstrap.bundle.min.js}"></script>
+    <!-- Icons -->
+    <script th:src="@{js/feather.min.js}"></script>
+    <!-- Main Js -->
+    <script th:src="@{js/app.js}"></script>
+
+</body>
+
+</html>

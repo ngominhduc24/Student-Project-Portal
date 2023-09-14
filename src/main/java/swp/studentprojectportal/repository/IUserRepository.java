@@ -6,4 +6,6 @@ import swp.studentprojectportal.model.User;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer> {
+    User findUserByEmailAndPassword(String username,String password);
+    User findUserByPhoneAndPassword(String username,String password);
 }
