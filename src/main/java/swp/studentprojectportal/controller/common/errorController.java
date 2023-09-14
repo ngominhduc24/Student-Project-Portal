@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller;
+package swp.studentprojectportal.controller.common;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
