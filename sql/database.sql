@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
   `update_by` INT NULL DEFAULT 0,
   `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `a_idx` (`role_id` ASC) VISIBLE,
     FOREIGN KEY (`role_id`)
     REFERENCES `swp391`.`setting` (`id`)
     ON DELETE NO ACTION
@@ -85,7 +84,6 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
   `update_by` INT NULL DEFAULT 0,
   `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `subject_manager_id_idx` (`subject_manager_id` ASC) VISIBLE,
     FOREIGN KEY (`subject_manager_id`)
     REFERENCES `swp391`.`user` (`id`)
     ON DELETE NO ACTION
