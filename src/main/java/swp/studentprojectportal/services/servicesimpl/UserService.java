@@ -19,11 +19,11 @@ public class UserServices implements IUserServices {
 
     @Override
     public boolean checkExistMail(String email) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean checkExistPhoneNumber(String phoneNumber) {
-        return false;
+        return true;
     }
 }

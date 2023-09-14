@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `date_of_birth` DATETIME NULL,
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
+    `token` varchar(255) DEFAULT NULL,
     `create_by` INT NULL,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL,
