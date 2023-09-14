@@ -33,11 +33,11 @@ public class UserService implements IUserService {
 
     @Override
     public boolean saveUser(User user) {
-        if(userRepository.save(user) != null) {
+        if (userRepository.save(user) != null) {
             return false;
         }
         return true;
-
+    }
     @Override
     public User findUserByEmailAndPassword(String username, String password) {
         return userRepository.findUserByEmailAndPassword(username, password);
@@ -48,13 +48,3 @@ public class UserService implements IUserService {
         return userRepository.findUserByPhoneAndPassword(username, password);
     }
 }
-
-    @Override
-    public User findUserByEmailAndPassword(String username, String password) {
-        return null;
-    }
-
-    @Override
-    public User findUserByPhoneAndPassword(String username, String password) {
-        return null;
-    }
