@@ -51,14 +51,14 @@ public class loginController {
         } else {
             String accessToken = GoogleUtils.getToken(code);
             GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
-            User account = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
-            if(account==null) {
-                //User newAcc = userService.registerAccount(googlePojo);
-                //session.setAttribute("account", newAcc);
-                return "redirect:/home";
+            User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
+            if(user==null) {
+                User newUser = userService.registerNewAccount(user);
+                session.setAttribute("user", newUser);
+                return "redirect:/";
             } else{
-                session.setAttribute("account", account);
-                return "redirect:/home";
+                session.setAttribute("user", user);
+                return "redirect:/";
             }
 
         }
