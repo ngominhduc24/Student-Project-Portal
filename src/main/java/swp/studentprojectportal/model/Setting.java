@@ -19,7 +19,7 @@ public class Setting {
     private Integer id;
 
     @Column(name = "type_id")
-    private int typeId;
+    private Integer typeId;
 
     @Column(name = "setting_title")
     private String settingTitle;
@@ -28,13 +28,13 @@ public class Setting {
     private boolean status;
 
     @Column(name = "create_by")
-    private int createBy;
+    private Integer createBy;
 
     @Column(name = "create_at")
     private Timestamp createAt;
 
     @Column(name = "update_by")
-    private int updateBy;
+    private Integer updateBy;
 
     @Column(name = "update_at")
     private Timestamp updateAt;

@@ -7,6 +7,8 @@ public interface IUserService {
     boolean checkEmailDomain(String email);
     boolean checkExistMail(String email);
     boolean checkExistPhoneNumber(String phoneNumber);
-
     public boolean saveUser(User user);
+
+    User findUserByEmailAndPassword(String username, String password);
+    User findUserByPhoneAndPassword(String username, String password);
 }

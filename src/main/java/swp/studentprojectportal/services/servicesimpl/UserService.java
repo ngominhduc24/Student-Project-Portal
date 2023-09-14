@@ -37,5 +37,24 @@ public class UserService implements IUserService {
             return false;
         }
         return true;
+
+    @Override
+    public User findUserByEmailAndPassword(String username, String password) {
+        return userRepository.findUserByEmailAndPassword(username, password);
+    }
+
+    @Override
+    public User findUserByPhoneAndPassword(String username, String password) {
+        return userRepository.findUserByPhoneAndPassword(username, password);
     }
 }
+
+    @Override
+    public User findUserByEmailAndPassword(String username, String password) {
+        return null;
+    }
+
+    @Override
+    public User findUserByPhoneAndPassword(String username, String password) {
+        return null;
+    }
