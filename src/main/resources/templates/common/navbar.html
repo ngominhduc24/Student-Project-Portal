@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Doctris - Doctor Appointment Booking System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
-    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
-    <meta name="author" content="Shreethemes" />
-    <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="../../../index.html" />
-    <meta name="Version" content="v1.2.0" />
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
     <!-- favicon -->
     <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}"/>
     <!-- Bootstrap -->
-    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <!-- Icons -->
-    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
     <!-- Css -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.min.css}">
 </head>
@@ -25,7 +25,7 @@
 <nav id="topnav" class="defaultscroll sticky" th:fragment="navbar">
     <div class="container">
         <!-- Logo container-->
-        <a class="logo" href="landingPage.html">
+        <a class="logo" href="/">
             <img src="../../static/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
             <img src="../../static/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
         </a>
@@ -47,44 +47,44 @@
         </div>
         <!-- End Mobile Toggle -->
 
-        <!-- Start Dropdown -->
-        <ul class="dropdowns list-inline mb-0">
-            <li class="list-inline-item mb-0 ms-1">
-                <a href="register.html">
-                    <button>Create an account</button>
-                </a>
-            </li>
+        <!-- Start Navigation -->
+        <div class="navigation-container">
+            <div id="navigation-right">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu nav-right">
+                    <li class="has-submenu parent-parent-menu-item">
+                        <a href="">Doctors</a>
+                    </li>
 
-            <li class="list-inline-item mb-0 ms-1">
-                <a href="login.html">
-                    <button>Sign in to SPP</button>
-                </a>
-            </li>
-        </ul>
-        <!-- Start Dropdown -->
+                    <li class="has-submenu parent-menu-item">
+                        <a href="">Patients</a>
+                    </li>
 
-        <div id="navigation">
-            <!-- Navigation Menu-->
-            <ul class="navigation-menu nav-left">
-                <li class="has-submenu parent-parent-menu-item">
-                    <a href="">Doctors</a>
-                </li>
+                    <li class="has-submenu parent-menu-item">
+                        <a href="">Pharmacy</a>
+                    </li>
 
-                <li class="has-submenu parent-menu-item">
-                    <a href="">Patients</a>
-                </li>
+                    <li class="has-submenu parent-parent-menu-item">
+                        <a href="">Pages</a>
+                    </li>
+                    <li><a href="landingPage.html" class="sub-menu-item" target="_blank">Admin</a></li>
+                </ul>
+            </div>
 
-                <li class="has-submenu parent-menu-item">
-                    <a href="">Pharmacy</a>
-                </li>
+            <div id="navigation-left">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu nav-left">
+                    <li class="has-submenu parent-parent-menu-item">
+                        <a href="/register">Register</a>
+                    </li>
 
-                <li class="has-submenu parent-parent-menu-item">
-                    <a href="">Pages</a>
-                </li>
-                <li><a href="landingPage.html" class="sub-menu-item" target="_blank">Admin</a></li>
-            </ul><!--end navigation menu-->
-        </div><!--end navigation-->
-    </div><!--end container-->
+                    <li class="has-submenu parent-menu-item">
+                        <a href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div><!--end container-->
+    </div>
 </nav><!--end header-->
 <!-- Navbar End -->
 
