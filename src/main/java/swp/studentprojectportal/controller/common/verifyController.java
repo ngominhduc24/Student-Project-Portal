@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.Emailservice;
+import swp.studentprojectportal.services.servicesimpl.EmailService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Utility;
 
@@ -19,7 +19,7 @@ public class verifyController {
     UserService userService;
 
     @Autowired
-    Emailservice emailservice;
+    EmailService emailservice;
     @GetMapping("/verify")
     public String verifyPage(Model model, HttpSession session,@Param("href") String href) {
         User user =  (User)session.getAttribute("user");

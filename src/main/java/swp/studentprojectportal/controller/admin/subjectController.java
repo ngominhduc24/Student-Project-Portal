@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.ISubjectRepository;
-import swp.studentprojectportal.services.servicesimpl.SubjectSevices;
+import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
 
 import java.util.List;
 
 @Controller
 public class subjectController {
     @Autowired
-    SubjectSevices subjectSevices;
+    SubjectSevice subjectSevice;
 
     @Autowired
     private ISubjectRepository IsubjectRepository;
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
-        List<Subject> subjectList = subjectSevices.getAllSubjects();
+        List<Subject> subjectList = subjectSevice.getAllSubjects();
         model.addAttribute("SubjectList", subjectList);
         return "admin/subjectList";
     }
@@ -36,7 +36,7 @@ public class subjectController {
         return "admin/subjectDetail";
     }
 
-    private SubjectSevices services;
+    private SubjectSevice services;
 
     @PostMapping("/admin/subject/add")
     public Subject addSubject(@RequestBody WebRequest request, Subject subject) {

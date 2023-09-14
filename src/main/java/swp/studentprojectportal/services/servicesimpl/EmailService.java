@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.services.IEmailService;
 @Service
-public class Emailservice implements IEmailService {
+public class EmailService implements IEmailService {
     @Autowired
     private JavaMailSender mailSender;
     @Override

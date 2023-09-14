@@ -1792,6 +1792,11 @@ button:not(:disabled) {
     text-align: end
 }
 
+tr, td, th {
+    border-color: inherit;
+    border-style: solid;
+}
+
 .table-responsive .table-padding tr td {
     padding-top: 20px;
     padding-bottom: 20px
