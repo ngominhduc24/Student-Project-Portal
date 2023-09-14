@@ -2244,6 +2244,11 @@ p {
     background-color: transparent
 }
 
+.navigation-container{
+    display: flex;
+    justify-content: space-between;
+}
+
 #topnav .navigation-menu {
     list-style: none;
     margin: 0;

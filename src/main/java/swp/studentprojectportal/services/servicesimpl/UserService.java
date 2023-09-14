@@ -32,11 +32,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean saveUser(User user) {
-        if (userRepository.save(user) != null) {
-            return false;
-        }
-        return true;
+    public User saveUserWaitVerify(User user) {
+        return userRepository.save(user);
     }
     @Override
     public User findUserByEmailAndPassword(String username, String password) {
