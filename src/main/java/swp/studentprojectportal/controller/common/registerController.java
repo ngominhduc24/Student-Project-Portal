@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.UserServices;
+import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utility.Validate;
 
 @Controller
 public class registerController {
     @Autowired
-    UserServices userServices;
+    UserService userService;
     @GetMapping("/register")
     public String registerPage(Model model) {
         return "register";

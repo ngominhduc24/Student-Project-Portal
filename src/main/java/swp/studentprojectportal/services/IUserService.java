@@ -2,9 +2,18 @@ package swp.studentprojectportal.services;
 
 import swp.studentprojectportal.model.User;
 
-public interface IUserServices {
+import java.util.List;
+import java.util.Optional;
+
+public interface IUserService {
     User registerNewAccount(User user);
     boolean checkEmailDomain(String email);
     boolean checkExistMail(String email);
     boolean checkExistPhoneNumber(String phoneNumber);
+
+    List<User> getAllUser();
+
+    Optional<User> getUserById(int id);
+
+    boolean updateUserStatus(int id, boolean status);
 }
