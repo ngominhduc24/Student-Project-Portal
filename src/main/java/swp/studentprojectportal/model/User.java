@@ -42,6 +42,9 @@ public class User {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Column(name = "token")
+    private String token;
+
     @Column(name = "create_by")
     private int createBy;
 
