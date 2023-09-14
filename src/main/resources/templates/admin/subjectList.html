@@ -79,8 +79,8 @@
                         <div class="col mt-4">
                             <div class="card team border-0 rounded shadow overflow-hidden">
                                 <div class="card-body content text-center">
-                                    <a href="#" class="title text-dark h5 d-block mb-0">${Subject.getSubjectCode}</a>
-                                    <small class="text-muted speciality">${Subject.getSubjectName}}</small>
+                                    <a href="#" class="title text-dark h5 d-block mb-0" th:text="${Subject.subjectCode}"></a>
+                                    <small class="text-muted speciality" th:text="${Subject.subjectName}"></small>
                                 </div>
                             </div>
                         </div>

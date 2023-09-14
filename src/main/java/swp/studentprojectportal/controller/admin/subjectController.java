@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
+import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.services.servicesimpl.SubjectSevices;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.List;
 public class subjectController {
     @Autowired
     SubjectSevices subjectSevices;
+
+    @Autowired
+    private ISubjectRepository IsubjectRepository;
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {

@@ -34,12 +34,4 @@ public class SubjectSevices {
         existingSubject.setUser(subject.getUser());
         return repository.save(existingSubject);
     }
-
-    public static void main(String[] args) {
-        SubjectSevices subjectSevices = new SubjectSevices();
-        List<Subject> subjectList = subjectSevices.getAllSubjects();
-        for (Subject subject : subjectList) {
-            System.out.println(subject.getSubjectName());
-        }
-    }
 }
