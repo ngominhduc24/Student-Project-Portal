@@ -2,76 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link th:href="@{/css/verifyPhone.css}" rel="stylesheet" type="text/css" />
     <title>Title</title>
 </head>
 <body>
-<div th:text="${token}" id="token_holder" style="display:none;"></div>
-<div id="sender">
-    <input type="text" id="number" th:value="${phone}" readonly>
-    <div id="recaptcha-container"></div>
-    <input type="button" id="send" value="send">
-</div>
-<div id="verifier">
-    <input type="text" id="code" placeholder="OTP Code">
-    <input type="button" id="verify" value="verify">
-    <div class="p-conf">Number verify</div>
-    <div class="n-conf">OTP</div>
+<div class="container">
+    <header>
+        <i class="bx bxs-check-shield"></i>
+    </header>
+    <h4>Enter OTP Code</h4>
+    <form action="#">
+        <div class="input-field">
+            <input type="number" />
+            <input type="number" disabled />
+            <input type="number" disabled />
+            <input type="number" disabled />
+            <input type="number" disabled />
+            <input type="number" disabled />
+        </div>
+        <button>Verify OTP</button>
+    </form>
 </div>
 </body>
-<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
-
-<script type="module">
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyCM-VrqHZKLBLhJzlDudOKJGUGul4W7sGk",
-        authDomain: "swp391-3fcbc.firebaseapp.com",
-        projectId: "swp391-3fcbc",
-        storageBucket: "swp391-3fcbc.appspot.com",
-        messagingSenderId: "691277329952",
-        appId: "1:691277329952:web:1e280a9bab40c640de2e45",
-        measurementId: "G-MVNE99TDXQ"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // render recaptcha verifier
-    render();
-
-    function render() {
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-        recaptchaVerifier.render();
-    }
-
-    let coderesult;
-
-    const send_btn = document.getElementById('send');
-
-    // function for send OTP
-    function phoneAuth() {
-        var number = document.getElementById('number').value;
-        firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
-            window.confirmationResult = confirmationResult;
-            coderesult = confirmationResult;
-        }).catch(function (error) {
-            alert(error.message);
-        });
-    }
-
-    send_btn.addEventListener('click', () => {
-        phoneAuth();
-    })
-    const verify_btn = document.getElementById('verify');
-    verify_btn.addEventListener('click', () => {
-        const token_sender = document.getElementById("token_holder").textContent;
-        var code = document.getElementById('code').value;
-        window.confirmationResult.confirm(code).then(function () {
-            location.href = token_sender;
-        }).catch(function () {
-            alert('OTP Not correct');
-        })
-    })
-</script>
+<script th:src="@{js/verifyPhone.js}"></script>
 </html>
