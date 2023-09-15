@@ -27,6 +27,9 @@ public class UserService implements IUserService {
 
     @Override
     public boolean checkEmailDomain(String email) {
+        if(email == null) {
+            return false;
+        }
         String[] temp = email.split("@");
         if(temp.length == 0) return false;
         email = temp[temp.length-1];
