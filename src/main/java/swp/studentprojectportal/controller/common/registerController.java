@@ -35,12 +35,19 @@ public class registerController {
         if(Validate.validPhoneNumber(username)) {user.setPhone(username);}
         user.setPassword(password);
 
-        // set session to verify
-        if(userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
+        if(user.getEmail() == null
+            && userService.checkExistMail(user.getEmail())
+            && !userService.checkEmailDomain(user.getEmail())) {
             return "redirect:/register";
         }
+
+        if(user.getPhone() == null) {
+            return "redirect:/register";
+        }
+
+        // set session to verify
         session.setAttribute("user", user);
-        session.setAttribute("href", "verifyaccount");
+        session.setAttribute("href", "verifymail"); // session for add by email
         return "redirect:/verify";
     }
 }
