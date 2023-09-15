@@ -22,7 +22,7 @@ public class forgotPasswordController {
 
     @GetMapping("/reset-password")
     public String resetPasswordForm() {
-        return "reset-password";
+        return "resetPassword";
     }
 
     @PostMapping("/reset-password")
@@ -40,7 +40,7 @@ public class forgotPasswordController {
             model.addAttribute("errmsg", "New Password and Re-new Password do not match");
         }
 
-        return "reset-password";
+        return "resetPassword";
     }
 
 }

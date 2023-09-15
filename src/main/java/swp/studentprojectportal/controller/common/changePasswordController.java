@@ -18,7 +18,7 @@ public class changePasswordController {
     UserService userService;
     @GetMapping("/change-password")
     public String changePasswordForm() {
-        return "change-password";
+        return "changePassword";
     }
 
     @PostMapping("/change-password")
@@ -40,7 +40,7 @@ public class changePasswordController {
         } else {
             model.addAttribute("errmsg", "Old Password is incorrect");
         }
-        return "change-password";
+        return "changePassword";
     }
 
 
