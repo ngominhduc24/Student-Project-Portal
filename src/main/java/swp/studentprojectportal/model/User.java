@@ -33,17 +33,14 @@ public class User {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "gender")
-    private boolean gender;
-
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
-
     @Column(name = "avatar_url")
     private String avatarUrl;
 
     @Column(name = "token")
     private String token;
+
+    @Column(name = "active")
+    private String active;
 
     @Column(name = "create_by")
     private Integer createBy;

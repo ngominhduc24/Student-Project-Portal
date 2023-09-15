@@ -6,6 +6,11 @@ import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISettingRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.services.IUserService;
+import swp.studentprojectportal.repository.IUserRepository;
+import swp.studentprojectportal.services.IUserService;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -45,6 +50,27 @@ public class UserService implements IUserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> getUserById(int id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public boolean updateUserStatus(int id, boolean status) {
+        Optional<User> user = userRepository.findById(id);
+
+        if(!user.isPresent()) return false;
+
+        user.get().setStatus(status);
+        userRepository.save(user.get());
+        return true;
     }
 
     @Override

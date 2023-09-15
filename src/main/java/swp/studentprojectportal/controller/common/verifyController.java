@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.Emailservice;
+import swp.studentprojectportal.services.servicesimpl.EmailService;
 import swp.studentprojectportal.services.servicesimpl.RegisterService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Utility;
@@ -22,7 +22,7 @@ public class verifyController {
     UserService userService;
 
     @Autowired
-    Emailservice emailservice;
+    EmailService emailservice;
 
     @Autowired
     RegisterService registerService;
@@ -47,17 +47,23 @@ public class verifyController {
 
         // if user register by phone number
         if(user.getPhone() != null) {
-            if(userService.checkExistPhoneNumber(user.getPhone())) {
                 return "verifyPhone";
-            }
         }
         return "redirect:/error";
     }
 
 
-    @GetMapping("/verifyaccount")
-    public String registerAccount(Model model,@RequestParam("key") String token) {
+    @GetMapping("/verifymail")
+    public String registerMail(Model model,@RequestParam("key") String token) {
         if(registerService.verifyToken(token) == true) {
+            return "verifySuccess";
+        }
+        return "register";
+    }
+
+    @GetMapping("/verifyphone")
+    public String registerPhone(HttpSession session) {
+        if(session.getAttribute("verifyphone") != null) {
             return "verifySuccess";
         }
         return "register";
