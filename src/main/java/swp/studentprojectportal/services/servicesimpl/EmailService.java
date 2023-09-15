@@ -17,7 +17,7 @@ public class EmailService implements IEmailService {
                 "You registered an account on SPP-G3, before being able to use your account you need to verify that this is your email address by clicking here: " + token;
         String subject = "Activate your SPP-G3 account";
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("G3@gmail.com");
+        message.setFrom("G3@sss");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);

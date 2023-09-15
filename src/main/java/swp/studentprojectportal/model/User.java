@@ -45,6 +45,9 @@ public class User {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "active")
+    private String active;
+
     @Column(name = "create_by")
     private Integer createBy;
 

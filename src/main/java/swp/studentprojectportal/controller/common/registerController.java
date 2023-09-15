@@ -6,10 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.services.servicesimpl.RegisterService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utility.Validate;
+import swp.studentprojectportal.utils.Utility;
 
 @Controller
 public class registerController {
@@ -33,10 +36,11 @@ public class registerController {
         user.setPassword(password);
 
         // set session to verify
-        if(userService.checkExistMail(user.getEmail()) && userService.checkEmailDomain(user.getEmail())) {
-            userService.saveUser(user);
-            session.setAttribute("user", user);
+        if(!userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
+            return "redirect:/register";
         }
+        session.setAttribute("user", user);
+        session.setAttribute("href", "verifyaccount");
         return "redirect:/verify";
     }
 }
