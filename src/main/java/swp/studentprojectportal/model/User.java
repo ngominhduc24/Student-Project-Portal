@@ -40,7 +40,7 @@ public class User {
     private String token;
 
     @Column(name = "active")
-    private String active;
+    private boolean active;
 
     @Column(name = "create_by")
     private Integer createBy;
