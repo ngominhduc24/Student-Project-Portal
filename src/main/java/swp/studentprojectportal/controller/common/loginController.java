@@ -38,7 +38,7 @@ public class loginController {
             return "redirect:/";
         }
         else {
-            model.addAttribute("errmsg", "username or password is not correct");
+            model.addAttribute("errmsg", "Username or password is not correct");
             return "login";
         }
     }
@@ -51,12 +51,17 @@ public class loginController {
         } else {
             String accessToken = GoogleUtils.getToken(code);
             GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
-            User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
-            if(user==null) {
-                User newUser = userService.registerNewAccount(user);
-                session.setAttribute("user", newUser);
+            System.out.println(userService.checkExistMail(googlePojo.getEmail()));
+            if(!userService.checkExistMail(googlePojo.getEmail())) {
+                User u = new User();
+                u.setEmail(googlePojo.getEmail());
+                u.setPassword(googlePojo.getId());
+                u.setAvatarUrl(googlePojo.getPicture());
+                User user = userService.registerNewAccount(u);
+                session.setAttribute("user", user);
                 return "redirect:/";
             } else{
+                User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
                 session.setAttribute("user", user);
                 return "redirect:/";
             }
