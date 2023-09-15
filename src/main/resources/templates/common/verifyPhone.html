@@ -22,7 +22,7 @@
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 
 <script type="module">
-    // Your web app's Firebase configuration
+    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCM-VrqHZKLBLhJzlDudOKJGUGul4W7sGk",
         authDomain: "swp391-3fcbc.firebaseapp.com",
@@ -54,9 +54,7 @@
         firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
             window.confirmationResult = confirmationResult;
             coderesult = confirmationResult;
-            console.log('OTP Sent');
         }).catch(function (error) {
-            // error in sending OTP
             alert(error.message);
         });
     }
@@ -74,6 +72,5 @@
             alert('OTP Not correct');
         })
     })
-
 </script>
 </html>

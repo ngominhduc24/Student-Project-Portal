@@ -47,17 +47,23 @@ public class verifyController {
 
         // if user register by phone number
         if(user.getPhone() != null) {
-            if(userService.checkExistPhoneNumber(user.getPhone())) {
                 return "verifyPhone";
-            }
         }
         return "redirect:/error";
     }
 
 
-    @GetMapping("/verifyaccount")
-    public String registerAccount(Model model,@RequestParam("key") String token) {
+    @GetMapping("/verifymail")
+    public String registerMail(Model model,@RequestParam("key") String token) {
         if(registerService.verifyToken(token) == true) {
+            return "verifySuccess";
+        }
+        return "register";
+    }
+
+    @GetMapping("/verifyphone")
+    public String registerPhone(HttpSession session) {
+        if(session.getAttribute("verifyphone") != null) {
             return "verifySuccess";
         }
         return "register";
