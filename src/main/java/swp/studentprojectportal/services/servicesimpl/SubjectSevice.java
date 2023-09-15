@@ -4,27 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.ISubjectRepository;
+import swp.studentprojectportal.services.ISubjectService;
 
 import java.util.List;
 
 @Service
-public class SubjectSevices {
+public class SubjectSevice implements ISubjectService {
     @Autowired
     ISubjectRepository repository;
-
+    @Override
     public List<Subject> getAllSubjects() {
         return repository.findAll();
     }
-
+    @Override
     public Subject getSubjectByCode(String subjectCode){
         return repository.findBySubjectCode(subjectCode);
     }
-
-
+    @Override
     public Subject saveSubject(Subject subject) {
         return repository.save(subject);
     }
-
+    @Override
     public Subject updateSubject(Integer Id, Subject subject) {
         Subject existingSubject = repository.findById(Id).orElse(null);
         assert existingSubject != null;
