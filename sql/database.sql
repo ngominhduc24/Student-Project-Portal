@@ -51,8 +51,6 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `password` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `full_name` VARCHAR(255) NULL,
-    `gender` BIT(1) NULL,
-    `date_of_birth` DATETIME NULL,
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
     `token` varchar(255) DEFAULT NULL,
@@ -118,39 +116,39 @@ VALUES
     (3, "FALL 23",1);
 
 -- subject manager
-INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`gender`,`date_of_birth`,`avatar_url`,`role_id`)
+INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`)
 VALUES
-    ("gillianmorris@gmail.com","0224667148","123456","Gillian Morris",1,"2001-12-09","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
-    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird",0,"2003-07-21","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
-    ("kareemmacdonald4709@gmail.com","0318444787","123456","Kareem Macdonald",1,"2002-06-23","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
-    ("annedonovan3197@gmail.com","0137041646","123456","Anne Donovan",0,"2003-08-06","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
-    ("echonash7303@gmail.com","0534896566","123456","Echo Nash",1,"2002-01-19","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3);
+    ("gillianmorris@gmail.com","0224667148","123456","Gillian Morris","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
+    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
+    ("kareemmacdonald4709@gmail.com","0318444787","123456","Kareem Macdonald","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
+    ("annedonovan3197@gmail.com","0137041646","123456","Anne Donovan","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3),
+    ("echonash7303@gmail.com","0534896566","123456","Echo Nash","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3);
 
 -- user
-INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`gender`,`date_of_birth`,`avatar_url`,`role_id`)
+INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`)
 VALUES
-    ("julianlester@gmail.com","0027829656","123456","Julian Lester",1,"2002-10-20","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("galvinbass4030@gmail.com","0037963572","123456","Galvin Bass",0,"2003-02-04","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("brianmassey@gmail.com","0436285872","123456","Brian Massey",1,"2002-08-11","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("judahcardenas5324@gmail.com","0681589922","123456","Judah Cardenas",0,"2002-02-04","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("kellyreyes9226@gmail.com","0363517319","123456","Kelly Reyes",1,"2003-03-26","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("kevinwilliam@gmail.com","0905521148","123456","Kevin William",0,"2003-07-09","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("lesleycastro@gmail.com","0571427370","123456","Lesley Castro",1,"2002-01-27","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("danarosario@gmail.com","0272326964","123456","Dana Rosario",0,"2003-05-16","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("aimeeewing@gmail.com","0636454167","123456","Aimee Ewing",1,"2002-07-27","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("amywalton@gmail.com","0858486104","123456","Amy Walton",0,"2001-11-29","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1);
-INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`gender`,`date_of_birth`,`avatar_url`,`role_id`)
+    ("julianlester@gmail.com","0027829656","123456","Julian Lester","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("galvinbass4030@gmail.com","0037963572","123456","Galvin Bass","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("brianmassey@gmail.com","0436285872","123456","Brian Massey","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("judahcardenas5324@gmail.com","0681589922","123456","Judah Cardenas","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("kellyreyes9226@gmail.com","0363517319","123456","Kelly Reyes","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("kevinwilliam@gmail.com","0905521148","123456","Kevin William","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("lesleycastro@gmail.com","0571427370","123456","Lesley Castro","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("danarosario@gmail.com","0272326964","123456","Dana Rosario","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("aimeeewing@gmail.com","0636454167","123456","Aimee Ewing","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("amywalton@gmail.com","0858486104","123456","Amy Walton","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1);
+INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`)
 VALUES
-    ("rashadrush2211@gmail.com","0860113768","123456","Rashad Rush",1,"2002-01-21","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("elainelawrence@gmail.com","0721721061","123456","Elaine Lawrence",0,"2003-09-06","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("larissareese@gmail.com","0279994112","123456","Larissa Reese",1,"2003-02-11","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("holleemyers@gmail.com","0532678220","123456","Hollee Myers",0,"2003-04-16","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("xanthusmcfadden3684@gmail.com","0302569530","123456","Xanthus Mcfadden",1,"2002-11-18","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("mylesdavidson@gmail.com","0583590348","123456","Myles Davidson",0,"2002-06-25","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("teegansantana@gmail.com","0547146642","123456","Teegan Santana",1,"2001-09-28","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("elvisratliff@gmail.com","0911884338","123456","Elvis Ratliff",0,"2003-05-29","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("rowaningram@gmail.com","0734547525","123456","Rowan Ingram",1,"2002-07-08","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
-    ("oraallen@gmail.com","0298393485","123456","Ora Allen",0,"2003-01-19","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1);
+    ("rashadrush2211@gmail.com","0860113768","123456","Rashad Rush","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("elainelawrence@gmail.com","0721721061","123456","Elaine Lawrence","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("larissareese@gmail.com","0279994112","123456","Larissa Reese","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("holleemyers@gmail.com","0532678220","123456","Hollee Myers","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("xanthusmcfadden3684@gmail.com","0302569530","123456","Xanthus Mcfadden","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("mylesdavidson@gmail.com","0583590348","123456","Myles Davidson","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("teegansantana@gmail.com","0547146642","123456","Teegan Santana","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("elvisratliff@gmail.com","0911884338","123456","Elvis Ratliff","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("rowaningram@gmail.com","0734547525","123456","Rowan Ingram","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1),
+    ("oraallen@gmail.com","0298393485","123456","Ora Allen","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1);
 
 
 -- subject
