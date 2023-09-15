@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
@@ -29,10 +28,15 @@ public class userController {
         return "admin/userList";
     }
 
-    @PostMapping("/addUser")
-    public String addUser() {
-        //register
+    @GetMapping("/addUser")
+    public String addUserGet(Model model) {
+        model.addAttribute("roleList", settingService.getAllRole());
         return "admin/addUser";
+    }
+
+    @PostMapping ("/addUser")
+    public String addUser() {
+        return "redirect:./user";
     }
 
     @PostMapping("/updateUser")
@@ -44,7 +48,6 @@ public class userController {
             @RequestParam int roleId,
             @RequestParam boolean status) {
         userService.updateUser(id, fullName, email, phone, roleId, status);
-//        userService.updateUserStatus(id, status);
         return "redirect:./user";
     }
 
