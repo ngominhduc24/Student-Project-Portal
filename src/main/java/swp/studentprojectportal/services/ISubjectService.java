@@ -8,7 +8,7 @@ public interface ISubjectService {
 
     List<Subject> getAllSubjects();
 
-    Subject getSubjectByCode(String subjectCode);
+    Subject getSubjectById(Integer Id);
 
     Subject saveSubject(Subject subject);
 

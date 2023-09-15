@@ -1,10 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8"/>
+    <title>Doctris - Doctor Appointment Booking System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
 </head>
 <body>
+<!-- Loader -->
+<!--<div id="preloader">-->
+<!--    <div id="status">-->
+<!--        <div class="spinner">-->
+<!--            <div class="double-bounce1"></div>-->
+<!--            <div class="double-bounce2"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!-- Loader -->
 
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="sidebar"></div>
+    <main class="page-content bg-light">
+        <div th:replace="header"></div>
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h3 class="mb-0" th:text="${subject.subjectName}"></h3>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8 mt-4">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form class="mt-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Subject Name</label>
+                                            <input type="text" class="form-control"
+                                                   th:value="${subject.subjectName}"
+                                                   placeholder="Subject Name :">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Subject Code</label>
+                                            <input type="text" class="form-control"
+                                                   th:value="${subject.subjectCode}"
+                                                   placeholder="Subject Code :">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Subject Description</label>
+                                            <input type="text" class="form-control"
+                                                   th:value="${subject.description}"
+                                                   placeholder="Subject Description :">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label"> Subject Manager : </label>
+                                            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                                                <div class="input-group" style="flex-wrap: nowrap">
+                                                    <input class="form-control" type="text" placeholder="Search for..."
+                                                           th:value="${subject.user.fullName}"
+                                                           aria-label="Search for..." aria-describedby="btnNavbarSearch"
+                                                           style="overflow-wrap: break-word;"
+                                                    />
+                                                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                                                            class="fas fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+
+                                <button type="submit" class="btn btn-primary">Add Subject</button>
+                            </form>
+                        </div>
+                    </div><!--end col-->
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
 </body>
 </html>
