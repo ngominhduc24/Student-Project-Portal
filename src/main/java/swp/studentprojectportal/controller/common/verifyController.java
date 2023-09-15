@@ -29,7 +29,11 @@ public class verifyController {
     @GetMapping("/verifypage")
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
         User user =  (User)session.getAttribute("user");
-        String token = RandomString.make(30);
+        String token = RandomString.make(30);   // genarate token
+
+        // change 0 -> +84
+        String phone = user.getPhone().charAt(0) == '0' ? "+84" + user.getPhone().substring(user.getPhone().length()) : user.getPhone();
+        user.setPhone(phone);
         user.setToken(token);
         userService.saveUserWaitVerify(user);
 
