@@ -32,16 +32,6 @@
 </head>
 
 <body>
-<!-- Loader -->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-</div>
-<!-- Loader -->
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
@@ -49,20 +39,18 @@
 
     <!-- Start Page Content -->
     <main class="page-content bg-light">
-        <div th:replace="header"></div>
+<!--        <div th:replace="header"></div>-->
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row">
                     <div class="col-xl-3 col-md-6">
                         <div class="search-bar p-0 d-none d-lg-block ms-2">
                             <div id="search" class="menu-search mb-0">
-                                <form role="search" method="get" id="searchform" class="searchform">
-                                    <div>
-                                        <input type="text" class="form-control border rounded-pill" name="s" id="s"
-                                               placeholder="Search Subject...">
-                                        <input type="submit" id="searchsubmit" value="Search">
-                                    </div>
-                                </form>
+                                <div>
+                                    <input type="text" class="form-control border rounded-pill" name="s" id="s"
+                                           placeholder="Filter..." onchange="filter(this.value)">
+                                    <input type="submit" id="searchsubmit" value="Search">
+                                </div>
                             </div>
                         </div>
                     </div><!--end col-->
@@ -70,96 +58,37 @@
                     <div class="col-xl-6 col-md-6"></div>
 
                     <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
-                        <a href="add-doctor.html" class="btn btn-primary">Add New Subject</a>
+                        <a href="./addUser" class="btn btn-primary">Add New User</a>
                     </div><!--end col-->
                 </div><!--end row-->
 
                 <div class="row row-cols-md-2 row-cols-lg-5">
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">SWP391</a>
-                                <small class="text-muted speciality">Software development project</small>
+                    <th:block th:each="user : ${userList}">
+                        <div class="col mt-4 userCard">
+                            <div class="card team border-0 rounded shadow overflow-hidden">
+                                <div class="card-body content text-center">
+                                    <a th:href="@{'./userDetails?id=' + ${user.id}}" class="title text-dark h5 d-block mb-0" th:text="${user.fullName}"></a>
+                                    <small class="text-muted speciality" th:text="${user.email}"></small>
+                                </div>
                             </div>
                         </div>
-                    </div><!--end col-->
-
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">SWP391</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">SWP391</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">SWP391</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-
-                <div class="row row-cols-md-2 row-cols-lg-5">
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">SWP391</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">SWP391</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">SWP391</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">PRN211</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col mt-4">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="card-body content text-center">
-                                <a href="#" class="title text-dark h5 d-block mb-0">PRN211</a>
-                                <small class="text-muted speciality">Software development project</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
+                    </th:block>
+                </div>
             </div>
         </div><!--end container-->
+
+        <script>
+            const userList = document.querySelectorAll(".userCard");
+
+            function filter(input) {
+                for(let user of userList) {
+                    let a = user.querySelector("a");
+                    if(a.textContent.toLowerCase().includes(input.toLowerCase())) {
+                        user.style.display = 'block';
+                    } else user.style.display = 'none';
+                }
+            }
+        </script>
 
         <!-- Footer Start -->
         <footer class="bg-white shadow py-3">
