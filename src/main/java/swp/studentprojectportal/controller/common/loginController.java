@@ -4,11 +4,16 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.utils.GooglePojo;
+import swp.studentprojectportal.utils.GoogleUtils;
+
+import java.io.IOException;
 
 @Controller
 public class loginController {
@@ -33,8 +38,34 @@ public class loginController {
             return "redirect:/";
         }
         else {
-            model.addAttribute("errmsg", "username or password is not correct");
+            model.addAttribute("errmsg", "Username or password is not correct");
             return "login";
+        }
+    }
+
+    @GetMapping("/login-google")
+    public String userLoginGoogle(WebRequest request, Model model, HttpSession session) throws IOException {
+        String code = request.getParameter("code");
+        if (code == null || code.isEmpty()) {
+            return "redirect:/login";
+        } else {
+            String accessToken = GoogleUtils.getToken(code);
+            GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
+            System.out.println(userService.checkExistMail(googlePojo.getEmail()));
+            if(!userService.checkExistMail(googlePojo.getEmail())) {
+                User u = new User();
+                u.setEmail(googlePojo.getEmail());
+                u.setPassword(googlePojo.getId());
+                u.setAvatarUrl(googlePojo.getPicture());
+                User user = userService.registerNewAccount(u);
+                session.setAttribute("user", user);
+                return "redirect:/";
+            } else{
+                User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
+                session.setAttribute("user", user);
+                return "redirect:/";
+            }
+
         }
     }
 }

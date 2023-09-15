@@ -25,8 +25,8 @@ public class registerController {
     @PostMapping("/register")
     public String registerAccount(WebRequest request, Model model, HttpSession session) {
         String fullname = request.getParameter("fullname");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = request.getParameter("username").replace(" ", "");
+        String password = request.getParameter("password").replace(" ", "");
 
         // create model user
         User user = new User();
@@ -35,12 +35,17 @@ public class registerController {
         if(Validate.validPhoneNumber(username)) {user.setPhone(username);}
         user.setPassword(password);
 
-        // set session to verify
-        if(userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
+        if(user.getEmail() == null && user.getPhone() == null) {
             return "redirect:/register";
         }
+
+        if(user.getEmail() != null && userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
+            return "redirect:/register";
+        }
+
+        // set session to verify
         session.setAttribute("user", user);
-        session.setAttribute("href", "verifyaccount");
-        return "redirect:/verify";
+        session.setAttribute("href", "verify");
+        return "redirect:/verifypage";
     }
 }

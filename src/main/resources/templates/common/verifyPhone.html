@@ -5,8 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+<div th:text="${token}" id="token_holder" style="display:none;"></div>
 <div id="sender">
-    <input type="text" id="number" placeholder="+84...">
+    <input type="text" id="number" th:value="${phone}" readonly>
     <div id="recaptcha-container"></div>
     <input type="button" id="send" value="send">
 </div>
@@ -22,7 +23,7 @@
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 
 <script type="module">
-    // Your web app's Firebase configuration
+    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCM-VrqHZKLBLhJzlDudOKJGUGul4W7sGk",
         authDomain: "swp391-3fcbc.firebaseapp.com",
@@ -54,9 +55,7 @@
         firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
             window.confirmationResult = confirmationResult;
             coderesult = confirmationResult;
-            console.log('OTP Sent');
         }).catch(function (error) {
-            // error in sending OTP
             alert(error.message);
         });
     }
@@ -64,16 +63,15 @@
     send_btn.addEventListener('click', () => {
         phoneAuth();
     })
-
     const verify_btn = document.getElementById('verify');
     verify_btn.addEventListener('click', () => {
+        const token_sender = document.getElementById("token_holder").textContent;
         var code = document.getElementById('code').value;
         window.confirmationResult.confirm(code).then(function () {
-            alert('OTP Verified');
+            location.href = token_sender;
         }).catch(function () {
             alert('OTP Not correct');
         })
     })
-
 </script>
 </html>
