@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.Emailservice;
+import swp.studentprojectportal.services.servicesimpl.EmailService;
 import swp.studentprojectportal.services.servicesimpl.RegisterService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Utility;
@@ -22,7 +22,7 @@ public class verifyController {
     UserService userService;
 
     @Autowired
-    Emailservice emailservice;
+    EmailService emailservice;
 
     @Autowired
     RegisterService registerService;

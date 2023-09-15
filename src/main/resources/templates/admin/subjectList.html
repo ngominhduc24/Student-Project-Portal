@@ -155,7 +155,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            "dom": "tp",
+            "ordering": false,
+        });
     });
 </script>
 
