@@ -1354,7 +1354,7 @@ button:not(:disabled) {
 
 .breadcrumb {
     letter-spacing: 0.5px;
-    padding: 8px 24px;
+    padding: 8px;
     display: block
 }
 
@@ -1790,6 +1790,11 @@ button:not(:disabled) {
 
 .table-responsive .table-center.invoice-tb th, .table-responsive .table-center.invoice-tb td {
     text-align: end
+}
+
+tr, td, th {
+    border-color: inherit;
+    border-style: solid;
 }
 
 .table-responsive .table-padding tr td {

@@ -36,7 +36,7 @@ public class registerController {
         user.setPassword(password);
 
         // set session to verify
-        if(!userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
+        if(userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
             return "redirect:/register";
         }
         session.setAttribute("user", user);
