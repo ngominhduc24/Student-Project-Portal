@@ -26,13 +26,11 @@
     <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
     <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
-
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
-
     <!-- Datatables -->
-    <link th:href="@{https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css}" rel="stylesheet"/>
-    <link th:href="@{css/tablestyles.css}" rel="stylesheet" />
+    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
 
 
 </head>
@@ -58,43 +56,31 @@
         <div th:replace="header"></div>
         <div class="container-fluid">
             <div class="layout-specing">
-                <div class="row">
+                <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <div class="search-bar p-0 d-none d-lg-block ms-2">
-                            <div id="search" class="menu-search mb-0">
-                                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                                    <div class="input-group" style="flex-wrap: nowrap">
-                                        <input class="form-control" type="text" placeholder="Search for..."
-                                               aria-label="Search for..." aria-describedby="btnNavbarSearch"/>
-                                        <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                                                class="fas fa-search"></i></button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <h1>Subject</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Subject</li>
+                        </ol>
                     </div><!--end col-->
 
                     <div class="col-xl-4 col-md-6"></div>
 
-                    <div class="col-xl-3 col-md-6 mt-4 mt-md-0 text-md-end">
-                        <a href="/admin/subject/add" class="btn btn-primary">Add New Subject</a>
+                    <div class="col-xl-3 col-md-6 mt-4">
+                        <a href="/admin/subject/add" class="btn btn-primary" style="margin-left: 24px">Add New Subject</a>
                     </div><!--end col-->
                 </div><!--end row-->
 
 
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Subject</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Subject</li>
-                    </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             DataTable Example
                         </div>
                         <div class="card-body">
-                            <table id="datatablesSimple">
+                            <table id="myTable" class="display">
                                 <thead>
                                 <tr>
                                     <th>Subject Code</th>
@@ -114,15 +100,14 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <th:block th:each="Subject : ${SubjectList}">
-                                    <tr>
-                                        <td th:text="${Subject.subjectCode}"></td>
-                                        <td th:text="${Subject.subjectName}"></td>
-                                        <td th:text="${Subject.user.fullName}"></td>
-                                        <td><a th:href="@{/admin/subject/details/{id}(id=${Subject.id})}">View Details</a></td>
-                                        <td th:text="${Subject.status}"></td>
-                                    </tr>
-                                </th:block>
+                                <tr th:each="Subject : ${SubjectList}">
+                                    <td th:text="${Subject.subjectCode}"></td>
+                                    <td th:text="${Subject.subjectName}"></td>
+                                    <td th:text="${Subject.user.fullName}"></td>
+                                    <td><a th:href="@{/admin/subject/details/{id}(id=${Subject.id})}">View Details</a>
+                                    </td>
+                                    <td th:text="${Subject.status}"></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -164,8 +149,15 @@
 <!-- Main Js -->
 <script th:src="@{/js/app.js}"></script>
 
-<script th:src="@{https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js}" crossorigin="anonymous"></script>
-<script th:src="@{js/datatables-simple-demo.js}"></script>
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
 
 </body>
 

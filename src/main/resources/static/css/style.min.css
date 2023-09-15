@@ -1354,7 +1354,7 @@ button:not(:disabled) {
 
 .breadcrumb {
     letter-spacing: 0.5px;
-    padding: 8px 24px;
+    padding: 8px;
     display: block
 }
 
