@@ -88,7 +88,6 @@ public class UserService implements IUserService {
         userData.setPhone(phone);
         userData.setSetting(settingRepository.findById(roleId).get());
         userData.setStatus(status);
-        System.out.println(userData);
 
         userRepository.save(userData);
         return true;
