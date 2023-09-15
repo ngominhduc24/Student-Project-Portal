@@ -15,6 +15,7 @@ public class RegisterService implements IRegisterService {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
             user.setToken(null);
+            user.setActive(true);
             userRepository.save(user);
             return true;
         }

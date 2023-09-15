@@ -26,44 +26,38 @@ public class verifyController {
 
     @Autowired
     RegisterService registerService;
-    @GetMapping("/verify")
+    @GetMapping("/verifypage")
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
         User user =  (User)session.getAttribute("user");
+        String token = RandomString.make(30);
+        user.setToken(token);
+        userService.saveUserWaitVerify(user);
+
+        // get href
+        String href = (String)session.getAttribute("href");
+        session.removeAttribute("href");
+        String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
 
         // if user register by email address
         if(user.getEmail() != null) {
-            String token = RandomString.make(30);
-            user.setToken(token);
-            userService.saveUserWaitVerify(user);
-            // get href
-            String href = (String)session.getAttribute("href");
-            session.removeAttribute("href");
-            String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
             emailservice.sendEmail(user.getFullName(), user.getEmail(), token_sender);
-
             model.addAttribute("email", user.getEmail());
             return "verifyEmail";
         }
 
         // if user register by phone number
         if(user.getPhone() != null) {
-                return "verifyPhone";
+            model.addAttribute("phone", user.getPhone());
+            model.addAttribute("token", token_sender);
+            return "verifyPhone";
         }
         return "redirect:/error";
     }
 
 
-    @GetMapping("/verifymail")
+    @GetMapping("/verify")
     public String registerMail(Model model,@RequestParam("key") String token) {
         if(registerService.verifyToken(token) == true) {
-            return "verifySuccess";
-        }
-        return "register";
-    }
-
-    @GetMapping("/verifyphone")
-    public String registerPhone(HttpSession session) {
-        if(session.getAttribute("verifyphone") != null) {
             return "verifySuccess";
         }
         return "register";
