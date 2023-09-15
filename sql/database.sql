@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
     `token` varchar(255) DEFAULT NULL,
+    `active` BIT(1) NULL DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
