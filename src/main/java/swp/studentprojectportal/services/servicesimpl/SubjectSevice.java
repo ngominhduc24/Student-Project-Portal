@@ -31,7 +31,6 @@ public class SubjectSevice implements ISubjectService {
         assert existingSubject != null;
         existingSubject.setSubjectName(subject.getSubjectName());
         existingSubject.setSubjectCode(subject.getSubjectCode());
-        existingSubject.setDescription(subject.getDescription());
         existingSubject.setUser(subject.getUser());
         return repository.save(existingSubject);
     }

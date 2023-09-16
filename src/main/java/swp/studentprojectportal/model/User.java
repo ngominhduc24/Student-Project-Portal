@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -27,8 +28,11 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "note")
+    private String note;
+
     @Column(name = "status")
-    private boolean status;
+    private boolean status = true;
 
     @Column(name = "full_name")
     private String fullName;
@@ -40,16 +44,16 @@ public class User {
     private String token;
 
     @Column(name = "active")
-    private boolean active;
+    private boolean active = false;
 
     @Column(name = "create_by")
-    private Integer createBy;
+    private Integer createBy = 0;
 
     @Column(name = "create_at")
-    private Timestamp createAt;
+    private Timestamp createAt = Timestamp.valueOf(LocalDateTime.now());
 
     @Column(name = "update_by")
-    private Integer updateBy;
+    private Integer updateBy = 0;
 
     @Column(name = "update_at")
     private Timestamp updateAt;
