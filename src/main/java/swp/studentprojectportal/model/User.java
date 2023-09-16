@@ -30,11 +30,11 @@ public class User {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "full_name")
-    private String fullName;
-
     @Column(name = "note")
     private String note;
+
+    @Column(name = "full_name")
+    private String fullName;
 
     @Column(name = "avatar_url")
     private String avatarUrl;
