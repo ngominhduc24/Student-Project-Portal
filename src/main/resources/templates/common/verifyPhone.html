@@ -12,33 +12,31 @@
         <i class="bx bxs-check-shield"></i>
     </header>
     <h4>Enter OTP Code</h4>
-    <form action="#">
         <div class="input-field">
-            <input class="input_otp" type="number" />
-            <input class="input_otp" type="number" disabled />
-            <input class="input_otp" type="number" disabled />
-            <input class="input_otp" type="number" disabled />
-            <input class="input_otp" type="number" disabled />
-            <input class="input_otp" type="number" disabled />
+            <input class="otp_number" type="number" />
+            <input class="otp_number" type="number" disabled />
+            <input class="otp_number" type="number" disabled />
+            <input class="otp_number" type="number" disabled />
+            <input class="otp_number" type="number" disabled />
+            <input class="otp_number" type="number" disabled />
         </div>
-        <button ><input id="verify" type="button" value="Verify OTP"> </button>
-    </form>
+        <button type="button" id="buttonverify" class="otp_btn" >Verify OTP</button>
 </div>
-<div id="recaptcha-container"></div>
-<div class="p-conf"></div>
-<div class="n-conf"></div>
-<div th:text="${token}" id="token_holder" style="display:none;"></div>
-<input type="text" id="phonenumber" th:value="${phone}" hidden="hidden">
-</body>
 
+
+
+<div th:text="${token}" id="token_holder" style="display:none;"></div>
+<input type="text" id="number" th:value="${phone}" hidden="">
+<div id="recaptcha-container"></div>
+
+
+</body>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
-
 <script type="module">
-
-    const inputs = document.querySelectorAll(".input_otp"),
-        button = document.querySelector("button");
-    var code = '';
+    const inputs = document.querySelectorAll(".otp_number"),
+        button = document.querySelector(".otp_btn");
+    let otp = '';
 
     // iterate over all inputs
     inputs.forEach((input, index1) => {
@@ -49,7 +47,8 @@
             const currentInput = input,
                 nextInput = input.nextElementSibling,
                 prevInput = input.previousElementSibling;
-            code += currentInput.value;
+            otp += currentInput.value;
+
             // if the value has more than one character then clear it
             if (currentInput.value.length > 1) {
                 currentInput.value = "";
@@ -84,6 +83,9 @@
             button.classList.remove("active");
         });
     });
+    //focus the first input which index is 0 on window load
+    window.addEventListener("load", () => inputs[0].focus());
+    window.addEventListener("load", phoneAuth);
 
 
     // Firebase configuration
@@ -102,12 +104,8 @@
 
     firebase.auth().settings.appVerificationDisabledForTesting = true;
     var appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+
     let coderesult;
-    // render();
-    // function render() {
-    //     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-    //     recaptchaVerifier.render();
-    // }
 
     // function for send OTP
     function phoneAuth() {
@@ -120,19 +118,15 @@
         });
     }
 
-    const verify_btn = document.getElementById('verify');
-    verify_btn.addEventListener('click', () => {
+    const phoneVerify = () => {
         const token_sender = document.getElementById("token_holder").textContent;
-        window.confirmationResult.confirm(code).then(function () {
+        window.confirmationResult.confirm(otp).then(function () {
             location.href = token_sender;
         }).catch(function () {
-            console.log(code)
             alert('OTP Not correct');
         })
-    })
+    }
 
-    //focus the first input which index is 0 on window load
-    window.addEventListener("load", () => inputs[0].focus());
-    window.addEventListener("load", phoneAuth);
+    document.getElementsByTagName('button')[0].addEventListener('click',phoneVerify,false);
 </script>
 </html>
