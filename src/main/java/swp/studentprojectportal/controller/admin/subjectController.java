@@ -48,16 +48,17 @@ public class subjectController {
     }
 
 
-    @PutMapping ("/admin/subject/details?id={id}")
-    public Subject updateSubject(@PathVariable Integer id, @RequestBody Subject subjectDetails) {
-        Subject subject = services.getSubjectById(id);
-        subject.setSubjectName(subjectDetails.getSubjectName());
-        subject.setSubjectCode(subjectDetails.getSubjectCode());
-        subject.setDescription(subjectDetails.getDescription());
-
-        subject.setUser(subjectDetails.getUser());
-        return services.saveSubject(subject);
+    @PostMapping("/admin/subject/details?id={id}")
+    public String updateSubject(
+            @RequestParam int Id,
+            @RequestParam String subjectName,
+            @RequestParam String subjectCode,
+            @RequestParam String subjectManager,
+            @RequestParam boolean status){
+        subjectSevice.updateSubject(Id, subjectName, subjectCode, subjectManager, status);
+        return "redirect:./subject";
     }
+
 }
 
 

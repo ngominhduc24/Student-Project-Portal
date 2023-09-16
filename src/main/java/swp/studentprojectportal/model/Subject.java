@@ -42,4 +42,9 @@ public class Subject {
     @OneToOne
     @JoinColumn(name = "subject_manager_id")
     private User user;
+
+    public void setUser(String subjectManager) {
+        User user = new User();
+        user.setFullName(subjectManager);
+    }
 }

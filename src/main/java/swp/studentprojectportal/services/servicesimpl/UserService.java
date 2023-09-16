@@ -80,7 +80,7 @@ public class UserService implements IUserService {
     public boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note) {
         Optional<User> user = userRepository.findById(id);
 
-        if(!user.isPresent()) return false;
+        if(user.isEmpty()) return false;
 
         User userData = user.get();
         userData.setFullName(fullName);
