@@ -64,8 +64,6 @@ public class loginController {
                 u.setEmail(googlePojo.getEmail());
                 u.setPassword(googlePojo.getId());
                 u.setAvatarUrl(googlePojo.getPicture());
-                u.setActive(true);
-                u.setStatus(true);
                 User user = userService.registerNewAccount(u);
                 session.setAttribute("user", user);
                 return "redirect:/";
