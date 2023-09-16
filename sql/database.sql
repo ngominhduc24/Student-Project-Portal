@@ -81,7 +81,6 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
                                                   `subject_name` VARCHAR(255) NULL,
     `subject_code` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
-    `description` VARCHAR(255) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -158,10 +157,10 @@ VALUES
 
 
 -- subject
-INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`,`status`,`description`)
+INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
 VALUES
-    (1,"Software development project","SWP391",1,"This course focuses on designing, developing, and integrating the basic Web-based system/application using Java Web or .NET technologies."),
-    (2,"Software Requirement","SWR302",1,"This course is a model-based introduction to RE, providing the conceptual background and terminology on RE, addressing a variety of techniques for requirements development."),
-    (3,"Software Testing","SWT301",1,"esting techniques aimed at assuring that appropriate functionality has been implemented correctly in the software system or product."),
-    (1,"Basic Cross-Platform Application Programming With .NET","PRN211",1,"Basic knowledge of Window Forms in .NET, ASP.NET Core MVC, RESTful API .NET"),
-    (2,"Front-End web development with React","FER201m",1,"Learn front-end web development for implementing a multi-platform solution.");
+    (1,"Software development project","SWP391"),
+    (2,"Software Requirement","SWR302"),
+    (3,"Software Testing","SWT301"),
+    (1,"Basic Cross-Platform Application Programming With .NET","PRN211"),
+    (2,"Front-End web development with React","FER201m");
