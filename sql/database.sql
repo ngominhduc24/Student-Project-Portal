@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`setting` (
                                                   `type_id` INT NULL,
                                                   `setting_title` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
+    `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -50,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `phone` VARCHAR(45) NULL,
     `password` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
+    `note` VARCHAR(255),
     `full_name` VARCHAR(255) NULL,
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
@@ -103,17 +105,16 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- 2 = mail domain
 -- 3 = semester
 
-INSERT INTO setting(type_id,setting_title)
+INSERT INTO setting(type_id,setting_title,display_order)
 VALUES
-    (1, "User"),
-    (1, "Admin"),
-    (1, "Subject manager"),
-    (1, "Class manager"),
-    (1, "Project mentor"),
-    (2, "gmail.com"),
-    (2, "fpt.edu.vn"),
-    (3, "SUMMER 23"),
-    (3, "FALL 23");
+    (1, "Student",4),
+    (1, "Admin",1),
+    (1, "Subject manager",2),
+    (1, "Teacher",3),
+    (2, "gmail.com",1),
+    (2, "fpt.edu.vn",2),
+    (3, "SUMMER 23",1),
+    (3, "FALL 23",2);
 
 -- admin
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)

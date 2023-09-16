@@ -38,12 +38,13 @@
     firebase.initializeApp(firebaseConfig);
 
     // render recaptcha verifier
-    render();
-
-    function render() {
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-        recaptchaVerifier.render();
-    }
+    // render();
+    firebase.auth().settings.appVerificationDisabledForTesting = true;
+    var appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+    // function render() {
+    //     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+    //     recaptchaVerifier.render();
+    // }
 
     let coderesult;
 
@@ -52,7 +53,7 @@
     // function for send OTP
     function phoneAuth() {
         var number = document.getElementById('number').value;
-        firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
+        firebase.auth().signInWithPhoneNumber(number, appVerifier).then(function (confirmationResult) {
             window.confirmationResult = confirmationResult;
             coderesult = confirmationResult;
         }).catch(function (error) {
@@ -66,7 +67,7 @@
     const verify_btn = document.getElementById('verify');
     verify_btn.addEventListener('click', () => {
         const token_sender = document.getElementById("token_holder").textContent;
-        var code = document.getElementById('code').value;
+        const code = document.getElementById('code').value;
         window.confirmationResult.confirm(code).then(function () {
             location.href = token_sender;
         }).catch(function () {
