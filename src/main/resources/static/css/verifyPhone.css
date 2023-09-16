@@ -39,7 +39,7 @@ body {
     color: #333;
     font-weight: 500;
 }
-form .input-field {
+.input-field {
     flex-direction: row;
     column-gap: 10px;
 }
@@ -59,7 +59,7 @@ form .input-field {
 .input-field input::-webkit-outer-spin-button {
     display: none;
 }
-form button {
+button {
     margin-top: 25px;
     width: 100%;
     color: #fff;
@@ -72,10 +72,10 @@ form button {
     background: #6e93f7;
     transition: all 0.2s ease;
 }
-form button.active {
+button.active {
     background: #4070f4;
     pointer-events: auto;
 }
-form button:hover {
+button:hover {
     background: #0e4bf1;
 }
