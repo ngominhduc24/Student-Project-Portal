@@ -36,9 +36,8 @@ public class subjectController {
     }
 
     @PostMapping("/admin/subject/add")
-    public String createSubject(@ModelAttribute Subject subject) {
-        subjectList.add(subject);
-        return "redirect:/admin/subject";
+    public Subject createSubject(@RequestBody Subject subject) {
+        return subjectSevice.saveSubject(subject);
     }
 
     @GetMapping("/admin/subject/details")
@@ -49,9 +48,15 @@ public class subjectController {
     }
 
 
-    @PutMapping ("/admin/subject/edit")
-    public Subject updateSubject(@RequestBody Integer Id, Subject subject) {
-        return services.updateSubject(Id, subject);
+    @PutMapping ("/admin/subject/details?id={id}")
+    public Subject updateSubject(@PathVariable Integer id, @RequestBody Subject subjectDetails) {
+        Subject subject = services.getSubjectById(id);
+        subject.setSubjectName(subjectDetails.getSubjectName());
+        subject.setSubjectCode(subjectDetails.getSubjectCode());
+        subject.setDescription(subjectDetails.getDescription());
+
+        subject.setUser(subjectDetails.getUser());
+        return services.saveSubject(subject);
     }
 }
 
