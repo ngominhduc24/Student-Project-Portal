@@ -77,7 +77,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status) {
+    public boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note) {
         Optional<User> user = userRepository.findById(id);
 
         if(!user.isPresent()) return false;
@@ -88,6 +88,7 @@ public class UserService implements IUserService {
         userData.setPhone(phone);
         userData.setSetting(settingRepository.findById(roleId).get());
         userData.setStatus(status);
+        userData.setNote(note);
 
         userRepository.save(userData);
         return true;

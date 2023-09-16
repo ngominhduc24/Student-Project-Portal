@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8"/>
     <title>Doctris - Doctor Appointment Booking System</title>
@@ -23,10 +24,13 @@
     <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
     <!-- Icons -->
     <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
-    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <!-- Datatables -->
+    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
 </head>
 <body>
 <!-- Loader -->
@@ -103,6 +107,14 @@
                                                         </div>
                                                     </div><!--end col-->
 
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Note</label>
+                                                            <input name="note" type="text" class="form-control"
+                                                                   th:value="${user.note}">
+                                                        </div>
+                                                    </div><!--end col-->
+
                                                 </div><!--end row-->
 
                                                 <button type="submit" class="btn btn-primary">Update User</button>
@@ -114,5 +126,17 @@
         </div>
     </main>
 </div>
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
 </body>
 </html>

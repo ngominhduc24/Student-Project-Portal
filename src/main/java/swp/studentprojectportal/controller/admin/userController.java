@@ -46,8 +46,9 @@ public class userController {
             @RequestParam String email,
             @RequestParam String phone,
             @RequestParam int roleId,
+            @RequestParam String note,
             @RequestParam boolean status) {
-        userService.updateUser(id, fullName, email, phone, roleId, status);
+        userService.updateUser(id, fullName, email, phone, roleId, status, note);
         return "redirect:./user";
     }
 

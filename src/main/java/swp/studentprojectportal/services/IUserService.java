@@ -17,5 +17,5 @@ public interface IUserService {
     Optional<User> getUserById(int id);
     boolean updateUserStatus(int id, boolean status);
 
-    boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status);
+    boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note);
 }

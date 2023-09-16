@@ -87,8 +87,9 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Role</th>
-                                    <th>View Details</th>
                                     <th>Status</th>
+                                    <th>Note          </th>
+                                    <th>View Details</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -97,9 +98,10 @@
                                     <td th:text="${user.email}"></td>
                                     <td th:text="${user.phone}"></td>
                                     <td th:text="${user.setting.settingTitle}"></td>
+                                    <td th:text="${user.status}"></td>
+                                    <td th:text="${user.note}"></td>
                                     <td><a th:href="@{'./userDetails?id=' + ${user.id}}">View Details</a>
                                     </td>
-                                    <td th:text="${user.status}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -148,7 +150,7 @@
     $(document).ready(function () {
         $('#myTable').DataTable({
             "dom": "tp",
-            "ordering": false,
+            "ordering": true,
         });
     });
 </script>
