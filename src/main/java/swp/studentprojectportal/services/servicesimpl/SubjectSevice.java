@@ -16,9 +16,10 @@ public class SubjectSevice implements ISubjectService {
     public List<Subject> getAllSubjects() {
         return repository.findAll();
     }
+
     @Override
-    public Subject getSubjectByCode(String subjectCode){
-        return repository.findBySubjectCode(subjectCode);
+    public Subject getSubjectById(Integer Id) {
+        return repository.findById(Id).orElse(null);
     }
     @Override
     public Subject saveSubject(Subject subject) {

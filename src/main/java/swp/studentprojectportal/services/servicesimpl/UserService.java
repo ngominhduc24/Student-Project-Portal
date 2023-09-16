@@ -95,6 +95,7 @@ public class UserService implements IUserService {
 
     @Override
     public User saveUserWaitVerify(User user) {
+        user.setActive(false);
         return userRepository.save(user);
     }
 

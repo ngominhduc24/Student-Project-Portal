@@ -34,6 +34,11 @@ public class loginController {
         else
             user = userService.findUserByPhoneAndPassword(username, password);
         if(user != null) {
+            // check active account
+            if(!user.isActive()) {
+                model.addAttribute("errmsg", "Your account is already not active");
+                return "login";
+            }
             session.setAttribute("user", user);
             return "redirect:/";
         }

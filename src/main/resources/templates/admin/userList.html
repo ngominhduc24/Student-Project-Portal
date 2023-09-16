@@ -49,11 +49,11 @@
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
-    <div th:replace="sidebar"></div>
+    <div th:replace="dashboardSidebar"></div>
 
     <!-- Start Page Content -->
     <main class="page-content bg-light">
-        <div th:replace="header"></div>
+        <div th:replace="dashboardHeader"></div>
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row px-4">
@@ -139,8 +139,6 @@
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
-<!-- Main Js -->
-<script th:src="@{/js/app.js}"></script>
 
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
