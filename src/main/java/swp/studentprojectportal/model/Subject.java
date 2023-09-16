@@ -26,9 +26,6 @@ public class Subject {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "create_by")
     private Integer createBy;
 
