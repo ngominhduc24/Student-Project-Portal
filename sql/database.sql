@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`setting` (
                                                   `type_id` INT NULL,
                                                   `setting_title` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
+    `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -50,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `phone` VARCHAR(45) NULL,
     `password` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
+    `note` VARCHAR(255),
     `full_name` VARCHAR(255) NULL,
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
@@ -79,7 +81,6 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
                                                   `subject_name` VARCHAR(255) NULL,
     `subject_code` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
-    `description` VARCHAR(255) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -103,64 +104,63 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- 2 = mail domain
 -- 3 = semester
 
-INSERT INTO setting(type_id,setting_title)
+INSERT INTO setting(type_id,setting_title,display_order)
 VALUES
-    (1, "User"),
-    (1, "Admin"),
-    (1, "Subject manager"),
-    (1, "Class manager"),
-    (1, "Project mentor"),
-    (2, "gmail.com"),
-    (2, "fpt.edu.vn"),
-    (3, "SUMMER 23"),
-    (3, "FALL 23");
-    
+    (1, "Student",4),
+    (1, "Admin",1),
+    (1, "Subject manager",2),
+    (1, "Teacher",3),
+    (2, "gmail.com",1),
+    (2, "fpt.edu.vn",2),
+    (3, "SUMMER 23",1),
+    (3, "FALL 23",2);
+
 -- admin
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)
 VALUES
-    ("admin@gmail.com","0999999999","admin","Admin",2,1,"https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png");
+    ("admin@gmail.com","0999999999","admin","Admin",2,1,"/images/user_icon.png");
 
 -- subject manager
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("gillianmorris@gmail.com","0224667148","123456","Gillian Morris","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3,1),
-    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3,1),
-    ("kareemmacdonald4709@gmail.com","0318444787","123456","Kareem Macdonald","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3,1),
-    ("annedonovan3197@gmail.com","0137041646","123456","Anne Donovan","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3,1),
-    ("echonash7303@gmail.com","0534896566","123456","Echo Nash","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",3,1);
+    ("gillianmorris@gmail.com","0224667148","123456","Gillian Morris","/images/user_icon.png",3,1),
+    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird","/images/user_icon.png",3,1),
+    ("kareemmacdonald4709@gmail.com","0318444787","123456","Kareem Macdonald","/images/user_icon.png",3,1),
+    ("annedonovan3197@gmail.com","0137041646","123456","Anne Donovan","/images/user_icon.png",3,1),
+    ("echonash7303@gmail.com","0534896566","123456","Echo Nash","/images/user_icon.png",3,1);
 
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("julianlester@gmail.com","0027829656","123456","Julian Lester","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("galvinbass4030@gmail.com","0037963572","123456","Galvin Bass","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("brianmassey@gmail.com","0436285872","123456","Brian Massey","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("judahcardenas5324@gmail.com","0681589922","123456","Judah Cardenas","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("kellyreyes9226@gmail.com","0363517319","123456","Kelly Reyes","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("kevinwilliam@gmail.com","0905521148","123456","Kevin William","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("lesleycastro@gmail.com","0571427370","123456","Lesley Castro","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("danarosario@gmail.com","0272326964","123456","Dana Rosario","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("aimeeewing@gmail.com","0636454167","123456","Aimee Ewing","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("amywalton@gmail.com","0858486104","123456","Amy Walton","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1);
+    ("julianlester@gmail.com","0027829656","123456","Julian Lester","/images/user_icon.png",1,1),
+    ("galvinbass4030@gmail.com","0037963572","123456","Galvin Bass","/images/user_icon.png",1,1),
+    ("brianmassey@gmail.com","0436285872","123456","Brian Massey","/images/user_icon.png",1,1),
+    ("judahcardenas5324@gmail.com","0681589922","123456","Judah Cardenas","/images/user_icon.png",1,1),
+    ("kellyreyes9226@gmail.com","0363517319","123456","Kelly Reyes","/images/user_icon.png",1,1),
+    ("kevinwilliam@gmail.com","0905521148","123456","Kevin William","/images/user_icon.png",1,1),
+    ("lesleycastro@gmail.com","0571427370","123456","Lesley Castro","/images/user_icon.png",1,1),
+    ("danarosario@gmail.com","0272326964","123456","Dana Rosario","/images/user_icon.png",1,1),
+    ("aimeeewing@gmail.com","0636454167","123456","Aimee Ewing","/images/user_icon.png",1,1),
+    ("amywalton@gmail.com","0858486104","123456","Amy Walton","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("rashadrush2211@gmail.com","0860113768","123456","Rashad Rush","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("elainelawrence@gmail.com","0721721061","123456","Elaine Lawrence","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("larissareese@gmail.com","0279994112","123456","Larissa Reese","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("holleemyers@gmail.com","0532678220","123456","Hollee Myers","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("xanthusmcfadden3684@gmail.com","0302569530","123456","Xanthus Mcfadden","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("mylesdavidson@gmail.com","0583590348","123456","Myles Davidson","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("teegansantana@gmail.com","0547146642","123456","Teegan Santana","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("elvisratliff@gmail.com","0911884338","123456","Elvis Ratliff","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("rowaningram@gmail.com","0734547525","123456","Rowan Ingram","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1),
-    ("oraallen@gmail.com","0298393485","123456","Ora Allen","https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png",1,1);
+    ("rashadrush2211@gmail.com","0860113768","123456","Rashad Rush","/images/user_icon.png",1,1),
+    ("elainelawrence@gmail.com","0721721061","123456","Elaine Lawrence","/images/user_icon.png",1,1),
+    ("larissareese@gmail.com","0279994112","123456","Larissa Reese","/images/user_icon.png",1,1),
+    ("holleemyers@gmail.com","0532678220","123456","Hollee Myers","/images/user_icon.png",1,1),
+    ("xanthusmcfadden3684@gmail.com","0302569530","123456","Xanthus Mcfadden","/images/user_icon.png",1,1),
+    ("mylesdavidson@gmail.com","0583590348","123456","Myles Davidson","/images/user_icon.png",1,1),
+    ("teegansantana@gmail.com","0547146642","123456","Teegan Santana","/images/user_icon.png",1,1),
+    ("elvisratliff@gmail.com","0911884338","123456","Elvis Ratliff","/images/user_icon.png",1,1),
+    ("rowaningram@gmail.com","0734547525","123456","Rowan Ingram","/images/user_icon.png",1,1),
+    ("oraallen@gmail.com","0298393485","123456","Ora Allen","/images/user_icon.png",1,1);
 
 
 -- subject
-INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`,`status`,`description`)
+INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
 VALUES
-    (1,"Software development project","SWP391",1,"This course focuses on designing, developing, and integrating the basic Web-based system/application using Java Web or .NET technologies."),
-    (2,"Software Requirement","SWR302",1,"This course is a model-based introduction to RE, providing the conceptual background and terminology on RE, addressing a variety of techniques for requirements development."),
-    (3,"Software Testing","SWT301",1,"esting techniques aimed at assuring that appropriate functionality has been implemented correctly in the software system or product."),
-    (1,"Basic Cross-Platform Application Programming With .NET","PRN211",1,"Basic knowledge of Window Forms in .NET, ASP.NET Core MVC, RESTful API .NET"),
-    (2,"Front-End web development with React","FER201m",1,"Learn front-end web development for implementing a multi-platform solution.");
+    (1,"Software development project","SWP391"),
+    (2,"Software Requirement","SWR302"),
+    (3,"Software Testing","SWT301"),
+    (1,"Basic Cross-Platform Application Programming With .NET","PRN211"),
+    (2,"Front-End web development with React","FER201m");

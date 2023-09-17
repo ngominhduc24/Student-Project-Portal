@@ -104,7 +104,7 @@
                                     <td th:text="${Subject.subjectCode}"></td>
                                     <td th:text="${Subject.subjectName}"></td>
                                     <td th:text="${Subject.user.fullName}"></td>
-                                    <td><a th:href="@{/admin/subject/details?id={id}(id=${Subject.id})}">View Details</a>
+                                    <td><a th:href="@{'./subjectDetails?id=' + ${Subject.id}}">View Details</a>
                                     </td>
                                     <td th:text="${Subject.status}"></td>
                                 </tr>
@@ -154,7 +154,7 @@
     $(document).ready(function () {
         $('#myTable').DataTable({
             "dom": "tp",
-            "ordering": false,
+            "ordering": true,
         });
     });
 </script>

@@ -77,6 +77,24 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note) {
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()) return false;
+
+        User userData = user.get();
+        userData.setFullName(fullName);
+        userData.setEmail(email);
+        userData.setPhone(phone);
+        userData.setSetting(settingRepository.findById(roleId).get());
+        userData.setStatus(status);
+        userData.setNote(note);
+
+        userRepository.save(userData);
+        return true;
+    }
+
+    @Override
     public User saveUserWaitVerify(User user) {
         user.setActive(false);
         return userRepository.save(user);

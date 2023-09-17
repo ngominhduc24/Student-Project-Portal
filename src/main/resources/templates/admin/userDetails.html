@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8"/>
     <title>Doctris - Doctor Appointment Booking System</title>
@@ -23,10 +24,13 @@
     <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
     <!-- Icons -->
     <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
-    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <!-- Datatables -->
+    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
 </head>
 <body>
 <!-- Loader -->
@@ -48,31 +52,48 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0" th:text="${subject.subjectName}"></h3>
+                    <h3 class="mb-0">User Details</h3>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="./updateUser" method="post" class="mt-4">
+                            <form action="./updateUser" method="post">
+                                <input type="hidden" name="id" th:value="${user.id}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Name</label>
-                                            <input type="text" class="form-control"
-                                                   th:value="${subject.subjectName}"
-                                                   name="subjectName"
-                                                   placeholder="Subject Name :">
+                                            <label class="form-label">Fullname</label>
+                                            <input name="fullName" type="text" class="form-control"
+                                                   th:value="${user.fullName}">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Code</label>
-                                            <input type="text" class="form-control"
-                                                   th:value="${subject.subjectCode}"
-                                                   name="subjectCode"
-                                                   placeholder="Subject Code :">
+                                            <label class="form-label">Email</label>
+                                            <input name="email" type="text" class="form-control"
+                                                   th:value="${user.email}">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <input name="phone" type="text" class="form-control"
+                                                   th:value="${user.phone}">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Role</label>
+                                            <select name="roleId" class="form-control">
+                                                <option th:each="role : ${roleList}"
+                                                        th:value="${role.id}"
+                                                        th:text="${role.settingTitle}"
+                                                        th:selected="${role.id == user.setting.id}"></option>
+                                            </select>
                                         </div>
                                     </div><!--end col-->
 
@@ -80,31 +101,24 @@
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
                                             <select name="status" class="form-control">
-                                                <option value="true" th:selected="${true == subject.status}">True</option>
-                                                <option value="false" th:selected="${false == subject.status}">False</option>
+                                                <option value="true" th:selected="${true == user.status}">True</option>
+                                                <option value="false" th:selected="${false == user.status}">False
+                                                </option>
                                             </select>
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label"> Subject Manager : </label>
-                                            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                                                <div class="input-group" style="flex-wrap: nowrap">
-                                                    <input class="form-control" type="text" placeholder="Search for..."
-                                                           th:value="${subject.user.fullName}" name="subjectManager"
-                                                           aria-label="Search for..." aria-describedby="btnNavbarSearch"
-                                                           style="overflow-wrap: break-word;"
-                                                    />
-                                                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                                                            class="fas fa-search"></i></button>
-                                                </div>
-                                            </div>
+                                            <label class="form-label">Note</label>
+                                            <input name="note" type="text" class="form-control"
+                                                   th:value="${user.note}">
                                         </div>
                                     </div><!--end col-->
+
                                 </div><!--end row-->
 
-                                <button type="submit" class="btn btn-primary">Add Subject</button>
+                                <button type="submit" class="btn btn-primary">Update User</button>
                             </form>
                         </div>
                     </div><!--end col-->
@@ -120,6 +134,10 @@
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
 </body>
 </html>

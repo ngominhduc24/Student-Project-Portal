@@ -12,5 +12,7 @@ public interface ISubjectService {
 
     Subject saveSubject(Subject subject);
 
-    Subject updateSubject(Integer Id, Subject subject);
+    boolean updateSubject(int Id, String subjectName, String subjectCode, String subjectManager, boolean status);
+
+    boolean updateSubjectStatus(int Id, boolean status);
 }
