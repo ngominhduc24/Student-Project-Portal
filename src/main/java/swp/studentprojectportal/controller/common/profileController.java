@@ -1,18 +1,16 @@
 package swp.studentprojectportal.controller.common;
+import org.springframework.web.bind.annotation.*;
+import swp.studentprojectportal.services.servicesimpl.RegisterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import swp.studentprojectportal.services.servicesimpl.RegisterService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.repository.IUserRepository;
 import org.springframework.ui.Model;
 import swp.studentprojectportal.utility.Validate;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class profileController {
@@ -21,25 +19,24 @@ public class profileController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(path="/profile")
-    public String profilePage(HttpSession session,Model model,WebRequest request){
+    @GetMapping(path="/profile")
+    public String profilePage(HttpSession session,Model model){
         User user = (User)session.getAttribute("user");
         if(user == null) {
             model.addAttribute("errmsg","You need login before view profile!");
-            return "redirect:/login";
+            return "login";
         }
         model.addAttribute("user",user);
         return "userDetails";
     }
-    @RequestMapping(path="/updateProfile")
+    @PostMapping(path="/profile")
     public String updateUser(WebRequest request,HttpSession session,Model model){
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
 
-        String errmsg;
         User user = (User) session.getAttribute("user");
-        if(Validate.validEmail(email) == false || Validate.validPhoneNumber(phone) == false){
+        if(!Validate.validEmail(email) || !Validate.validPhoneNumber(phone) ){
             model.addAttribute("errmsg","Update fail!");
         }
         else{
@@ -66,7 +63,7 @@ public class profileController {
     public String updateEmail(Model model, WebRequest request, HttpSession session) {
         String newMail = request.getParameter("new_mail");
         User user = (User) session.getAttribute("user");
-        System.out.println(user);
+
         if(Validate.validEmail(newMail) == false) {
             model.addAttribute("errmsg", "email is not correct!");
             return "mailUpdate";
