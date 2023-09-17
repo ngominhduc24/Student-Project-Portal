@@ -9,4 +9,5 @@ public class landingPageController {
      public String landingPage() {
          return "landingPage";
     }
+
 }
