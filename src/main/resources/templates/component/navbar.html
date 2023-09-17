@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Doctris - Doctor Appointment Booking System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}"/>
+    <!-- Bootstrap -->
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <!-- Css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.min.css}">
+</head>
+<body>
+<!-- Navbar STart -->
+<nav id="topnav" class="defaultscroll sticky" th:fragment="navbar">
+    <div class="container">
+        <!-- Logo container-->
+        <a class="logo" href="/static">
+            <img src="../../static/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
+            <img src="../../static/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+        </a>
+        <!-- Logo End -->
+
+        <!-- Start Mobile Toggle -->
+        <div class="menu-extras">
+            <div class="menu-item">
+                <!-- Mobile menu toggle-->
+                <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <!-- End mobile menu toggle-->
+            </div>
+        </div>
+        <!-- End Mobile Toggle -->
+
+        <!-- Start Navigation -->
+        <div class="navigation-container">
+            <div id="navigation-right">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu nav-right">
+                    <li class="has-submenu parent-parent-menu-item">
+                        <a href="#">About Us</a>
+                    </li>
+
+                    <li class="has-submenu parent-menu-item">
+                        <a href="#">Design</a>
+                    </li>
+
+                    <li class="has-submenu parent-menu-item">
+                        <a href="#">Accessibility</a>
+                    </li>
+
+                    <li class="has-submenu parent-parent-menu-item">
+                        <a href="#">Stories</a>
+                    </li>
+                    <li><a href="/admin" class="sub-menu-item" target="_blank">Admin</a></li>
+                </ul>
+            </div>
+
+            <div id="navigation-left">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu nav-left">
+                    <li class="has-submenu parent-parent-menu-item">
+                        <a href="/register">Register</a>
+                    </li>
+
+                    <li class="has-submenu parent-menu-item">
+                        <a href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div><!--end container-->
+    </div>
+</nav><!--end header-->
+<!-- Navbar End -->
+
+<!-- javascript -->
+<script th:src="@{js/bootstrap.bundle.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{js/feather.min.js}"></script>
+<!-- Main Js -->
+<script th:src="@{js/app.js}"></script>
+</body>
+</html>
