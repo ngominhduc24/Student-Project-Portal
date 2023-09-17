@@ -1,5 +1,6 @@
 package swp.studentprojectportal.controller.common;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class profileController {
         model.addAttribute("user",user);
         return "userDetails";
     }
-    @RequestMapping(path="/profile")
+    @PostMapping(path="/profile")
     public String updateUser(WebRequest request,HttpSession session,Model model){
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
