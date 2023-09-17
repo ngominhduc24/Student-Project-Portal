@@ -8,6 +8,11 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @Configuration
 public class configThymeleafDirectory {
     @Bean
+    public String title() {
+        return "Student project portal";
+    }
+
+    @Bean
     public ClassLoaderTemplateResolver commonTemplateResolver() {
         ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
         yourTemplateResolver.setPrefix("templates/common/");
