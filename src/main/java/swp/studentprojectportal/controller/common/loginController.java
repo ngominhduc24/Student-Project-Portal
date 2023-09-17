@@ -34,9 +34,12 @@ public class loginController {
         else
             user = userService.findUserByPhoneAndPassword(username, password);
         if(user != null) {
-            // check active account
             if(!user.isActive()) {
-                model.addAttribute("errmsg", "Your account is already not active");
+                model.addAttribute("errmsg", "Your account has been blocked");
+                return "login";
+            }
+            if(!user.isStatus()) {
+                model.addAttribute("errmsg", "Your account has been blocked");
                 return "login";
             }
             session.setAttribute("user", user);
@@ -56,8 +59,7 @@ public class loginController {
         } else {
             String accessToken = GoogleUtils.getToken(code);
             GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
-            System.out.println(userService.checkExistMail(googlePojo.getEmail()));
-            if(!userService.checkExistMail(googlePojo.getEmail())) {
+            if (!userService.checkExistMail(googlePojo.getEmail())) {
                 User u = new User();
                 u.setEmail(googlePojo.getEmail());
                 u.setPassword(googlePojo.getId());
@@ -65,12 +67,22 @@ public class loginController {
                 User user = userService.registerNewAccount(u);
                 session.setAttribute("user", user);
                 return "redirect:/";
-            } else{
+            } else {
                 User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
+                if (!user.isStatus()) {
+                    model.addAttribute("errmsg", "Your account has been blocked");
+                    return "login";
+                }
                 session.setAttribute("user", user);
                 return "redirect:/";
             }
 
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(WebRequest request, HttpSession session) {
+        session.removeAttribute("user");
+        return "redirect:/";
     }
 }
