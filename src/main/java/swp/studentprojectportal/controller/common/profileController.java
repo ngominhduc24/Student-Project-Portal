@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class profileController {
 
     @Autowired
-    IUserRepository userRepository;
-    @Autowired
     UserService userService;
 
     @RequestMapping(path="/profile")
-    public String findUser(HttpSession session,Model model,WebRequest request){
+    public String profilePage(HttpSession session,Model model,WebRequest request){
         User user = (User)session.getAttribute("user");
+        if(user == null) {
+            model.addAttribute("errmsg","You need login before view profile!");
+            return "redirect:/login";
+        }
         model.addAttribute("user",user);
-        //HttpSession session =
         return "userDetails";
     }
     @RequestMapping(path="/updateProfile")
@@ -34,7 +35,7 @@ public class profileController {
 
         String errmsg;
         User user = (User) session.getAttribute("user");
-        if(Validate.validEmail(email)==false || Validate.validPhoneNumber(phone)){
+        if(Validate.validEmail(email) == false || Validate.validPhoneNumber(phone) == false){
             model.addAttribute("errmsg","Update fail!");
         }
         else{
@@ -42,7 +43,7 @@ public class profileController {
             user.setEmail(email);
             user.setFullName(fullName);
             session.setAttribute("user",user);
-            userRepository.save(user);
+            userService.registerNewAccount(user);
             model.addAttribute("errmsg","Update success!");
 
         }
