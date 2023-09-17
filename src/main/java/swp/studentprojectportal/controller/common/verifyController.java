@@ -13,16 +13,23 @@ import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.EmailService;
 import swp.studentprojectportal.services.servicesimpl.RegisterService;
+import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Utility;
 
 @Controller
 public class verifyController {
     @Autowired
+    int userRoleId;
+
+    @Autowired
     UserService userService;
 
     @Autowired
     EmailService emailservice;
+
+    @Autowired
+    SettingService settingService;
 
     @Autowired
     RegisterService registerService;
@@ -37,6 +44,7 @@ public class verifyController {
             user.setPhone(phone);
         }
         user.setToken(token);
+        user.setSetting(settingService.findById(userRoleId));
         userService.saveUserWaitVerify(user);
 
         // get href

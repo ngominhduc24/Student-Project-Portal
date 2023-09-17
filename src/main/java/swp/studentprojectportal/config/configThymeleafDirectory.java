@@ -13,6 +13,12 @@ public class configThymeleafDirectory {
     }
 
     @Bean
+    public int adminRoleId() {return 2;}
+
+    @Bean
+    public int userRoleId() {return 1;}
+
+    @Bean
     public ClassLoaderTemplateResolver commonTemplateResolver() {
         ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
         yourTemplateResolver.setPrefix("templates/common/");

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ISettingService {
     List<Setting> getAllRole();
+
+    Setting findById(int id);
 }
