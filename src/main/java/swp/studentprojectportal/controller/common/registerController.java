@@ -44,7 +44,7 @@ public class registerController {
         }
 
         // set session to verify
-        session.setAttribute("user", user);
+        session.setAttribute("userauthen", user);
         session.setAttribute("href", "verify");
         return "redirect:/verifypage";
     }
