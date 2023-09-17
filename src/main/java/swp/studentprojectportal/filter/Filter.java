@@ -21,7 +21,7 @@ public class Filter implements jakarta.servlet.Filter {
 //        System.out.println(url);
 
         if(url.contains("login") || url.contains(".css") || url.contains(".js") ||
-                url.contains("images") || url.contains("register") ||
+                url.contains("images") || url.contains("register") || url.contains("verify") ||
                 url.charAt(url.length()-1)=='/') {
 
         } else {
