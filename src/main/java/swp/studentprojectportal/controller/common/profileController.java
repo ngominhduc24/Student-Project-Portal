@@ -5,13 +5,10 @@ import swp.studentprojectportal.services.servicesimpl.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.repository.IUserRepository;
 import org.springframework.ui.Model;
 import swp.studentprojectportal.utility.Validate;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class profileController {
@@ -20,7 +17,7 @@ public class profileController {
     UserService userService;
 
     @GetMapping(path="/profile")
-    public String profilePage(HttpSession session,Model model,WebRequest request){
+    public String profilePage(HttpSession session,Model model){
         User user = (User)session.getAttribute("user");
         if(user == null) {
             model.addAttribute("errmsg","You need login before view profile!");
@@ -35,7 +32,6 @@ public class profileController {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
 
-        String errmsg;
         User user = (User) session.getAttribute("user");
         if(!Validate.validEmail(email) || !Validate.validPhoneNumber(phone) ){
             model.addAttribute("errmsg","Update fail!");
