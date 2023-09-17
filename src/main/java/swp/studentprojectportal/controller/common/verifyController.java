@@ -28,13 +28,14 @@ public class verifyController {
     RegisterService registerService;
     @GetMapping("/verifypage")
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
-        User user =  (User)session.getAttribute("user");
-        session.removeAttribute("user");
+        User user =  (User)session.getAttribute("userauthen");
         String token = RandomString.make(30);   // genarate token
-
         // change 0 -> +84
-        String phone = user.getPhone().charAt(0) == '0' ? "+84" + user.getPhone().substring(user.getPhone().length()) : user.getPhone();
-        user.setPhone(phone);
+        if(user.getPhone() != null) {
+            String phone = "";
+            phone = user.getPhone().charAt(0) == '0' ? "+84" + user.getPhone().substring(user.getPhone().length()) : user.getPhone();
+            user.setPhone(phone);
+        }
         user.setToken(token);
         userService.saveUserWaitVerify(user);
 
@@ -47,6 +48,7 @@ public class verifyController {
         if(user.getEmail() != null) {
             emailservice.sendEmail(user.getFullName(), user.getEmail(), token_sender);
             model.addAttribute("email", user.getEmail());
+            session.removeAttribute("user");
             return "verifyEmail";
         }
 
@@ -54,8 +56,10 @@ public class verifyController {
         if(user.getPhone() != null) {
             model.addAttribute("phone", user.getPhone());
             model.addAttribute("token", token_sender);
+            session.removeAttribute("user");
             return "verifyPhone";
         }
+        session.removeAttribute("user");
         return "redirect:/error";
     }
 
