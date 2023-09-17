@@ -36,23 +36,29 @@ public class subjectController {
     }
 
     @PostMapping("/admin/subject/add")
-    public String createSubject(@ModelAttribute Subject subject) {
-        subjectList.add(subject);
-        return "redirect:/admin/subject";
+    public Subject createSubject(@RequestBody Subject subject) {
+        return subjectSevice.saveSubject(subject);
     }
 
-    @GetMapping("/admin/subject/details")
+    @GetMapping("/admin/subjectDetails")
     public String updateSubjectPage(@RequestParam("id") Integer Id, Model model) {
         Subject subject = services.getSubjectById(Id);
         model.addAttribute("subject", subject);
         return "admin/subjectDetail";
     }
 
-
-    @PutMapping ("/admin/subject/edit")
-    public Subject updateSubject(@RequestBody Integer Id, Subject subject) {
-        return services.updateSubject(Id, subject);
+    @PostMapping("/admin/updateSubject")
+    public String updateSubject(
+            @RequestParam int Id,
+            @RequestParam String subjectName,
+            @RequestParam String subjectCode,
+            @RequestParam String subjectManager,
+            @RequestParam boolean status){
+        System.out.println(Id + subjectName + subjectCode + subjectManager + status);
+        subjectSevice.updateSubject(Id, subjectName, subjectCode, subjectManager, status);
+        return "redirect:./subject";
     }
+
 }
 
 

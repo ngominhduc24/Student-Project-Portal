@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form class="mt-4">
+                            <form action="./updateUser" method="post" class="mt-4">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -71,15 +71,6 @@
                                             <input type="text" class="form-control"
                                                    th:value="${subject.subjectCode}"
                                                    placeholder="Subject Code :">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Subject Description</label>
-                                            <input type="text" class="form-control"
-                                                   th:value="${subject.description}"
-                                                   placeholder="Subject Description :">
                                         </div>
                                     </div><!--end col-->
 
