@@ -1,4 +1,7 @@
 package swp.studentprojectportal.controller.common;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import swp.studentprojectportal.services.servicesimpl.RegisterService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class profileController {
-
+    @Autowired
+    RegisterService registerService;
     @Autowired
     UserService userService;
 
@@ -49,5 +53,53 @@ public class profileController {
         }
         model.addAttribute("user",user);
         return "userDetails";
+    }
+
+
+//   Update mail and phone number with verify
+    @GetMapping("/update-mail")
+    public String updateEmailPage(Model model) {
+        return "mailUpdate";
+    }
+
+    @PostMapping("/update-mail")
+    public String updateEmail(Model model, WebRequest request, HttpSession session) {
+        String newMail = request.getParameter("new_mail");
+        User user = (User) session.getAttribute("user");
+        System.out.println(user);
+        if(Validate.validEmail(newMail) == false) {
+            model.addAttribute("errmsg", "email is not correct!");
+            return "mailUpdate";
+        }
+        if(userService.checkEmailDomain(newMail) == false) {
+            model.addAttribute("errmsg", "email domain is not accept!");
+            return "mailUpdate";
+        }
+        if(userService.checkExistMail(newMail) == true) {
+            model.addAttribute("errmsg", "email already exist!");
+            return "mailUpdate";
+        }
+        if(newMail.equals(user.getEmail())) {
+            model.addAttribute("errmsg", "email can not be equal old email!");
+            return "mailUpdate";
+        }
+
+        session.setAttribute("userauthen", user);
+        session.setAttribute("newmail", newMail);
+        session.setAttribute("href", "verifynewmail");
+        return "redirect:/verifypage";
+    }
+
+    @GetMapping("/verifynewmail")
+    public String registerMail(Model model, HttpSession session,@RequestParam("key") String token) {
+        User user = registerService.verifyToken(token);
+        if(user == null) {
+            return "register";
+        }
+        String newMail = (String)session.getAttribute("newmail");
+        if(newMail != null) user.setEmail(newMail);
+        userService.registerNewAccount(user);
+        session.setAttribute("user", user);
+        return "redirect:/profile";
     }
 }
