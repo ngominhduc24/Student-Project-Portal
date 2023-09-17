@@ -54,13 +54,16 @@
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="./updateUser" method="post" class="mt-4">
+                            <form action="./updateSubject" method="post" class="mt-4">
+                                <input type="hidden" name="id" th:value="${subject.id}">
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Subject Name</label>
                                             <input type="text" class="form-control"
                                                    th:value="${subject.subjectName}"
+                                                   name="subjectName"
                                                    placeholder="Subject Name :">
                                         </div>
                                     </div><!--end col-->
@@ -70,29 +73,72 @@
                                             <label class="form-label">Subject Code</label>
                                             <input type="text" class="form-control"
                                                    th:value="${subject.subjectCode}"
+                                                   name="subjectCode"
                                                    placeholder="Subject Code :">
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label"> Subject Manager : </label>
-                                            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                                                <div class="input-group" style="flex-wrap: nowrap">
-                                                    <input class="form-control" type="text" placeholder="Search for..."
-                                                           th:value="${subject.user.fullName}"
-                                                           aria-label="Search for..." aria-describedby="btnNavbarSearch"
-                                                           style="overflow-wrap: break-word;"
-                                                    />
-                                                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                                                            class="fas fa-search"></i></button>
-                                                </div>
-                                            </div>
+                                            <label class="form-label">Subject manager</label>
+                                            <select name="subjectManagerId" class="form-control">
+                                                <option th:each="manager : ${subjectManagerList}"
+                                                        th:value="${manager.id}"
+                                                        th:text="${manager.fullName}"
+                                                        th:selected="${manager.id == subject.user.id}"
+                                                        class="managerOption"></option>
+                                            </select>
                                         </div>
                                     </div><!--end col-->
-                                </div><!--end row-->
 
-                                <button type="submit" class="btn btn-primary">Add Subject</button>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Filter</label>
+                                            <input type="text" class="form-control" placeholder="Filter"
+                                                   onchange="filter(this.value)">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <script>
+                                        const managerList = document.querySelectorAll(".managerOption");
+                                        function filter(input) {
+                                            input = input.toLowerCase();
+                                            for (let manager of managerList)
+                                                if(manager.textContent.toLowerCase().includes(input))
+                                                    manager.style.display = 'block';
+                                                else manager.style.display = 'none';
+                                        }
+                                    </script>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Status</label>
+                                            <select name="status" class="form-control">
+                                                <option value="true" th:selected="${true == subject.status}">True</option>
+                                                <option value="false" th:selected="${false == subject.status}">False</option>
+                                            </select>
+                                        </div>
+                                    </div><!--end col-->
+
+<!--                                    <div class="col-md-12">-->
+<!--                                        <div class="mb-3">-->
+<!--                                            <label class="form-label"> Subject Manager : </label>-->
+<!--                                            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">-->
+<!--                                                <div class="input-group" style="flex-wrap: nowrap">-->
+<!--                                                    <input class="form-control" type="text" placeholder="Search for..."-->
+<!--                                                           th:value="${subject.user.fullName}" name="subjectManager"-->
+<!--                                                           aria-label="Search for..." aria-describedby="btnNavbarSearch"-->
+<!--                                                           style="overflow-wrap: break-word;"-->
+<!--                                                    />-->
+<!--                                                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i-->
+<!--                                                            class="fas fa-search"></i></button>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>&lt;!&ndash;end col&ndash;&gt;-->
+<!--                                </div>&lt;!&ndash;end row&ndash;&gt;-->
+
+                                <button type="submit" class="btn btn-primary">Update Subject</button>
                             </form>
                         </div>
                     </div><!--end col-->

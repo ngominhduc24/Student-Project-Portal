@@ -24,7 +24,7 @@ public class userController {
 
     @GetMapping("/user")
     public String userList(Model model) {
-        model.addAttribute("userList", userService.getAllUser());
+        model.addAttribute("userList", userService.findAllUser());
         return "admin/userList";
     }
 
@@ -54,7 +54,7 @@ public class userController {
 
     @GetMapping("/userDetails")
     public String userDetails(Model model, @RequestParam int id) {
-        Optional<User> user = userService.getUserById(id);
+        Optional<User> user = userService.findUserById(id);
         model.addAttribute("user", user.isPresent() ? user.get() : null);
         model.addAttribute("roleList", settingService.getAllRole());
         return "admin/userDetails";
