@@ -29,6 +29,7 @@ public class verifyController {
     @GetMapping("/verifypage")
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
         User user =  (User)session.getAttribute("user");
+        session.removeAttribute("user");
         String token = RandomString.make(30);   // genarate token
 
         // change 0 -> +84
@@ -60,8 +61,10 @@ public class verifyController {
 
 
     @GetMapping("/verify")
-    public String registerMail(Model model,@RequestParam("key") String token) {
-        if(registerService.verifyToken(token) == true) {
+    public String registerMail(Model model, HttpSession session,@RequestParam("key") String token) {
+        User user = registerService.verifyToken(token);
+        if(user != null) {
+            session.setAttribute("user", user);
             return "verifySuccess";
         }
         return "register";
