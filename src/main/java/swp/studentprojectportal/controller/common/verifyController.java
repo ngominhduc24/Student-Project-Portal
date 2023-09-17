@@ -31,7 +31,7 @@ public class verifyController {
         User user =  (User)session.getAttribute("userauthen");
         String token = RandomString.make(30);   // genarate token
         // change 0 -> +84
-        if(user.getPhone() != null) {
+        if(user.getPhone() != null && user.getPhone() != "") {
             String phone = "";
             phone = user.getPhone().charAt(0) == '0' ? "+84" + user.getPhone().substring(user.getPhone().length()) : user.getPhone();
             user.setPhone(phone);
