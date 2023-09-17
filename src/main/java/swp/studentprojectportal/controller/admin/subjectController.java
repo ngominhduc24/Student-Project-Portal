@@ -7,24 +7,25 @@ import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.services.servicesimpl.UserService;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class subjectController {
+
     @Autowired
-    SubjectSevice subjectSevice;
+    SubjectSevice subjectService;
+
     @Autowired
-    private ISubjectRepository IsubjectRepository;
-    @Autowired
-    private SubjectSevice services;
+    UserService userService;
 
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
-        subjectList = subjectSevice.getAllSubjects();
+        subjectList = subjectService.getAllSubjects();
         model.addAttribute("SubjectList", subjectList);
         return "admin/subjectList";
     }
@@ -37,25 +38,26 @@ public class subjectController {
 
     @PostMapping("/admin/subject/add")
     public Subject createSubject(@RequestBody Subject subject) {
-        return subjectSevice.saveSubject(subject);
+        return subjectService.saveSubject(subject);
     }
 
     @GetMapping("/admin/subjectDetails")
     public String updateSubjectPage(@RequestParam("id") Integer Id, Model model) {
-        Subject subject = services.getSubjectById(Id);
+        Subject subject = subjectService.getSubjectById(Id);
         model.addAttribute("subject", subject);
+        model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
         return "admin/subjectDetail";
     }
 
     @PostMapping("/admin/updateSubject")
     public String updateSubject(
-            @RequestParam int Id,
+            @RequestParam int id,
             @RequestParam String subjectName,
             @RequestParam String subjectCode,
-            @RequestParam String subjectManager,
+            @RequestParam int subjectManagerId,
             @RequestParam boolean status){
-        System.out.println(Id + subjectName + subjectCode + subjectManager + status);
-        subjectSevice.updateSubject(Id, subjectName, subjectCode, subjectManager, status);
+        System.out.println(id + subjectName + subjectName + subjectManagerId + status);
+        subjectService.updateSubject(id, subjectName, subjectCode, subjectManagerId, status);
         return "redirect:./subject";
     }
 

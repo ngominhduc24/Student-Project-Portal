@@ -13,8 +13,10 @@ public interface IUserService {
     public User saveUserWaitVerify(User user);
     User findUserByEmailAndPassword(String username, String password);
     User findUserByPhoneAndPassword(String username, String password);
-    List<User> getAllUser();
-    Optional<User> getUserById(int id);
+    List<User> findAllUser();
+    Optional<User> findUserById(int id);
+
+    List<User> findAllUserByRoleId(int roleId);
     boolean updateUserStatus(int id, boolean status);
 
     boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note);
