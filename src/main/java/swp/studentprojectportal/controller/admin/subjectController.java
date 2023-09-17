@@ -40,21 +40,21 @@ public class subjectController {
         return subjectSevice.saveSubject(subject);
     }
 
-    @GetMapping("/admin/subject/details")
+    @GetMapping("/admin/subjectDetails")
     public String updateSubjectPage(@RequestParam("id") Integer Id, Model model) {
         Subject subject = services.getSubjectById(Id);
         model.addAttribute("subject", subject);
         return "admin/subjectDetail";
     }
 
-
-    @PostMapping("/admin/subject/details?id={id}")
+    @PostMapping("/admin/updateSubject")
     public String updateSubject(
             @RequestParam int Id,
             @RequestParam String subjectName,
             @RequestParam String subjectCode,
             @RequestParam String subjectManager,
             @RequestParam boolean status){
+        System.out.println(Id + subjectName + subjectCode + subjectManager + status);
         subjectSevice.updateSubject(Id, subjectName, subjectCode, subjectManager, status);
         return "redirect:./subject";
     }
