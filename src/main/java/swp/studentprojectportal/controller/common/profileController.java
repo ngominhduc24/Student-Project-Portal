@@ -1,4 +1,5 @@
 package swp.studentprojectportal.controller.common;
+import org.springframework.web.bind.annotation.GetMapping;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,17 @@ public class profileController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(path="/profile")
+    @GetMapping(path="/profile")
     public String profilePage(HttpSession session,Model model,WebRequest request){
         User user = (User)session.getAttribute("user");
         if(user == null) {
             model.addAttribute("errmsg","You need login before view profile!");
-            return "redirect:/login";
+            return "login";
         }
         model.addAttribute("user",user);
         return "userDetails";
     }
-    @RequestMapping(path="/updateProfile")
+    @RequestMapping(path="/profile")
     public String updateUser(WebRequest request,HttpSession session,Model model){
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
@@ -35,7 +36,7 @@ public class profileController {
 
         String errmsg;
         User user = (User) session.getAttribute("user");
-        if(Validate.validEmail(email) == false || Validate.validPhoneNumber(phone) == false){
+        if(!Validate.validEmail(email) || !Validate.validPhoneNumber(phone) ){
             model.addAttribute("errmsg","Update fail!");
         }
         else{
@@ -45,7 +46,6 @@ public class profileController {
             session.setAttribute("user",user);
             userService.registerNewAccount(user);
             model.addAttribute("errmsg","Update success!");
-
         }
         model.addAttribute("user",user);
         return "userDetails";
