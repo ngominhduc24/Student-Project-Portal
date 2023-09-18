@@ -17,4 +17,16 @@ public class SettingService implements ISettingService {
     public List<Setting> findSettingByTypeIdOrderByDisplayOrder(Integer typeId) {
         return settingRepository.findSettingByTypeIdOrderByDisplayOrder(typeId);
     }
+
+    @Override
+    public Setting getSettingByID(Integer id) {
+        return settingRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Setting saveSetting(Setting setting) {
+        return settingRepository.save(setting);
+    }
+
+
 }

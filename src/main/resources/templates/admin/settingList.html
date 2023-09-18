@@ -29,9 +29,60 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <!-- Datatables -->
-    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 
+    <style>
+        .datatable-table {
+            border: 1px solid #dee2e6;
+            border-collapse: collapse;
+        }
+        tr, td, th {
+            border: 1px solid #dee2e6 !important;
+        }
+        td:last-child {
+            text-align: center;
+        }
+        th:first-child {
+            width: 36%;
+        }
+        th:last-child {
+            width: 18%;
+        }
+        .datatable-selector {
+            width: auto;
+            padding: 8px;
+            border-color: #dee2e6;
+            border-radius: 6px;
+            margin-right: 8px;
+        }
+        .datatable-bottom, .datatable-input, .datatable-dropdown {
+            display: none;
+        }
+        .datatable-input {
+            /*display: block;*/
+            /*width: 85%;*/
+            /*padding: 0.375rem 0.75rem;*/
+            /*font-size: 1rem;*/
+            /*font-weight: 400;*/
+            /*line-height: 1.5;*/
+            /*color: #212529;*/
+            /*background-color: #fff;*/
+            /*background-clip: padding-box;*/
+            /*border: 1px solid #ced4da;*/
+            /*-webkit-appearance: none;*/
+            /*-moz-appearance: none;*/
+            /*appearance: none;*/
+            /*border-radius: 0.375rem;*/
+            /*transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;*/
+        }
+        .datatable-top {
+            margin-bottom: 2px;
+        }
+        .breadcrumb .breadcrumb-item:after {
+            content: none !important;
+        }
+    </style>
 
 </head>
 
@@ -61,26 +112,27 @@
                         <h1>Setting</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Setting</li>
+                            <li class="breadcrumb-item"> > Setting</li>
                         </ol>
                     </div><!--end col-->
 
                     <div class="col-xl-4 col-md-6"></div>
 
-                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="/admin/setting/add" class="btn btn-primary" style="margin-left: 24px">Add New Role</a>
-                    </div><!--end col-->
-                </div><!--end row-->
 
+                </div><!--end row-->
 
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Role
+                            Roles
                         </div>
                         <div class="card-body">
-                            <table id="myTable" class="display">
+                            <div>
+                                <a href="/admin/setting/add" class="btn btn-primary" style="margin-left: 16px; float: right; margin-right: 30px;
+                                margin-top: -12px;">Add New</a>
+                            </div><!--end col-->
+                            <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
                                     <th>Role</th>
@@ -89,21 +141,89 @@
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Role</th>
-                                    <th>Display Order</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </tfoot>
                                 <tbody>
                                 <tr th:each="setting : ${roleList}">
                                     <td th:text="${setting.settingTitle}"></td>
                                     <td th:text="${setting.displayOrder}"></td>
-                                    <td th:text="${setting.status}"></td>
-                                    <td><a th:href="@{/}">View Details</a></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" >
+                                        </div>
+                                    </td>
+                                    <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="container-fluid px-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Semesters
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <a href="/admin/setting/add" class="btn btn-primary" style="margin-left: 16px; float: right; margin-top: -12px; margin-right: 30px">Add New</a>
+                            </div><!--end col-->
+                            <table id="datatablesSimple1" class="display">
+                                <thead>
+                                <tr>
+                                    <th>Semester</th>
+                                    <th>Display Order</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="setting : ${semesterList}">
+                                    <td th:text="${setting.settingTitle}"></td>
+                                    <td th:text="${setting.displayOrder}"></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" >
+                                        </div>
+                                    </td>
+                                    <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container-fluid px-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Permitted Email Domains
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <a href="/admin/setting/add" class="btn btn-primary" style="margin-left: 16px; float: right; margin-top: -12px; margin-right: 30px">Add New</a>
+                            </div><!--end col-->
+                            <table id="datatablesSimple2" class="display">
+                                <thead>
+                                <tr>
+                                    <th>Permitted Email Domain</th>
+                                    <th>Display Order</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="setting : ${emailDomainList}">
+                                    <td th:text="${setting.settingTitle}"></td>
+                                    <td th:text="${setting.displayOrder}"></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" >
+                                        </div>
+                                    </td>
+                                    <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -123,8 +243,7 @@
                         <div class="text-sm-start text-center">
                             <p class="mb-0 text-muted">
                                 <script>document.write(new Date().getFullYear())</script>
-                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
-                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                                Copyright © Student Project Portal 2023 - All rights reserved.
                             </p>
                         </div>
                     </div><!--end col-->
@@ -145,18 +264,40 @@
 <script th:src="@{/js/feather.min.js}"></script>
 
 <!-- Datatable -->
-<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
 
-<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+    const datatablesSimple = document.getElementById('datatablesSimple');
+    if (datatablesSimple) {
+        new simpleDatatables.DataTable(datatablesSimple);
+    }
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            "dom": "tp",
-            "ordering": false,
-        });
-    });
+    const datatablesSimple1 = document.getElementById('datatablesSimple1');
+    if (datatablesSimple1) {
+        new simpleDatatables.DataTable(datatablesSimple1);
+    }
+
+    const datatablesSimple2 = document.getElementById('datatablesSimple2');
+    if (datatablesSimple2) {
+        new simpleDatatables.DataTable(datatablesSimple2);
+    }
+});
 </script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script>window.addEventListener('DOMContentLoaded', event => {
+
+    // Toggle the side navigation
+    const sidebarToggle = document.body.querySelector('#sidebarToggle');
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', event => {
+            event.preventDefault();
+            document.body.classList.toggle('sb-sidenav-toggled');
+            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+        });
+    }
+
+});</script>
 
 </body>
 
