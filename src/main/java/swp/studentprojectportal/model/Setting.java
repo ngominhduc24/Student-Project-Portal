@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -25,17 +25,20 @@ public class Setting {
     private String settingTitle;
 
     @Column(name = "status")
-    private boolean status;
+    private boolean status = true;
+
+    @Column(name = "display_order")
+    private Integer displayOrder;
 
     @Column(name = "create_by")
-    private Integer createBy;
+    private Integer createBy = 0;
 
     @Column(name = "create_at")
-    private Timestamp createAt;
+    private Timestamp createAt = Timestamp.valueOf(LocalDateTime.now());
 
     @Column(name = "update_by")
-    private Integer updateBy;
+    private Integer updateBy = 0;
 
     @Column(name = "update_at")
-    private Timestamp updateAt;
+    private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 }

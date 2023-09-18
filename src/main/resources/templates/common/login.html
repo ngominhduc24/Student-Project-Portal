@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Student project portal</title>
+    <title th:text="${@title}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -36,11 +36,11 @@
 <!-- Loader -->
 
 <div class="back-to-home rounded d-none d-sm-block">
-    <a href="landingPage.html" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+    <a href="/" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
 </div>
 
 <!-- Hero Start -->
-<section class="bg-home d-flex bg-light align-items-center" style="background: url('../../static/images/bg/bg-lines-one.png') center;">
+<section class="bg-home d-flex bg-light align-items-center" th:style="'background: url('+@{/images/bg/bg-lines-one.png}+') center;'">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-8">
@@ -92,7 +92,7 @@
 <!--                                    </div>-->
 <!--                                </div>&lt;!&ndash;end col&ndash;&gt;-->
 
-                                <div class="col-12 mt-3">
+                                <div class="col-12">
                                     <div class="d-grid">
                                         <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/login-google&response_type=code
                                         &client_id=570524258444-ridflrjec1qvuq3oidpn67cc1gm3t8i6.apps.googleusercontent.com&approval_prompt=force" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>

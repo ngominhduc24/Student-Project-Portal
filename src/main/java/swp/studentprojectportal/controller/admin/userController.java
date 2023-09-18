@@ -4,9 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import swp.studentprojectportal.model.Setting;
+import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -14,21 +20,52 @@ public class userController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SettingService settingService;
+
     @GetMapping("/user")
     public String userList(Model model) {
-        model.addAttribute("userList", userService.getAllUser());
+        model.addAttribute("userList", userService.findAllUser());
         return "admin/userList";
     }
 
     @GetMapping("/addUser")
-    public String addUser() {
-        //register
+    public String addUserGet(Model model) {
+        model.addAttribute("roleList", settingService.getAllRole());
         return "admin/addUser";
+    }
+
+    @PostMapping ("/addUser")
+    public String addUser() {
+        return "redirect:./user";
+    }
+
+    @PostMapping("/updateUser")
+    public String updateUser(
+            @RequestParam int id,
+            @RequestParam String fullName,
+            @RequestParam String email,
+            @RequestParam String phone,
+            @RequestParam int roleId,
+            @RequestParam String note,
+            @RequestParam boolean status) {
+        userService.updateUser(id, fullName, email, phone, roleId, status, note);
+        return "redirect:./user";
     }
 
     @GetMapping("/userDetails")
     public String userDetails(Model model, @RequestParam int id) {
-        model.addAttribute("user", userService.getUserById(id));
+        Optional<User> user = userService.findUserById(id);
+        model.addAttribute("user", user.isPresent() ? user.get() : null);
+        model.addAttribute("roleList", settingService.getAllRole());
         return "admin/userDetails";
+    }
+
+    @GetMapping("/updateUserStatus")
+    public String updateSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        userService.updateUserStatus(id, status);
+        return "redirect:/";
     }
 }

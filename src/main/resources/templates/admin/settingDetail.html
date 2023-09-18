@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+</head>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="dashboardSidebar"></div>
+    <main class="page-content bg-light">
+        <div th:replace="dashboardHeader"></div>
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h3 class="mb-0" th:if="${setting.typeId == 1}">Role</h3>
+                    <h3 class="mb-0" th:if="${setting.typeId == 2}">Semester</h3>
+                    <h3 class="mb-0" th:if="${setting.typeId == 3}">Permitted Email Domain</h3>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 mt-4 offset-4">
+                        <div class="card border-0 p-4 rounded shadow" style="border-radius: 40px !important;">
+                            <form action="/admin/setting/update" method="post" class="mt-4">
+                                <div class="row">
+                                    <div class="col-md-8 offset-2" style="margin-bottom: 14px;margin-top: 12px;">
+                                        <div class="mb-3">
+                                            <label class="form-label" th:if="${setting.typeId == 1}">Role</label>
+                                            <label class="form-label" th:if="${setting.typeId == 2}">Semester</label>
+                                            <label class="form-label" th:if="${setting.typeId == 3}">Permitted Email Domain</label>
+                                            <input type="hidden" name="id" th:value="${setting.id}">
+                                            <input type="hidden" name="typeId" th:value="${setting.typeId}">
+                                            <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
+                                        </div>
+                                    </div><!--end col-->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 offset-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Display Order</label>
+                                            <input style="width: 60%;" type="number" class="form-control" name="displayOrder"
+                                                   th:value="${setting.displayOrder}">
+                                        </div>
+                                    </div><!--end col-->
+
+
+                                    <div class="col-md-4" style="margin-left: 12px">
+                                        <div class="mb-3">
+                                            <label class="form-label">Status</label>
+                                            <div class="form-check form-switch" style="font-size: 24px">
+                                                <input class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                                <div class="row justify-content-center">
+                                    <button type="submit" class="btn btn-primary col-md-3" style="margin-top: 18px;margin-bottom: 20px;">Save</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div><!--end col-->
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+</body>
+</html>

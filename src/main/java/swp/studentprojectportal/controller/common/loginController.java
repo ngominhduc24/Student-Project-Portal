@@ -17,6 +17,8 @@ import java.io.IOException;
 
 @Controller
 public class loginController {
+    private final String afterLoginRoute = "/dashboard";
+
     @Autowired
     UserService userService;
     @RequestMapping("/login")
@@ -34,13 +36,16 @@ public class loginController {
         else
             user = userService.findUserByPhoneAndPassword(username, password);
         if(user != null) {
-            // check active account
             if(!user.isActive()) {
-                model.addAttribute("errmsg", "Your account is already not active");
+                model.addAttribute("errmsg", "Your account has been blocked");
+                return "login";
+            }
+            if(!user.isStatus()) {
+                model.addAttribute("errmsg", "Your account has been blocked");
                 return "login";
             }
             session.setAttribute("user", user);
-            return "redirect:/";
+            return "redirect:" + afterLoginRoute;
         }
         else {
             model.addAttribute("errmsg", "Username or password is not correct");
@@ -56,21 +61,35 @@ public class loginController {
         } else {
             String accessToken = GoogleUtils.getToken(code);
             GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
-            System.out.println(userService.checkExistMail(googlePojo.getEmail()));
-            if(!userService.checkExistMail(googlePojo.getEmail())) {
+            if (!userService.checkEmailDomain(googlePojo.getEmail())) {
+                model.addAttribute("errmsg", "Your account is not allowed to log into the system");
+                return "login";
+            }
+            if (!userService.checkExistMail(googlePojo.getEmail())) {
                 User u = new User();
                 u.setEmail(googlePojo.getEmail());
                 u.setPassword(googlePojo.getId());
                 u.setAvatarUrl(googlePojo.getPicture());
+                u.setActive(true);
                 User user = userService.registerNewAccount(u);
                 session.setAttribute("user", user);
-                return "redirect:/";
-            } else{
+                return "redirect:" + afterLoginRoute;
+            } else {
                 User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
+                if (!user.isStatus()) {
+                    model.addAttribute("errmsg", "Your account has been blocked");
+                    return "login";
+                }
                 session.setAttribute("user", user);
-                return "redirect:/";
+                return "redirect:" + afterLoginRoute;
             }
 
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(WebRequest request, HttpSession session) {
+        session.removeAttribute("user");
+        return "redirect:/";
     }
 }

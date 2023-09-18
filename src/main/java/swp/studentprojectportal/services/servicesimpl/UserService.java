@@ -56,13 +56,18 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> getAllUser() {
+    public List<User> findAllUser() {
         return userRepository.findAll();
     }
 
     @Override
-    public Optional<User> getUserById(int id) {
+    public Optional<User> findUserById(int id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public List<User> findAllUserByRoleId(int roleId) {
+        return userRepository.findAllBySetting(settingRepository.findById(roleId).get());
     }
 
     @Override
@@ -73,6 +78,24 @@ public class UserService implements IUserService {
 
         user.get().setStatus(status);
         userRepository.save(user.get());
+        return true;
+    }
+
+    @Override
+    public boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note) {
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()) return false;
+
+        User userData = user.get();
+        userData.setFullName(fullName);
+        userData.setEmail(email);
+        userData.setPhone(phone);
+        userData.setSetting(settingRepository.findById(roleId).get());
+        userData.setStatus(status);
+        userData.setNote(note);
+
+        userRepository.save(userData);
         return true;
     }
 
