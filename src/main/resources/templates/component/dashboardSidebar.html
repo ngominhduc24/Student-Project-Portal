@@ -38,10 +38,6 @@
         </div>
 
         <ul class="sidebar-menu pt-3">
-            <li><a href="/admin"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-
-            <li><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
-
             <!--    admin function == 2-->
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i class="uil uil-user me-2 d-inline-block"></i>User</a></li>

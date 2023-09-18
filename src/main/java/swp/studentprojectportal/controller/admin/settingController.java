@@ -18,8 +18,8 @@ public class settingController {
     @GetMapping("/admin/setting")
     public String settingPage(Model model) {
         List<Setting> roleList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(1);
-        List<Setting> semesterList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(2);
-        List<Setting> emailDomainList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(3);
+        List<Setting> semesterList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(3);
+        List<Setting> emailDomainList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(2);
         model.addAttribute("roleList", roleList);
         model.addAttribute("semesterList", semesterList);
         model.addAttribute("emailDomainList", emailDomainList);

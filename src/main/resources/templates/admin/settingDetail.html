@@ -49,8 +49,8 @@
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
                     <h3 class="mb-0" th:if="${setting.typeId == 1}">Role</h3>
-                    <h3 class="mb-0" th:if="${setting.typeId == 2}">Semester</h3>
-                    <h3 class="mb-0" th:if="${setting.typeId == 3}">Permitted Email Domain</h3>
+                    <h3 class="mb-0" th:if="${setting.typeId == 3}">Semester</h3>
+                    <h3 class="mb-0" th:if="${setting.typeId == 2}">Permitted Email Domain</h3>
                 </div>
 
                 <div class="row">
@@ -61,8 +61,8 @@
                                     <div class="col-md-8 offset-2" style="margin-bottom: 14px;margin-top: 12px;">
                                         <div class="mb-3">
                                             <label class="form-label" th:if="${setting.typeId == 1}">Role</label>
-                                            <label class="form-label" th:if="${setting.typeId == 2}">Semester</label>
-                                            <label class="form-label" th:if="${setting.typeId == 3}">Permitted Email Domain</label>
+                                            <label class="form-label" th:if="${setting.typeId == 3}">Semester</label>
+                                            <label class="form-label" th:if="${setting.typeId == 2}">Permitted Email Domain</label>
                                             <input type="hidden" name="id" th:value="${setting.id}">
                                             <input type="hidden" name="typeId" th:value="${setting.typeId}">
                                             <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
