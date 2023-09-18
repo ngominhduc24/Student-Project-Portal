@@ -36,7 +36,25 @@ public class userController {
     }
 
     @PostMapping ("/addUser")
-    public String addUser() {
+    public String addUser(
+            @RequestParam String fullName,
+            @RequestParam String email,
+            @RequestParam String phone,
+            @RequestParam int roleId,
+            @RequestParam String password,
+            Model model) {
+
+        String errorMsg = null;
+        if(userService.checkExistMail(email)) errorMsg = "Email existed!";
+        if(userService.checkExistPhoneNumber(phone)) errorMsg = "Phone existed!";
+
+        if(errorMsg!=null) {
+            model.addAttribute("error", errorMsg);
+            model.addAttribute("roleList", settingService.getAllRole());
+            return "admin/addUser";
+        }
+
+        userService.addUser(fullName, email, phone, password, roleId);
         return "redirect:./user";
     }
 

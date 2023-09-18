@@ -54,8 +54,10 @@
                 <div class="d-md-flex justify-content-between">
                     <h3 class="mb-0" th:text="${session.user.setting.settingTitle}"></h3>
                 </div>
-
-
+                <br>
+                <div class="col-xl-4 col-md-6">
+                    <h4 class="mb-0" th:text="'Current semester: ' + ${currentSemester}"></h4>
+                </div>
             </div>
         </div>
     </main>

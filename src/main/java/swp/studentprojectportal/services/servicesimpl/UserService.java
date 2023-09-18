@@ -100,6 +100,22 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean addUser(String fullName, String email, String phone, String password, int roleId) {
+        User user = new User();
+
+        user.setActive(true);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setPassword(password);
+        user.setSetting(settingRepository.findById(roleId).get());
+
+        userRepository.save(user);
+
+        return true;
+    }
+
+    @Override
     public User findUserByEmailAndPassword(String username, String password) {
         return userRepository.findUserByEmailAndPassword(username, password);
     }
