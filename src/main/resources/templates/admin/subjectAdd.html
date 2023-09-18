@@ -54,12 +54,13 @@
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form th:action="@{/admin/subject/add}" th:object="${subject}" method="post" class="mt-4">
+                            <form action="./addSubject" method="post" class="mt-4">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Subject Name</label>
-                                            <input th:field="*{subjectName}" type="text" class="form-control"
+                                            <input type="text" class="form-control"
+                                                   name="subjectName"
                                                    placeholder="Subject Name :">
                                         </div>
                                     </div><!--end col-->
@@ -67,16 +68,9 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Subject Code</label>
-                                            <input th:field="*{subjectCode}" type="text" class="form-control"
+                                            <input type="text" class="form-control"
+                                                   name="subjectCode"
                                                    placeholder="Subject Code :">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Subject Description</label>
-                                            <input th:field="*{description}" type="text" class="form-control"
-                                                   placeholder="Subject Description :">
                                         </div>
                                     </div><!--end col-->
 
@@ -85,10 +79,12 @@
                                             <label class="form-label"> Subject Manager : </label>
                                             <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                                                 <div class="input-group" style="flex-wrap: nowrap">
-                                                    <input th:field="*{user.fullName}" class="form-control" type="text" placeholder="Search for..."
-                                                           aria-label="Search for..." aria-describedby="btnNavbarSearch"/>
-                                                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                                                            class="fas fa-search"></i></button>
+                                                    <select name="subjectManagerId" class="form-control">
+                                                        <option th:each="manager : ${subjectManagerList}"
+                                                                th:value="${manager.id}"
+                                                                th:text="${manager.fullName}"
+                                                                class="managerOption"></option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
