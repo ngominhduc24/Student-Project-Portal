@@ -38,11 +38,11 @@
         </div>
 
         <ul class="sidebar-menu pt-3">
-
             <!--    admin function == 2-->
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i class="uil uil-user me-2 d-inline-block"></i>User</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i class="uil uil-user me-2 d-inline-block"></i>Setting</a></li>
+
 
 <!--            <li class="sidebar-dropdown">-->
 <!--                <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>-->

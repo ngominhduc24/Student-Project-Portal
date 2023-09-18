@@ -29,7 +29,15 @@ public class SettingService implements ISettingService {
     }
 
     public List<Setting> getAllRole() {
+        //type 1 = role;
         return settingRepository.findSettingByTypeId(1);
+    }
+
+    @Override
+    public Setting getLastestSemester() {
+        //type 3 = semester;
+        List<Setting> list = settingRepository.findSettingByTypeId(3);
+        return list.get(list.size()-1);
     }
 
     @Override
