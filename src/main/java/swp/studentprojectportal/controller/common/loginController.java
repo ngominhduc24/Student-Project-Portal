@@ -17,6 +17,8 @@ import java.io.IOException;
 
 @Controller
 public class loginController {
+    private final String afterLoginRoute = "/dashboard";
+
     @Autowired
     UserService userService;
     @RequestMapping("/login")
@@ -43,7 +45,7 @@ public class loginController {
                 return "login";
             }
             session.setAttribute("user", user);
-            return "redirect:/";
+            return "redirect:" + afterLoginRoute;
         }
         else {
             model.addAttribute("errmsg", "Username or password is not correct");
@@ -71,7 +73,7 @@ public class loginController {
                 u.setActive(true);
                 User user = userService.registerNewAccount(u);
                 session.setAttribute("user", user);
-                return "redirect:/";
+                return "redirect:" + afterLoginRoute;
             } else {
                 User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
                 if (!user.isStatus()) {
@@ -79,7 +81,7 @@ public class loginController {
                     return "login";
                 }
                 session.setAttribute("user", user);
-                return "redirect:/";
+                return "redirect:" + afterLoginRoute;
             }
 
         }

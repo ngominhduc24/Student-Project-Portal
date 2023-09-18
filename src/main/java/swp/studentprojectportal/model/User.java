@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import swp.studentprojectportal.repository.ISettingRepository;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -28,17 +30,17 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "note")
-    private String note;
-
     @Column(name = "status")
     private boolean status = true;
+
+    @Column(name = "note")
+    private String note;
 
     @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "avatar_url")
-    private String avatarUrl;
+    private String avatarUrl = "/images/user_icon.png";
 
     @Column(name = "token")
     private String token;
@@ -56,7 +58,7 @@ public class User {
     private Integer updateBy = 0;
 
     @Column(name = "update_at")
-    private Timestamp updateAt;
+    private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
     @OneToOne
     @JoinColumn(name = "role_id")

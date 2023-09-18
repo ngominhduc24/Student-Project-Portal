@@ -29,4 +29,12 @@ public class SettingService implements ISettingService {
     }
 
 
+    public List<Setting> getAllRole() {
+        return settingRepository.findSettingByTypeId(1);
+    }
+
+    @Override
+    public Setting findById(int id) {
+        return settingRepository.findById(id).get();
+    }
 }

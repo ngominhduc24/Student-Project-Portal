@@ -4,34 +4,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.ISubjectRepository;
+import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.services.ISubjectService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SubjectSevice implements ISubjectService {
     @Autowired
-    ISubjectRepository repository;
+    ISubjectRepository subjectRepository;
+
+    @Autowired
+    IUserRepository userRepository;
     @Override
     public List<Subject> getAllSubjects() {
-        return repository.findAll();
+        return subjectRepository.findAll();
     }
-
     @Override
     public Subject getSubjectById(Integer Id) {
-        return repository.findById(Id).orElse(null);
+        return subjectRepository.findById(Id).orElse(null);
     }
     @Override
     public Subject saveSubject(Subject subject) {
-        return repository.save(subject);
+        return subjectRepository.save(subject);
     }
     @Override
-    public Subject updateSubject(Integer Id, Subject subject) {
-        Subject existingSubject = repository.findById(Id).orElse(null);
-        assert existingSubject != null;
-        existingSubject.setSubjectName(subject.getSubjectName());
-        existingSubject.setSubjectCode(subject.getSubjectCode());
-        existingSubject.setUser(subject.getUser());
-        return repository.save(existingSubject);
+    public boolean updateSubject(int Id, String subjectName, String subjectCode, int subjectManagerId, boolean status){
+        Optional<Subject> subject = subjectRepository.findById(Id);
+
+        if(subject.isEmpty()) return false;
+
+        Subject subjectData = subject.get();
+        subjectData.setSubjectName(subjectName);
+        subjectData.setSubjectCode(subjectCode);
+        subjectData.setUser(userRepository.findById(subjectManagerId).get());
+        subjectData.setStatus(status);
+        subjectRepository.save(subjectData);
+
+        return true;
+    }
+
+    @Override
+    public boolean updateSubjectStatus(int Id, boolean status) {
+        Optional<Subject> subject = subjectRepository.findById(Id);
+
+        if(subject.isEmpty()) return false;
+
+        subject.get().setStatus(status);
+        subjectRepository.save(subject.get());
+        return true;
     }
 }

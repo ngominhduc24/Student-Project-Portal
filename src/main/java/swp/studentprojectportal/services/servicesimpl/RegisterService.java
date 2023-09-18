@@ -11,14 +11,13 @@ public class RegisterService implements IRegisterService {
     @Autowired
     IUserRepository userRepository;
     @Override
-    public boolean verifyToken(String token) {
+    public User verifyToken(String token) {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
             user.setToken(null);
             user.setActive(true);
             userRepository.save(user);
-            return true;
         }
-        return false;
+        return user;
     }
 }
