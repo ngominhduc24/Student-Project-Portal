@@ -33,7 +33,7 @@ public class changePasswordController {
                 session.setAttribute("user", user);
                 model.addAttribute("errmsg", "Change password successfully");
                 //save to database
-                User u = userService.registerNewAccount(user);
+                User u = userService.saveUser(user);
             } else {
                 model.addAttribute("errmsg", "New Password and Re-new Password do not match");
             }

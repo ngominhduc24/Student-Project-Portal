@@ -6,18 +6,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
-    User registerNewAccount(User user);
+    User saveUser(User user);
     boolean checkEmailDomain(String email);
     boolean checkExistMail(String email);
     boolean checkExistPhoneNumber(String phoneNumber);
-    public User saveUserWaitVerify(User user);
     User findUserByEmailAndPassword(String username, String password);
     User findUserByPhoneAndPassword(String username, String password);
     List<User> findAllUser();
     Optional<User> findUserById(int id);
-
     List<User> findAllUserByRoleId(int roleId);
     boolean updateUserStatus(int id, boolean status);
-
     boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note);
 }

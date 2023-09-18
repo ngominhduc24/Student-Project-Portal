@@ -20,7 +20,7 @@ public class UserService implements IUserService {
     ISettingRepository settingRepository;
 
     @Override
-    public User registerNewAccount(User user) {
+    public User saveUser(User user) {
         // TO-DO: set enable here
         return userRepository.save(user);
     }
@@ -97,11 +97,6 @@ public class UserService implements IUserService {
 
         userRepository.save(userData);
         return true;
-    }
-
-    @Override
-    public User saveUserWaitVerify(User user) {
-        return userRepository.save(user);
     }
 
     @Override
