@@ -30,6 +30,7 @@ public class registerController {
 
         // create model user
         User user = new User();
+        user.setActive(false);
         user.setFullName(fullname);
         if(Validate.validEmail(username)) {user.setEmail(username);}
         if(Validate.validPhoneNumber(username)) {user.setPhone(username);}
