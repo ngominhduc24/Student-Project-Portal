@@ -61,6 +61,14 @@ public class subjectController {
         return "redirect:./subject";
     }
 
+    @GetMapping("/admin/subject/updateStatus")
+    public String updateSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        subjectService.updateSubjectStatus(id, status);
+        return "redirect:/";
+    }
+
 }
 
 

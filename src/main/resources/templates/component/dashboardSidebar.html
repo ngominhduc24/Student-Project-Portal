@@ -32,35 +32,39 @@
 <nav id="sidebar" class="sidebar-wrapper" th:fragment="sidebar">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
-            <a href="/dashboard">
+            <a href="/admin">
                 <img th:src="@{/images/logo.png}" height="24" class="logo-light-mode" alt="">
             </a>
         </div>
 
         <ul class="sidebar-menu pt-3">
-            <li><a href="/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
 
             <!--    admin function == 2-->
-            <li th:if="${session.user.setting.id==2}"><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
-            <li th:if="${session.user.setting.id==2}"><a href="/admin/user"><i class="uil uil-user me-2 d-inline-block"></i>User</a></li>
-            <li th:if="${session.user.setting.id==2}"
-                class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-setting me-2 d-inline-block"></i>System</a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li><a href="#">User Role Setting</a></li>
-                        <li><a href="#">Semester Setting</a></li>
-                        <li><a href="#">Update Setting</a></li>
-                    </ul>
-                </div>
-            </li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i class="uil uil-user me-2 d-inline-block"></i>User</a></li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i class="uil uil-user me-2 d-inline-block"></i>Setting</a></li>
 
-            <!--        subject manager function-->
-
-            <!--        teacher function -->
-
+<!--            <li class="sidebar-dropdown">-->
+<!--                <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>-->
+<!--                <div class="sidebar-submenu">-->
+<!--                    <ul>-->
+<!--                        <li><a href="chat.html">Chat</a></li>-->
+<!--                        <li><a href="email.html">Email</a></li>-->
+<!--                        <li><a href="calendar.html">Calendar</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </li>-->
         </ul>
+        <!-- sidebar-menu  -->
     </div>
+    <!-- sidebar-content  -->
+<!--    <ul class="sidebar-footer list-unstyled mb-0">-->
+<!--        <li class="list-inline-item mb-0 ms-1">-->
+<!--            <a href="#" class="btn btn-icon btn-pills btn-soft-primary">-->
+<!--                <i class="uil uil-comment icons"></i>-->
+<!--            </a>-->
+<!--        </li>-->
+<!--    </ul>-->
 </nav>
 
 <!-- javascript -->

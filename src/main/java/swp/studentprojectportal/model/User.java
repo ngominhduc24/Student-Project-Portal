@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import swp.studentprojectportal.services.ISettingService;
-import swp.studentprojectportal.services.servicesimpl.SettingService;
+import swp.studentprojectportal.repository.ISettingRepository;
 
 import java.sql.Date;
 import java.sql.Timestamp;

@@ -27,7 +27,7 @@ public class profileController {
             return "login";
         }
         model.addAttribute("user",user);
-        return "userDetails";
+        return "profile";
     }
     @PostMapping(path="/profile")
     public String updateUser(WebRequest request,HttpSession session,Model model){
@@ -49,11 +49,11 @@ public class profileController {
 
         }
         model.addAttribute("user",user);
-        return "userDetails";
+        return "profile";
     }
 
 
-//   Update mail and phone number with verify
+    //   Update mail and phone number with verify
     @GetMapping("/update-mail")
     public String updateEmailPage(Model model) {
         return "mailUpdate";

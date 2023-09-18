@@ -1382,12 +1382,12 @@ button:not(:disabled) {
     content: ""
 }
 
-.breadcrumb .breadcrumb-item:after {
-    content: "\F0142" !important;
-    color: #343a40;
-    font-family: 'Material Design Icons';
-    padding-left: 5px
-}
+/*.breadcrumb .breadcrumb-item:after {*/
+/*    content: "\F0142" !important;*/
+/*    color: #343a40;*/
+/*    font-family: 'Material Design Icons';*/
+/*    padding-left: 5px*/
+/*}*/
 
 .breadcrumb .breadcrumb-item:last-child:after {
     display: none
