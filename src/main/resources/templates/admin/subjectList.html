@@ -108,7 +108,7 @@
                                     </td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${Subject.status}" th:onclick="'updateStatus(' + ${Subject.id} + ', this.checked)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${Subject.status}" th:onclick="'updateStatus(' + ${Subject.id} + ', this)'">
                                         </div>
                                     </td>
                                 </tr>
@@ -121,8 +121,12 @@
         </div><!--end container-->
 
         <script>
-            function updateStatus(id, status) {
-                fetch(`/admin/subject/updateStatus?id=${id}&status=${status}`);
+            function updateStatus(id, checkbox) {
+                let status = checkbox.checked;
+
+                if(confirm('Are you sure?'))
+                    fetch(`/admin/subject/updateStatus?id=${id}&status=${status}`)
+                else checkbox.checked = !status;
             }
         </script>
 
