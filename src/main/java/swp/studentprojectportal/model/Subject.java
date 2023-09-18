@@ -37,7 +37,7 @@ public class Subject {
     private Integer updateBy = 0;
 
     @Column(name = "update_at")
-    private Timestamp updateAt;
+    private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
     @OneToOne
     @JoinColumn(name = "subject_manager_id")
