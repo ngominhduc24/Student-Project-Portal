@@ -22,6 +22,12 @@ public class subjectController {
     UserService userService;
 
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
+    private boolean isSubjectAdded(String subjectName, String subjectCode, int subjectManagerId) {
+        if(subjectName == null || subjectCode == null || subjectManagerId == 0) {
+            return false;
+        }
+        return true;
+    }
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
@@ -30,15 +36,29 @@ public class subjectController {
         return "admin/subjectList";
     }
 
-    @GetMapping("/admin/subject/add")
+    @GetMapping("/admin/subjectAdd")
     public String createSubjectPage(Model model) {
         model.addAttribute("subject", new Subject());
+        model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
         return "admin/subjectAdd";
     }
 
-    @PostMapping("/admin/subject/add")
-    public Subject createSubject(@RequestBody Subject subject) {
-        return subjectService.saveSubject(subject);
+    @PostMapping("/admin/addSubject")
+    public String createSubject(
+            @RequestParam String subjectName,
+            @RequestParam String subjectCode,
+            @RequestParam int subjectManagerId) {
+        subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true);
+//        boolean isSubjectAdded = isSubjectAdded(subjectName, subjectCode, subjectManagerId);
+
+        if ((subjectCode == null && subjectName == null) ||
+                (subjectCode == null && !subjectService.checkSubjectCodeExist(subjectCode)) ||
+                (subjectName == null && !subjectService.checkSubjectNameExist(subjectName)) ||
+                (subjectManagerId == 0 && userService.findUserById(subjectManagerId).isEmpty())) {
+            return "redirect:/admin/subjectAdd";
+        }
+
+        return "redirect:./subject";
     }
 
     @GetMapping("/admin/subjectDetails")
@@ -56,7 +76,6 @@ public class subjectController {
             @RequestParam String subjectCode,
             @RequestParam int subjectManagerId,
             @RequestParam boolean status){
-        System.out.println(id + subjectName + subjectName + subjectManagerId + status);
         subjectService.updateSubject(id, subjectName, subjectCode, subjectManagerId, status);
         return "redirect:./subject";
     }

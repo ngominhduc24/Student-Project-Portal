@@ -55,4 +55,32 @@ public class SubjectSevice implements ISubjectService {
         subjectRepository.save(subject.get());
         return true;
     }
+
+    @Override
+    public boolean addSubject(String subjectName, String subjectCode, int subjectManagerId, boolean status) {
+        Subject subject = new Subject();
+
+        subject.setSubjectName(subjectName);
+        subject.setSubjectCode(subjectCode);
+        subject.setUser(userRepository.findById(subjectManagerId).get());
+        subject.setStatus(true);
+
+        subjectRepository.save(subject);
+        return true;
+    }
+    @Override
+    public boolean checkSubjectCodeExist(String subjectCode) {
+        if (subjectRepository.findSubjectBySubjectCode(subjectCode) != null) {
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public boolean checkSubjectNameExist(String subjectName) {
+        if (subjectRepository.findSubjectBySubjectName(subjectName) != null) {
+            return true;
+        }
+        return false;
+    }
+
 }
