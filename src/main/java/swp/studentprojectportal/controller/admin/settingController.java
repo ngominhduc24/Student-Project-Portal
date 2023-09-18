@@ -46,4 +46,13 @@ public class settingController {
         return "redirect:/admin/setting";
     }
 
+    @GetMapping("/admin/setting/updateStatus")
+    public String updateSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        Setting setting = settingSevice.findById(id);
+        setting.setStatus(status);
+        settingSevice.saveSetting(setting);
+        return "redirect:/";
+    }
 }

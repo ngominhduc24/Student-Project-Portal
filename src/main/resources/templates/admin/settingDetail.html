@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Doctris - Doctor Appointment Booking System</title>
+    <title th:text="${@title}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
@@ -107,6 +107,10 @@
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
 </body>
 </html>

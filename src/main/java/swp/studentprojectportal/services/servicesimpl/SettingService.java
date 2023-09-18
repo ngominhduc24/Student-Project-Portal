@@ -28,7 +28,6 @@ public class SettingService implements ISettingService {
         return settingRepository.save(setting);
     }
 
-
     public List<Setting> getAllRole() {
         return settingRepository.findSettingByTypeId(1);
     }
