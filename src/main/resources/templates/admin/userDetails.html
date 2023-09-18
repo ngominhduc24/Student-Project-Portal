@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title th:text="${@title}"></title>
+    <title>Doctris - Doctor Appointment Booking System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
@@ -33,7 +33,6 @@
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
 </head>
 <body>
-
 <!-- Loader -->
 <div id="preloader">
     <div id="status">
@@ -59,20 +58,9 @@
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="./profile" method="post">
+                            <form action="./updateUser" method="post">
                                 <input type="hidden" name="id" th:value="${user.id}">
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <!--                                                        <img src="${user.avatarUrl}" class="avatar avatar-ex-small rounded-circle" alt="">-->
-                                        <!--                                                        <img src="/images/user_icon.png" class="avatar avatar-ex-small rounded-circle" alt="">-->
-                                        <img th:src="@{${user.avatarUrl}}" class="avatar avatar-ex-small rounded-circle" alt="">
-                                        <!--                                                        <form id="uploadAvatarForm" action="/updateProfile" enctype="multipart/form-data">-->
-                                        <!--                                                            <button type="submit" class="btn btn-link" id="editAvatarButton">Edit Avatar</button>-->
-                                        <!--                                                            <input type="file" id="avatarInput" name="avatar" accept="image/*">-->
-                                        <!--                                                            <input type="hidden" id="avatarPathInput" name="avatarPath" value="">-->
-                                        <!--&lt;!&ndash;                                                            <button type="submit" class="btn btn-primary" style="display: none;">Upload</button>&ndash;&gt;-->
-                                        <!--                                                        </form>-->
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Fullname</label>
@@ -100,26 +88,38 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Role</label>
-                                            <input name="settingTitle" type="text" class="form-control" readonly
-                                                   th:value="${user.setting.settingTitle}">
-
+                                            <select name="roleId" class="form-control">
+                                                <option th:each="role : ${roleList}"
+                                                        th:value="${role.id}"
+                                                        th:text="${role.settingTitle}"
+                                                        th:selected="${role.id == user.setting.id}"></option>
+                                            </select>
                                         </div>
                                     </div><!--end col-->
 
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Status</label>
+                                            <select name="status" class="form-control">
+                                                <option value="true" th:selected="${true == user.status}">True</option>
+                                                <option value="false" th:selected="${false == user.status}">False
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Note</label>
+                                            <input name="note" type="text" class="form-control"
+                                                   th:value="${user.note}">
+                                        </div>
+                                    </div><!--end col-->
 
                                 </div><!--end row-->
-                                <div class="row">
-                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Update</button> </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-secondary" onclick="window.location.href='/profile'">Cancel</button>
-                                    </div>
-                                    <div class="col-md"> </div>
-<!--                                    <div class="col-md-6"><button onclick="window.location.href='changePassword.html'" class="btn btn-primary">Change Password</button></div>-->
 
-                                </div>
+                                <button type="submit" class="btn btn-primary">Update User</button>
                             </form>
-
-                            <h6 style="color: red;" th:text="${errmsg}"></h6>
                         </div>
                     </div><!--end col-->
                 </div>
@@ -127,6 +127,7 @@
         </div>
     </main>
 </div>
+
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->
