@@ -44,7 +44,7 @@ public class profileController {
             user.setEmail(email);
             user.setFullName(fullName);
             session.setAttribute("user",user);
-            userService.registerNewAccount(user);
+            userService.saveUser(user);
             model.addAttribute("errmsg","Update success!");
 
         }
@@ -95,7 +95,7 @@ public class profileController {
         }
         String newMail = (String)session.getAttribute("newmail");
         if(newMail != null) user.setEmail(newMail);
-        userService.registerNewAccount(user);
+        userService.saveUser(user);
         session.setAttribute("user", user);
         return "redirect:/profile";
     }
