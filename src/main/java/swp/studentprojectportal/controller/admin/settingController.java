@@ -34,13 +34,18 @@ public class settingController {
     }
 
     @PostMapping("/admin/setting/update")
-    public String updateSetting(WebRequest request, Model model, HttpSession session) {
+    public String updateSetting(
+            @RequestParam int id,
+            @RequestParam int typeId,
+            @RequestParam String settingTitle,
+            @RequestParam int displayOrder,
+            WebRequest request, HttpSession session) {
         String status = request.getParameter("status");
         Setting setting = new Setting();
-        setting.setId(Integer.parseInt(request.getParameter("id")));
-        setting.setTypeId(Integer.parseInt(request.getParameter("typeId")));
-        setting.setSettingTitle(request.getParameter("settingTitle"));
-        setting.setDisplayOrder(Integer.parseInt(request.getParameter("displayOrder")));
+        setting.setId(id);
+        setting.setTypeId(typeId);
+        setting.setSettingTitle(settingTitle);
+        setting.setDisplayOrder(displayOrder);
         setting.setStatus(status!=null);
         settingSevice.saveSetting(setting);
         return "redirect:/admin/setting";
