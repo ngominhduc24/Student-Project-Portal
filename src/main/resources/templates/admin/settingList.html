@@ -190,7 +190,7 @@
                                     <td th:text="${setting.displayOrder}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" >
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this.checked)'">
                                         </div>
                                     </td>
                                     <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
@@ -227,7 +227,7 @@
                                     <td th:text="${setting.displayOrder}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" >
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this.checked)'">
                                         </div>
                                     </td>
                                     <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
