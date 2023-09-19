@@ -38,13 +38,22 @@ public class forgotPasswordController {
             return "forgotPassword";
         }
 
-        if(Validate.validEmail(username)) {user.setEmail(username);}
-        if(Validate.validPhoneNumber(username)) {user.setPhone(username);}
-
-
+        if(Validate.validEmail(username)) {
+            user.setEmail(username);
+            session.setAttribute("verifyMail", true);
+        }
+        if(Validate.validPhoneNumber(username)) {
+            user.setPhone(username);
+            session.setAttribute("verifyMail", false);
+        }
 
         if(user.getEmail() != null && !userService.checkExistMail(user.getEmail())) {
             model.addAttribute("errmsg", "Your email is not correct");
+            return "forgotPassword";
+        }
+
+        if(user.getEmail() != null && !userService.checkEmailDomain(user.getEmail())) {
+            model.addAttribute("errmsg", "Your email domain is not accepted");
             return "forgotPassword";
         }
 

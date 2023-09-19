@@ -37,9 +37,17 @@ public class registerController {
         User user = new User();
         user.setActive(false);
         user.setFullName(fullname);
-        if(Validate.validEmail(username)) {user.setEmail(username);}
-        if(Validate.validPhoneNumber(username)) {user.setPhone(username);}
         user.setPassword(password);
+
+        if(Validate.validEmail(username)) {
+            user.setEmail(username);
+            session.setAttribute("verifyMail", true);
+        }
+        if(Validate.validPhoneNumber(username)) {
+            user.setPhone(username);
+            session.setAttribute("verifyMail", false);
+        }
+
 
         if(user.getEmail() == null && user.getPhone() == null) {
             model.addAttribute("errmsg", "Your email address or phone number is not correct format");
