@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import swp.studentprojectportal.model.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class Filter implements jakarta.servlet.Filter {
@@ -19,10 +21,18 @@ public class Filter implements jakarta.servlet.Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String url = request.getRequestURL().toString();
+        List<String> acceptUrl = new ArrayList<>();
+        acceptUrl.add("login");
+        acceptUrl.add(".css");
+        acceptUrl.add(".js");
+        acceptUrl.add("images");
+        acceptUrl.add("register");
+        acceptUrl.add("verify");
+        acceptUrl.add("forgotPassword");
+        acceptUrl.add("reset-password");
 
-        if(url.contains("login") || url.contains(".css") || url.contains(".js") ||
-                url.contains("images") || url.contains("register") || url.contains("verify") ||
-                url.charAt(url.length()-1)=='/') {
+
+        if(checkAccpectUrl(acceptUrl, url) || url.charAt(url.length()-1)=='/') {
 
         } else {
             User user = (User) request.getSession().getAttribute("user");
@@ -34,5 +44,13 @@ public class Filter implements jakarta.servlet.Filter {
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    public boolean checkAccpectUrl(List<String> acceptUrl, String url) {
+        boolean ans = false;
+        for(String a : acceptUrl)
+            if(url.contains(a)) return true;
+
+        return false;
     }
 }
