@@ -32,13 +32,39 @@ public class configThymeleafDirectory {
     }
 
     @Bean
-    public ClassLoaderTemplateResolver adminTemplateResolver() {
+    public ClassLoaderTemplateResolver adminSettingTemplateResolver() {
         ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
-        yourTemplateResolver.setPrefix("templates/admin/");
+        yourTemplateResolver.setPrefix("templates/admin/setting/");
         yourTemplateResolver.setSuffix(".html");
         yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
         yourTemplateResolver.setCharacterEncoding("UTF-8");
         yourTemplateResolver.setOrder(1); // this is iportant. This way springboot will listen to both places 0 and 1
+        yourTemplateResolver.setCheckExistence(true);
+
+        return yourTemplateResolver;
+    }
+
+    @Bean
+    public ClassLoaderTemplateResolver adminSubjectTemplateResolver() {
+        ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
+        yourTemplateResolver.setPrefix("templates/admin/subject/");
+        yourTemplateResolver.setSuffix(".html");
+        yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
+        yourTemplateResolver.setCharacterEncoding("UTF-8");
+        yourTemplateResolver.setOrder(2); // this is iportant. This way springboot will listen to both places 0 and 1
+        yourTemplateResolver.setCheckExistence(true);
+
+        return yourTemplateResolver;
+    }
+
+    @Bean
+    public ClassLoaderTemplateResolver adminUserTemplateResolver() {
+        ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
+        yourTemplateResolver.setPrefix("templates/admin/user/");
+        yourTemplateResolver.setSuffix(".html");
+        yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
+        yourTemplateResolver.setCharacterEncoding("UTF-8");
+        yourTemplateResolver.setOrder(3); // this is iportant. This way springboot will listen to both places 0 and 1
         yourTemplateResolver.setCheckExistence(true);
 
         return yourTemplateResolver;
@@ -51,7 +77,7 @@ public class configThymeleafDirectory {
         yourTemplateResolver.setSuffix(".html");
         yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
         yourTemplateResolver.setCharacterEncoding("UTF-8");
-        yourTemplateResolver.setOrder(2); // this is iportant. This way springboot will listen to both places 0 and 1
+        yourTemplateResolver.setOrder(4); // this is iportant. This way springboot will listen to both places 0 and 1
         yourTemplateResolver.setCheckExistence(true);
 
         return yourTemplateResolver;

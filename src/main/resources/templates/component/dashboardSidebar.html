@@ -33,15 +33,16 @@
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
             <a href="/admin">
-                <img th:src="@{/images/logo.png}" height="24" class="logo-light-mode" alt="">
+                <img th:src="@{/images/logo.png}" height="56" alt="">
             </a>
         </div>
 
         <ul class="sidebar-menu pt-3">
             <!--    admin function == 2-->
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/home"><i class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i class="uil uil-user me-2 d-inline-block"></i>User</a></li>
-            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i class="uil uil-user me-2 d-inline-block"></i>Setting</a></li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i class="uil uil-setting me-2 d-inline-block"></i>Setting</a></li>
 
 
 <!--            <li class="sidebar-dropdown">-->
@@ -58,13 +59,12 @@
         <!-- sidebar-menu  -->
     </div>
     <!-- sidebar-content  -->
-<!--    <ul class="sidebar-footer list-unstyled mb-0">-->
-<!--        <li class="list-inline-item mb-0 ms-1">-->
-<!--            <a href="#" class="btn btn-icon btn-pills btn-soft-primary">-->
-<!--                <i class="uil uil-comment icons"></i>-->
-<!--            </a>-->
-<!--        </li>-->
-<!--    </ul>-->
+    <ul class="sidebar-footer list-unstyled mb-0">
+        <li class="list-inline-item mb-0 ms-1">
+            <p style="margin:0px">Logged in as:</p>
+            <strong><p style="margin:0px" th:text="${session.user.setting.settingTitle}"></p></strong>
+        </li>
+    </ul>
 </nav>
 
 <!-- javascript -->

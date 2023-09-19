@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 
@@ -33,14 +32,14 @@ public class subjectController {
     public String subjectPage(Model model) {
         subjectList = subjectService.getAllSubjects();
         model.addAttribute("SubjectList", subjectList);
-        return "admin/subjectList";
+        return "admin/subject/subjectList";
     }
 
     @GetMapping("/admin/subjectAdd")
     public String createSubjectPage(Model model) {
         model.addAttribute("subject", new Subject());
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-        return "admin/subjectAdd";
+        return "admin/subject/subjectAdd";
     }
 
     @PostMapping("/admin/addSubject")
@@ -66,7 +65,7 @@ public class subjectController {
         Subject subject = subjectService.getSubjectById(Id);
         model.addAttribute("subject", subject);
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-        return "admin/subjectDetail";
+        return "admin/subject/subjectDetail";
     }
 
     @PostMapping("/admin/updateSubject")

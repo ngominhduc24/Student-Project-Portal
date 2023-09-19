@@ -49,18 +49,18 @@
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
-    <div th:replace="dashboardSidebar"></div>
+    <div th:replace="~{dashboardSidebar}"></div>
 
     <!-- Start Page Content -->
     <main class="page-content bg-light">
-        <div th:replace="dashboardHeader"></div>
+        <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
                         <h1>Subject</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item active">Subject</li>
                         </ol>
                     </div><!--end col-->
@@ -120,32 +120,7 @@
             </div>
         </div><!--end container-->
 
-        <script>
-            function updateStatus(id, checkbox) {
-                let status = checkbox.checked;
-
-                if(confirm('Are you sure?'))
-                    fetch(`/admin/subject/updateStatus?id=${id}&status=${status}`)
-                else checkbox.checked = !status;
-            }
-        </script>
-
-        <!-- Footer Start -->
-        <footer class="bg-white shadow py-3">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <div class="text-sm-start text-center">
-                            <p class="mb-0 text-muted">
-                                <script>document.write(new Date().getFullYear())</script>
-                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
-                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
-                            </p>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </footer><!--end footer-->
+        <div th:replace="~{footer}"></div>
         <!-- End -->
     </main>
     <!--End page-content" -->
@@ -167,9 +142,19 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#myTable').DataTable({
-            "dom": 'frtip'
+
         });
     });
+</script>
+
+<script>
+    function updateStatus(id, checkbox) {
+        let status = checkbox.checked;
+
+        if(confirm('Are you sure?'))
+            fetch(`/admin/subject/updateStatus?id=${id}&status=${status}`)
+        else checkbox.checked = !status;
+    }
 </script>
 
 </body>

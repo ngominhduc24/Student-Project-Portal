@@ -23,14 +23,14 @@ public class settingController {
         model.addAttribute("roleList", roleList);
         model.addAttribute("semesterList", semesterList);
         model.addAttribute("emailDomainList", emailDomainList);
-        return "admin/settingList";
+        return "admin/setting/settingList";
     }
 
     @GetMapping("/admin/setting/detail")
     public String settingDetail(@RequestParam("id") Integer id, Model model) {
         Setting setting = settingSevice.getSettingByID(id);
         model.addAttribute("setting", setting);
-        return "admin/settingDetail";
+        return "admin/setting/settingDetail";
     }
 
     @PostMapping("/admin/setting/update")
