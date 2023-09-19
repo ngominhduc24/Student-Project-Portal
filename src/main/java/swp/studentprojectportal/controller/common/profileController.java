@@ -53,7 +53,7 @@ public class profileController {
     }
 
 
-//   Update mail and phone number with verify
+    //   Update mail and phone number with verify
     @GetMapping("/update-mail")
     public String updateEmailPage(Model model) {
         return "mailUpdate";
