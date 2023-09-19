@@ -68,7 +68,7 @@
                     <div class="col-xl-4 col-md-6"></div>
 
                     <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="/admin/subject/add" class="btn btn-primary" style="margin-left: 24px">Add New Subject</a>
+                        <a href="/admin/subject/add" class="btn btn-primary" style="margin-top: 30px;margin-left: 60px;">Add New Subject</a>
                     </div><!--end col-->
                 </div><!--end row-->
 
@@ -108,7 +108,7 @@
                                     </td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${Subject.status}" th:onclick="'updateStatus(' + ${Subject.id} + ', this.checked)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${Subject.status}" th:onclick="'updateStatus(' + ${Subject.id} + ', this)'">
                                         </div>
                                     </td>
                                 </tr>
@@ -121,8 +121,12 @@
         </div><!--end container-->
 
         <script>
-            function updateStatus(id, status) {
-                fetch(`/admin/subject/updateStatus?id=${id}&status=${status}`);
+            function updateStatus(id, checkbox) {
+                let status = checkbox.checked;
+
+                if(confirm('Are you sure?'))
+                    fetch(`/admin/subject/updateStatus?id=${id}&status=${status}`)
+                else checkbox.checked = !status;
             }
         </script>
 

@@ -31,9 +31,9 @@ public class changePasswordController {
             if(newPassword.equals(reNewPassword)){
                 user.setPassword(newPassword);
                 session.setAttribute("user", user);
-                model.addAttribute("errmsg", "Change password successfully");
+                model.addAttribute("msg", "Change password successfully");
                 //save to database
-                User u = userService.registerNewAccount(user);
+                User u = userService.saveUser(user);
             } else {
                 model.addAttribute("errmsg", "New Password and Re-new Password do not match");
             }
