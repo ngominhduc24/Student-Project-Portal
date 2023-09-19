@@ -71,7 +71,7 @@ public class verifyController {
     public String registerMail(Model model, HttpSession session,@RequestParam("key") String token) {
         User user = registerService.verifyToken(token);
         if(user != null) {
-            session.setAttribute("user", user);
+            session.removeAttribute("user");
             return "verifySuccess";
         }
         return "register";
