@@ -25,8 +25,13 @@ public class registerController {
     @PostMapping("/register")
     public String registerAccount(WebRequest request, Model model, HttpSession session) {
         String fullname = request.getParameter("fullname");
+        String termCheckbox = request.getParameter("termCheckbox");
         String username = request.getParameter("username").replace(" ", "");
         String password = request.getParameter("password").replace(" ", "");
+
+        if(termCheckbox == null) {
+            model.addAttribute("errmsg", "you need accept our Terms And Condition to register account");
+        }
 
         // create model user
         User user = new User();
@@ -37,11 +42,18 @@ public class registerController {
         user.setPassword(password);
 
         if(user.getEmail() == null && user.getPhone() == null) {
-            return "redirect:/register";
+            model.addAttribute("errmsg", "Your email address or phone number is not correct format");
+            return "register";
         }
 
-        if(user.getEmail() != null && userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
-            return "redirect:/register";
+        if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
+            model.addAttribute("errmsg", "Email address already exist!");
+            return "register";
+        }
+
+        if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
+            model.addAttribute("errmsg", "Email domain is not accept");
+            return "register";
         }
 
         // set session to verify

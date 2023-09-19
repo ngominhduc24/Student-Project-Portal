@@ -20,4 +20,9 @@ public class ResetPassword implements IResetPassword {
         }
         return user;
     }
+
+    @Override
+    public User getUserByEmailOrPhone(String userName) {
+        return userRepository.findUserByEmailOrPhone(userName, userName);
+    }
 }
