@@ -81,6 +81,7 @@ public class profileController {
             return "mailUpdate";
         }
 
+        session.setAttribute("verifyMail", true);
         session.setAttribute("userauthen", user);
         session.setAttribute("newmail", newMail);
         session.setAttribute("href", "verifynewmail");

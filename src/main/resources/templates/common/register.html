@@ -47,8 +47,9 @@
                 <img src="../../static/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                 <div class="card login-page bg-white shadow mt-4 rounded border-0">
                     <div class="card-body">
-                        <h4 class="text-center">Sign Up</h4>
+                        <h4 class="text-center">Register</h4>
                         <form th:action="@{/register}"  method="post">
+                            <h6 style="color: red; text-align: center" th:text="${errmsg}"></h6>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-3">
@@ -58,7 +59,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                                        <label class="form-label">Your Username <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" placeholder="Email address or phone number" name="username" required="">
                                     </div>
                                 </div>
@@ -71,7 +72,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input align-middle" type="checkbox" value="" id="accept-tnc-check">
+                                            <input class="form-check-input align-middle" type="checkbox" name="termCheckbox" value="" id="accept-tnc-check">
                                             <label class="form-check-label" for="accept-tnc-check">I Accept <a href="#" class="text-primary">Terms And Condition</a></label>
                                         </div>
                                     </div>

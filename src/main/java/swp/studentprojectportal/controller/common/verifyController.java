@@ -21,22 +21,22 @@ import swp.studentprojectportal.utils.Utility;
 public class verifyController {
     @Autowired
     int userRoleId;
-
     @Autowired
     UserService userService;
-
     @Autowired
     EmailService emailservice;
-
     @Autowired
     SettingService settingService;
-
     @Autowired
     RegisterService registerService;
     @GetMapping("/verifypage")
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
         User user =  (User)session.getAttribute("userauthen");
         String token = RandomString.make(30);   // genarate token
+
+        // Check isverifyemail
+        boolean verifyMail = (boolean)session.getAttribute("verifyMail");
+
 
         user.setToken(token);
         user.setSetting(settingService.findById(userRoleId));
@@ -48,7 +48,7 @@ public class verifyController {
         String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
 
         // if user register by email address
-        if(user.getEmail() != null) {
+        if(user.getEmail() != null && verifyMail == true) {
             emailservice.sendEmail(user.getFullName(), user.getEmail(), token_sender);
             model.addAttribute("email", user.getEmail());
             session.removeAttribute("user");
@@ -56,7 +56,7 @@ public class verifyController {
         }
 
         // if user register by phone number
-        if(user.getPhone() != null) {
+        if(user.getPhone() != null && verifyMail == false) {
             model.addAttribute("phone", user.getPhone());
             model.addAttribute("token", token_sender);
             session.removeAttribute("user");
@@ -71,7 +71,7 @@ public class verifyController {
     public String registerMail(Model model, HttpSession session,@RequestParam("key") String token) {
         User user = registerService.verifyToken(token);
         if(user != null) {
-            session.setAttribute("user", user);
+            session.removeAttribute("user");
             return "verifySuccess";
         }
         return "register";
