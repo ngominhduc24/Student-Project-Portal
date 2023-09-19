@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.ISubjectRepository;
+import swp.studentprojectportal.services.servicesimpl.ResetPassword;
 import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 
@@ -17,9 +18,10 @@ public class subjectController {
 
     @Autowired
     SubjectSevice subjectService;
-
     @Autowired
     UserService userService;
+    @Autowired
+    ResetPassword resetPassword;
 
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
 

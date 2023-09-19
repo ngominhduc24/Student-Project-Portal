@@ -29,20 +29,37 @@ public class forgotPasswordController {
     }
 
     @PostMapping("/forgotPassword")
-    public String forgotPassword(WebRequest request, HttpSession session) {
+    public String forgotPassword(Model model, WebRequest request, HttpSession session) {
         String username = request.getParameter("username");
-        User user = new User();
-        if(Validate.validEmail(username)) {user.setEmail(username);}
-        if(Validate.validPhoneNumber(username)) {user.setPhone(username);}
 
-        if(user.getEmail() == null && user.getPhone() == null) {
-            // set session username and phone number is not valid
-            return "redirect:/forgotPassword";
+        User user = resetPassword.getUserByEmailOrPhone(username);
+        if(user == null) {
+            model.addAttribute("errmsg", "Username is't not correct");
+            return "forgotPassword";
         }
 
-        if(!userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
-            // set session username and phone number not exist
-            return "redirect:/forgotPassword";
+        if(Validate.validEmail(username)) {
+            user.setEmail(username);
+            session.setAttribute("verifyMail", true);
+        }
+        if(Validate.validPhoneNumber(username)) {
+            user.setPhone(username);
+            session.setAttribute("verifyMail", false);
+        }
+
+        if(user.getEmail() != null && !userService.checkExistMail(user.getEmail())) {
+            model.addAttribute("errmsg", "Your email is not correct");
+            return "forgotPassword";
+        }
+
+        if(user.getEmail() != null && !userService.checkEmailDomain(user.getEmail())) {
+            model.addAttribute("errmsg", "Your email domain is not accepted");
+            return "forgotPassword";
+        }
+
+        if(user.getPhone() != null && !userService.checkExistPhoneNumber(user.getPhone())) {
+            model.addAttribute("errmsg", "Your phone number is not correct");
+            return "forgotPassword";
         }
 
         session.setAttribute("userauthen", user);
@@ -80,7 +97,7 @@ public class forgotPasswordController {
             model.addAttribute("errmsg", "Reset password successfully");
             //save to database
             User u = userService.saveUser(user);
-            return "redirect:/forgotPassword";
+            return "redirect:/login";
         } else {
             model.addAttribute("errmsg", "New Password and Re-new Password do not match");
         }

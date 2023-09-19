@@ -25,23 +25,43 @@ public class registerController {
     @PostMapping("/register")
     public String registerAccount(WebRequest request, Model model, HttpSession session) {
         String fullname = request.getParameter("fullname");
+        String termCheckbox = request.getParameter("termCheckbox");
         String username = request.getParameter("username").replace(" ", "");
         String password = request.getParameter("password").replace(" ", "");
+
+        if(termCheckbox == null) {
+            model.addAttribute("errmsg", "you need accept our Terms And Condition to register account");
+        }
 
         // create model user
         User user = new User();
         user.setActive(false);
         user.setFullName(fullname);
-        if(Validate.validEmail(username)) {user.setEmail(username);}
-        if(Validate.validPhoneNumber(username)) {user.setPhone(username);}
         user.setPassword(password);
 
-        if(user.getEmail() == null && user.getPhone() == null) {
-            return "redirect:/register";
+        if(Validate.validEmail(username)) {
+            user.setEmail(username);
+            session.setAttribute("verifyMail", true);
+        }
+        if(Validate.validPhoneNumber(username)) {
+            user.setPhone(username);
+            session.setAttribute("verifyMail", false);
         }
 
-        if(user.getEmail() != null && userService.checkExistMail(user.getEmail()) && !userService.checkEmailDomain(user.getEmail())) {
-            return "redirect:/register";
+
+        if(user.getEmail() == null && user.getPhone() == null) {
+            model.addAttribute("errmsg", "Your email address or phone number is not correct format");
+            return "register";
+        }
+
+        if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
+            model.addAttribute("errmsg", "Email address already exist!");
+            return "register";
+        }
+
+        if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
+            model.addAttribute("errmsg", "Email domain is not accept");
+            return "register";
         }
 
         // set session to verify
