@@ -61,12 +61,17 @@ public class loginController {
         } else {
             String accessToken = GoogleUtils.getToken(code);
             GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
+            if (!userService.checkEmailDomain(googlePojo.getEmail())) {
+                model.addAttribute("errmsg", "Your account is not allowed to log into the system");
+                return "login";
+            }
             if (!userService.checkExistMail(googlePojo.getEmail())) {
                 User u = new User();
                 u.setEmail(googlePojo.getEmail());
                 u.setPassword(googlePojo.getId());
                 u.setAvatarUrl(googlePojo.getPicture());
-                User user = userService.registerNewAccount(u);
+                u.setActive(true);
+                User user = userService.saveUser(u);
                 session.setAttribute("user", user);
                 return "redirect:" + afterLoginRoute;
             } else {

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>Doctris - Doctor Appointment Booking System</title>
+    <title th:text="${@title}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
@@ -77,7 +77,7 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            DataTable Example
+                            Subject table
                         </div>
                         <div class="card-body">
                             <table id="myTable" class="display">
@@ -106,7 +106,11 @@
                                     <td th:text="${Subject.user.fullName}"></td>
                                     <td><a th:href="@{'./subjectDetails?id=' + ${Subject.id}}">View Details</a>
                                     </td>
-                                    <td th:text="${Subject.status}"></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" th:checked="${Subject.status}" th:onclick="'updateStatus(' + ${Subject.id} + ', this)'">
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -115,6 +119,16 @@
                 </div>
             </div>
         </div><!--end container-->
+
+        <script>
+            function updateStatus(id, checkbox) {
+                let status = checkbox.checked;
+
+                if(confirm('Are you sure?'))
+                    fetch(`/admin/subject/updateStatus?id=${id}&status=${status}`)
+                else checkbox.checked = !status;
+            }
+        </script>
 
         <!-- Footer Start -->
         <footer class="bg-white shadow py-3">
@@ -153,8 +167,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#myTable').DataTable({
-            "dom": "tp",
-            "ordering": true,
+            "dom": 'frtip'
         });
     });
 </script>

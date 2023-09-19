@@ -20,7 +20,7 @@ public class UserService implements IUserService {
     ISettingRepository settingRepository;
 
     @Override
-    public User registerNewAccount(User user) {
+    public User saveUser(User user) {
         // TO-DO: set enable here
         return userRepository.save(user);
     }
@@ -100,9 +100,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User saveUserWaitVerify(User user) {
-        user.setActive(false);
-        return userRepository.save(user);
+    public boolean addUser(String fullName, String email, String phone, String password, int roleId) {
+        User user = new User();
+
+        user.setActive(true);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setPassword(password);
+        user.setSetting(settingRepository.findById(roleId).get());
+
+        userRepository.save(user);
+
+        return true;
     }
 
     @Override

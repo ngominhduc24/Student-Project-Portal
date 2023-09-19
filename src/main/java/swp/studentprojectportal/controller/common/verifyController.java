@@ -13,11 +13,15 @@ import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.EmailService;
 import swp.studentprojectportal.services.servicesimpl.RegisterService;
+import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Utility;
 
 @Controller
 public class verifyController {
+    @Autowired
+    int userRoleId;
+
     @Autowired
     UserService userService;
 
@@ -25,19 +29,18 @@ public class verifyController {
     EmailService emailservice;
 
     @Autowired
+    SettingService settingService;
+
+    @Autowired
     RegisterService registerService;
     @GetMapping("/verifypage")
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
         User user =  (User)session.getAttribute("userauthen");
         String token = RandomString.make(30);   // genarate token
-        // change 0 -> +84
-        if(user.getPhone() != null) {
-            String phone = "";
-            phone = user.getPhone().charAt(0) == '0' ? "+84" + user.getPhone().substring(user.getPhone().length()) : user.getPhone();
-            user.setPhone(phone);
-        }
+
         user.setToken(token);
-        userService.saveUserWaitVerify(user);
+        user.setSetting(settingService.findById(userRoleId));
+        userService.saveUser(user);
 
         // get href
         String href = (String)session.getAttribute("href");
