@@ -37,15 +37,10 @@ public class verifyController {
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
         User user =  (User)session.getAttribute("userauthen");
         String token = RandomString.make(30);   // genarate token
-        // change 0 -> +84
-        if(user.getPhone() != null && user.getPhone() != "") {
-            String phone = "";
-            phone = user.getPhone().charAt(0) == '0' ? "+84" + user.getPhone().substring(user.getPhone().length()) : user.getPhone();
-            user.setPhone(phone);
-        }
+
         user.setToken(token);
         user.setSetting(settingService.findById(userRoleId));
-        userService.saveUserWaitVerify(user);
+        userService.saveUser(user);
 
         // get href
         String href = (String)session.getAttribute("href");

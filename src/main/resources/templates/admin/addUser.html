@@ -59,24 +59,32 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Fullname</label>
-                                            <input name="subjectName" type="text" class="form-control"
-                                                   placeholder="Fullname">
+                                            <input name="fullName" type="text" class="form-control"
+                                                   placeholder="Fullname" required>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input name="subjectCode" type="text" class="form-control"
-                                                   placeholder="Email">
+                                            <input name="email" type="email" class="form-control"
+                                                   placeholder="Email" required>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Phone</label>
-                                            <input name="subjectDescription" type="email" class="form-control"
-                                                   placeholder="Phone">
+                                            <input name="phone" type="tel" class="form-control"
+                                                   placeholder="Phone" required>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Password</label>
+                                            <input name="password" type="password" class="form-control"
+                                                   placeholder="Password" required>
                                         </div>
                                     </div><!--end col-->
 
@@ -91,6 +99,7 @@
                                         </div>
                                     </div><!--end col-->
                                 </div><!--end row-->
+                                <p th:text="${error}" style="color: indianred"></p>
 
                                 <button type="submit" class="btn btn-primary">Add User</button>
                             </form>
