@@ -1,6 +1,8 @@
 package swp.studentprojectportal.services.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.ISubjectRepository;
@@ -21,6 +23,13 @@ public class SubjectSevice implements ISubjectService {
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
     }
+
+    @Override
+    public List<Subject> getSubject(Integer pageNo, Integer pageSize) {
+        List<Subject> ListSubject = subjectRepository.findSubjectPaging(PageRequest.of(pageNo, pageSize));
+        return ListSubject;
+    }
+
     @Override
     public Subject getSubjectById(Integer Id) {
         return subjectRepository.findById(Id).orElse(null);

@@ -8,6 +8,8 @@ public interface ISubjectService {
 
     List<Subject> getAllSubjects();
 
+    List<Subject> getSubject(Integer pageNo, Integer pageSize);
+
     Subject getSubjectById(Integer Id);
 
     Subject saveSubject(Subject subject);
