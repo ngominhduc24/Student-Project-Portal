@@ -69,7 +69,7 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="mb-3">
                                             <div class="form-check">
-                                                <input class="form-check-input align-middle" th:checked="${crem!=null}" name="remember" type="checkbox" value="on" id="remember-check">
+                                                <input class="form-check-input align-middle" th:checked="${crem!=null and !crem.isEmpty()}" name="remember" type="checkbox" value="on" id="remember-check">
                                                 <label class="form-check-label" for="remember-check">Remember me</label>
                                             </div>
                                         </div>

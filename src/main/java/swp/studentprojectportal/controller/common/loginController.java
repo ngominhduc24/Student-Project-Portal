@@ -25,16 +25,20 @@ public class loginController {
     @Autowired
     SettingService settingService;
     @RequestMapping("/login")
-    public String loginPage() {
+    public String loginPage(
+            @CookieValue(value = "cuser", defaultValue = "") String cuser,
+            @CookieValue(value = "cpass", defaultValue = "") String cpass,
+            @CookieValue(value = "crem", defaultValue = "") String crem,
+            Model model) {
+        model.addAttribute("cuser", cuser);
+        model.addAttribute("cpass", cpass);
+        model.addAttribute("crem", crem);
         return "login";
     }
 
     @PostMapping("/login")
     public String userLogin(@RequestParam String username, @RequestParam String password,
-            Model model, HttpSession session, HttpServletResponse response, WebRequest request,
-            @CookieValue(value = "cuser", defaultValue = "") String cuser,
-            @CookieValue(value = "cpass", defaultValue = "") String cpass,
-            @CookieValue(value = "crem", defaultValue = "") String crem) {
+            Model model, HttpSession session, HttpServletResponse response, WebRequest request) {
         String remember = request.getParameter("remember");
         Cookie cu= new Cookie("cuser", username);
         Cookie cp= new Cookie("cpass", password);
@@ -43,9 +47,9 @@ public class loginController {
         response.addCookie(cu);
         response.addCookie(cp);
         response.addCookie(cr);
-        model.addAttribute("cuser", cuser);
-        model.addAttribute("cpass", cpass);
-        model.addAttribute("crem", crem);
+        model.addAttribute("cuser", username);
+        model.addAttribute("cpass", password);
+        model.addAttribute("crem", remember);
         User user = userService.findUserByUsernameAndPassword(username, password);
         if(user != null && user.isActive() && user.isStatus()) {
             session.setAttribute("user", user);
