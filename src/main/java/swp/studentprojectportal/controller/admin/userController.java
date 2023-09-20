@@ -25,16 +25,16 @@ public class userController {
     @GetMapping("/user")
     public String userList(Model model) {
         model.addAttribute("userList", userService.findAllUser());
-        return "admin/userList";
+        return "admin/user/userList";
     }
 
-    @GetMapping("/addUser")
+    @GetMapping("/admin/userAdd")
     public String addUserGet(Model model) {
         model.addAttribute("roleList", settingService.getAllRole());
-        return "admin/addUser";
+        return "admin/user/userAdd";
     }
 
-    @PostMapping ("/addUser")
+    @PostMapping ("/userAdd")
     public String addUser(
             @RequestParam String fullName,
             @RequestParam String email,
@@ -50,7 +50,7 @@ public class userController {
         if(errorMsg!=null) {
             model.addAttribute("error", errorMsg);
             model.addAttribute("roleList", settingService.getAllRole());
-            return "admin/addUser";
+            return "admin/user/userAdd";
         }
 
         userService.addUser(fullName, email, phone, password, roleId);
@@ -75,7 +75,7 @@ public class userController {
         Optional<User> user = userService.findUserById(id);
         model.addAttribute("user", user.isPresent() ? user.get() : null);
         model.addAttribute("roleList", settingService.getAllRole());
-        return "admin/userDetails";
+        return "admin/user/userDetails";
     }
 
     @GetMapping("/updateUserStatus")

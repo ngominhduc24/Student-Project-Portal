@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Controller
 public class loginController {
-    private final String afterLoginRoute = "/dashboard";
+    private final String afterLoginRoute = "/home";
 
     @Autowired
     UserService userService;

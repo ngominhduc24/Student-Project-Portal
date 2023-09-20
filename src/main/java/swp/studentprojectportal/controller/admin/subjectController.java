@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.repository.ISubjectRepository;
-import swp.studentprojectportal.services.servicesimpl.ResetPassword;
 import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 
@@ -18,29 +16,48 @@ public class subjectController {
 
     @Autowired
     SubjectSevice subjectService;
+
     @Autowired
     UserService userService;
-    @Autowired
-    ResetPassword resetPassword;
 
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
+    private boolean isSubjectAdded(String subjectName, String subjectCode, int subjectManagerId) {
+        if(subjectName == null || subjectCode == null || subjectManagerId == 0) {
+            return false;
+        }
+        return true;
+    }
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
         subjectList = subjectService.getAllSubjects();
         model.addAttribute("SubjectList", subjectList);
-        return "admin/subjectList";
+        return "admin/subject/subjectList";
     }
 
-    @GetMapping("/admin/subject/add")
+    @GetMapping("/admin/subjectAdd")
     public String createSubjectPage(Model model) {
         model.addAttribute("subject", new Subject());
-        return "admin/subjectAdd";
+        model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+        return "admin/subject/subjectAdd";
     }
 
-    @PostMapping("/admin/subject/add")
-    public Subject createSubject(@RequestBody Subject subject) {
-        return subjectService.saveSubject(subject);
+    @PostMapping("/admin/addSubject")
+    public String createSubject(
+            @RequestParam String subjectName,
+            @RequestParam String subjectCode,
+            @RequestParam int subjectManagerId) {
+        subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true);
+//        boolean isSubjectAdded = isSubjectAdded(subjectName, subjectCode, subjectManagerId);
+
+        if ((subjectCode == null && subjectName == null) ||
+                (subjectCode == null && !subjectService.checkSubjectCodeExist(subjectCode)) ||
+                (subjectName == null && !subjectService.checkSubjectNameExist(subjectName)) ||
+                (subjectManagerId == 0 && userService.findUserById(subjectManagerId).isEmpty())) {
+            return "redirect:/admin/subjectAdd";
+        }
+
+        return "redirect:./subject";
     }
 
     @GetMapping("/admin/subjectDetails")
@@ -48,7 +65,7 @@ public class subjectController {
         Subject subject = subjectService.getSubjectById(Id);
         model.addAttribute("subject", subject);
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-        return "admin/subjectDetail";
+        return "admin/subject/subjectDetail";
     }
 
     @PostMapping("/admin/updateSubject")
@@ -58,7 +75,6 @@ public class subjectController {
             @RequestParam String subjectCode,
             @RequestParam int subjectManagerId,
             @RequestParam boolean status){
-        System.out.println(id + subjectName + subjectName + subjectManagerId + status);
         subjectService.updateSubject(id, subjectName, subjectCode, subjectManagerId, status);
         return "redirect:./subject";
     }
