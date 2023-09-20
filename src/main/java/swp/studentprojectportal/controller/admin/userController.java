@@ -34,7 +34,7 @@ public class userController {
         return "admin/user/userAdd";
     }
 
-    @PostMapping ("/userAdd")
+    @PostMapping ("/addUser")
     public String addUser(
             @RequestParam String fullName,
             @RequestParam String email,

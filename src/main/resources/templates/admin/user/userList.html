@@ -58,10 +58,10 @@
             <div class="layout-specing">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1>Subject</h1>
+                        <h1>User</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Subject</li>
+                            <li class="breadcrumb-item active">User</li>
                         </ol>
                     </div><!--end col-->
 
@@ -87,7 +87,7 @@
                                     <th>Phone</th>
                                     <th>Role</th>
                                     <th>Status</th>
-                                    <th>Note          </th>
+                                    <th>Note</th>
                                     <th>View Details</th>
                                 </tr>
                                 </thead>
@@ -99,10 +99,32 @@
                                     <td th:text="${user.setting.settingTitle}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${user.status}" th:onclick="'updateStatus(' + ${user.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${user.status}"
+                                                   th:onclick="'updateStatus(' + ${user.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td th:text="${user.note}"></td>
+                                    <td>
+                                        <a href="#" class="showNote" onclick="openDialog(this)">
+                                            <i class="fas fa-pen-to-square"></i>
+                                        </a>
+                                        <dialog class="userNote">
+                                            <!--<div th:replace="~{userNote}"></div>-->
+                                            <div class="userNote_container">
+                                                <div class="userNote_header">
+                                                    <h2 th:text="${user.fullName}"></h2>
+                                                </div>
+                                                <div class="userNote_body">
+                                                    <div class="userNote_body_content">
+                                                        <div class="userNote_body_content_text">
+                                                            <p th:text="${user.note}"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <button onclick="closeDialog(this)">Cancel</button>
+                                            </div>
+                                        </dialog>
+                                    </td>
                                     <td><a th:href="@{'./userDetails?id=' + ${user.id}}">View Details</a>
                                     </td>
                                 </tr>
@@ -135,20 +157,51 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#myTable').DataTable({
-
-        });
+        $('#myTable').DataTable({});
     });
 </script>
 
+<!-- Status update -->
 <script>
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
-        if(confirm('Are you sure?'))
+        if (confirm('Are you sure?'))
             fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
         else checkbox.checked = !status;
     }
+</script>
+
+<!-- User Note -->
+<script>
+    // Get dialog element
+    function openDialog(element) {
+        // Find the closest dialog element to the clicked anchor tag
+        const dialog = element.closest('tr').querySelector('.userNote');
+
+        // Check if a dialog is found, and then show it
+        if (dialog) {
+            dialog.showModal();
+        }
+    }
+
+    // Close dialog when pressing cancel button
+    function closeDialog(element) {
+        const dialog = element.closest('dialog');
+        dialog.close();
+    }
+
+    // Close dialog when clicking outside of it
+    dialog.addEventListener("click", e => {
+        const dialogSpace = dialog.getBoundingClientRect()
+        if(e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom) {
+            dialog.close();
+        }
+    })
+
 </script>
 
 </body>
