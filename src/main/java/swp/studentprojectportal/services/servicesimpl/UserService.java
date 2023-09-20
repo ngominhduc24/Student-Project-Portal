@@ -1,11 +1,11 @@
 package swp.studentprojectportal.services.servicesimpl;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISettingRepository;
-import swp.studentprojectportal.repository.IUserRepository;
-import swp.studentprojectportal.services.IUserService;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.services.IUserService;
 import swp.studentprojectportal.utils.GooglePojo;
@@ -19,6 +19,8 @@ public class UserService implements IUserService {
     IUserRepository userRepository;
     @Autowired
     ISettingRepository settingRepository;
+
+    HttpServletResponse response;
 
     @Override
     public User saveUser(User user) {
@@ -126,6 +128,16 @@ public class UserService implements IUserService {
         return userRepository.findUserByPhoneAndPassword(username, password);
     }
 
+    @Override
+    public User findUserByUsernameAndPassword(String username, String password) {
+        User user;
+        if (username.contains("@"))
+            user = userRepository.findUserByEmailAndPassword(username, password);
+        else
+            user = userRepository.findUserByPhoneAndPassword(username, password);
+        return user;
+    }
+
     public User registerAccountFromGoogle(GooglePojo googlePojo) {
         String[] temp = googlePojo.getEmail().split("@");
         String fullName = temp[0];
@@ -139,5 +151,16 @@ public class UserService implements IUserService {
         newUser.setSetting(settingRepository.findById(1).get());
         User user = userRepository.save(newUser);
         return user;
+    }
+    public void setCookie(Cookie cu, Cookie cp, Cookie cr, String remember) {
+        if(remember!=null){
+            cu.setMaxAge(60*60*24*7);
+            cp.setMaxAge(60*60*24*7);
+            cr.setMaxAge(60*60*24*7);
+        } else {
+            cu.setMaxAge(0);
+            cp.setMaxAge(0);
+            cr.setMaxAge(0);
+        }
     }
 }

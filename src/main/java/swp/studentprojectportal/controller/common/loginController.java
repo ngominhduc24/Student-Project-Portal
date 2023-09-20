@@ -1,13 +1,12 @@
 package swp.studentprojectportal.controller.common;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.SettingService;
@@ -32,28 +31,33 @@ public class loginController {
 
     @PostMapping("/login")
     public String userLogin(@RequestParam String username, @RequestParam String password,
-                            Model model, HttpSession session) {
-        User user;
-        if (username.contains("@"))
-            user = userService.findUserByEmailAndPassword(username, password);
-        else
-            user = userService.findUserByPhoneAndPassword(username, password);
-        if(user != null) {
-            if(!user.isActive()) {
-                model.addAttribute("errmsg", "Your account has not been verified");
-                return "login";
-            }
-            if(!user.isStatus()) {
-                model.addAttribute("errmsg", "Your account has been blocked");
-                return "login";
-            }
+            Model model, HttpSession session, HttpServletResponse response, WebRequest request,
+            @CookieValue(value = "cuser", defaultValue = "") String cuser,
+            @CookieValue(value = "cpass", defaultValue = "") String cpass,
+            @CookieValue(value = "crem", defaultValue = "") String crem) {
+        String remember = request.getParameter("remember");
+        Cookie cu= new Cookie("cuser", username);
+        Cookie cp= new Cookie("cpass", password);
+        Cookie cr= new Cookie("crem", remember);
+        userService.setCookie(cu,cp,cr,remember);
+        response.addCookie(cu);
+        response.addCookie(cp);
+        response.addCookie(cr);
+        model.addAttribute("cuser", cuser);
+        model.addAttribute("cpass", cpass);
+        model.addAttribute("crem", crem);
+        User user = userService.findUserByUsernameAndPassword(username, password);
+        if(user != null && user.isActive() && user.isStatus()) {
             session.setAttribute("user", user);
             return "redirect:" + afterLoginRoute;
-        }
-        else {
+        } else if (user==null){
             model.addAttribute("errmsg", "Username or password is not correct");
-            return "login";
+        } else if(!user.isActive()) {
+            model.addAttribute("errmsg", "Your account has not been verified");
+        } else if(!user.isStatus()) {
+            model.addAttribute("errmsg", "Your account has been blocked");
         }
+        return "login";
     }
 
     @GetMapping("/login-google")

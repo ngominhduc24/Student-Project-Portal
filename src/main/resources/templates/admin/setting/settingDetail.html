@@ -45,7 +45,7 @@
     <div th:replace="dashboardSidebar"></div>
     <main class="page-content bg-light">
         <div th:replace="dashboardHeader"></div>
-        <div class="container-fluid">
+        <div class="container">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
                     <h3 class="mb-0" th:if="${setting.typeId == 1}">Role</h3>
@@ -57,8 +57,8 @@
                     <div class="col-lg-4 mt-4 offset-4">
                         <div class="card border-0 p-4 rounded shadow" style="border-radius: 28px !important; margin-top: 38px">
                             <form action="/admin/setting/update" method="post" class="mt-4">
-                                <div class="row">
-                                    <div class="col-md-8 offset-2" style="margin-bottom: 14px;margin-top: 12px;">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-9" style="margin-bottom: 14px;margin-top: 12px;">
                                         <div class="mb-3">
                                             <label class="form-label" th:if="${setting.typeId == 1}">Role</label>
                                             <label class="form-label" th:if="${setting.typeId == 3}">Semester</label>
@@ -69,8 +69,8 @@
                                         </div>
                                     </div><!--end col-->
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-5 offset-2">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-5">
                                         <div class="mb-3">
                                             <label class="form-label">Display Order</label>
                                             <input style="width: 60%;" type="number" class="form-control" name="displayOrder"
@@ -79,11 +79,11 @@
                                     </div><!--end col-->
 
 
-                                    <div class="col-md-4" style="margin-left: 12px">
+                                    <div class="col-md-4 text-center">
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
                                             <div class="form-check form-switch" style="font-size: 24px">
-                                                <input class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
+                                                <input style="margin-left: -38px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
                                             </div>
                                         </div>
                                     </div><!--end col-->
