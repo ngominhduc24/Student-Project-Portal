@@ -32,7 +32,7 @@
 <nav id="sidebar" class="sidebar-wrapper" th:fragment="sidebar">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
-            <a href="/admin">
+            <a href="/dashboard">
                 <img th:src="@{/images/logo.png}" height="56" alt="">
             </a>
         </div>
@@ -43,18 +43,6 @@
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i class="uil uil-user me-2 d-inline-block"></i>User</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i class="uil uil-setting me-2 d-inline-block"></i>Setting</a></li>
-
-
-<!--            <li class="sidebar-dropdown">-->
-<!--                <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>-->
-<!--                <div class="sidebar-submenu">-->
-<!--                    <ul>-->
-<!--                        <li><a href="chat.html">Chat</a></li>-->
-<!--                        <li><a href="email.html">Email</a></li>-->
-<!--                        <li><a href="calendar.html">Calendar</a></li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </li>-->
         </ul>
         <!-- sidebar-menu  -->
     </div>

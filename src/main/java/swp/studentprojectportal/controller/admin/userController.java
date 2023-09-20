@@ -28,7 +28,7 @@ public class userController {
         return "admin/user/userList";
     }
 
-    @GetMapping("/admin/userAdd")
+    @GetMapping("/addUser")
     public String addUserGet(Model model) {
         model.addAttribute("roleList", settingService.getAllRole());
         return "admin/user/userAdd";
