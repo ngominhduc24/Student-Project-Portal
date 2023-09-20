@@ -1,5 +1,7 @@
 package swp.studentprojectportal.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.Subject;
@@ -14,4 +16,6 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
     Subject findSubjectBySubjectName(String subjectName);
 
     Subject findSubjectBySubjectCode(String subjectCode);
+
+    List<Subject> findSubjectPaging(Pageable pageable);
 }

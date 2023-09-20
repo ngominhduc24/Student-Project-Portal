@@ -63,4 +63,8 @@ public class User {
     @OneToOne
     @JoinColumn(name = "role_id")
     private Setting setting;
+
+    public void setPhone(String phone) {
+        this.phone = phone.replace("+84", "0").replace(" ", "");
+    }
 }
