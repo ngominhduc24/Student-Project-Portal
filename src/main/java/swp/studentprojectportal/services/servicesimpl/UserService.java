@@ -1,11 +1,12 @@
 package swp.studentprojectportal.services.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISettingRepository;
-import swp.studentprojectportal.repository.IUserRepository;
-import swp.studentprojectportal.services.IUserService;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.services.IUserService;
 
@@ -54,7 +55,13 @@ public class UserService implements IUserService {
         }
         return false;
     }
-
+    @Override
+    public List<User> getUser(Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<User> userPage = userRepository.findAll(pageable);
+        List<User> users = userPage.getContent();
+        return users;
+    }
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();

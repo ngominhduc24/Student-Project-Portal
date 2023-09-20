@@ -13,6 +13,7 @@ import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utility.Validate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,7 +30,8 @@ public class userController {
 
     @GetMapping("/user")
     public String userList(Model model) {
-        model.addAttribute("userList", userService.findAllUser());
+        List<User> UserList = userService.getUser(0, 15);
+        model.addAttribute("userList", UserList);
         return "admin/user/userList";
     }
 
