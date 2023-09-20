@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
-    Subject findBySubjectCode(String subjectCode);
+
 
     Subject findSubjectBySubjectName(String subjectName);
 
     Subject findSubjectBySubjectCode(String subjectCode);
 
-    List<Subject> findSubjectPaging(Pageable pageable);
+    //List<Subject> findSubjectPaging(Pageable pageable);
 }

@@ -30,7 +30,7 @@ public class subjectController {
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
-        subjectList = subjectService.getAllSubjects();
+        subjectList = subjectService.getSubject(0, 15);
         model.addAttribute("SubjectList", subjectList);
         return "admin/subject/subjectList";
     }
