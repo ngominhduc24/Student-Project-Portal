@@ -29,26 +29,26 @@ public class verifyController {
     SettingService settingService;
     @Autowired
     RegisterService registerService;
+
     @GetMapping("/verifypage")
     public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
-        User user =  (User)session.getAttribute("userauthen");
-        String token = RandomString.make(30);   // genarate token
+        User user = (User) session.getAttribute("userauthen");
+        String token = RandomString.make(30); // genarate token
 
         // Check isverifyemail
-        boolean verifyMail = (boolean)session.getAttribute("verifyMail");
-
+        boolean verifyMail = (boolean) session.getAttribute("verifyMail");
 
         user.setToken(token);
         user.setSetting(settingService.findById(userRoleId));
         userService.saveUser(user);
 
         // get href
-        String href = (String)session.getAttribute("href");
+        String href = (String) session.getAttribute("href");
         session.removeAttribute("href");
         String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
 
         // if user register by email address
-        if(user.getEmail() != null && verifyMail == true) {
+        if (user.getEmail() != null && verifyMail == true) {
             emailservice.sendEmail(user.getFullName(), user.getEmail(), token_sender);
             model.addAttribute("email", user.getEmail());
             session.removeAttribute("user");
@@ -56,7 +56,7 @@ public class verifyController {
         }
 
         // if user register by phone number
-        if(user.getPhone() != null && verifyMail == false) {
+        if (user.getPhone() != null && verifyMail == false) {
             model.addAttribute("phone", user.getPhone());
             model.addAttribute("token", token_sender);
             session.removeAttribute("user");
@@ -66,11 +66,10 @@ public class verifyController {
         return "redirect:/error";
     }
 
-
     @GetMapping("/verify")
-    public String registerMail(Model model, HttpSession session,@RequestParam("key") String token) {
+    public String registerMail(Model model, HttpSession session, @RequestParam("key") String token) {
         User user = registerService.verifyToken(token);
-        if(user != null) {
+        if (user != null) {
             session.removeAttribute("user");
             return "verifySuccess";
         }
