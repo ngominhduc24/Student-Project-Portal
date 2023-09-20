@@ -12,6 +12,9 @@ public interface IUserService {
     boolean checkExistPhoneNumber(String phoneNumber);
     User findUserByEmailAndPassword(String username, String password);
     User findUserByPhoneAndPassword(String username, String password);
+
+    List<User> getUser(Integer pageNo, Integer pageSize);
+
     List<User> findAllUser();
     Optional<User> findUserById(int id);
     List<User> findAllUserByRoleId(int roleId);
