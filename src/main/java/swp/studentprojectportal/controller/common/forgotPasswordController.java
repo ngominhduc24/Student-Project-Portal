@@ -30,7 +30,7 @@ public class forgotPasswordController {
 
     @PostMapping("/forgotPassword")
     public String forgotPassword(Model model, WebRequest request, HttpSession session) {
-        String username = request.getParameter("username");
+        String username = request.getParameter("username").replace(" ", "");;
 
         User user = resetPassword.getUserByEmailOrPhone(username);
         if(user == null) {
