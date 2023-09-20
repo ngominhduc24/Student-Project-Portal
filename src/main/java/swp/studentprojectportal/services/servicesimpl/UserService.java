@@ -100,7 +100,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean addUser(String fullName, String email, String phone, String password, int roleId) {
+    public User addUser(String fullName, String email, String phone, String password, int roleId) {
         User user = new User();
 
         user.setActive(true);
@@ -112,7 +112,7 @@ public class UserService implements IUserService {
 
         userRepository.save(user);
 
-        return true;
+        return user;
     }
 
     @Override
