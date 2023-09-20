@@ -1,5 +1,6 @@
 package swp.studentprojectportal.controller.admin;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +11,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.utility.Validate;
 
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class userController {
+    @Autowired
+    private int adminRoleId;
+
     @Autowired
     UserService userService;
 
@@ -43,9 +48,7 @@ public class userController {
             @RequestParam String password,
             Model model) {
 
-        String errorMsg = null;
-        if(userService.checkExistMail(email)) errorMsg = "Email existed!";
-        if(userService.checkExistPhoneNumber(phone)) errorMsg = "Phone existed!";
+        String errorMsg = checkValidate(email, phone);
 
         if(errorMsg!=null) {
             model.addAttribute("error", errorMsg);
@@ -53,21 +56,46 @@ public class userController {
             return "admin/user/userAdd";
         }
 
-        userService.addUser(fullName, email, phone, password, roleId);
-        return "redirect:./user";
+        int newUserId = userService.addUser(fullName, email, phone, password, roleId).getId();
+        return "redirect:./userDetails?id=" + newUserId;
     }
 
     @PostMapping("/updateUser")
     public String updateUser(
+            HttpSession session,
             @RequestParam int id,
             @RequestParam String fullName,
             @RequestParam String email,
             @RequestParam String phone,
             @RequestParam int roleId,
             @RequestParam String note,
-            @RequestParam boolean status) {
-        userService.updateUser(id, fullName, email, phone, roleId, status, note);
-        return "redirect:./user";
+            @RequestParam boolean status,
+            Model model) {
+        User userUpdate = userService.findUserById(id).get();
+        model.addAttribute("user", userUpdate);
+        model.addAttribute("roleList", settingService.getAllRole());
+
+        //check validate before update
+        String msg = checkValidateUpdate(email, phone, userUpdate);
+        if (msg != null) {
+            model.addAttribute("errorMsg", msg);
+        } else {
+            //update
+            boolean ans = userService.updateUser(id, fullName, email, phone, roleId, status, note);
+
+            if (ans) model.addAttribute("msg", "Update success");
+            else model.addAttribute("errorMsg", "Update failed");
+        }
+
+        //update session
+        if (id == ((User)session.getAttribute("user")).getId() ) {
+            User user = userService.findUserById(id).get();
+            session.setAttribute("user", user);
+            if (user.getSetting().getId() != adminRoleId)
+                return "redirect:/home";
+        }
+
+        return "admin/user/userDetails";
     }
 
     @GetMapping("/userDetails")
@@ -84,5 +112,30 @@ public class userController {
             @RequestParam boolean status) {
         userService.updateUserStatus(id, status);
         return "redirect:/";
+    }
+
+    private String checkValidate(String email, String phone) {
+        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
+        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
+
+        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
+        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
+
+        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
+        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
+
+        return null;
+    }
+
+    private String checkValidateUpdate(String email, String phone, User user) {
+        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
+
+        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
+        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
+
+        if (!email.equals(user.getEmail()) && !email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
+        if (!phone.equals(user.getPhone()) && !phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
+
+        return null;
     }
 }

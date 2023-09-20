@@ -27,11 +27,7 @@ public class registerController {
         String fullname = request.getParameter("fullname");
         String termCheckbox = request.getParameter("termCheckbox");
         String username = request.getParameter("username").replace(" ", "");
-        String password = request.getParameter("password").replace(" ", "");
-
-        if(termCheckbox == null) {
-            model.addAttribute("errmsg", "you need accept our Terms And Condition to register account");
-        }
+        String password = request.getParameter("password");
 
         // create model user
         User user = new User();
@@ -48,19 +44,28 @@ public class registerController {
             session.setAttribute("verifyMail", false);
         }
 
+        if(termCheckbox == null) {
+            model.addAttribute("errmsg", "You must agree with our term and condition");
+            return "register";
+        }
 
         if(user.getEmail() == null && user.getPhone() == null) {
-            model.addAttribute("errmsg", "Your email address or phone number is not correct format");
+            model.addAttribute("errmsg", "Invalid email or phone number");
             return "register";
         }
 
         if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
-            model.addAttribute("errmsg", "Email address already exist!");
+            model.addAttribute("errmsg", "Email already exist!");
             return "register";
         }
 
         if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
-            model.addAttribute("errmsg", "Email domain is not accept");
+            model.addAttribute("errmsg", "Email domain is not allowed!");
+            return "register";
+        }
+
+        if (user.getPhone() != null && userService.checkExistPhoneNumber(user.getPhone())) {
+            model.addAttribute("errmsg", "Phone number already exist!");
             return "register";
         }
 
