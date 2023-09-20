@@ -9,6 +9,6 @@ public interface ISettingService {
     Setting getSettingByID(Integer settingId);
     Setting saveSetting(Setting setting);
     List<Setting> getAllRole();
-
+    Setting getLastestSemester();
     Setting findById(int id);
 }

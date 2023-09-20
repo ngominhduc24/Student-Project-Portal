@@ -1,14 +1,21 @@
 package swp.studentprojectportal.controller.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import swp.studentprojectportal.services.servicesimpl.SettingService;
 
 @Controller
 public class dashboardController {
 
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";
+    @Autowired
+    SettingService settingService;
+
+    @GetMapping("/home")
+    public String dashboard(Model model) {
+        model.addAttribute("currentSemester", settingService.getLastestSemester().getSettingTitle());
+        return "common/home";
     }
 
 }

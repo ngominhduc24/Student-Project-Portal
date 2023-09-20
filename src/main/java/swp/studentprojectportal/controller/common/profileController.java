@@ -53,7 +53,7 @@ public class profileController {
     }
 
 
-//   Update mail and phone number with verify
+    //   Update mail and phone number with verify
     @GetMapping("/update-mail")
     public String updateEmailPage(Model model) {
         return "mailUpdate";
@@ -81,6 +81,7 @@ public class profileController {
             return "mailUpdate";
         }
 
+        session.setAttribute("verifyMail", true);
         session.setAttribute("userauthen", user);
         session.setAttribute("newmail", newMail);
         session.setAttribute("href", "verifynewmail");

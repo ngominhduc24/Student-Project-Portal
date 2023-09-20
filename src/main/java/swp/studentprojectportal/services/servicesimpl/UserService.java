@@ -8,6 +8,7 @@ import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.services.IUserService;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.services.IUserService;
+import swp.studentprojectportal.utils.GooglePojo;
 
 import java.util.List;
 import java.util.Optional;
@@ -100,6 +101,22 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User addUser(String fullName, String email, String phone, String password, int roleId) {
+        User user = new User();
+
+        user.setActive(true);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setPassword(password);
+        user.setSetting(settingRepository.findById(roleId).get());
+
+        userRepository.save(user);
+
+        return user;
+    }
+
+    @Override
     public User findUserByEmailAndPassword(String username, String password) {
         return userRepository.findUserByEmailAndPassword(username, password);
     }
@@ -107,5 +124,20 @@ public class UserService implements IUserService {
     @Override
     public User findUserByPhoneAndPassword(String username, String password) {
         return userRepository.findUserByPhoneAndPassword(username, password);
+    }
+
+    public User registerAccountFromGoogle(GooglePojo googlePojo) {
+        String[] temp = googlePojo.getEmail().split("@");
+        String fullName = temp[0];
+        //save to account
+        User newUser = new User();
+        newUser.setFullName(fullName);
+        newUser.setEmail(googlePojo.getEmail());
+        newUser.setPassword(googlePojo.getId());
+        newUser.setAvatarUrl(googlePojo.getPicture());
+        newUser.setActive(true);
+        newUser.setSetting(settingRepository.findById(1).get());
+        User user = userRepository.save(newUser);
+        return user;
     }
 }

@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.GooglePojo;
 import swp.studentprojectportal.utils.GoogleUtils;
@@ -17,19 +19,20 @@ import java.io.IOException;
 
 @Controller
 public class loginController {
-    private final String afterLoginRoute = "/dashboard";
+    private final String afterLoginRoute = "/home";
 
     @Autowired
     UserService userService;
+    @Autowired
+    SettingService settingService;
     @RequestMapping("/login")
     public String loginPage() {
         return "login";
     }
 
     @PostMapping("/login")
-    public String userLogin(WebRequest request, Model model, HttpSession session) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    public String userLogin(@RequestParam String username, @RequestParam String password,
+                            Model model, HttpSession session) {
         User user;
         if (username.contains("@"))
             user = userService.findUserByEmailAndPassword(username, password);
@@ -37,7 +40,7 @@ public class loginController {
             user = userService.findUserByPhoneAndPassword(username, password);
         if(user != null) {
             if(!user.isActive()) {
-                model.addAttribute("errmsg", "Your account has been blocked");
+                model.addAttribute("errmsg", "Your account has not been verified");
                 return "login";
             }
             if(!user.isStatus()) {
@@ -54,8 +57,7 @@ public class loginController {
     }
 
     @GetMapping("/login-google")
-    public String userLoginGoogle(WebRequest request, Model model, HttpSession session) throws IOException {
-        String code = request.getParameter("code");
+    public String userLoginGoogle(@RequestParam String code, Model model, HttpSession session) throws IOException {
         if (code == null || code.isEmpty()) {
             return "redirect:/login";
         } else {
@@ -66,12 +68,7 @@ public class loginController {
                 return "login";
             }
             if (!userService.checkExistMail(googlePojo.getEmail())) {
-                User u = new User();
-                u.setEmail(googlePojo.getEmail());
-                u.setPassword(googlePojo.getId());
-                u.setAvatarUrl(googlePojo.getPicture());
-                u.setActive(true);
-                User user = userService.saveUser(u);
+                User user = userService.registerAccountFromGoogle(googlePojo);
                 session.setAttribute("user", user);
                 return "redirect:" + afterLoginRoute;
             } else {
