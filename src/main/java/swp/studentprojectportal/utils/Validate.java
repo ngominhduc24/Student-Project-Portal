@@ -1,4 +1,4 @@
-package swp.studentprojectportal.utility;
+package swp.studentprojectportal.utils;
 
 public class Validate {
     public static boolean validEmail(String email) {
