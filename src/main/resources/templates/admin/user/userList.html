@@ -56,6 +56,7 @@
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
             <div class="layout-specing">
+
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
                         <h1>User</h1>
@@ -81,6 +82,21 @@
                         <div class="card-body">
                             <table id="myTable" class="display">
                                 <thead>
+
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>
+                                        <a th:href="@{'./user?page=' + ${page<=0 ? 0 : page+(-1)}}">Previous</a>
+                                    </th>
+                                    <th>
+                                        <a th:href="@{'./user?page=' + ${page+1}}">Next</a>
+                                    </th>
+                                </tr>
+
                                 <tr>
                                     <th>Fullname</th>
                                     <th>Email</th>
@@ -128,10 +144,27 @@
                                     </td>
                                 </tr>
                                 </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>
+                                            <a th:href="@{'./user?page=' + ${page<=0 ? 0 : page+(-1)}}">Previous</a>
+                                        </th>
+                                        <th>
+                                            <a th:href="@{'./user?page=' + ${page+1}}">Next</a>
+                                        </th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div><!--end container-->
 
@@ -158,13 +191,18 @@
     $(document).ready(function () {
         $('#myTable').DataTable({
             "dom": 'rtip',
-            "bInfo" : false
+            "bInfo" : false,
+            "paging": false,
         });
     });
 </script>
 
 <!-- Status update -->
 <script>
+    window.addEventListener('load', function() {
+        // Scroll to the bottom of the page
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
+    });
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
