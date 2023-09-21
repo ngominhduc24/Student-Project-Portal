@@ -49,19 +49,19 @@
                     <div class="card-body">
                         <h4 class="text-center">Sign In</h4>
                         <form action="login" class="login-form mt-4" method="post">
-                            <h6 style="color: red; text-align: center" th:text="${errmsg}"></h6>
+                            <h6 style="color: red; text-align: center" th:text="${errmsg}" ></h6>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label">Your Email Or Phone Number  <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Email or phone number" name="username" required="">
+                                        <input type="text" class="form-control" th:value="${cuser}" placeholder="Email or phone number" name="username" required="">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label">Password <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="Password" name="password" required="">
+                                        <input type="password" class="form-control" th:value="${cpass}" placeholder="Password" name="password" required="">
                                     </div>
                                 </div>
 
@@ -69,7 +69,7 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="mb-3">
                                             <div class="form-check">
-                                                <input class="form-check-input align-middle" type="checkbox" value="" id="remember-check">
+                                                <input class="form-check-input align-middle" th:checked="${crem!=null and !crem.isEmpty()}" name="remember" type="checkbox" value="on" id="remember-check">
                                                 <label class="form-check-label" for="remember-check">Remember me</label>
                                             </div>
                                         </div>
