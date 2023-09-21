@@ -66,7 +66,7 @@ public class subjectController {
         return "admin/subject/subjectDetail";
     }
 
-    @PostMapping("/updateSubject")
+    @PostMapping("/admin/updateSubject")
     public String updateSubject(
             @RequestParam int id,
             @RequestParam String subjectName,
@@ -75,14 +75,18 @@ public class subjectController {
             @RequestParam boolean status,
             Model model) {
 
-        String msg = checkValidateUpdate(subjectName, subjectCode, subjectManagerId);
+        String msg = checkValidateUpdate(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
         if (msg != null) {
             model.addAttribute("errorMsg", msg);
         } else {
             boolean ans = subjectService.updateSubject(id, subjectName, subjectCode, subjectManagerId, status);
-            if(ans) model.addAttribute("successMsg", "Update success");
+            if (ans) model.addAttribute("successMsg", "Update success");
             else model.addAttribute("errorMsg", "Update failed");
         }
+
+        model.addAttribute("subject", subjectService.getSubjectById(id));
+        model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+
         return "admin/subject/subjectDetail";
     }
     @GetMapping("/admin/subject/updateStatus")
@@ -104,13 +108,13 @@ public class subjectController {
         return null;
     }
 
-    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId) {
-        if(subjectName.isEmpty()) return "Please input subject name";
+    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
+
         if(subjectCode.isEmpty()) return "Please input subject code";
         if(subjectManagerId == 0) return "Please input subject manager";
 
-        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+        if(!subject.getSubjectName().equals(subjectName) && subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+        if(!subject.getSubjectCode().equals(subjectCode) && subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
 
         return null;
     }
