@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.RegisterService;
+import swp.studentprojectportal.services.servicesimpl.SettingService;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utility.Validate;
 import swp.studentprojectportal.utils.Utility;
@@ -17,7 +18,11 @@ import swp.studentprojectportal.utils.Utility;
 @Controller
 public class registerController {
     @Autowired
+    int userRoleId;
+    @Autowired
     UserService userService;
+    @Autowired
+    SettingService settingService;
     @GetMapping("/register")
     public String registerPage(Model model) {
         return "register";
@@ -34,6 +39,7 @@ public class registerController {
         user.setActive(false);
         user.setFullName(fullname);
         user.setPassword(password);
+        user.setSetting(settingService.findById(userRoleId));
 
         if(Validate.validEmail(username)) {
             user.setEmail(username);

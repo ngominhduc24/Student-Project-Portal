@@ -20,8 +20,6 @@ import swp.studentprojectportal.utils.Utility;
 @Controller
 public class verifyController {
     @Autowired
-    int userRoleId;
-    @Autowired
     UserService userService;
     @Autowired
     EmailService emailservice;
@@ -39,7 +37,6 @@ public class verifyController {
         boolean verifyMail = (boolean) session.getAttribute("verifyMail");
 
         user.setToken(token);
-        user.setSetting(settingService.findById(userRoleId));
         userService.saveUser(user);
 
         // get href
