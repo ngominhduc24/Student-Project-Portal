@@ -233,14 +233,14 @@
         const dialog = element.closest('tr').querySelector('.userNote');
         const userFullName = dialog.querySelector('.modal-title');
         const userNote = dialog.querySelector('.modal-body p');
-
-        const userId = element.getAttribute("userId");
+        const userId = element.getAttribute('data-user-id');
         fetchUserData(userId).then(data => {
             userFullName.textContent = data.fullName;
             userNote.textContent = data.note;
             dialog.showModal();
+            console.log(userId)
         }).catch(error => {
-            console.error('Error fetching user data:', error)// Handle errors here (e.g., display an error message
+            console.error('Error fetching user data:', error);
         })
     }
 
@@ -357,7 +357,7 @@
                         </div>
                     </td>
                     <td>
-                        <a href="#" class="showNote" onclick="openDialog(this)">
+                        <a href="#" class="showNote" data-user-id="${user.id}" onclick="openDialog(this)">
                             <i class="fas fa-pen-to-square"></i>
                         </a>
                                         <dialog class="userNote">
