@@ -46,18 +46,16 @@ public class subjectController {
     public String createSubject(
             @RequestParam String subjectName,
             @RequestParam String subjectCode,
-            @RequestParam int subjectManagerId) {
-        subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true);
-//        boolean isSubjectAdded = isSubjectAdded(subjectName, subjectCode, subjectManagerId);
+            @RequestParam int subjectManagerId,
+            Model model) {
 
-        if ((subjectCode == null && subjectName == null) ||
-                (subjectCode == null && !subjectService.checkSubjectCodeExist(subjectCode)) ||
-                (subjectName == null && !subjectService.checkSubjectNameExist(subjectName)) ||
-                (subjectManagerId == 0 && userService.findUserById(subjectManagerId).isEmpty())) {
-            return "redirect:/admin/subjectAdd";
+        String errorMsg = checkValidate(subjectName, subjectCode, subjectManagerId);
+        if(errorMsg!=null) {
+            model.addAttribute("error", errorMsg);
+            return "admin/subject/subjectAdd";
         }
-
-        return "redirect:./subject";
+        int newSubjectId = subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true).getId();
+        return "redirect:./subjectDetails?id=" + newSubjectId;
     }
 
     @GetMapping("/admin/subjectDetails")
@@ -68,17 +66,25 @@ public class subjectController {
         return "admin/subject/subjectDetail";
     }
 
-    @PostMapping("/admin/updateSubject")
+    @PostMapping("/updateSubject")
     public String updateSubject(
             @RequestParam int id,
             @RequestParam String subjectName,
             @RequestParam String subjectCode,
             @RequestParam int subjectManagerId,
-            @RequestParam boolean status){
-        subjectService.updateSubject(id, subjectName, subjectCode, subjectManagerId, status);
-        return "redirect:./subject";
-    }
+            @RequestParam boolean status,
+            Model model) {
 
+        String msg = checkValidateUpdate(subjectName, subjectCode, subjectManagerId);
+        if (msg != null) {
+            model.addAttribute("errorMsg", msg);
+        } else {
+            boolean ans = subjectService.updateSubject(id, subjectName, subjectCode, subjectManagerId, status);
+            if(ans) model.addAttribute("successMsg", "Update success");
+            else model.addAttribute("errorMsg", "Update failed");
+        }
+        return "admin/subject/subjectDetail";
+    }
     @GetMapping("/admin/subject/updateStatus")
     public String updateSettingStatus(
             @RequestParam int id,
@@ -87,6 +93,27 @@ public class subjectController {
         return "redirect:/";
     }
 
+    private String checkValidate(String subjectName, String subjectCode, int subjectManagerId) {
+        if(subjectName.isEmpty()) return "Please input subject name";
+        if(subjectCode.isEmpty()) return "Please input subject code";
+        if(subjectManagerId == 0) return "Please input subject manager";
+
+        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+
+        return null;
+    }
+
+    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId) {
+        if(subjectName.isEmpty()) return "Please input subject name";
+        if(subjectCode.isEmpty()) return "Please input subject code";
+        if(subjectManagerId == 0) return "Please input subject manager";
+
+        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+
+        return null;
+    }
 }
 
 

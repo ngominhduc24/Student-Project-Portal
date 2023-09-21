@@ -61,6 +61,7 @@
                         <h1>User</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">User</li>
                         </ol>
                     </div><!--end col-->
@@ -141,16 +142,16 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div th:content="3" class="countPage" hidden=""></div>
+                            <input type="text" id="countPage" th:value="${totalPage}" hidden="">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link">Previous</a>
+                                    <li class="page-item disabled" >
+                                        <a class="page-link" style="user-select: none;">Previous</a>
                                     </li>
-                                    <li class="page-item active" ><a class="page-link">1</a></li>
-                                    <li class="page-item"><a class="page-link">2</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
+                                    <li class="page-item active" ><a class="page-link" style="user-select: none;">1</a></li>
+                                    <li class="page-item"><a class="page-link" style="user-select: none;">2</a></li>
+                                    <li class="page-item" >
+                                        <a class="page-link" style="user-select: none;">Next</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -175,9 +176,8 @@
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
-
+<!-- Datatable -->
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
-
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
@@ -240,94 +240,123 @@
 
 </script>
 
-<script>
-        function getUserList() {
-            fetch('/api/v1/user?pageNo=1&pageSize=10')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                });
-        }
-        getUserList();
-</script>
+
+
 <script>
     // Get references to the pagination elements
     const pagination = document.querySelector('.pagination');
     const pageItems = pagination.querySelectorAll('.page-item');
     const pageLinks = pagination.querySelectorAll('.page-link');
 
-    // Find the active page
-    let activePage = pagination.querySelector('.page-item.active');
-
     // Find the maximum page number from the "countPage" div
-    const countPage = document.querySelector('.countPage');
-    const maxPage = parseInt(countPage.textContent);
+    let countPage = parseInt(document.getElementById('countPage').value);
+    let currentPage = 1;
 
-    // Function to handle page navigation
-    function navigatePage(newActivePage) {
-        // Check if newActivePage is at the maximum page
-        if (nextPage.querySelector('a').textContent == maxPage.toString()) {
-            // Remove the "active" class from the current active page
-            activePage.classList.remove('active');
-
-            // Add the "active" class to the new active page
-            newActivePage.classList.add('active');
-
-            // Update the activePage reference
-
-            // Update the "Next" button state
-            updatePaginationButtons();
-
-            activePage = newActivePage;
-        } else {
-            // Handle logic when newActivePage is not at the maximum page
-            // For example, you can increment the page number on the "Next" button
-            const nextPage = pagination.querySelector('.page-item.active + .page-item');
-            const nextPageLink = nextPage.querySelector('a');
-            if (parseInt(nextPageLink.textContent) !== maxPage) {
-                nextPageLink.textContent = parseInt(nextPageLink.textContent) + 1;
-                currentPage.querySelector('a').textContent = parseInt(currentPage.querySelector('a').textContent) + 1;
-            }
-
-        }
+    if(countPage == 1) {
+        pageItems[0].classList.add('disabled');
+        pageItems[3].classList.add('disabled');
+        pageItems[2].remove();
     }
 
     // Handle "Previous" button click
     pageLinks[0].addEventListener('click', function (event) {
         event.preventDefault();
-        const previousPage = activePage.previousElementSibling;
-        if (previousPage && !previousPage.classList.contains('disabled')) {
-            navigatePage(previousPage);
+        if (pageItems[0].classList.contains('disabled') === false) {
+                currentPage --;
+                pageItems[3].classList.remove('disabled');
+            if (pageLinks[2].textContent == 2) {
+                // Special case: When currentPage is 2, just change the active state
+                pageItems[1].classList.add('active');
+                pageItems[2].classList.remove('active');
+                pageItems[0].classList.add('disabled');
+            } else {
+                // Otherwise, decrement currentPage
+                pageLinks[1].textContent = parseInt(pageLinks[1].textContent) - 1;
+                pageLinks[2].textContent = parseInt(pageLinks[2].textContent) - 1;
+            }
+            populateUserTable(currentPage);
         }
     });
 
     // Handle "Next" button click
-    pageLinks[pageLinks.length - 1].addEventListener('click', function (event) {
+    pageLinks[3].addEventListener('click', function (event) {
         event.preventDefault();
-        const nextPage = activePage.nextElementSibling;
-        if (nextPage && !nextPage.classList.contains('disabled')) {
-            navigatePage(nextPage);
+        if (pageItems[3].classList.contains('disabled') === false) {
+            currentPage++;
+            pageItems[0].classList.remove('disabled');
+            if(pageLinks[1].textContent == countPage - 1) {
+                // Special case: When currentPage is the second last page, just change the active state
+                pageItems[1].classList.remove('active');
+                pageItems[2].classList.add('active');
+                pageItems[3].classList.add('disabled');
+            } else {
+                pageLinks[1].textContent = parseInt(pageLinks[1].textContent) + 1;
+                pageLinks[2].textContent = parseInt(pageLinks[2].textContent) + 1;
+            }
+            populateUserTable(currentPage);
+
         }
     });
 
-    // Hide "Previous" and "Next" buttons when at the first or last page
-    function updatePaginationButtons() {
-        if (activePage === pageItems[1]) {
-            pageItems[0].classList.add('disabled');
-        } else {
-            pageItems[0].classList.remove('disabled');
-        }
+    // Function to fetch user data and populate the table
+    function populateUserTable(pageNo) {
+        pageNo = pageNo - 1;
+        const apiUrl = `/api/v1/user?pageNo=${pageNo}&pageSize=10`; // Your API endpoint
 
-        if (activePage === pageItems[pageItems.length - 2]) {
-            pageItems[pageItems.length - 1].classList.add('disabled');
-        } else {
-            pageItems[pageItems.length - 1].classList.remove('disabled');
-        }
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Clear the table first
+                const tableBody = document.querySelector('#myTable tbody');
+
+                // Clear existing rows
+                tableBody.innerHTML = '';
+                data.forEach(user => {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                    <td>${user.fullName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phone}</td>
+                    <td>${user.setting.settingTitle}</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="showNote" onclick="openDialog(this)">
+                            <i class="fas fa-pen-to-square"></i>
+                        </a>
+                        <dialog class="userNote">
+                            <div class="userNote_container">
+                                <div class="userNote_header">
+                                    <h2 >${user.fullName}</h2>
+                                </div>
+                                <div class="userNote_body">
+                                    <div class="userNote_body_content">
+                                        <div class="userNote_body_content_text">
+                                            <p>${user.note}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="closeDialog(this)">Cancel</button>
+                            </div>
+                        </dialog>
+                    </td>
+                    <td><a href="./userDetails?id=${user.id}">View Details</a></td>
+                `;
+
+                    tableBody.appendChild(newRow);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                // Handle errors here (e.g., display an error message)
+            });
     }
 
-    // Initial call to updatePaginationButtons to set the initial state
-    updatePaginationButtons();
 </script>
+
 
 
 </body>

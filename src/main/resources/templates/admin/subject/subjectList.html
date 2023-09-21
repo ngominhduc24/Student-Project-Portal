@@ -30,7 +30,7 @@
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
-    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
 
 
 </head>
@@ -61,6 +61,7 @@
                         <h1>Subject</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Subject</li>
                         </ol>
                     </div><!--end col-->
@@ -133,7 +134,6 @@
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
-
 <!-- Datatable -->
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
@@ -143,7 +143,7 @@
     $(document).ready(function () {
         $('#myTable').DataTable({
             "dom": 'frt<"#toolbar.dt-box"><"dt-box"p>',
-            "bInfo" : false,
+            "bInfo": false,
         });
 
         $("#toolbar").html('<div class="float-left">' +

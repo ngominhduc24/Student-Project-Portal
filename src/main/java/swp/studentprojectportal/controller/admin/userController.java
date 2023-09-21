@@ -36,6 +36,7 @@ public class userController {
 
         model.addAttribute("userList", UserList);
         model.addAttribute("page", page);
+        model.addAttribute("totalPage", userService.getTotalPage(10));
 
         return "admin/user/userList";
     }

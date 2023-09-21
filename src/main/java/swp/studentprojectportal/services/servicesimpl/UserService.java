@@ -170,4 +170,11 @@ public class UserService implements IUserService {
             cr.setMaxAge(0);
         }
     }
+    @Override
+    // get totalPage
+    public int getTotalPage(int pageSize) {
+        long count = userRepository.count();
+        int totalPage = count % pageSize == 0 ? (int) (count / pageSize) : (int) (count / pageSize) + 1;
+        return totalPage;
+    }
 }
