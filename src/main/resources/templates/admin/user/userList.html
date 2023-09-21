@@ -142,9 +142,23 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <div th:content="3" class="countPage" hidden=""></div>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link">Previous</a>
+                                    </li>
+                                    <li class="page-item active" ><a class="page-link">1</a></li>
+                                    <li class="page-item"><a class="page-link">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div><!--end container-->
 
@@ -181,6 +195,10 @@
 
 <!-- Status update -->
 <script>
+    window.addEventListener('load', function() {
+        // Scroll to the bottom of the page
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
+    });
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
@@ -221,6 +239,96 @@
     })
 
 </script>
+
+<script>
+        function getUserList() {
+            fetch('/api/v1/user?pageNo=1&pageSize=10')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+        }
+        getUserList();
+</script>
+<script>
+    // Get references to the pagination elements
+    const pagination = document.querySelector('.pagination');
+    const pageItems = pagination.querySelectorAll('.page-item');
+    const pageLinks = pagination.querySelectorAll('.page-link');
+
+    // Find the active page
+    let activePage = pagination.querySelector('.page-item.active');
+
+    // Find the maximum page number from the "countPage" div
+    const countPage = document.querySelector('.countPage');
+    const maxPage = parseInt(countPage.textContent);
+
+    // Function to handle page navigation
+    function navigatePage(newActivePage) {
+        // Check if newActivePage is at the maximum page
+        if (nextPage.querySelector('a').textContent == maxPage.toString()) {
+            // Remove the "active" class from the current active page
+            activePage.classList.remove('active');
+
+            // Add the "active" class to the new active page
+            newActivePage.classList.add('active');
+
+            // Update the activePage reference
+
+            // Update the "Next" button state
+            updatePaginationButtons();
+
+            activePage = newActivePage;
+        } else {
+            // Handle logic when newActivePage is not at the maximum page
+            // For example, you can increment the page number on the "Next" button
+            const nextPage = pagination.querySelector('.page-item.active + .page-item');
+            const nextPageLink = nextPage.querySelector('a');
+            if (parseInt(nextPageLink.textContent) !== maxPage) {
+                nextPageLink.textContent = parseInt(nextPageLink.textContent) + 1;
+                currentPage.querySelector('a').textContent = parseInt(currentPage.querySelector('a').textContent) + 1;
+            }
+
+        }
+    }
+
+    // Handle "Previous" button click
+    pageLinks[0].addEventListener('click', function (event) {
+        event.preventDefault();
+        const previousPage = activePage.previousElementSibling;
+        if (previousPage && !previousPage.classList.contains('disabled')) {
+            navigatePage(previousPage);
+        }
+    });
+
+    // Handle "Next" button click
+    pageLinks[pageLinks.length - 1].addEventListener('click', function (event) {
+        event.preventDefault();
+        const nextPage = activePage.nextElementSibling;
+        if (nextPage && !nextPage.classList.contains('disabled')) {
+            navigatePage(nextPage);
+        }
+    });
+
+    // Hide "Previous" and "Next" buttons when at the first or last page
+    function updatePaginationButtons() {
+        if (activePage === pageItems[1]) {
+            pageItems[0].classList.add('disabled');
+        } else {
+            pageItems[0].classList.remove('disabled');
+        }
+
+        if (activePage === pageItems[pageItems.length - 2]) {
+            pageItems[pageItems.length - 1].classList.add('disabled');
+        } else {
+            pageItems[pageItems.length - 1].classList.remove('disabled');
+        }
+    }
+
+    // Initial call to updatePaginationButtons to set the initial state
+    updatePaginationButtons();
+</script>
+
 
 </body>
 

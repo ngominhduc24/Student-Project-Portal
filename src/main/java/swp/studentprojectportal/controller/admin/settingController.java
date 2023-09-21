@@ -35,20 +35,30 @@ public class settingController {
 
     @PostMapping("/admin/setting/update")
     public String updateSetting(
-            @RequestParam int id,
-            @RequestParam int typeId,
+            @RequestParam Integer typeId,
             @RequestParam String settingTitle,
-            @RequestParam int displayOrder,
+            @RequestParam Integer displayOrder,
             WebRequest request, HttpSession session) {
         String status = request.getParameter("status");
         Setting setting = new Setting();
-        setting.setId(id);
+        String id = request.getParameter("id");
+        System.out.println(id);
+        if(id!=null && !id.isEmpty())
+            setting.setId(Integer.parseInt(id));
         setting.setTypeId(typeId);
         setting.setSettingTitle(settingTitle);
         setting.setDisplayOrder(displayOrder);
         setting.setStatus(status!=null);
         settingSevice.saveSetting(setting);
         return "redirect:/admin/setting";
+    }
+
+    @GetMapping("/admin/setting/add")
+    public String settingAddForm(@RequestParam("typeId") Integer typeId, Model model) {
+        model.addAttribute("typeId", typeId);
+        Setting setting = new Setting();
+        model.addAttribute("setting", setting);
+        return "admin/setting/settingDetail";
     }
 
     @GetMapping("/admin/setting/updateStatus")

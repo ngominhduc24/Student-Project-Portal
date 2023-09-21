@@ -29,9 +29,14 @@ public class userController {
     SettingService settingService;
 
     @GetMapping("/user")
-    public String userList(Model model) {
-        List<User> UserList = userService.getUser(0, 15);
+    public String userList(Model model,
+            @RequestParam(defaultValue = "0") int page) {
+        if (page<0) page = 0;
+        List<User> UserList = userService.getUser(page, 10);
+
         model.addAttribute("userList", UserList);
+        model.addAttribute("page", page);
+
         return "admin/user/userList";
     }
 
