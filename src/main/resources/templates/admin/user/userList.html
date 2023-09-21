@@ -231,11 +231,26 @@
     function openDialog(element) {
         // Find the closest dialog element to the clicked anchor tag
         const dialog = element.closest('tr').querySelector('.userNote');
+        const userFullName = dialog.querySelector('.modal-title');
+        const userNote = dialog.querySelector('.modal-body p');
 
-        // Check if a dialog is found, and then show it
-        if (dialog) {
+        const userId = element.getAttribute("userId");
+        fetchUserData(userId).then(data => {
+            userFullName.textContent = data.fullName;
+            userNote.textContent = data.note;
             dialog.showModal();
-        }
+        }).catch(error => {
+            console.error('Error fetching user data:', error)// Handle errors here (e.g., display an error message
+        })
+    }
+
+    function fetchUserData(userId) {
+        const apiUrl = `/api/v1/user/${userId}`; // Your API endpoint
+        return fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
     }
 
     // Close dialog when pressing cancel button
@@ -350,15 +365,14 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel"
-                                                                th:text="${user.fullName}"></h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
+                                                            <h5 class="modal-title" id="modalTitle"></h5>
+                                                            <button type="button" class="close" data-dismissem ="modal"
                                                                     aria-label="Close" onclick="closeDialog(this)">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p th:text="${user.note}"></p>
+                                                            <p></p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-primary"
