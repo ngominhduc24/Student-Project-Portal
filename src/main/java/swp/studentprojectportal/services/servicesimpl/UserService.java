@@ -1,5 +1,7 @@
 package swp.studentprojectportal.services.servicesimpl;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +11,7 @@ import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISettingRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.services.IUserService;
+import swp.studentprojectportal.utils.GooglePojo;
 
 import java.util.List;
 import java.util.Optional;
@@ -130,5 +133,41 @@ public class UserService implements IUserService {
     @Override
     public User findUserByPhoneAndPassword(String username, String password) {
         return userRepository.findUserByPhoneAndPassword(username, password);
+    }
+
+    @Override
+    public User findUserByUsernameAndPassword(String username, String password) {
+        User user;
+        if (username.contains("@"))
+            user = userRepository.findUserByEmailAndPassword(username, password);
+        else
+            user = userRepository.findUserByPhoneAndPassword(username, password);
+        return user;
+    }
+
+    public User registerAccountFromGoogle(GooglePojo googlePojo) {
+        String[] temp = googlePojo.getEmail().split("@");
+        String fullName = temp[0];
+        //save to account
+        User newUser = new User();
+        newUser.setFullName(fullName);
+        newUser.setEmail(googlePojo.getEmail());
+        newUser.setPassword(googlePojo.getId());
+        newUser.setAvatarUrl(googlePojo.getPicture());
+        newUser.setActive(true);
+        newUser.setSetting(settingRepository.findById(1).get());
+        User user = userRepository.save(newUser);
+        return user;
+    }
+    public void setCookie(Cookie cu, Cookie cp, Cookie cr, String remember) {
+        if(remember!=null){
+            cu.setMaxAge(60*60*24*7);
+            cp.setMaxAge(60*60*24*7);
+            cr.setMaxAge(60*60*24*7);
+        } else {
+            cu.setMaxAge(0);
+            cp.setMaxAge(0);
+            cr.setMaxAge(0);
+        }
     }
 }
