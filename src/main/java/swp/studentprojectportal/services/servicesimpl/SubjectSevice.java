@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.ISubjectRepository;
@@ -70,7 +69,7 @@ public class SubjectSevice implements ISubjectService {
     }
 
     @Override
-    public boolean addSubject(String subjectName, String subjectCode, int subjectManagerId, boolean status) {
+    public Subject addSubject(String subjectName, String subjectCode, int subjectManagerId, boolean status) {
         Subject subject = new Subject();
 
         subject.setSubjectName(subjectName);
@@ -79,7 +78,7 @@ public class SubjectSevice implements ISubjectService {
         subject.setStatus(true);
 
         subjectRepository.save(subject);
-        return true;
+        return subject;
     }
     @Override
     public boolean checkSubjectCodeExist(String subjectCode) {
