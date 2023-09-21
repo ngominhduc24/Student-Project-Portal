@@ -129,7 +129,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <input type="text" id="countPage" th:value="3" hidden="">
+                            <input type="text" id="countPage" th:value="${totalPage}" hidden="">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item disabled" >
@@ -288,6 +288,7 @@
 
     // Function to fetch user data and populate the table
     function populateUserTable(pageNo) {
+        pageNo = pageNo - 1;
         const apiUrl = `/api/v1/user?pageNo=${pageNo}&pageSize=10`; // Your API endpoint
 
         fetch(apiUrl)

@@ -24,4 +24,6 @@ public interface IUserService {
     User addUser(String fullName, String email, String phone, String password, int roleId);
 
     User findUserByUsernameAndPassword(String username, String password);
+
+    int getTotalPage(int pageSize);
 }
