@@ -23,4 +23,5 @@ public interface ISubjectService {
     boolean checkSubjectCodeExist(String subjectCode);
 
     boolean checkSubjectNameExist(String subjectName);
+
 }
