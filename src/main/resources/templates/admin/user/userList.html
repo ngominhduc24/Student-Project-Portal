@@ -188,8 +188,25 @@
         });
 
         $("#toolbar").html('<div class="float-left">' +
-            '<p>Page no ' + (currentPage) + '</p>' +
+            '<p>Page no <span id="currentPageSpan">1</span></p>' +
             '</div>');
+
+        // Initialize the page number
+        let currentPage = 1;
+
+        // Function to update the page number in the toolbar
+        function updatePageNumber() {
+            $("#currentPageSpan").text(currentPage);
+        }
+
+        // Event listener for page change
+        dataTable.on('page.dt', function () {
+            currentPage = dataTable.page.info().page + 1; // Update currentPage when the page changes (add 1 to match your 1-based page numbering)
+            updatePageNumber(); // Update the page number in the toolbar
+        });
+
+        // Initial update of the page number
+        updatePageNumber();
     });
 </script>
 
@@ -328,7 +345,7 @@
                         <a href="#" class="showNote" onclick="openDialog(this)">
                             <i class="fas fa-pen-to-square"></i>
                         </a>
-                            <dialog class="userNote">
+                                        <dialog class="userNote">
                                             <div class="userNote_container">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -355,7 +372,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                            </dialog>
+                                        </dialog>
                     </td>
                     <td><a href="./userDetails?id=${user.id}">View Details</a></td>
                 `;
