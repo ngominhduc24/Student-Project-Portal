@@ -18,7 +18,7 @@ public interface ISubjectService {
 
     boolean updateSubjectStatus(int Id, boolean status);
 
-    boolean addSubject(String subjectName, String subjectCode, int subjectManagerId, boolean status);
+    Subject addSubject(String subjectName, String subjectCode, int subjectManagerId, boolean status);
 
     boolean checkSubjectCodeExist(String subjectCode);
 
