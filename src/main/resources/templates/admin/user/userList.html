@@ -123,30 +123,17 @@
                                                             <p th:text="${user.note}"></p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
+                                                            <button type="button" class="btn btn-primary"
                                                                     data-dismiss="modal" onclick="closeDialog(this)">
                                                                 Close
                                                             </button>
-                                                            <button type="button" class="btn btn-primary">Edit note
+                                                            <button type="button" class="btn btn-secondary">
+                                                                <a th:href="@{'./userDetails?id=' + ${user.id}}" style="color: white;">Edit note</a>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--                                            <div class="userNote_container">-->
-                                            <!--                                                <div class="userNote_header">-->
-                                            <!--                                                    <h2 th:text="${user.fullName}"></h2>-->
-                                            <!--                                                </div>-->
-                                            <!--                                                <div class="userNote_body">-->
-                                            <!--                                                    <div class="userNote_body_content">-->
-                                            <!--                                                        <div class="userNote_body_content_text">-->
-                                            <!--                                                            <p th:text="${user.note}"></p>-->
-                                            <!--                                                        </div>-->
-                                            <!--                                                    </div>-->
-                                            <!--                                                </div>-->
-
-                                            <!--                                                <button onclick="closeDialog(this)">Cancel</button>-->
-                                            <!--                                            </div>-->
                                         </dialog>
                                     </td>
                                     <td><a th:href="@{'./userDetails?id=' + ${user.id}}">View Details</a>
