@@ -11255,3 +11255,8 @@ body {
   text-align: left !important;
   float: left;
 }
+
+dialog {
+  background: transparent;
+  border: none;
+}

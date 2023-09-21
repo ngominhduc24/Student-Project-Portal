@@ -109,19 +109,44 @@
                                         </a>
                                         <dialog class="userNote">
                                             <div class="userNote_container">
-                                                <div class="userNote_header">
-                                                    <h2 th:text="${user.fullName}"></h2>
-                                                </div>
-                                                <div class="userNote_body">
-                                                    <div class="userNote_body_content">
-                                                        <div class="userNote_body_content_text">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel"
+                                                                th:text="${user.fullName}"></h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close" onclick="closeDialog(this)">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
                                                             <p th:text="${user.note}"></p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal" onclick="closeDialog(this)">
+                                                                Close
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary">Edit note
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <button onclick="closeDialog(this)">Cancel</button>
                                             </div>
+                                            <!--                                            <div class="userNote_container">-->
+                                            <!--                                                <div class="userNote_header">-->
+                                            <!--                                                    <h2 th:text="${user.fullName}"></h2>-->
+                                            <!--                                                </div>-->
+                                            <!--                                                <div class="userNote_body">-->
+                                            <!--                                                    <div class="userNote_body_content">-->
+                                            <!--                                                        <div class="userNote_body_content_text">-->
+                                            <!--                                                            <p th:text="${user.note}"></p>-->
+                                            <!--                                                        </div>-->
+                                            <!--                                                    </div>-->
+                                            <!--                                                </div>-->
+
+                                            <!--                                                <button onclick="closeDialog(this)">Cancel</button>-->
+                                            <!--                                            </div>-->
                                         </dialog>
                                     </td>
                                     <td><a th:href="@{'./userDetails?id=' + ${user.id}}">View Details</a>
@@ -158,7 +183,7 @@
     $(document).ready(function () {
         $('#myTable').DataTable({
             "dom": 'frt<"#toolbar.dt-box"><"dt-box"p>',
-            "bInfo" : false,
+            "bInfo": false,
         });
 
         $("#toolbar").html('<div class="float-left">' +
@@ -200,7 +225,7 @@
     // Close dialog when clicking outside of it
     dialog.addEventListener("click", e => {
         const dialogSpace = dialog.getBoundingClientRect()
-        if(e.clientX < dialogDimensions.left ||
+        if (e.clientX < dialogDimensions.left ||
             e.clientX > dialogDimensions.right ||
             e.clientY < dialogDimensions.top ||
             e.clientY > dialogDimensions.bottom) {
