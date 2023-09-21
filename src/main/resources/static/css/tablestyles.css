@@ -11241,3 +11241,17 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+.dt-box {
+  float: left;
+  width: 50%;
+}
+.dataTables_wrapper .dataTables_filter {
+  clear: both;
+  float: left !important;
+  margin-top: 5px;
+}
+.dataTables_wrapper .dataTables_length {
+  text-align: left !important;
+  float: left;
+}

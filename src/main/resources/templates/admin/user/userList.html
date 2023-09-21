@@ -30,7 +30,7 @@
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
-    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
 
 
 </head>
@@ -56,7 +56,6 @@
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
             <div class="layout-specing">
-
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
                         <h1>User</h1>
@@ -82,21 +81,6 @@
                         <div class="card-body">
                             <table id="myTable" class="display">
                                 <thead>
-
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th>
-                                        <a th:href="@{'./user?page=' + ${page<=0 ? 0 : page+(-1)}}">Previous</a>
-                                    </th>
-                                    <th>
-                                        <a th:href="@{'./user?page=' + ${page+1}}">Next</a>
-                                    </th>
-                                </tr>
-
                                 <tr>
                                     <th>Fullname</th>
                                     <th>Email</th>
@@ -144,22 +128,6 @@
                                     </td>
                                 </tr>
                                 </tbody>
-
-                                <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th>
-                                            <a th:href="@{'./user?page=' + ${page<=0 ? 0 : page+(-1)}}">Previous</a>
-                                        </th>
-                                        <th>
-                                            <a th:href="@{'./user?page=' + ${page+1}}">Next</a>
-                                        </th>
-                                    </tr>
-                                </tfoot>
                             </table>
                             <div th:content="3" class="countPage" hidden=""></div>
                             <nav aria-label="Page navigation example">
@@ -203,10 +171,13 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#myTable').DataTable({
-            "dom": 'rtip',
+            "dom": 'frt<"#toolbar.dt-box"><"dt-box"p>',
             "bInfo" : false,
-            "paging": false,
         });
+
+        $("#toolbar").html('<div class="float-left">' +
+            '<p>Page no 1</p>' +
+            '</div>');
     });
 </script>
 
