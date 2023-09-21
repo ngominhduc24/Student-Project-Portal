@@ -58,7 +58,7 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <i class="uil uil-bed h3 mb-0"></i>
+                                    <iconify-icon icon="ph:student-fill" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
                                     <h5 class="mb-0">558</h5>
@@ -72,7 +72,7 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <i class="uil uil-file-medical-alt h3 mb-0"></i>
+                                    <iconify-icon icon="ph:chalkboard-teacher" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
                                     <h5 class="mb-0">220</h5>
@@ -86,7 +86,7 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <i class="uil uil-social-distancing h3 mb-0"></i>
+                                    <i class="uil uil-book h3 mb-0"></i>
                                 </div>
                                 <div class="flex-1 ms-2">
                                     <h5 class="mb-0">5</h5>
@@ -100,7 +100,7 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <i class="uil uil-ambulance h3 mb-0"></i>
+                                    <iconify-icon icon="ant-design:project-outlined" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
                                     <h5 class="mb-0">16</h5>
@@ -115,11 +115,11 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <i class="uil uil-medkit h3 mb-0"></i>
+                                    <iconify-icon icon="fluent:class-24-regular" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">220</h5>
-                                    <p class="text-muted mb-0">Appointment</p>
+                                    <h5 class="mb-0">10</h5>
+                                    <p class="text-muted mb-0">Classes</p>
                                 </div>
                             </div>
                         </div>
@@ -129,11 +129,11 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <i class="uil uil-medical-drip h3 mb-0"></i>
+                                    <iconify-icon icon="fluent:class-24-regular" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">10</h5>
-                                    <p class="text-muted mb-0">Operations</p>
+                                    <h5 class="mb-0">220</h5>
+                                    <p class="text-muted mb-0">sth idk?</p>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div id="dashboard" class="apex-chart"></div>
+                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
                         </div>
                     </div><!--end col-->
 
@@ -170,7 +170,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div id="department" class="apex-chart"></div>
+                            <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
@@ -188,7 +188,11 @@
 
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
-<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+<script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
+
+<script th:src="@{/js/chart-area-demo.js}"></script>
+
+<script th:src="@{/js/chart-bar-demo.js}"></script>
 
 </body>
 </html>
