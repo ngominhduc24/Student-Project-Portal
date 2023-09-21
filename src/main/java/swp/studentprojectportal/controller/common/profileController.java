@@ -6,14 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import jakarta.servlet.http.HttpSession;
-import lombok.val;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import org.springframework.ui.Model;
-import swp.studentprojectportal.utility.Validate;
+import swp.studentprojectportal.utils.Validate;
 
 @Controller
 public class profileController {
