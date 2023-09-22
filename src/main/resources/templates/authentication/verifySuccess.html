@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,45 +36,27 @@
 <!-- Loader -->
 
 <div class="back-to-home rounded d-none d-sm-block">
-    <a href="/home" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+    <a href="/static" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
 </div>
 
 <!-- Hero Start -->
-<section class="bg-home d-flex bg-light align-items-center" style="background: url('../../static/images/bg/bg-lines-one.png') center;">
+<section class="bg-home d-flex bg-light align-items-center" th:style="'background: url('+@{/images/bg/bg-lines-one.png}+') center;'">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-8">
                 <img src="../../static/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
-                <div class="rounded shadow mt-4">
-                    <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Reset Password :</h5>
+                <div class="card login-page bg-white shadow mt-4 rounded border-0">
+                    <div class="card-body">
+                        <h4 class="text-center" style="color: green">Verify Successfully!</h4>
+                        <h6 class="text-center" style="color: green">You need login again</h6>
+
+                        <div class="col-md-12" style="margin-top: 35px">
+                            <div class="d-grid">
+                                <button class="btn btn-primary"> <a style="color: white" href="login">Go to Login</a></button>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="p-4">
-                        <form action="reset-password" method="post">
-                            <div class="row">
-
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">New password :</label>
-                                        <input type="password" class="form-control" placeholder="New password" name="newPassword" required="">
-                                    </div>
-                                </div><!--end col-->
-
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">ReNew password :</label>
-                                        <input type="password" class="form-control" placeholder="ReNew password" name="reNewPassword" required="">
-                                    </div>
-                                </div><!--end col-->
-                                <h6 style="color: red; text-align: center" th:text="${errmsg}"></h6>
-                                <div class="col-lg-12 mt-2 mb-0">
-                                    <input class="btn btn-primary" type="submit" value="Save password">
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </form>
-                    </div>
-                </div>
+                </div><!---->
             </div> <!--end col-->
         </div><!--end row-->
     </div> <!--end container-->

@@ -49,27 +49,27 @@ public class RegisterController {
 
         if(termCheckbox == null) {
             model.addAttribute("errmsg", "You must agree with our term and condition");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() == null && user.getPhone() == null) {
             model.addAttribute("errmsg", "Invalid email or phone number");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
             model.addAttribute("errmsg", "Email already exist!");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
             model.addAttribute("errmsg", "Email domain is not allowed!");
-            return "register";
+            return "authentication/register";
         }
 
         if (user.getPhone() != null && userService.checkExistPhoneNumber(user.getPhone())) {
             model.addAttribute("errmsg", "Phone number already exist!");
-            return "register";
+            return "authentication/register";
         }
 
         // set session to verify

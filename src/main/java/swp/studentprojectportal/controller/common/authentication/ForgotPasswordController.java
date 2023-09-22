@@ -22,7 +22,7 @@ public class ForgotPasswordController {
 
     @GetMapping("/forgotPassword")
     public String forgotPasswordPage(HttpSession session) {
-        return "forgotPassword";
+        return "authentication/forgotPassword";
     }
 
     @PostMapping("/forgotPassword")
@@ -32,7 +32,7 @@ public class ForgotPasswordController {
         User user = userService.getUserByEmailOrPhone(username);
         if(user == null) {
             model.addAttribute("errmsg", "Username is't not correct");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         if(Validate.validEmail(username)) {
@@ -46,17 +46,17 @@ public class ForgotPasswordController {
 
         if(user.getEmail() != null && !userService.checkExistMail(user.getEmail())) {
             model.addAttribute("errmsg", "Your email is not correct");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         if(user.getEmail() != null && !userService.checkEmailDomain(user.getEmail())) {
             model.addAttribute("errmsg", "Your email domain is not accepted");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         if(user.getPhone() != null && !userService.checkExistPhoneNumber(user.getPhone())) {
             model.addAttribute("errmsg", "Your phone number is not correct");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         session.setAttribute("userauthen", user);
@@ -70,7 +70,7 @@ public class ForgotPasswordController {
         if(user != null) {
             session.removeAttribute("user");
             session.setAttribute("user", user);
-            return "resetPassword";
+            return "authentication/resetPassword";
         } else {
             return "redirect:/forgotPassword";
         }
@@ -99,7 +99,7 @@ public class ForgotPasswordController {
             model.addAttribute("errmsg", "New Password and Re-new Password do not match");
         }
 
-        return "resetPassword";
+        return "authentication/resetPassword";
     }
 
 }
