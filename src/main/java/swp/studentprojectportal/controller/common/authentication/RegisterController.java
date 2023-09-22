@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.common;
+package swp.studentprojectportal.controller.common.authentication;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
-public class registerController {
+public class RegisterController {
     @Autowired
     int userRoleId;
     @Autowired

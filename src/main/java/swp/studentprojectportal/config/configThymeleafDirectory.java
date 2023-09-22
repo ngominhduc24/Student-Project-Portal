@@ -16,6 +16,9 @@ public class configThymeleafDirectory {
     public int adminRoleId() {return 2;}
 
     @Bean
+    public int subjectManagerRoleId() {return 3;}
+
+    @Bean
     public int userRoleId() {return 1;}
 
     @Bean
@@ -78,6 +81,19 @@ public class configThymeleafDirectory {
         yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
         yourTemplateResolver.setCharacterEncoding("UTF-8");
         yourTemplateResolver.setOrder(4); // this is iportant. This way springboot will listen to both places 0 and 1
+        yourTemplateResolver.setCheckExistence(true);
+
+        return yourTemplateResolver;
+    }
+
+    @Bean
+    public ClassLoaderTemplateResolver subjectManagerSubjectSettingTemplateResolver() {
+        ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
+        yourTemplateResolver.setPrefix("templates/subject_manager/subject_setting/");
+        yourTemplateResolver.setSuffix(".html");
+        yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
+        yourTemplateResolver.setCharacterEncoding("UTF-8");
+        yourTemplateResolver.setOrder(1); // this is iportant. This way springboot will listen to both places 0 and 1
         yourTemplateResolver.setCheckExistence(true);
 
         return yourTemplateResolver;

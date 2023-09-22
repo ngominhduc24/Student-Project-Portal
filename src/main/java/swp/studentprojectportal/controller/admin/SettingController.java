@@ -12,14 +12,14 @@ import swp.studentprojectportal.services.servicesimpl.SettingService;
 import java.util.List;
 
 @Controller
-public class settingController {
+public class SettingController {
     @Autowired
-    SettingService settingSevice;
+    SettingService settingService;
     @GetMapping("/admin/setting")
     public String settingPage(Model model) {
-        List<Setting> roleList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(1);
-        List<Setting> semesterList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(3);
-        List<Setting> emailDomainList = settingSevice.findSettingByTypeIdOrderByDisplayOrder(2);
+        List<Setting> roleList = settingService.findSettingByTypeIdOrderByDisplayOrder(1);
+        List<Setting> semesterList = settingService.findSettingByTypeIdOrderByDisplayOrder(3);
+        List<Setting> emailDomainList = settingService.findSettingByTypeIdOrderByDisplayOrder(2);
         model.addAttribute("roleList", roleList);
         model.addAttribute("semesterList", semesterList);
         model.addAttribute("emailDomainList", emailDomainList);
@@ -28,7 +28,7 @@ public class settingController {
 
     @GetMapping("/admin/setting/detail")
     public String settingDetail(@RequestParam("id") Integer id, Model model) {
-        Setting setting = settingSevice.getSettingByID(id);
+        Setting setting = settingService.getSettingByID(id);
         model.addAttribute("setting", setting);
         return "admin/setting/settingDetail";
     }
@@ -42,14 +42,13 @@ public class settingController {
         String status = request.getParameter("status");
         Setting setting = new Setting();
         String id = request.getParameter("id");
-        System.out.println(id);
         if(id!=null && !id.isEmpty())
             setting.setId(Integer.parseInt(id));
         setting.setTypeId(typeId);
         setting.setSettingTitle(settingTitle);
         setting.setDisplayOrder(displayOrder);
         setting.setStatus(status!=null);
-        settingSevice.saveSetting(setting);
+        settingService.saveSetting(setting);
         return "redirect:/admin/setting";
     }
 
@@ -65,9 +64,9 @@ public class settingController {
     public String updateSettingStatus(
             @RequestParam int id,
             @RequestParam boolean status) {
-        Setting setting = settingSevice.findById(id);
+        Setting setting = settingService.findById(id);
         setting.setStatus(status);
-        settingSevice.saveSetting(setting);
+        settingService.saveSetting(setting);
         return "redirect:/";
     }
 }

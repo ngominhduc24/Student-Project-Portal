@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
-public class profileController {
+public class ProfileController {
     @Autowired
     RegisterService registerService;
     @Autowired

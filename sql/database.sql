@@ -93,6 +93,29 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
                                                         ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `swp391`.`subject_setting`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`subject_setting` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
+                                                          `id` INT NOT NULL AUTO_INCREMENT,
+                                                          `subject_id` INT NULL,
+                                                          `type_id` INT NULL,
+                                                          `setting_title` VARCHAR(45) NULL,
+    `status` BIT(1) NULL DEFAULT 1,
+    `display_order` INT ,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`subject_id`)
+    REFERENCES `swp391`.`subject` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -159,8 +182,24 @@ VALUES
 -- subject
 INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
 VALUES
-    (1,"Software development project","SWP391"),
-    (2,"Software Requirement","SWR302"),
-    (3,"Software Testing","SWT301"),
-    (1,"Basic Cross-Platform Application Programming With .NET","PRN211"),
-    (2,"Front-End web development with React","FER201m");
+    (2,"Software development project","SWP391"),
+    (3,"Software Requirement","SWR302"),
+    (4,"Software Testing","SWT301"),
+    (5,"Basic Cross-Platform Application Programming With .NET","PRN211"),
+    (6,"Front-End web development with React","FER201m");
+
+-- subject_setting
+INSERT INTO subject_setting(subject_id,type_id,setting_title,display_order)
+VALUES
+    (1 ,1 , "High",1),
+    (1 ,1, "Medium",2),
+    (1 ,1, "Low",3),
+    (1 ,2, "High",1),
+    (1 ,2, "Medium",2),
+    (1 ,2, "Low",3),
+    (2 ,1, "High",1),
+    (2 ,1, "Medium",2),
+    (2 ,2, "High",1),
+    (2 ,2, "Medium",2),
+    (2 ,2, "Low",3);
+

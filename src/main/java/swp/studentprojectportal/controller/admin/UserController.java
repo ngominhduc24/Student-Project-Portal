@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
-public class userController {
+public class UserController {
     @Autowired
     private int adminRoleId;
 
