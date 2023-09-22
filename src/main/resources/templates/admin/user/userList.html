@@ -31,8 +31,6 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
-
-
 </head>
 
 <body>
@@ -188,17 +186,14 @@
         });
 
         $("#toolbar").html('<div class="float-left">' +
-            '<p>Page no ' + (currentPage) + '</p>' +
+            // '<p>Page no ' + (currentPage) + '</p>' +
+            '<p>    </p>' +
             '</div>');
     });
 </script>
 
 <!-- Status update -->
 <script>
-    window.addEventListener('load', function() {
-        // Scroll to the bottom of the page
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
-    });
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
@@ -211,7 +206,7 @@
 <!-- User Note -->
 <script>
     // Get dialog element
-    function openDialog(element) {
+    async function openDialog(element) {
         // Find the closest dialog element to the clicked anchor tag
         const dialog = element.closest('tr').querySelector('.userNote');
 
@@ -219,6 +214,12 @@
         if (dialog) {
             dialog.showModal();
         }
+
+        //scroll to bottom
+        setTimeout(function() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
+        }, 30); //delay
+
     }
 
     // Close dialog when pressing cancel button
