@@ -105,7 +105,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="#" class="showNote" onclick="openDialog(this)">
+                                        <a href="#" class="showNote" onclick="openDialog(this, 1)">
                                             <i class="fas fa-pen-to-square"></i>
                                         </a>
                                         <dialog class="userNote">
@@ -228,12 +228,12 @@
 <!-- User Note -->
 <script>
     // Get dialog element
-    function openDialog(element) {
+    function openDialog(element, userId) {
         // Find the closest dialog element to the clicked anchor tag
         const dialog = element.closest('tr').querySelector('.userNote');
         const userFullName = dialog.querySelector('.modal-title');
         const userNote = dialog.querySelector('.modal-body p');
-        const userId = element.getAttribute('data-user-id');
+        // const userId = element.getAttribute('data-user-id');
         fetchUserData(userId).then(data => {
             userFullName.textContent = data.fullName;
             userNote.textContent = data.note;
@@ -332,7 +332,7 @@
     });
 
     // Function to fetch user data and populate the table
-    function populateUserTable(pageNo) {
+    const  populateUserTable =  (pageNo) => {
         pageNo = pageNo - 1;
         const apiUrl = `/api/v1/user?pageNo=${pageNo}&pageSize=10`; // Your API endpoint
 
@@ -357,7 +357,7 @@
                         </div>
                     </td>
                     <td>
-                        <a href="#" class="showNote" data-user-id="${user.id}" onclick="openDialog(this)">
+                        <a href="#" class="showNote" data-user-id="${user.id}" onclick="openDialog(this, ${user.id})">
                             <i class="fas fa-pen-to-square"></i>
                         </a>
                                         <dialog class="userNote">
@@ -399,7 +399,6 @@
                 // Handle errors here (e.g., display an error message)
             });
     }
-
 </script>
 
 
