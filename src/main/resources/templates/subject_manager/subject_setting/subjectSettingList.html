@@ -148,7 +148,21 @@
                                             <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/subject-manager/setting-subject/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td>
+                                        <form action="/subject-manager/subject-setting/detail">
+                                            <!-- Thuộc tính settingID ẩn đi với giá trị là setting.id -->
+                                            <input type="hidden" name="settingID" th:value="${setting.id}">
+
+                                            <!-- Nút để thực hiện action -->
+                                            <button type="submit">Action</button>
+                                        </form>
+                                    </td>
+<!--                                    <td><a th:href="@{/subject-manager/setting-subject/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+<!--                                    <td><a th:href="@{/subject-manager/subject-setting/detail(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+<!--                                    <td><a th:href="@{/test(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+<!--
+    <td><a th:href="@{/subject-manager/setting-subject/detail(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+
                                 </tr>
                                 </tbody>
                             </table>
