@@ -12,7 +12,7 @@ import swp.studentprojectportal.services.servicesimpl.SettingService;
 import java.util.List;
 
 @Controller
-public class settingController {
+public class SettingController {
     @Autowired
     SettingService settingService;
     @GetMapping("/admin/setting")

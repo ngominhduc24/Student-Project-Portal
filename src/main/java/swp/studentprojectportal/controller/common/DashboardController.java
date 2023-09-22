@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import swp.studentprojectportal.services.servicesimpl.SettingService;
 
 @Controller
-public class dashboardController {
+public class DashboardController {
 
     @Autowired
     SettingService settingService;

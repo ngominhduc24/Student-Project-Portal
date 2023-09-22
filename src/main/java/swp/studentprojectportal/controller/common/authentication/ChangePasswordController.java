@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.common;
+package swp.studentprojectportal.controller.common.authentication;
 
 
 import jakarta.servlet.http.HttpSession;
@@ -7,13 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 
 @Controller
-public class changePasswordController {
+public class ChangePasswordController {
     @Autowired
     UserService userService;
     @GetMapping("/change-password")

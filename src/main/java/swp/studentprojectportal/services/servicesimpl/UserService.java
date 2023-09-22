@@ -177,4 +177,20 @@ public class UserService implements IUserService {
         int totalPage = count % pageSize == 0 ? (int) (count / pageSize) : (int) (count / pageSize) + 1;
         return totalPage;
     }
+
+    @Override
+    public User resetPasswordByToken(String token) {
+        User user = userRepository.findUserByToken(token);
+        if(user != null) {
+            user.setToken(null);
+            user.setPassword("");
+            userRepository.save(user);
+        }
+        return user;
+    }
+
+    @Override
+    public User getUserByEmailOrPhone(String userName) {
+        return userRepository.findUserByEmailOrPhone(userName, userName);
+    }
 }

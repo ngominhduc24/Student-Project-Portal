@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
-public class subjectController {
+public class SubjectController {
 
     @Autowired
     SubjectSevice subjectService;
