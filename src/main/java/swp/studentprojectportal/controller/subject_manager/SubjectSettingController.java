@@ -6,6 +6,7 @@ import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
@@ -44,15 +45,37 @@ public class SubjectSettingController {
         return "redirect:/";
     }
     @RequestMapping("/subject-manager/subject-setting/detail")
-    public String updateSubjectSetting(@RequestParam("settingID") int id, Model model, WebRequest request){
+    public String detailSubjectSetting(@RequestParam("settingID") int id, Model model){
 
 //        Integer id = Integer.parseInt( request.getParameter("id") );
         System.out.println("id="+id);
         System.out.println("noway");
-//        SubjectSetting subjectSetting = subjectSettingService.findById(id);
-//        model.addAttribute("setting",subjectSetting);
+        SubjectSetting subjectSetting = subjectSettingService.findById(id);
+        model.addAttribute("setting",subjectSetting);
 //        return "subject_manager/subject_setting/subjectSettingDetail";
-        return "redirect:/profile";
+        return "test";
+    }
+
+    @PostMapping(path = "/subject-manager/subject-setting/update")
+    public  String updateSubjectSetting(WebRequest request,Model model){
+        String id = request.getParameter("id");
+        String type = request.getParameter("type");
+        String title = request.getParameter("title");
+        String displayOrder = request.getParameter("displayOrder");
+        System.out.println(id);
+        System.out.println(type);
+        System.out.println(title);
+        System.out.println(displayOrder);
+
+        SubjectSetting subjectSetting = subjectSettingService.findById(Integer.parseInt(id));
+        subjectSetting.setTypeId(Integer.parseInt(type));
+        subjectSetting.setSettingTitle(title);
+        subjectSetting.setDisplayOrder(Integer.parseInt(displayOrder));
+        subjectSettingService.saveSubjectSetting(subjectSetting);
+        model.addAttribute("setting",subjectSetting);
+
+
+        return "test";
     }
 
     @RequestMapping(path="/test")
