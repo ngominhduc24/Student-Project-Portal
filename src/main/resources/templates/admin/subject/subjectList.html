@@ -91,15 +91,6 @@
                                     <th>Status</th>
                                 </tr>
                                 </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Subject Code</th>
-                                    <th>Subject Name</th>
-                                    <th>Subject Manager</th>
-                                    <th>View Details</th>
-                                    <th>Status</th>
-                                </tr>
-                                </tfoot>
                                 <tbody>
                                 <tr th:each="Subject : ${SubjectList}">
                                     <td th:text="${Subject.subjectCode}"></td>
