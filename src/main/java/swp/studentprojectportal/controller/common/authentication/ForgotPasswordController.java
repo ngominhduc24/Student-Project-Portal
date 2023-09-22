@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.common;
+package swp.studentprojectportal.controller.common.authentication;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.RegisterService;
-import swp.studentprojectportal.services.servicesimpl.ResetPassword;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
-public class forgotPasswordController {
+public class ForgotPasswordController {
     @Autowired
     UserService userService;
     @Autowired
     RegisterService registerService;
-    @Autowired
-    ResetPassword resetPassword;
+
     @GetMapping("/forgotPassword")
     public String forgotPasswordPage(HttpSession session) {
         return "forgotPassword";
@@ -31,7 +29,7 @@ public class forgotPasswordController {
     public String forgotPassword(Model model, WebRequest request, HttpSession session) {
         String username = request.getParameter("username").replace(" ", "");;
 
-        User user = resetPassword.getUserByEmailOrPhone(username);
+        User user = userService.getUserByEmailOrPhone(username);
         if(user == null) {
             model.addAttribute("errmsg", "Username is't not correct");
             return "forgotPassword";
@@ -68,7 +66,7 @@ public class forgotPasswordController {
 
     @GetMapping("/reset-password")
     public String resetPasswordForm(HttpSession session,@RequestParam("key") String token) {
-        User user = resetPassword.resetPasswordByToken(token);
+        User user = userService.resetPasswordByToken(token);
         if(user != null) {
             session.removeAttribute("user");
             session.setAttribute("user", user);

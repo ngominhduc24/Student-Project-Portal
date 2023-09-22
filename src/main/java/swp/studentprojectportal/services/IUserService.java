@@ -26,4 +26,6 @@ public interface IUserService {
     User findUserByUsernameAndPassword(String username, String password);
 
     int getTotalPage(int pageSize);
+    User resetPasswordByToken(String token);
+    User getUserByEmailOrPhone(String userName);
 }
