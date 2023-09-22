@@ -189,9 +189,9 @@
         const userNote = dialog.querySelector('.modal-body p');
         fetchUserData(userId).then(data => {
             userFullName.textContent = data.fullName;
-            userNote.textContent = data.note;
+            if(data.note == null) userNote.textContent = 'No note';
+            else userNote.textContent = data.note;
             dialog.showModal();
-            console.log(userId)
         }).catch(error => {
             console.error('Error fetching user data:', error);
         })
