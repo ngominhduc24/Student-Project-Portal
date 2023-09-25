@@ -47,20 +47,19 @@
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
-    <div th:replace="dashboardSidebar"></div>
+    <div th:replace="~{dashboardSidebar}"></div>
     <main class="page-content bg-light">
-        <div th:replace="dashboardHeader"></div>
+        <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">Subject Setting Details</h3>
+                    <h3 class="mb-0">Add Subject Setting</h3>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/subject-setting/update" method="post">
-                                <input type="hidden" name="id" th:value="${setting.id}">
+                            <form action="/subject-manager/subject-setting/add" method="post">
                                 <div class="row">
                                     <!--                  <div class="col-md-12">-->
                                     <!--                    &lt;!&ndash;                                                        <img src="${user.avatarUrl}" class="avatar avatar-ex-small rounded-circle" alt="">&ndash;&gt;-->
@@ -80,8 +79,8 @@
                                             <label class="form-label">Type</label>
                                             <div class="d-flex">
                                                 <select name="type" class="form-select w-100">
-                                                    <option selected th:value="1" th:text="${setting.typeId == 1 ? 'Complexity' : 'Quality'}"></option>
-                                                    <option th:value="2" th:text="${setting.typeId == 1 ? 'Quality' : 'Complexity'}"></option>
+                                                    <option selected th:value="1" th:text="Complexity"></option>
+                                                    <option th:value="2" th:text="Quality"></option>
 
                                                 </select>
                                             </div>
@@ -93,9 +92,9 @@
                                             <label class="form-label">Title</label>
                                             <div class="d-flex">
                                                 <select name="title" class="form-select w-100">
-                                                    <option value="High" th:text="High" th:selected="${setting.settingTitle == 'High'}"></option>
-                                                    <option value="Medium" th:text="Medium" th:selected="${setting.settingTitle == 'Medium'}"></option>
-                                                    <option value="Low" th:text="Low" th:selected="${setting.settingTitle == 'Low'}"></option>
+                                                    <option selected value="High" th:text="High"></option>
+                                                    <option value="Medium" th:text="Medium"></option>
+                                                    <option value="Low" th:text="Low"></option>
                                                 </select>
 
                                             </div>
@@ -107,9 +106,9 @@
                                             <label class="form-label" >DisplayOrder</label>
                                             <div class="d-flex">
                                                 <select name="displayOrder" class="form-select w-100">
-                                                    <option value="1" th:text="1" th:selected="${setting.displayOrder == 1}"></option>
-                                                    <option value="2" th:text="2" th:selected="${setting.displayOrder == 2}"></option>
-                                                    <option value="3" th:text="3" th:selected="${setting.displayOrder == 3}"></option>
+                                                    <option selected value="1" th:text="1" ></option>
+                                                    <option value="2" th:text="2" ></option>
+                                                    <option value="3" th:text="3" ></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -130,7 +129,7 @@
 
                                 </div><!--end row-->
                                 <div class="row">
-                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Update</button> </div>
+                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button> </div>
                                     <!--                  <div class="col-md-6"></div>-->
                                     <!--                  <div class="col-md"> </div>-->
 
