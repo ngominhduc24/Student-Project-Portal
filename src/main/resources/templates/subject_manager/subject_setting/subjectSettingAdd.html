@@ -33,6 +33,7 @@
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
 </head>
 <body>
+
 <!-- Loader -->
 <div id="preloader">
     <div id="status">
@@ -51,88 +52,77 @@
         <div th:replace="dashboardHeader"></div>
         <div class="container-fluid">
             <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h3 class="mb-0">Subject Setting Details</h3>
+                </div>
                 <div>
-                    <h3 class="mb-0">User Details</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
+                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Subject Setting</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">User Details</li>
+                        <li class="breadcrumb-item active">Subject Setting Details</li>
                     </ol>
                 </div>
-
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="./updateUser" method="post">
-                                <input type="hidden" name="id" th:value="${user.id}">
+                            <form action="/subject-manager/subject-setting/add" method="post">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Fullname</label>
-                                            <input name="fullName" type="text" class="form-control"
-                                                   th:value="${user.fullName}" required>
+                                            <label class="form-label">Subject Code</label>
+                                            <div class="d-flex">
+                                                <select name="subjectId" class="form-select">
+                                                    <option th:each="subject : ${subjectList}"
+                                                            th:value="${subject.id}"
+                                                            th:text="${subject.subjectCode}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Type</label>
+                                            <div class="d-flex">
+                                                <select name="typeId" class="form-select w-100">
+                                                    <option th:value="1" th:text="Complexity" ></option>
+                                                    <option th:value="2" th:text="Quality" ></option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Email</label>
-                                            <input name="email" type="text" class="form-control"
-                                                   th:value="${user.email}">
+                                            <label class="form-label">Title</label>
+                                            <div class="d-flex">
+                                                <input type="text" name="settingTitle" class="form-control" required>
+                                            </div>
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-2 offset-1">
                                         <div class="mb-3">
-                                            <label class="form-label">Phone</label>
-                                            <input name="phone" type="text" class="form-control"
-                                                   th:value="${user.phone}">
+                                            <label class="form-label">Display Order</label>
+                                            <input style="width: 60%;" type="number" required class="form-control" value="1" name="displayOrder">
                                         </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Role</label>
-                                            <select name="roleId" class="form-select">
-                                                <option th:each="role : ${roleList}"
-                                                        th:value="${role.id}"
-                                                        th:text="${role.settingTitle}"
-                                                        th:selected="${role.id == user.setting.id}"></option>
-                                            </select>
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
+                                    </div>
+                                    <div class="col-md-2 text-center">
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
-                                            <select name="status" class="form-select">
-                                                <option value="true" th:selected="${true == user.status}">Active</option>
-                                                <option value="false" th:selected="${false == user.status}">Inactive
-                                                </option>
-                                            </select>
+                                            <div class="form-check form-switch" style="font-size: 24px">
+                                                <input style="margin-left: -38px" class="form-check-input" value="on" name="status" checked type="checkbox" >
+                                            </div>
                                         </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Note</label>
-                                            <input name="note" type="text" class="form-control"
-                                                   th:value="${user.note}">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <h6 style="color: green" th:text="${msg}">a</h6>
-                                            <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
-                                        </div>
-                                    </div><!--end col-->
-
+                                    </div>
                                 </div><!--end row-->
-                                <button type="submit" class="btn btn-primary">Update User</button>
+                                <div class="row">
+                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button> </div>
+                                </div>
                             </form>
+
+                            <h6 style="color: red;" th:text="${errmsg}"></h6>
                         </div>
                     </div><!--end col-->
                 </div>
@@ -140,7 +130,6 @@
         </div>
     </main>
 </div>
-
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->

@@ -13,4 +13,6 @@ public interface ISettingRepository extends JpaRepository<Setting, Integer> {
     List<Setting> findSettingByTypeId(Integer typeId);
 
     List<Setting> findSettingByTypeIdOrderByDisplayOrder(Integer typeId);
+    Setting findBySettingTitle(String settingTitle);
+    Setting findByTypeIdAndDisplayOrder(int typeId, int displayOrder);
 }

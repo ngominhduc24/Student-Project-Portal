@@ -1,4 +1,4 @@
-package swp.studentprojectportal.services;
+package swp.studentprojectportal.service;
 
 import swp.studentprojectportal.model.Setting;
 
@@ -11,4 +11,6 @@ public interface ISettingService {
     List<Setting> getAllRole();
     Setting getLastestSemester();
     Setting findById(int id);
+    Setting findBySettingTitle(String settingTitle);
+    Setting findByTypeIdAndDisplayOrder(int typeId, int displayOrder);
 }
