@@ -55,7 +55,7 @@ public class VerifyController {
             model.addAttribute("phone", user.getPhone());
             model.addAttribute("token", token_sender);
             session.removeAttribute("user");
-            return "verifyPhone";
+            return "authentication/verifyPhone";
         }
         session.removeAttribute("user");
         return "redirect:/error";

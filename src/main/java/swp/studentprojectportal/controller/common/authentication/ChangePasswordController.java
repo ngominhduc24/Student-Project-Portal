@@ -39,7 +39,7 @@ public class ChangePasswordController {
         } else {
             model.addAttribute("errmsg", "Old Password is incorrect");
         }
-        return "changePassword";
+        return "authentication/changePassword";
     }
 
 

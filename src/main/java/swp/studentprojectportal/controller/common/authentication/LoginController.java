@@ -61,7 +61,7 @@ public class LoginController {
         } else if(!user.isStatus()) {
             model.addAttribute("errmsg", "Your account has been blocked");
         }
-        return "login";
+        return "authentication/login";
     }
 
     @GetMapping("/login-google")
