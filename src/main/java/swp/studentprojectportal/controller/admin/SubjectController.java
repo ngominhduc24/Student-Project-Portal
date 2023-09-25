@@ -49,10 +49,11 @@ public class SubjectController {
             @RequestParam int subjectManagerId,
             Model model) {
 
-        String errorMsg = checkValidate(subjectName, subjectCode, subjectManagerId);
+        String errorMsg = checkValidate(subjectName, subjectCode);
         if(errorMsg!=null) {
-            model.addAttribute("error", errorMsg);
-            return "admin/subject/subjectAdd";
+            model.addAttribute("errorMsg", errorMsg);
+            model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+            return "/admin/subject/subjectAdd";
         }
         int newSubjectId = subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true).getId();
         return "redirect:./subjectDetails?id=" + newSubjectId;
@@ -97,10 +98,7 @@ public class SubjectController {
         return "redirect:/";
     }
 
-    private String checkValidate(String subjectName, String subjectCode, int subjectManagerId) {
-        if(subjectName.isEmpty()) return "Please input subject name";
-        if(subjectCode.isEmpty()) return "Please input subject code";
-        if(subjectManagerId == 0) return "Please input subject manager";
+    private String checkValidate(String subjectName, String subjectCode) {
 
         if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
         if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
@@ -109,7 +107,7 @@ public class SubjectController {
     }
 
     private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
-
+        if(subjectName.isEmpty()) return "Please input subject name";
         if(subjectCode.isEmpty()) return "Please input subject code";
         if(subjectManagerId == 0) return "Please input subject manager";
 
