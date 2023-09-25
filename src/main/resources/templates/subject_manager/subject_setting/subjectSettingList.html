@@ -114,7 +114,7 @@
                     <div class="col-xl-4 col-md-6"></div>
 
                     <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="/subject-manager/subject-setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
+                        <a href="/test" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
 
                 </div><!--end row-->
@@ -148,7 +148,21 @@
                                             <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/subject-manager/setting-subject/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td>
+                                        <form action="/subject-manager/subject-setting/detail">
+                                            <!-- Thuộc tính settingID ẩn đi với giá trị là setting.id -->
+                                            <input type="hidden" name="settingID" th:value="${setting.id}">
+
+                                            <!-- Nút để thực hiện action -->
+                                            <button type="submit">Action</button>
+                                        </form>
+                                    </td>
+<!--                                    <td><a th:href="@{/subject-manager/setting-subject/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+<!--                                    <td><a th:href="@{/subject-manager/subject-setting/detail(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+<!--                                    <td><a th:href="@{/test(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+<!--
+    <td><a th:href="@{/subject-manager/setting-subject/detail(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>-->
+
                                 </tr>
                                 </tbody>
                             </table>
