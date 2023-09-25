@@ -72,6 +72,11 @@ public class RegisterController {
             return "authentication/register";
         }
 
+        if(Validate.validPassword(password) == false) {
+            model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
+            return "authentication/register";
+        }
+
         // set session to verify
         session.setAttribute("userauthen", user);
         session.setAttribute("href", "verify");
