@@ -80,8 +80,12 @@
                                             <label class="form-label">Type</label>
                                             <div class="d-flex">
                                             <select name="type" class="form-select w-100">
-                                                <option selected th:value="1" th:text="${setting.typeId == 1 ? 'Complexity' : 'Quality'}"></option>
-                                                <option th:value="2" th:text="${setting.typeId == 1 ? 'Quality' : 'Complexity'}"></option>
+<!--                                                <option selected th:value="1" th:text="${setting.typeId == 1 ? 'Complexity' : 'Quality'}"></option>-->
+<!--                                                <option th:value="2" th:text="${setting.typeId == 1 ? 'Quality' : 'Complexity'}"></option>-->
+
+                                                <option th:value="1" th:text="Complexity" th:selected="${setting.typeId == 1}"></option>
+                                                <option th:value="2" th:text="Quality" th:selected="${setting.typeId == 2}"></option>
+
 
                                             </select>
                                             </div>
