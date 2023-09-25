@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.common;
+package swp.studentprojectportal.controller.common.authentication;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
-public class registerController {
+public class RegisterController {
     @Autowired
     int userRoleId;
     @Autowired
@@ -49,27 +49,32 @@ public class registerController {
 
         if(termCheckbox == null) {
             model.addAttribute("errmsg", "You must agree with our term and condition");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() == null && user.getPhone() == null) {
             model.addAttribute("errmsg", "Invalid email or phone number");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
             model.addAttribute("errmsg", "Email already exist!");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
             model.addAttribute("errmsg", "Email domain is not allowed!");
-            return "register";
+            return "authentication/register";
         }
 
         if (user.getPhone() != null && userService.checkExistPhoneNumber(user.getPhone())) {
             model.addAttribute("errmsg", "Phone number already exist!");
-            return "register";
+            return "authentication/register";
+        }
+
+        if(Validate.validPassword(password) == false) {
+            model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
+            return "authentication/register";
         }
 
         // set session to verify

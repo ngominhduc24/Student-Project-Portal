@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.common;
+package swp.studentprojectportal.controller.common.authentication;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,31 +10,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.services.servicesimpl.RegisterService;
-import swp.studentprojectportal.services.servicesimpl.ResetPassword;
 import swp.studentprojectportal.services.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
-public class forgotPasswordController {
+public class ForgotPasswordController {
     @Autowired
     UserService userService;
     @Autowired
     RegisterService registerService;
-    @Autowired
-    ResetPassword resetPassword;
+
     @GetMapping("/forgotPassword")
     public String forgotPasswordPage(HttpSession session) {
-        return "forgotPassword";
+        return "authentication/forgotPassword";
     }
 
     @PostMapping("/forgotPassword")
     public String forgotPassword(Model model, WebRequest request, HttpSession session) {
         String username = request.getParameter("username").replace(" ", "");;
 
-        User user = resetPassword.getUserByEmailOrPhone(username);
+        User user = userService.getUserByEmailOrPhone(username);
         if(user == null) {
             model.addAttribute("errmsg", "Username is't not correct");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         if(Validate.validEmail(username)) {
@@ -48,17 +46,17 @@ public class forgotPasswordController {
 
         if(user.getEmail() != null && !userService.checkExistMail(user.getEmail())) {
             model.addAttribute("errmsg", "Your email is not correct");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         if(user.getEmail() != null && !userService.checkEmailDomain(user.getEmail())) {
             model.addAttribute("errmsg", "Your email domain is not accepted");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         if(user.getPhone() != null && !userService.checkExistPhoneNumber(user.getPhone())) {
             model.addAttribute("errmsg", "Your phone number is not correct");
-            return "forgotPassword";
+            return "authentication/forgotPassword";
         }
 
         session.setAttribute("userauthen", user);
@@ -68,11 +66,11 @@ public class forgotPasswordController {
 
     @GetMapping("/reset-password")
     public String resetPasswordForm(HttpSession session,@RequestParam("key") String token) {
-        User user = resetPassword.resetPasswordByToken(token);
+        User user = userService.resetPasswordByToken(token);
         if(user != null) {
             session.removeAttribute("user");
             session.setAttribute("user", user);
-            return "resetPassword";
+            return "authentication/resetPassword";
         } else {
             return "redirect:/forgotPassword";
         }
@@ -101,7 +99,7 @@ public class forgotPasswordController {
             model.addAttribute("errmsg", "New Password and Re-new Password do not match");
         }
 
-        return "resetPassword";
+        return "authentication/resetPassword";
     }
 
 }

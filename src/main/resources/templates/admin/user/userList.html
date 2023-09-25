@@ -31,6 +31,8 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+
+
 </head>
 
 <body>
@@ -91,53 +93,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="user : ${userList}">
-                                    <td th:text="${user.fullName}"></td>
-                                    <td th:text="${user.email}"></td>
-                                    <td th:text="${user.phone}"></td>
-                                    <td th:text="${user.setting.settingTitle}"></td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${user.status}"
-                                                   th:onclick="'updateStatus(' + ${user.id} + ', this)'">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="showNote" onclick="openDialog(this)">
-                                            <i class="fas fa-pen-to-square"></i>
-                                        </a>
-                                        <dialog class="userNote">
-                                            <div class="userNote_container">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel"
-                                                                th:text="${user.fullName}"></h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close" onclick="closeDialog(this)">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p th:text="${user.note}"></p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary"
-                                                                    data-dismiss="modal" onclick="closeDialog(this)">
-                                                                Close
-                                                            </button>
-                                                            <button type="button" class="btn btn-secondary">
-                                                                <a th:href="@{'./userDetails?id=' + ${user.id}}" style="color: white;">Edit note</a>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </dialog>
-                                    </td>
-                                    <td><a th:href="@{'./userDetails?id=' + ${user.id}}">View Details</a>
-                                    </td>
-                                </tr>
+<!--                                Body add by javascript api-->
                                 </tbody>
                             </table>
                             <input type="text" id="countPage" th:value="${totalPage}" hidden="">
@@ -186,14 +142,34 @@
         });
 
         $("#toolbar").html('<div class="float-left">' +
-            // '<p>Page no ' + (currentPage) + '</p>' +
-            '<p>    </p>' +
+            '<p>Page no <span id="currentPageSpan">1</span></p>' +
             '</div>');
+
+        // Initialize the page number
+        let currentPage = 1;
+
+        // Function to update the page number in the toolbar
+        function updatePageNumber() {
+            $("#currentPageSpan").text(currentPage);
+        }
+
+        // Event listener for page change
+        dataTable.on('page.dt', function () {
+            currentPage = dataTable.page.info().page + 1; // Update currentPage when the page changes (add 1 to match your 1-based page numbering)
+            updatePageNumber(); // Update the page number in the toolbar
+        });
+
+        // Initial update of the page number
+        updatePageNumber();
     });
 </script>
 
 <!-- Status update -->
 <script>
+    window.addEventListener('load', function() {
+        // Scroll to the bottom of the page
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
+    });
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
@@ -206,20 +182,28 @@
 <!-- User Note -->
 <script>
     // Get dialog element
-    async function openDialog(element) {
+    function openDialog(element, userId) {
         // Find the closest dialog element to the clicked anchor tag
         const dialog = element.closest('tr').querySelector('.userNote');
-
-        // Check if a dialog is found, and then show it
-        if (dialog) {
+        const userFullName = dialog.querySelector('.modal-title');
+        const userNote = dialog.querySelector('.modal-body p');
+        fetchUserData(userId).then(data => {
+            userFullName.textContent = data.fullName;
+            if(data.note == null) userNote.textContent = 'No note';
+            else userNote.textContent = data.note;
             dialog.showModal();
-        }
+        }).catch(error => {
+            console.error('Error fetching user data:', error);
+        })
+    }
 
-        //scroll to bottom
-        setTimeout(function() {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
-        }, 30); //delay
-
+    function fetchUserData(userId) {
+        const apiUrl = `/api/v1/user/${userId}`; // Your API endpoint
+        return fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
     }
 
     // Close dialog when pressing cancel button
@@ -301,7 +285,7 @@
     });
 
     // Function to fetch user data and populate the table
-    function populateUserTable(pageNo) {
+    const  populateUserTable =  (pageNo) => {
         pageNo = pageNo - 1;
         const apiUrl = `/api/v1/user?pageNo=${pageNo}&pageSize=10`; // Your API endpoint
 
@@ -326,23 +310,22 @@
                         </div>
                     </td>
                     <td>
-                        <a href="#" class="showNote" onclick="openDialog(this)">
+                        <a href="#" class="showNote" onclick="openDialog(this, ${user.id})">
                             <i class="fas fa-pen-to-square"></i>
                         </a>
-                            <dialog class="userNote">
+                                        <dialog class="userNote">
                                             <div class="userNote_container">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel"
-                                                                th:text="${user.fullName}"></h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
+                                                            <h5 class="modal-title" id="modalTitle"></h5>
+                                                            <button type="button" class="close" data-dismissem ="modal"
                                                                     aria-label="Close" onclick="closeDialog(this)">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p th:text="${user.note}"></p>
+                                                            <p></p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-primary"
@@ -356,7 +339,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                            </dialog>
+                                        </dialog>
                     </td>
                     <td><a href="./userDetails?id=${user.id}">View Details</a></td>
                 `;
@@ -370,6 +353,9 @@
             });
     }
 
+    document.addEventListener("DOMContentLoaded", () => {
+        populateUserTable(1);
+    });
 </script>
 
 

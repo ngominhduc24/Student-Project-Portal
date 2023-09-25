@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
-public class subjectController {
+public class SubjectController {
 
     @Autowired
     SubjectSevice subjectService;
@@ -49,10 +49,11 @@ public class subjectController {
             @RequestParam int subjectManagerId,
             Model model) {
 
-        String errorMsg = checkValidate(subjectName, subjectCode, subjectManagerId);
+        String errorMsg = checkValidate(subjectName, subjectCode);
         if(errorMsg!=null) {
-            model.addAttribute("error", errorMsg);
-            return "admin/subject/subjectAdd";
+            model.addAttribute("errorMsg", errorMsg);
+            model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+            return "/admin/subject/subjectAdd";
         }
         int newSubjectId = subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true).getId();
         return "redirect:./subjectDetails?id=" + newSubjectId;
@@ -66,7 +67,7 @@ public class subjectController {
         return "admin/subject/subjectDetail";
     }
 
-    @PostMapping("/updateSubject")
+    @PostMapping("/admin/updateSubject")
     public String updateSubject(
             @RequestParam int id,
             @RequestParam String subjectName,
@@ -75,14 +76,18 @@ public class subjectController {
             @RequestParam boolean status,
             Model model) {
 
-        String msg = checkValidateUpdate(subjectName, subjectCode, subjectManagerId);
+        String msg = checkValidateUpdate(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
         if (msg != null) {
             model.addAttribute("errorMsg", msg);
         } else {
             boolean ans = subjectService.updateSubject(id, subjectName, subjectCode, subjectManagerId, status);
-            if(ans) model.addAttribute("successMsg", "Update success");
+            if (ans) model.addAttribute("successMsg", "Update success");
             else model.addAttribute("errorMsg", "Update failed");
         }
+
+        model.addAttribute("subject", subjectService.getSubjectById(id));
+        model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+
         return "admin/subject/subjectDetail";
     }
     @GetMapping("/admin/subject/updateStatus")
@@ -93,10 +98,7 @@ public class subjectController {
         return "redirect:/";
     }
 
-    private String checkValidate(String subjectName, String subjectCode, int subjectManagerId) {
-        if(subjectName.isEmpty()) return "Please input subject name";
-        if(subjectCode.isEmpty()) return "Please input subject code";
-        if(subjectManagerId == 0) return "Please input subject manager";
+    private String checkValidate(String subjectName, String subjectCode) {
 
         if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
         if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
@@ -104,13 +106,13 @@ public class subjectController {
         return null;
     }
 
-    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId) {
+    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
         if(subjectName.isEmpty()) return "Please input subject name";
         if(subjectCode.isEmpty()) return "Please input subject code";
         if(subjectManagerId == 0) return "Please input subject manager";
 
-        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+        if(!subject.getSubjectName().equals(subjectName) && subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+        if(!subject.getSubjectCode().equals(subjectCode) && subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
 
         return null;
     }

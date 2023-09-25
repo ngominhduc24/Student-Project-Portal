@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.common;
+package swp.studentprojectportal.controller.common.authentication;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import swp.studentprojectportal.utils.GoogleUtils;
 import java.io.IOException;
 
 @Controller
-public class loginController {
+public class LoginController {
     private final String afterLoginRoute = "/home";
 
     @Autowired
@@ -61,7 +61,7 @@ public class loginController {
         } else if(!user.isStatus()) {
             model.addAttribute("errmsg", "Your account has been blocked");
         }
-        return "login";
+        return "authentication/login";
     }
 
     @GetMapping("/login-google")

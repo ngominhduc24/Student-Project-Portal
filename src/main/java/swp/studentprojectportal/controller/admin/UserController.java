@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
-public class userController {
+public class UserController {
     @Autowired
     private int adminRoleId;
 
@@ -31,10 +31,10 @@ public class userController {
     @GetMapping("/user")
     public String userList(Model model,
             @RequestParam(defaultValue = "0") int page) {
-        if (page<0) page = 0;
-        List<User> UserList = userService.getUser(page, 10);
+//        if (page<0) page = 0;
+//        List<User> UserList = userService.getUser(page, 10);
 
-        model.addAttribute("userList", UserList);
+//        model.addAttribute("userList", UserList);
         model.addAttribute("page", page);
         model.addAttribute("totalPage", userService.getTotalPage(10));
 
