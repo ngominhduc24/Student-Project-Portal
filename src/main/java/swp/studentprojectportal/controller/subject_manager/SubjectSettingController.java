@@ -13,23 +13,34 @@ import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.SubjectSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
-import swp.studentprojectportal.services.servicesimpl.SubjectSettingService;
+import swp.studentprojectportal.service.servicesimpl.SubjectSettingService;
+import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
 
+import java.util.ArrayList;
 import java.util.List;
 @Controller
 public class SubjectSettingController {
     @Autowired
-    ISubjectRepository subjectRepository;
+    SubjectSevice subjectService;
     @Autowired
     SubjectSettingService subjectSettingService;
+    @Autowired
+    ISubjectRepository subjectRepository;
     @GetMapping("/subject-manager/subject-setting")
     public String settingPage(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        Subject subject = subjectRepository.findSubjectByUser(user);
-        List<SubjectSetting> subjectSettingList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject,1);
-        List<SubjectSetting> qualityList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject,2);
-        subjectSettingList.addAll(qualityList);
-        model.addAttribute("subjectSettingList", subjectSettingList);
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        List<SubjectSetting> subjectSettingList= new ArrayList<>();
+        for (Subject subject : subjectList) {
+            List<SubjectSetting> complexityList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject,1);
+            subjectSettingList.addAll(complexityList);
+            List<SubjectSetting> qualityList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject,2);
+            subjectSettingList.addAll(qualityList);
+        }
+        if(subjectSettingList!=null)
+            model.addAttribute("subjectSettingList", subjectSettingList);
+        else
+            model.addAttribute("error", "You currently do not manage any subjects.");
         return "subject_manager/subject_setting/subjectSettingList";
     }
 
@@ -43,62 +54,59 @@ public class SubjectSettingController {
         return "redirect:/";
     }
     @RequestMapping("/subject-manager/subject-setting/detail")
-    public String detailSubjectSetting(@RequestParam("settingID") int id, Model model){
-
-//        Integer id = Integer.parseInt( request.getParameter("id") );
-        System.out.println("id="+id);
-        System.out.println("noway");
+    public String detailSubjectSetting(@RequestParam("id") int id, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         SubjectSetting subjectSetting = subjectSettingService.findById(id);
         model.addAttribute("setting",subjectSetting);
-//        return "subject_manager/subject_setting/subjectSettingDetail";
-        return "test";
+        model.addAttribute("subjectList",subjectList);
+        return "subjectSettingDetail";
     }
 
-    @PostMapping(path = "/subject-manager/subject-setting/update")
-    public  String updateSubjectSetting(WebRequest request,Model model){
-        String id = request.getParameter("id");
-        String type = request.getParameter("type");
-        String title = request.getParameter("title");
-        String displayOrder = request.getParameter("displayOrder");
-        System.out.println(id);
-        System.out.println(type);
-        System.out.println(title);
-        System.out.println(displayOrder);
-
-        SubjectSetting subjectSetting = subjectSettingService.findById(Integer.parseInt(id));
-        subjectSetting.setTypeId(Integer.parseInt(type));
-        subjectSetting.setSettingTitle(title);
-        subjectSetting.setDisplayOrder(Integer.parseInt(displayOrder));
-        subjectSettingService.saveSubjectSetting(subjectSetting);
-        model.addAttribute("setting",subjectSetting);
-
-
-        return "test";
-    }
-    @RequestMapping(path = "/subject-manager/subject-setting/add")
-    public String addSubjectSettingaPage(WebRequest request,HttpSession session){
-        User user = (User) session.getAttribute("user");
-        Subject subject = subjectRepository.findSubjectByUser(user);
-        String type = request.getParameter("type");
-        String title = request.getParameter("title");
-        String displayOrder = request.getParameter("displayOrder");
+    @PostMapping("/subject-manager/subject-setting/update")
+    public String updateSetting(
+            @RequestParam Integer id,
+            @RequestParam Integer subjectId,
+            @RequestParam Integer typeId,
+            @RequestParam String settingTitle,
+            @RequestParam Integer displayOrder,
+            WebRequest request) {
+        String status = request.getParameter("status");
         SubjectSetting subjectSetting = new SubjectSetting();
-        subjectSetting.setTypeId(Integer.parseInt(type));
-        subjectSetting.setSettingTitle(title);
-        subjectSetting.setDisplayOrder(Integer.parseInt(displayOrder));
-        subjectSetting.setStatus(true);
-        subjectSetting.setSubject(subject);
+        subjectSetting.setId(id);
+        subjectSetting.setSubject(subjectRepository.getById(subjectId));
+        subjectSetting.setTypeId(typeId);
+        subjectSetting.setSettingTitle(settingTitle);
+        subjectSetting.setDisplayOrder(displayOrder);
+        subjectSetting.setStatus(status!=null);
         subjectSettingService.saveSubjectSetting(subjectSetting);
-        return  "redirect:/subject-manager/subject-setting";
-    }
-//    @PostMapping(path="/subject-manager/subject-setting/add")
-//    public  String addSubjectSeting()Ơ
-
-    @RequestMapping(path="/test")
-    public  String testNTN(){
-        //System.out.println("ntn00"+id);
-        return "subject_manager/subject_setting/addSubjectSetting";
+        return "redirect:/subject-manager/subject-setting";
     }
 
+    @RequestMapping(path = "/subject-manager/subject-setting/add")
+    public String addSubjectSettingaPage(Model model,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        model.addAttribute("subjectList",subjectList);
+        return  "subject_manager/subject_setting/subjectSettingAdd";
+    }
+
+    @PostMapping("/subject-manager/subject-setting/add")
+    public String addSetting(
+            @RequestParam Integer subjectId,
+            @RequestParam Integer typeId,
+            @RequestParam String settingTitle,
+            @RequestParam Integer displayOrder,
+            WebRequest request) {
+        String status = request.getParameter("status");
+        SubjectSetting subjectSetting = new SubjectSetting();
+        subjectSetting.setSubject(subjectRepository.getById(subjectId));
+        subjectSetting.setTypeId(typeId);
+        subjectSetting.setSettingTitle(settingTitle);
+        subjectSetting.setDisplayOrder(displayOrder);
+        subjectSetting.setStatus(status!=null);
+        subjectSettingService.saveSubjectSetting(subjectSetting);
+        return "redirect:/subject-manager/subject-setting";
+    }
 
 }

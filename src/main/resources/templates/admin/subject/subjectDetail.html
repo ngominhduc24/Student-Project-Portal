@@ -88,7 +88,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Subject manager</label>
-                                            <select name="subjectManagerId" class="form-control">
+                                            <select name="subjectManagerId" class="form-select">
                                                 <option th:each="manager : ${subjectManagerList}"
                                                         th:value="${manager.id}"
                                                         th:text="${manager.fullName}"
@@ -121,12 +121,12 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
-                                            <select name="status" class="form-control">
+                                            <select name="status" class="form-select">
                                                 <option value="true" th:selected="${true == subject.status}">
-                                                    True
+                                                    Active
                                                 </option>
                                                 <option value="false" th:selected="${false == subject.status}">
-                                                    False
+                                                    Inactive
                                                 </option>
                                             </select>
                                         </div>

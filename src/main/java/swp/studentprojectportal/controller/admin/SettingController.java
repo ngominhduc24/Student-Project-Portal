@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Setting;
-import swp.studentprojectportal.services.servicesimpl.SettingService;
+import swp.studentprojectportal.service.servicesimpl.SettingService;
 
 import java.util.List;
 
@@ -35,21 +35,32 @@ public class SettingController {
 
     @PostMapping("/admin/setting/update")
     public String updateSetting(
-            @RequestParam Integer typeId,
-            @RequestParam String settingTitle,
-            @RequestParam Integer displayOrder,
-            WebRequest request, HttpSession session) {
+            @RequestParam Integer typeId, @RequestParam String settingTitle,
+            @RequestParam Integer displayOrder, WebRequest request, Model model) {
         String status = request.getParameter("status");
         Setting setting = new Setting();
         String id = request.getParameter("id");
-        if(id!=null && !id.isEmpty())
-            setting.setId(Integer.parseInt(id));
+        if(id!=null && !id.isEmpty())    setting.setId(Integer.parseInt(id));
         setting.setTypeId(typeId);
         setting.setSettingTitle(settingTitle);
         setting.setDisplayOrder(displayOrder);
         setting.setStatus(status!=null);
-        settingService.saveSetting(setting);
-        return "redirect:/admin/setting";
+        if(settingService.findBySettingTitle(settingTitle)!=null){
+            String typeName="";
+            if(typeId==1) typeName="This role";
+            if(typeId==3) typeName="This semester";
+            if(typeId==2) typeName="This email domain";
+            model.addAttribute("errmsg", typeName + " has already existed!");
+        }
+        else if(settingService.findByTypeIdAndDisplayOrder(typeId, displayOrder)!=null){
+            model.addAttribute("errmsg", "Display Order has already existed!");
+        } else {
+            settingService.saveSetting(setting);
+            model.addAttribute("errmsg", "Successfully");
+        }
+        model.addAttribute("typeId", typeId);
+        model.addAttribute("setting", setting);
+        return "admin/setting/settingDetail";
     }
 
     @GetMapping("/admin/setting/add")

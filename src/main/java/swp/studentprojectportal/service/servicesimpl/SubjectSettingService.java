@@ -1,11 +1,11 @@
-package swp.studentprojectportal.services.servicesimpl;
+package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.SubjectSetting;
 import swp.studentprojectportal.repository.ISubjectSettingRepository;
-import swp.studentprojectportal.services.ISubjectSettingService;
+import swp.studentprojectportal.service.ISubjectSettingService;
 
 import java.util.List;
 @Service
