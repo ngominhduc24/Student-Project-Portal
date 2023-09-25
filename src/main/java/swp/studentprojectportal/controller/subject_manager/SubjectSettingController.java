@@ -77,7 +77,10 @@ public class SubjectSettingController {
 
         return "test";
     }
+    @RequestMapping(path = "/subject-manager/subject-setting/add")
+    public String addSubjectSetting(){
 
+    }
     @RequestMapping(path="/test")
     public  String testNTN(@RequestParam("settingID") int settingId){
         System.out.println("hehe "+settingId);
