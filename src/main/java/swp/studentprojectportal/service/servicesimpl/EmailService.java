@@ -23,14 +23,6 @@ public class EmailService implements IEmailService {
         String fromAddress = "Studix@sss";
         String senderName = "Studix";
         String subject = "Activate your Studix account";
-        String content1 = "Dear [[name]],<br>"
-                +"Your email has been used to register Studix<br>"
-                + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3><br>"
-                + "If you did not do this, please click here:<br>"
-                + "<h3><a href=\"[[URL_discard]]\" target=\"_self\">DISCARD</a></h3><br>"
-                + "Thank you,<br>"
-                + "Studix.";
         String content = "\n" +
                 "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
