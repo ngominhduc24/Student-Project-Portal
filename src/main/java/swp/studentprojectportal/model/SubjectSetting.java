@@ -44,4 +44,8 @@ public class SubjectSetting {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 }

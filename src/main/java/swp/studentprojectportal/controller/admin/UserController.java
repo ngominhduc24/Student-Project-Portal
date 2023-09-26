@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.SettingService;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.SettingService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller

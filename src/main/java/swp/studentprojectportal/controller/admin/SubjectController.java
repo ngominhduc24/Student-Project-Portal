@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

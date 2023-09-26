@@ -1,10 +1,10 @@
-package swp.studentprojectportal.services.servicesimpl;
+package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.services.IEmailService;
+import swp.studentprojectportal.service.IEmailService;
 @Service
 public class EmailService implements IEmailService {
     @Autowired

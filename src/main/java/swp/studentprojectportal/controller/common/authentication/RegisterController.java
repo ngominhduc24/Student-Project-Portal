@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.SettingService;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.SettingService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
@@ -69,6 +69,11 @@ public class RegisterController {
 
         if (user.getPhone() != null && userService.checkExistPhoneNumber(user.getPhone())) {
             model.addAttribute("errmsg", "Phone number already exist!");
+            return "authentication/register";
+        }
+
+        if(Validate.validPassword(password) == false) {
+            model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
             return "authentication/register";
         }
 
