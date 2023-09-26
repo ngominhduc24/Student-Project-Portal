@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.service.IEmailService;
+import swp.studentprojectportal.utils.InstanceThread;
 
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
@@ -66,8 +67,10 @@ public class EmailService implements IEmailService {
             message.setRecipients(MimeMessage.RecipientType.TO, to);
             message.setSubject(subject);
             message.setContent(content, "text/html;charset=UTF-8");
+            InstanceThread emailThread = new InstanceThread();
+            emailThread.start();
+            emailThread.emailSenderThread(mailSender, message);
 
-            mailSender.send(message);
         } catch (MessagingException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
