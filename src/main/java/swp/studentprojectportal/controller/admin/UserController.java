@@ -136,6 +136,7 @@ public class UserController {
     }
 
     private String checkValidateUpdate(String email, String phone, User user) {
+        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
         if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
 
         if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
