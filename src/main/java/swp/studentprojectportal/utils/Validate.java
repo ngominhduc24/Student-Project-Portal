@@ -35,7 +35,22 @@ public class Validate {
         return false;
     }
 
-
+    /*
+     * Function to validate password
+     * Password must contain at least 8 characters, including at least 1 uppercase letter, 1 lowercase letter, and 1 number
+     */
+    public static boolean validPassword(String password) {
+        if(password == null) return false;
+        if(
+                password.matches(".*[A-Z].*") &&
+                        password.matches(".*[a-z].*") &&
+                        password.matches(".*[0-9].*") &&
+                        password.length() >= 8
+        ) {
+            return true;
+        }
+        return false;
+    }
 
     public static String checkValidateSubject(String subjectName, String subjectCode) {
         if(subjectName.isEmpty()) return "Please input subject name";
