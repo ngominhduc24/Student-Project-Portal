@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.EmailService;
-import swp.studentprojectportal.services.servicesimpl.RegisterService;
-import swp.studentprojectportal.services.servicesimpl.SettingService;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.EmailService;
+import swp.studentprojectportal.service.servicesimpl.RegisterService;
+import swp.studentprojectportal.service.servicesimpl.SettingService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.InstanceThread;
 import swp.studentprojectportal.utils.Utility;
 
 @Controller
@@ -39,12 +40,12 @@ public class VerifyController {
 
         // get href
         String href = (String) session.getAttribute("href");
-        session.removeAttribute("href");
         String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
 
         // if user register by email address
         if (user.getEmail() != null && verifyMail == true) {
             emailservice.sendEmail(user.getFullName(), user.getEmail(), token_sender);
+
             model.addAttribute("email", user.getEmail());
             session.removeAttribute("user");
             return "verifyEmail";

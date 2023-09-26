@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.RegisterService;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.RegisterService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
@@ -87,6 +87,17 @@ public class ForgotPasswordController {
             return "redirect:/forgotPassword";
         }
 
+        if(!newPassword.equals(reNewPassword)) {
+            model.addAttribute("errmsg", "New Password and Re-new Password do not match");
+            return "authentication/resetPassword";
+
+        }
+
+        if(!Validate.validPassword(newPassword)) {
+            model.addAttribute("errmsg", "Password must be at least 8 characters, including uppercase, lowercase letters and numbers");
+            return "authentication/resetPassword";
+        }
+
         // check equal password and re-password
         if(newPassword.equals(reNewPassword)){
             user.setPassword(newPassword);
@@ -95,8 +106,6 @@ public class ForgotPasswordController {
             //save to database
             User u = userService.saveUser(user);
             return "redirect:/login";
-        } else {
-            model.addAttribute("errmsg", "New Password and Re-new Password do not match");
         }
 
         return "authentication/resetPassword";
