@@ -43,11 +43,11 @@ public class SubjectController {
     public String createSubject(
             WebRequest request,
             Model model) {
-        String subjectName = request.getParameter("subjectName").trim();
-        String subjectCode = request.getParameter("subjectCode").trim();
+        String subjectName = Objects.requireNonNull(request.getParameter("subjectName")).trim();
+        String subjectCode = Objects.requireNonNull(request.getParameter("subjectCode")).trim();
         int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
 
-        String errorMsg = checkValidate(subjectName, subjectCode, subjectManagerId);
+        String errorMsg = Validate.checkValidateSubject(subjectName, subjectCode);
         if(errorMsg!=null) {
             model.addAttribute("errorMsg", errorMsg);
             model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
@@ -71,8 +71,8 @@ public class SubjectController {
             Model model) {
 
         int id = Integer.parseInt(Objects.requireNonNull(request.getParameter("id")));
-        String subjectName = request.getParameter("subjectName").trim();
-        String subjectCode = request.getParameter("subjectCode").trim();
+        String subjectName = Objects.requireNonNull(request.getParameter("subjectName")).trim();
+        String subjectCode = Objects.requireNonNull(request.getParameter("subjectCode")).trim();
         int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
         boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
@@ -108,7 +108,7 @@ public class SubjectController {
 //        return null;
 //    }
 //
-//    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
+//    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId) {
 //        if(subjectName.isEmpty()) return "Please input subject name";
 //        if(subjectCode.isEmpty()) return "Please input subject code";
 //        if(subjectManagerId == 0) return "Please input subject manager";

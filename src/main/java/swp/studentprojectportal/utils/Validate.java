@@ -35,6 +35,8 @@ public class Validate {
         return false;
     }
 
+
+
     public static String checkValidateSubject(String subjectName, String subjectCode) {
         if(subjectName.isEmpty()) return "Please input subject name";
         if(subjectCode.isEmpty()) return "Please input subject code";
