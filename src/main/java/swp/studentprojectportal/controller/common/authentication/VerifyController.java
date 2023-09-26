@@ -40,7 +40,6 @@ public class VerifyController {
 
         // get href
         String href = (String) session.getAttribute("href");
-        session.removeAttribute("href");
         String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
 
         // if user register by email address
