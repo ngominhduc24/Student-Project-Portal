@@ -52,9 +52,10 @@ public class SettingController {
             if(typeId==2) typeName="This email domain";
             model.addAttribute("errmsg", typeName + " has already existed!");
         }
-        else if(settingService.findByTypeIdAndDisplayOrder(typeId, displayOrder)!=null){
-            model.addAttribute("errmsg", "Display Order has already existed!");
-        } else {
+//        else if(settingService.findByTypeIdAndDisplayOrder(typeId, displayOrder)!=null){
+//            model.addAttribute("errmsg", "Display Order has already existed!");
+//        }
+        else {
             settingService.saveSetting(setting);
             model.addAttribute("errmsg", "Successfully");
         }
