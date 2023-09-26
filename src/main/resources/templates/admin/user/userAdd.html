@@ -98,7 +98,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Role</label>
-                                            <select name="roleId" class="form-control">
+                                            <select name="roleId" class="form-select">
                                                 <option th:each="role : ${roleList}"
                                                         th:value="${role.id}"
                                                         th:text="${role.settingTitle}"></option>

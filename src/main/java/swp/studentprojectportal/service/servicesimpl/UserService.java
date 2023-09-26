@@ -1,7 +1,6 @@
-package swp.studentprojectportal.services.servicesimpl;
+package swp.studentprojectportal.service.servicesimpl;
 
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISettingRepository;
 import swp.studentprojectportal.repository.IUserRepository;
-import swp.studentprojectportal.services.IUserService;
+import swp.studentprojectportal.service.IUserService;
 import swp.studentprojectportal.utils.GooglePojo;
 
 import java.util.List;

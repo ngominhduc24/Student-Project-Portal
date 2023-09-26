@@ -19,7 +19,8 @@ public class Validate {
     public static boolean validPhoneNumber(String phoneNumber) {
         if(phoneNumber == null) return false;
         phoneNumber = phoneNumber.replace("+84", "0");
-        if(phoneNumber.matches("(0[3|5|7|8|9])+([0-9]{8})\\b")) return true;
+       // if(phoneNumber.matches("(0[3|5|7|8|9])+([0-9]{8})\\b")) return true;
+        if(phoneNumber.matches("(0[0-9])+([0-9]{8})\\b")) return true;
         return false;
     }
 
