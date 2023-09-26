@@ -47,7 +47,7 @@ public class SubjectController {
         String subjectCode = request.getParameter("subjectCode").trim();
         int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
 
-        String errorMsg = Validate.checkValidateSubject(subjectName, subjectCode);
+        String errorMsg = checkValidate(subjectName, subjectCode, subjectManagerId);
         if(errorMsg!=null) {
             model.addAttribute("errorMsg", errorMsg);
             model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));

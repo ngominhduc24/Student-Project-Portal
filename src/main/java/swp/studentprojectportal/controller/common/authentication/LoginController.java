@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.SettingService;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.SettingService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.GooglePojo;
 import swp.studentprojectportal.utils.GoogleUtils;
 
@@ -61,7 +61,7 @@ public class LoginController {
         } else if(!user.isStatus()) {
             model.addAttribute("errmsg", "Your account has been blocked");
         }
-        return "login";
+        return "authentication/login";
     }
 
     @GetMapping("/login-google")

@@ -30,23 +30,8 @@ public class Validate {
         phoneNumber = phoneNumber.replace("+84", "0");
        // if(phoneNumber.matches("(0[3|5|7|8|9])+([0-9]{8})\\b")) return true;
         if(phoneNumber.matches("(0[0-9])+([0-9]{8})\\b")) return true;
-        return false;
-    }
-
-    /*
-     * Function to validate password
-     * Password must contain at least 8 characters, including at least 1 uppercase letter, 1 lowercase letter, and 1 number
-     */
-    public static boolean validPassword(String password) {
-        if(password == null) return false;
-        if(
-                password.matches(".*[A-Z].*") &&
-                password.matches(".*[a-z].*") &&
-                password.matches(".*[0-9].*") &&
-                password.length() >= 8
-        ) {
-            return true;
-        }
+       // if(phoneNumber.matches("(0[3|5|7|8|9])+([0-9]{8})\\b")) return true;
+        if(phoneNumber.matches("(0[0-9])+([0-9]{8})\\b")) return true;
         return false;
     }
 

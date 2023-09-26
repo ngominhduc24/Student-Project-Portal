@@ -1,10 +1,10 @@
-package swp.studentprojectportal.services.servicesimpl;
+package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IUserRepository;
-import swp.studentprojectportal.services.IRegisterService;
+import swp.studentprojectportal.service.IRegisterService;
 
 @Service
 public class RegisterService implements IRegisterService {

@@ -17,7 +17,7 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
     Subject findSubjectBySubjectName(String subjectName);
 
     Subject findSubjectBySubjectCode(String subjectCode);
-    Subject findSubjectByUser(User user);
+    List<Subject> findAllSubjectByUser(User user);
 
     //List<Subject> findSubjectPaging(Pageable pageable);
 }

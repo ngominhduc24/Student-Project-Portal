@@ -1,6 +1,7 @@
-package swp.studentprojectportal.services;
+package swp.studentprojectportal.service;
 
 import swp.studentprojectportal.model.Subject;
+import swp.studentprojectportal.model.User;
 
 import java.util.List;
 
@@ -24,4 +25,5 @@ public interface ISubjectService {
 
     boolean checkSubjectNameExist(String subjectName);
 
+    List<Subject> findAllSubjectByUser(User user);
 }

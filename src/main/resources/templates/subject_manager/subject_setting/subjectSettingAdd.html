@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8"/>
     <title th:text="${@title}"></title>
@@ -23,12 +24,16 @@
     <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
     <!-- Icons -->
     <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
-    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <!-- Datatables -->
+    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
 </head>
 <body>
+
 <!-- Loader -->
 <div id="preloader">
     <div id="status">
@@ -47,60 +52,77 @@
         <div th:replace="dashboardHeader"></div>
         <div class="container-fluid">
             <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h3 class="mb-0">Subject Setting Details</h3>
+                </div>
                 <div>
-                    <h3 class="mb-0">Add New Subject</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/admin/subject">Subject</a></li>
+                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Subject Setting</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Add Subject</li>
+                        <li class="breadcrumb-item active">Subject Setting Details</li>
                     </ol>
                 </div>
-
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="./addSubject" method="post" class="mt-4">
+                            <form action="/subject-manager/subject-setting/add" method="post">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Name</label>
-                                            <input type="text" class="form-control"
-                                                   name="subjectName"
-                                                   placeholder="Subject Name :">
+                                            <label class="form-label">Subject Code</label>
+                                            <div class="d-flex">
+                                                <select name="subjectId" class="form-select">
+                                                    <option th:each="subject : ${subjectList}"
+                                                            th:value="${subject.id}"
+                                                            th:text="${subject.subjectCode}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Type</label>
+                                            <div class="d-flex">
+                                                <select name="typeId" class="form-select w-100">
+                                                    <option th:value="1" th:text="Complexity" ></option>
+                                                    <option th:value="2" th:text="Quality" ></option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Code</label>
-                                            <input type="text" class="form-control"
-                                                   name="subjectCode"
-                                                   placeholder="Subject Code :">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label"> Subject Manager : </label>
-                                            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                                                <div class="input-group" style="flex-wrap: nowrap">
-                                                    <select name="subjectManagerId" class="form-select">
-                                                        <option th:each="manager : ${subjectManagerList}"
-                                                                th:value="${manager.id}"
-                                                                th:text="${manager.fullName}"
-                                                                class="managerOption"></option>
-                                                    </select>
-                                                </div>
+                                            <label class="form-label">Title</label>
+                                            <div class="d-flex">
+                                                <input type="text" name="settingTitle" class="form-control" required>
                                             </div>
                                         </div>
                                     </div><!--end col-->
-                                </div><!--end row-->
 
-                                <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
-                                <button type="submit" class="btn btn-primary">Add Subject</button>
+                                    <div class="col-md-2 offset-1">
+                                        <div class="mb-3">
+                                            <label class="form-label">Display Order</label>
+                                            <input style="width: 60%;" type="number" required class="form-control" value="1" name="displayOrder">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <div class="mb-3">
+                                            <label class="form-label">Status</label>
+                                            <div class="form-check form-switch" style="font-size: 24px">
+                                                <input style="margin-left: -38px" class="form-check-input" value="on" name="status" checked type="checkbox" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--end row-->
+                                <div class="row">
+                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button> </div>
+                                </div>
                             </form>
+
+                            <h6 style="color: red;" th:text="${errmsg}"></h6>
                         </div>
                     </div><!--end col-->
                 </div>
@@ -108,7 +130,6 @@
         </div>
     </main>
 </div>
-
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->
@@ -119,5 +140,6 @@
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
 </body>
 </html>

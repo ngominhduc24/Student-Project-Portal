@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.SettingService;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.SettingService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 @Controller
@@ -49,27 +49,32 @@ public class RegisterController {
 
         if(termCheckbox == null) {
             model.addAttribute("errmsg", "You must agree with our term and condition");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() == null && user.getPhone() == null) {
             model.addAttribute("errmsg", "Invalid email or phone number");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
             model.addAttribute("errmsg", "Email already exist!");
-            return "register";
+            return "authentication/register";
         }
 
         if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
             model.addAttribute("errmsg", "Email domain is not allowed!");
-            return "register";
+            return "authentication/register";
         }
 
         if (user.getPhone() != null && userService.checkExistPhoneNumber(user.getPhone())) {
             model.addAttribute("errmsg", "Phone number already exist!");
-            return "register";
+            return "authentication/register";
+        }
+
+        if(Validate.validPassword(password) == false) {
+            model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
+            return "authentication/register";
         }
 
         // set session to verify

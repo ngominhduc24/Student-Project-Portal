@@ -1,10 +1,10 @@
-package swp.studentprojectportal.services.servicesimpl;
+package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.repository.ISettingRepository;
-import swp.studentprojectportal.services.ISettingService;
+import swp.studentprojectportal.service.ISettingService;
 
 import java.util.List;
 
@@ -43,5 +43,15 @@ public class SettingService implements ISettingService {
     @Override
     public Setting findById(int id) {
         return settingRepository.findById(id).get();
+    }
+
+    @Override
+    public Setting findBySettingTitle(String settingTitle) {
+        return settingRepository.findBySettingTitle(settingTitle);
+    }
+
+    @Override
+    public Setting findByTypeIdAndDisplayOrder(int typeId, int displayOrder) {
+        return settingRepository.findByTypeIdAndDisplayOrder(typeId, displayOrder);
     }
 }

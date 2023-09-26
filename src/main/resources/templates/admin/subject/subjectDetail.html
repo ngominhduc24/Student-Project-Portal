@@ -88,7 +88,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Subject manager</label>
-                                            <select name="subjectManagerId" class="form-control">
+                                            <select name="subjectManagerId" class="form-select">
                                                 <option th:each="manager : ${subjectManagerList}"
                                                         th:value="${manager.id}"
                                                         th:text="${manager.fullName}"
@@ -121,23 +121,19 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
-                                            <select name="status" class="form-control">
+                                            <select name="status" class="form-select">
                                                 <option value="true" th:selected="${true == subject.status}">
-                                                    True
+                                                    Active
                                                 </option>
                                                 <option value="false" th:selected="${false == subject.status}">
-                                                    False
+                                                    Inactive
                                                 </option>
                                             </select>
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <h6 style="color: green" th:text="${successMsg}">a</h6>
-                                            <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
-                                        </div>
-                                    </div><!--end col-->
+                                    <h6 style="color: green" th:text="${successMsg}">a</h6>
+                                    <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
 
                                     <button type="submit" class="btn btn-primary">Update Subject</button>
                             </form>
