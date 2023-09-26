@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Validate;
 
 @Controller
 public class ChangePasswordController {
@@ -28,9 +29,13 @@ public class ChangePasswordController {
         User user= (User) session.getAttribute("user");
         if(user.getPassword().equals(oldPassword)){
             if(newPassword.equals(reNewPassword)){
+                if(Validate.validPassword(newPassword) == false) {
+                    model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
+                    return "authentication/changePassword";
+                }
                 user.setPassword(newPassword);
                 session.setAttribute("user", user);
-                model.addAttribute("msg", "Change password successfully");
+                model.addAttribute("errmsg", "Change password successfully");
                 //save to database
                 User u = userService.saveUser(user);
             } else {

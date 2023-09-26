@@ -147,7 +147,7 @@ VALUES
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
     ("gillianmorris@gmail.com","0224667148","123456","Gillian Morris","/images/user_icon.png",3,1),
-    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird","/images/user_icon.png",3,1),
+    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird","/images/user_icon.png",3,0),
     ("kareemmacdonald4709@gmail.com","0318444787","123456","Kareem Macdonald","/images/user_icon.png",3,1),
     ("annedonovan3197@gmail.com","0137041646","123456","Anne Donovan","/images/user_icon.png",3,1),
     ("echonash7303@gmail.com","0534896566","123456","Echo Nash","/images/user_icon.png",3,1);
@@ -183,6 +183,7 @@ VALUES
 INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
 VALUES
     (2,"Software development project","SWP391"),
+    (2,"Java Web Application Development","PRJ301"),
     (3,"Software Requirement","SWR302"),
     (4,"Software Testing","SWT301"),
     (5,"Basic Cross-Platform Application Programming With .NET","PRN211"),
