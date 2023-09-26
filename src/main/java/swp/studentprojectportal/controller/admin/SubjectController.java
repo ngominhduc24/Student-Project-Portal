@@ -47,7 +47,7 @@ public class SubjectController {
         String subjectCode = Objects.requireNonNull(request.getParameter("subjectCode")).trim();
         int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
 
-        String errorMsg = Validate.checkValidateSubject(subjectName, subjectCode);
+        String errorMsg = checkValidateSubject(subjectName, subjectCode);
         if(errorMsg!=null) {
             model.addAttribute("errorMsg", errorMsg);
             model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
@@ -76,7 +76,7 @@ public class SubjectController {
         int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
         boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
-        String msg = Validate.checkValidateUpdateSubject(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
+        String msg = checkValidateUpdateSubject(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
         if (msg != null) {
             model.addAttribute("errorMsg", msg);
         } else {
@@ -98,26 +98,26 @@ public class SubjectController {
         return "redirect:/";
     }
 
-//    private String checkValidate(String subjectName, String subjectCode) {
-//        if(subjectName.isEmpty()) return "Please input subject name";
-//        if(subjectCode.isEmpty()) return "Please input subject code";
-//
-//        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-//        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
-//
-//        return null;
-//    }
-//
-//    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId) {
-//        if(subjectName.isEmpty()) return "Please input subject name";
-//        if(subjectCode.isEmpty()) return "Please input subject code";
-//        if(subjectManagerId == 0) return "Please input subject manager";
-//
-//        if(!subject.getSubjectName().equals(subjectName) && subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-//        if(!subject.getSubjectCode().equals(subjectCode) && subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
-//
-//        return null;
-//    }
+    private String checkValidateSubject(String subjectName, String subjectCode) {
+        if(subjectName.isEmpty()) return "Please input subject name";
+        if(subjectCode.isEmpty()) return "Please input subject code";
+
+        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+
+        return null;
+    }
+
+    private String checkValidateUpdateSubject(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
+        if(subjectName.isEmpty()) return "Please input subject name";
+        if(subjectCode.isEmpty()) return "Please input subject code";
+        if(subjectManagerId == 0) return "Please input subject manager";
+
+        if(!subject.getSubjectName().equals(subjectName) && subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+        if(!subject.getSubjectCode().equals(subjectCode) && subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+
+        return null;
+    }
 }
 
 

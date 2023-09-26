@@ -52,49 +52,4 @@ public class Validate {
         return false;
     }
 
-    public static String checkValidateSubject(String subjectName, String subjectCode) {
-        if(subjectName.isEmpty()) return "Please input subject name";
-        if(subjectCode.isEmpty()) return "Please input subject code";
-
-        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
-
-        return null;
-    }
-
-    public static String checkValidateUpdateSubject(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
-        if(subjectName.isEmpty()) return "Please input subject name";
-        if(subjectCode.isEmpty()) return "Please input subject code";
-        if(subjectManagerId == 0) return "Please input subject manager";
-
-        if(!subject.getSubjectName().equals(subjectName) && subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-        if(!subject.getSubjectCode().equals(subjectCode) && subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
-
-        return null;
-    }
-
-    public static String checkValidateUser(String email, String phone) {
-        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
-        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
-
-        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
-        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
-
-        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
-        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
-
-        return null;
-    }
-
-    public static String checkValidateUpdateUser(String email, String phone, User user) {
-        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
-
-        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
-        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
-
-        if (!email.equals(user.getEmail()) && !email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
-        if (!phone.equals(user.getPhone()) && !phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
-
-        return null;
-    }
 }
