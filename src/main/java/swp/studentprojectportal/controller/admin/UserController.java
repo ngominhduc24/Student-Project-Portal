@@ -56,7 +56,7 @@ public class UserController {
             @RequestParam String password,
             Model model) {
 
-        String errorMsg = checkValidate(email, phone);
+        String errorMsg = Validate.checkValidateUser(email, phone);
 
         if(errorMsg!=null) {
             model.addAttribute("error", errorMsg);
@@ -84,7 +84,7 @@ public class UserController {
         model.addAttribute("roleList", settingService.getAllRole());
 
         //check validate before update
-        String msg = checkValidateUpdate(email, phone, userUpdate);
+        String msg = Validate.checkValidateUpdateUser(email, phone, userUpdate);
         if (msg != null) {
             model.addAttribute("errorMsg", msg);
         } else {
@@ -122,28 +122,28 @@ public class UserController {
         return "redirect:/";
     }
 
-    private String checkValidate(String email, String phone) {
-        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
-        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
-
-        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
-        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
-
-        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
-        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
-
-        return null;
-    }
-
-    private String checkValidateUpdate(String email, String phone, User user) {
-        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
-
-        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
-        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
-
-        if (!email.equals(user.getEmail()) && !email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
-        if (!phone.equals(user.getPhone()) && !phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
-
-        return null;
-    }
+//    private String checkValidate(String email, String phone) {
+//        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
+//        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
+//
+//        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
+//        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
+//
+//        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
+//        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
+//
+//        return null;
+//    }
+//
+//    private String checkValidateUpdate(String email, String phone, User user) {
+//        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
+//
+//        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
+//        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
+//
+//        if (!email.equals(user.getEmail()) && !email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
+//        if (!phone.equals(user.getPhone()) && !phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
+//
+//        return null;
+//    }
 }

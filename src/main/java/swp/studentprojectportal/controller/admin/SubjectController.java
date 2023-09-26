@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Validate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
@@ -21,12 +24,6 @@ public class SubjectController {
     UserService userService;
 
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
-    private boolean isSubjectAdded(String subjectName, String subjectCode, int subjectManagerId) {
-        if(subjectName == null || subjectCode == null || subjectManagerId == 0) {
-            return false;
-        }
-        return true;
-    }
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
@@ -44,15 +41,17 @@ public class SubjectController {
 
     @PostMapping("/admin/addSubject")
     public String createSubject(
-            @RequestParam String subjectName,
-            @RequestParam String subjectCode,
-            @RequestParam int subjectManagerId,
+            WebRequest request,
             Model model) {
+        String subjectName = request.getParameter("subjectName").trim();
+        String subjectCode = request.getParameter("subjectCode").trim();
+        int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
 
-        String errorMsg = checkValidate(subjectName, subjectCode, subjectManagerId);
+        String errorMsg = Validate.checkValidateSubject(subjectName, subjectCode);
         if(errorMsg!=null) {
-            model.addAttribute("error", errorMsg);
-            return "admin/subject/subjectAdd";
+            model.addAttribute("errorMsg", errorMsg);
+            model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+            return "/admin/subject/subjectAdd";
         }
         int newSubjectId = subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true).getId();
         return "redirect:./subjectDetails?id=" + newSubjectId;
@@ -68,14 +67,16 @@ public class SubjectController {
 
     @PostMapping("/admin/updateSubject")
     public String updateSubject(
-            @RequestParam int id,
-            @RequestParam String subjectName,
-            @RequestParam String subjectCode,
-            @RequestParam int subjectManagerId,
-            @RequestParam boolean status,
+            WebRequest request,
             Model model) {
 
-        String msg = checkValidateUpdate(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
+        int id = Integer.parseInt(Objects.requireNonNull(request.getParameter("id")));
+        String subjectName = request.getParameter("subjectName").trim();
+        String subjectCode = request.getParameter("subjectCode").trim();
+        int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
+        boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+        String msg = Validate.checkValidateUpdateSubject(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
         if (msg != null) {
             model.addAttribute("errorMsg", msg);
         } else {
@@ -97,27 +98,26 @@ public class SubjectController {
         return "redirect:/";
     }
 
-    private String checkValidate(String subjectName, String subjectCode, int subjectManagerId) {
-        if(subjectName.isEmpty()) return "Please input subject name";
-        if(subjectCode.isEmpty()) return "Please input subject code";
-        if(subjectManagerId == 0) return "Please input subject manager";
-
-        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
-
-        return null;
-    }
-
-    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
-
-        if(subjectCode.isEmpty()) return "Please input subject code";
-        if(subjectManagerId == 0) return "Please input subject manager";
-
-        if(!subject.getSubjectName().equals(subjectName) && subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
-        if(!subject.getSubjectCode().equals(subjectCode) && subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
-
-        return null;
-    }
+//    private String checkValidate(String subjectName, String subjectCode) {
+//        if(subjectName.isEmpty()) return "Please input subject name";
+//        if(subjectCode.isEmpty()) return "Please input subject code";
+//
+//        if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+//        if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+//
+//        return null;
+//    }
+//
+//    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
+//        if(subjectName.isEmpty()) return "Please input subject name";
+//        if(subjectCode.isEmpty()) return "Please input subject code";
+//        if(subjectManagerId == 0) return "Please input subject manager";
+//
+//        if(!subject.getSubjectName().equals(subjectName) && subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
+//        if(!subject.getSubjectCode().equals(subjectCode) && subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
+//
+//        return null;
+//    }
 }
 
 
