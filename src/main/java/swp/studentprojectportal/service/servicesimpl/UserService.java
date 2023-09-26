@@ -190,6 +190,7 @@ public class UserService implements IUserService {
 
     @Override
     public User getUserByEmailOrPhone(String userName) {
+        userName = userName.replace(" ", "").replace("+84", "0");
         return userRepository.findUserByEmailOrPhone(userName, userName);
     }
 }

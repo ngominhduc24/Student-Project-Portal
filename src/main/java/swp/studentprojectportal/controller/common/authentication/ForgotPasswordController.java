@@ -87,6 +87,17 @@ public class ForgotPasswordController {
             return "redirect:/forgotPassword";
         }
 
+        if(!newPassword.equals(reNewPassword)) {
+            model.addAttribute("errmsg", "New Password and Re-new Password do not match");
+            return "authentication/resetPassword";
+
+        }
+
+        if(!Validate.validPassword(newPassword)) {
+            model.addAttribute("errmsg", "Password must be at least 8 characters, including uppercase, lowercase letters and numbers");
+            return "authentication/resetPassword";
+        }
+
         // check equal password and re-password
         if(newPassword.equals(reNewPassword)){
             user.setPassword(newPassword);
@@ -95,8 +106,6 @@ public class ForgotPasswordController {
             //save to database
             User u = userService.saveUser(user);
             return "redirect:/login";
-        } else {
-            model.addAttribute("errmsg", "New Password and Re-new Password do not match");
         }
 
         return "authentication/resetPassword";
