@@ -1,4 +1,4 @@
-package swp.studentprojectportal.services;
+package swp.studentprojectportal.service;
 
 import swp.studentprojectportal.model.User;
 

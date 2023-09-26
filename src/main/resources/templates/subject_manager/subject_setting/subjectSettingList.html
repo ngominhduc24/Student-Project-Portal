@@ -107,7 +107,8 @@
                         <h1>Subject Setting</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-                            <li class="breadcrumb-item">> Subject Setting</li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item active"><a>Subject Setting</a></li>
                         </ol>
                     </div><!--end col-->
 
@@ -118,7 +119,7 @@
                     </div><!--end col-->
 
                 </div><!--end row-->
-
+                <h3 th:text="${error}"></h3>
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-header">
@@ -148,7 +149,7 @@
                                             <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/subject-manager/setting-subject/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td><a th:href="@{/subject-manager/subject-setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>

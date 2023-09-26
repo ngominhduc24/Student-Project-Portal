@@ -3,7 +3,7 @@ package swp.studentprojectportal.controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 
 import java.util.List;
 import java.util.Optional;

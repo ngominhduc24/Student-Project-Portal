@@ -1,10 +1,10 @@
 package swp.studentprojectportal.controller.common;
 
 import org.springframework.web.bind.annotation.*;
-import swp.studentprojectportal.services.servicesimpl.RegisterService;
+import swp.studentprojectportal.service.servicesimpl.RegisterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +37,12 @@ public class ProfileController {
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-
+        String avatarUrl = request.getParameter("avatarUrl");
         User user = (User) session.getAttribute("user");
         if (!Validate.validEmail(email) || !Validate.validPhoneNumber(phone)) {
             model.addAttribute("errmsg", "Update fail!");
         } else {
+            user.setAvatarUrl(avatarUrl);
             user.setPhone(phone);
             user.setEmail(email);
             user.setFullName(fullName);

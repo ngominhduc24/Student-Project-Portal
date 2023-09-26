@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.services.servicesimpl.SubjectSevice;
-import swp.studentprojectportal.services.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -21,12 +21,6 @@ public class SubjectController {
     UserService userService;
 
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
-    private boolean isSubjectAdded(String subjectName, String subjectCode, int subjectManagerId) {
-        if(subjectName == null || subjectCode == null || subjectManagerId == 0) {
-            return false;
-        }
-        return true;
-    }
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
@@ -99,6 +93,8 @@ public class SubjectController {
     }
 
     private String checkValidate(String subjectName, String subjectCode) {
+        if(subjectName.isEmpty()) return "Please input subject name";
+        if(subjectCode.isEmpty()) return "Please input subject code";
 
         if(subjectService.checkSubjectNameExist(subjectName)) return "Subject name already exist";
         if(subjectService.checkSubjectCodeExist(subjectCode)) return "Subject code already exist";
