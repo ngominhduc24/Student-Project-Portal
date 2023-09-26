@@ -68,7 +68,6 @@ public class EmailService implements IEmailService {
             message.setSubject(subject);
             message.setContent(content, "text/html;charset=UTF-8");
             InstanceThread emailThread = new InstanceThread();
-            emailThread.start();
             emailThread.emailSenderThread(mailSender, message);
 
         } catch (MessagingException ex) {

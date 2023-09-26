@@ -15,9 +15,10 @@ public class InstanceThread extends Thread{
     }
 
     public void emailSenderThread(JavaMailSender mailSender, MimeMessage message) {
-        Thread thread = new Thread(() -> {
+        Thread thread1 = new Thread(() -> {
             mailSender.send(message);
         });
+        thread1.start();
     }
 
 }
