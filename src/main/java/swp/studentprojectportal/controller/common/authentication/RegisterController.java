@@ -47,6 +47,11 @@ public class RegisterController {
             session.setAttribute("verifyMail", false);
         }
 
+        if(!Validate.validFullname(fullname)) {
+            model.addAttribute("errmsg", "Invalid fullname");
+            return "authentication/register";
+        }
+
         if(termCheckbox == null) {
             model.addAttribute("errmsg", "You must agree with our term and condition");
             return "authentication/register";
