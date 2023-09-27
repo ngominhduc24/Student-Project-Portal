@@ -26,9 +26,9 @@ public class RegisterController {
     }
     @PostMapping("/register")
     public String registerAccount(WebRequest request, Model model, HttpSession session) {
-        String fullname = request.getParameter("fullname");
+        String fullname = request.getParameter("fullname").trim();
         String termCheckbox = request.getParameter("termCheckbox");
-        String username = request.getParameter("username").replace(" ", "");
+        String username = request.getParameter("username").trim();
         String password = request.getParameter("password");
 
         // create model user

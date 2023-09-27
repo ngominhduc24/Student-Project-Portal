@@ -39,7 +39,7 @@ public class ProfileController {
         String phone = request.getParameter("phone");
         String avatarUrl = request.getParameter("avatarUrl");
         User user = (User) session.getAttribute("user");
-        if (!Validate.validEmail(email) || !Validate.validPhoneNumber(phone)) {
+        if (!Validate.validEmail(email) || !Validate.validPhoneNumber(phone) || !Validate.validFullname(fullName)) {
             model.addAttribute("errmsg", "Update fail!");
         } else {
             user.setAvatarUrl(avatarUrl);

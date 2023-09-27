@@ -40,4 +40,26 @@ public class Validate {
         }
         return false;
     }
+
+    public static  boolean validFullname(String fullname){
+        if (fullname == null || fullname.isEmpty()) {
+            return false;
+        }
+
+        // Kiểm tra xem chuỗi fullname có ít nhất 2 từ
+        String[] words = fullname.split("\\s+");
+        if (words.length < 2) {
+            return false;
+        }
+
+        // Kiểm tra từng ký tự trong fullName
+        for (char c : fullname.toCharArray()) {
+            // Kiểm tra xem có ký tự đặc biệt hoặc chữ số không
+            if (!Character.isLetter(c) && !Character.isWhitespace(c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
