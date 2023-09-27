@@ -80,6 +80,11 @@
                             DataTable Example
                         </div>
                         <div class="card-body">
+                            <div class="border-left d-flex ">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <input class="form-control form-control-sm ml-3 w-75" type="text" name="search-input" placeholder="Search"
+                                       aria-label="Search">
+                            </div>
                             <table id="myTable" class="display">
                                 <thead>
                                 <tr>
@@ -228,6 +233,8 @@
 
 
 <script>
+    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&search=`; // Your API endpoint
+
     // Get references to the pagination elements
     const pagination = document.querySelector('.pagination');
     const pageItems = pagination.querySelectorAll('.page-item');
@@ -287,8 +294,8 @@
     // Function to fetch user data and populate the table
     const  populateUserTable =  (pageNo) => {
         pageNo = pageNo - 1;
-        const apiUrl = `/api/v1/user?pageNo=${pageNo}&pageSize=10`; // Your API endpoint
-
+        // replace the pageNo in the apiUrl
+        let tempUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -352,6 +359,16 @@
                 // Handle errors here (e.g., display an error message)
             });
     }
+
+    // Hande search input change
+    const searchInput = document.querySelector('input[name="search-input"]');
+    searchInput.addEventListener('input', function (event) {
+        // const searchValue = searchInput.value;
+        const searchValue = event.target.value;
+        // replace the search value in the apiUrl
+        apiUrl = apiUrl.replace(/search=\w+|search=/, `search=${searchValue}`);
+        populateUserTable(1);
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
         populateUserTable(1);
