@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Validate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
@@ -38,12 +41,13 @@ public class SubjectController {
 
     @PostMapping("/admin/addSubject")
     public String createSubject(
-            @RequestParam String subjectName,
-            @RequestParam String subjectCode,
-            @RequestParam int subjectManagerId,
+            WebRequest request,
             Model model) {
+        String subjectName = Objects.requireNonNull(request.getParameter("subjectName")).trim();
+        String subjectCode = Objects.requireNonNull(request.getParameter("subjectCode")).trim();
+        int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
 
-        String errorMsg = checkValidate(subjectName, subjectCode);
+        String errorMsg = checkValidateSubject(subjectName, subjectCode);
         if(errorMsg!=null) {
             model.addAttribute("errorMsg", errorMsg);
             model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
@@ -63,14 +67,16 @@ public class SubjectController {
 
     @PostMapping("/admin/updateSubject")
     public String updateSubject(
-            @RequestParam int id,
-            @RequestParam String subjectName,
-            @RequestParam String subjectCode,
-            @RequestParam int subjectManagerId,
-            @RequestParam boolean status,
+            WebRequest request,
             Model model) {
 
-        String msg = checkValidateUpdate(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
+        int id = Integer.parseInt(Objects.requireNonNull(request.getParameter("id")));
+        String subjectName = Objects.requireNonNull(request.getParameter("subjectName")).trim();
+        String subjectCode = Objects.requireNonNull(request.getParameter("subjectCode")).trim();
+        int subjectManagerId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subjectManagerId")));
+        boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+        String msg = checkValidateUpdateSubject(subjectName, subjectCode, subjectManagerId, subjectService.getSubjectById(id));
         if (msg != null) {
             model.addAttribute("errorMsg", msg);
         } else {
@@ -92,7 +98,7 @@ public class SubjectController {
         return "redirect:/";
     }
 
-    private String checkValidate(String subjectName, String subjectCode) {
+    private String checkValidateSubject(String subjectName, String subjectCode) {
         if(subjectName.isEmpty()) return "Please input subject name";
         if(subjectCode.isEmpty()) return "Please input subject code";
 
@@ -102,7 +108,7 @@ public class SubjectController {
         return null;
     }
 
-    private String checkValidateUpdate(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
+    private String checkValidateUpdateSubject(String subjectName, String subjectCode, int subjectManagerId, Subject subject) {
         if(subjectName.isEmpty()) return "Please input subject name";
         if(subjectCode.isEmpty()) return "Please input subject code";
         if(subjectManagerId == 0) return "Please input subject manager";
