@@ -19,6 +19,7 @@ public class UserApiController {
             @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize)
     {
+        if(pageNo < 0 || pageSize < 0) return null;
         return userService.getUser(pageNo, pageSize);
     }
 
