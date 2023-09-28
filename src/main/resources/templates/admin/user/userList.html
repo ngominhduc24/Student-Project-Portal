@@ -102,7 +102,7 @@
                                 </tbody>
                             </table>
                             <input type="text" id="countPage" th:value="${totalPage}" hidden="">
-                            <nav aria-label="Page navigation example">
+                            <nav aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item disabled" >
                                         <a class="page-link" style="user-select: none;">Previous</a>
@@ -147,16 +147,16 @@
             "filter": false
         });
 
-        $("#toolbar").html('<div class="float-left">' +
-            '<p>Page no <span id="currentPageSpan">1</span></p>' +
-            '</div>');
+        // $("#toolbar").html('<div class="float-left">' +
+        //     '<p> <span id="currentPageSpan"> </span></p>' +
+        //     '</div>');
 
         // Initialize the page number
         let currentPage = 1;
 
         // Function to update the page number in the toolbar
         function updatePageNumber() {
-            $("#currentPageSpan").text(currentPage);
+            $("#currentPageSpan").textContent = currentPage;
         }
 
         // Event listener for page change
