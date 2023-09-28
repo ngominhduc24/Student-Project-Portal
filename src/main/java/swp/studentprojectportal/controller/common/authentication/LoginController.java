@@ -58,6 +58,9 @@ public class LoginController {
             model.addAttribute("errmsg", "Username or password is not correct");
         } else if(!user.isActive()) {
             model.addAttribute("errmsg", "Your account has not been verified");
+            session.setAttribute("userauthen", user);
+            session.setAttribute("href", "verify");
+            return "redirect:/verifypage";
         } else if(!user.isStatus()) {
             model.addAttribute("errmsg", "Your account has been blocked");
         }
