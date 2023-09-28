@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.RegisterService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.Validate;
 
 import java.security.NoSuchAlgorithmException;
@@ -85,8 +86,12 @@ public class ForgotPasswordController {
         User user= (User) session.getAttribute("user");
 
         // check old password empty
-        if(user.getPassword() != "") {
-            return "redirect:/forgotPassword";
+        try {
+            if(!user.getPassword().equals(Utility.hash(""))) {
+                return "redirect:/forgotPassword";
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
 
         if(!newPassword.equals(reNewPassword)) {
