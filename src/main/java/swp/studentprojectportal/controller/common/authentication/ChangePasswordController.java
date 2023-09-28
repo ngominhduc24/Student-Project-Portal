@@ -42,7 +42,7 @@ public class ChangePasswordController {
                     throw new RuntimeException(e);
                 }
                 session.setAttribute("user", user);
-                model.addAttribute("errmsg", "Change password successfully");
+                model.addAttribute("msg", "Change password successfully");
                 //save to database
                 User u = userService.saveUser(user);
             } else {
