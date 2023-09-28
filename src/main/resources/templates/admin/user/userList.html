@@ -80,10 +80,23 @@
                             DataTable Example
                         </div>
                         <div class="card-body">
-                            <div class="border-left d-flex ">
-                                <i class="fas fa-search" aria-hidden="true"></i>
-                                <input class="form-control form-control-sm ml-3 w-75" type="text" name="search-input" placeholder="Search"
-                                       aria-label="Search">
+                            <div class="row">
+                                <div class="border-left d-flex col-md-6">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    <input class="form-control form-control-sm ml-3 w-75" type="text" name="search-input" placeholder="Search"
+                                           aria-label="Search">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Role</label>
+                                        <select name="roleId" class="form-select">
+                                            <option value="-1">None</option>
+                                            <option th:each="role : ${roleList}"
+                                                    th:value="${role.id}"
+                                                    th:text="${role.settingTitle}"></option>
+                                        </select>
+                                    </div>
+                                </div><!--end col-->
                             </div>
                             <table id="myTable" class="display">
                                 <thead>
@@ -233,7 +246,7 @@
 
 
 <script>
-    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&search=`; // Your API endpoint
+    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&search=&roleId=`; // Your API endpoint
 
     // Get references to the pagination elements
     const pagination = document.querySelector('.pagination');
@@ -295,7 +308,7 @@
     const  populateUserTable =  (pageNo) => {
         pageNo = pageNo - 1;
         // replace the pageNo in the apiUrl
-        let tempUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
+        apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -363,10 +376,40 @@
     // Hande search input change
     const searchInput = document.querySelector('input[name="search-input"]');
     searchInput.addEventListener('input', function (event) {
-        // const searchValue = searchInput.value;
         const searchValue = event.target.value;
+        // where start with search=
+        let temp = apiUrl.split('&');
+        apiUrl = '';
+        temp.forEach((item) => {
+            if(item.includes('search=')) {
+                apiUrl += `search=${searchValue}`;
+            } else {
+                apiUrl += item;
+            }
+            apiUrl += '&';
+        });
+        apiUrl = apiUrl.slice(0, -1);
         // replace the search value in the apiUrl
-        apiUrl = apiUrl.replace(/search=\w+|search=/, `search=${searchValue}`);
+        populateUserTable(1);
+    });
+
+    // Handle role select change
+    const roleSelect = document.querySelector('select[name="roleId"]');
+    roleSelect.addEventListener('change', function (event) {
+        const roleId = event.target.value;
+        // where start with search=
+        let temp = apiUrl.split('&');
+        apiUrl = '';
+        temp.forEach((item) => {
+            if(item.includes('roleId=')) {
+                apiUrl += `roleId=${roleId}`;
+            } else {
+                apiUrl += item;
+            }
+            apiUrl += '&';
+        });
+        apiUrl = apiUrl.slice(0, -1);
+        // replace the search value in the apiUrl
         populateUserTable(1);
     });
 
