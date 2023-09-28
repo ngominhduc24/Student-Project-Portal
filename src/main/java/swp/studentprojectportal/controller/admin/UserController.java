@@ -118,6 +118,9 @@ public class UserController {
     }
 
     private String checkValidateUser(String email, String phone) {
+        email = email.trim();
+        phone = phone.trim();
+
         if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
         if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
 
@@ -131,6 +134,10 @@ public class UserController {
     }
 
     private String checkValidateUpdateUser(String email, String phone, User user) {
+        email = email.trim();
+        phone = phone.trim();
+
+        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
         if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
 
         if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
