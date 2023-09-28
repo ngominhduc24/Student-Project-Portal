@@ -13,6 +13,8 @@ import swp.studentprojectportal.service.servicesimpl.RegisterService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
+import java.security.NoSuchAlgorithmException;
+
 @Controller
 public class ForgotPasswordController {
     @Autowired
@@ -100,7 +102,11 @@ public class ForgotPasswordController {
 
         // check equal password and re-password
         if(newPassword.equals(reNewPassword)){
-            user.setPassword(newPassword);
+            try {
+                user.setPassword(newPassword);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
             session.setAttribute("user", user);
             model.addAttribute("errmsg", "Reset password successfully");
             //save to database

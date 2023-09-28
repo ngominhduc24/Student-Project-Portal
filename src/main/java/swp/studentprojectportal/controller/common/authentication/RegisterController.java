@@ -12,6 +12,8 @@ import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
+import java.security.NoSuchAlgorithmException;
+
 @Controller
 public class RegisterController {
     @Autowired
@@ -25,7 +27,7 @@ public class RegisterController {
         return "register";
     }
     @PostMapping("/register")
-    public String registerAccount(WebRequest request, Model model, HttpSession session) {
+    public String registerAccount(WebRequest request, Model model, HttpSession session) throws NoSuchAlgorithmException {
         String fullname = request.getParameter("fullname").trim();
         String termCheckbox = request.getParameter("termCheckbox");
         String username = request.getParameter("username").trim();

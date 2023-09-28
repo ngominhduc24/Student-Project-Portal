@@ -39,20 +39,19 @@ public class LoginController {
     @PostMapping("/login")
     public String userLogin(@RequestParam String username, @RequestParam String password,
             Model model, HttpSession session, HttpServletResponse response, WebRequest request) {
-        String remember = request.getParameter("remember");
-        Cookie cu= new Cookie("cuser", username);
-        Cookie cp= new Cookie("cpass", password);
-        Cookie cr= new Cookie("crem", remember);
-        userService.setCookie(cu,cp,cr,remember);
-        response.addCookie(cu);
-        response.addCookie(cp);
-        response.addCookie(cr);
         model.addAttribute("cuser", username);
-        model.addAttribute("cpass", password);
-        model.addAttribute("crem", remember);
         User user = userService.findUserByUsernameAndPassword(username, password);
         if(user != null && user.isActive() && user.isStatus()) {
             session.setAttribute("user", user);
+            //add to cookie
+            String remember = request.getParameter("remember");
+            Cookie cu= new Cookie("cuser", username);
+            Cookie cp= new Cookie("cpass", password);
+            Cookie cr= new Cookie("crem", remember);
+            userService.setCookie(cu,cp,cr,remember);
+            response.addCookie(cu);
+            response.addCookie(cp);
+            response.addCookie(cr);
             return "redirect:" + afterLoginRoute;
         } else if (user==null){
             model.addAttribute("errmsg", "Username or password is not correct");
