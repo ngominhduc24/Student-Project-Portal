@@ -17,8 +17,11 @@ public class UserApiController {
     @GetMapping("/user")
     public List<User> getUserPost(
             @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize)
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "search", defaultValue = "") String search)
     {
+        if(pageNo < 0 || pageSize < 0) return null;
+        if(search != null && !search.isEmpty()) return userService.searchUser(pageNo, pageSize, search);
         return userService.getUser(pageNo, pageSize);
     }
 

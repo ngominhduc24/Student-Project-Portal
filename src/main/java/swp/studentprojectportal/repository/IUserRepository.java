@@ -1,5 +1,7 @@
 package swp.studentprojectportal.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.Setting;
@@ -16,4 +18,5 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     User findUserByPhone(String phone);
     User findUserByEmailOrPhone(String email, String phone);
     List<User> findAllBySetting(Setting setting);
+    Page<User> findUserByFullNameContainsIgnoreCaseOrEmailContainsIgnoreCaseOrPhoneContainsIgnoreCase(String fullName, String email, String phone, Pageable pageable);
 }

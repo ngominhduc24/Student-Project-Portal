@@ -52,13 +52,11 @@ public class Validate {
             return false;
         }
 
-        // Kiểm tra từng ký tự trong fullName
-        for (char c : fullname.toCharArray()) {
-            // Kiểm tra xem có ký tự đặc biệt hoặc chữ số không
-            if (!Character.isLetter(c) && !Character.isWhitespace(c)) {
-                return false;
-            }
-        }
+        // Kiểm tra xem chuỗi fullname có chứa số hay không
+        if(fullname.matches(".*[0-9].*")) return false;
+
+        // Kiểm tra xem chuỗi fullname có chứa ký tự đặc biệt hay không
+        if(fullname.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~-].*")) return false;
 
         return true;
     }
