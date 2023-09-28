@@ -144,6 +144,7 @@
         $('#myTable').DataTable({
             "dom": 'frt<"#toolbar.dt-box"><"dt-box">',
             "bInfo": false,
+            "filter": false
         });
 
         $("#toolbar").html('<div class="float-left">' +
@@ -171,10 +172,6 @@
 
 <!-- Status update -->
 <script>
-    window.addEventListener('load', function() {
-        // Scroll to the bottom of the page
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
-    });
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
