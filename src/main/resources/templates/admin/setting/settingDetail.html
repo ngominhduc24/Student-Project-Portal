@@ -48,13 +48,8 @@
         <div class="container">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0" th:if="${setting.typeId == 1}">Role Details</h3>
-                    <h3 class="mb-0" th:if="${setting.typeId == 3}">Semester Details</h3>
-                    <h3 class="mb-0" th:if="${setting.typeId == 2}">Permitted Email Domain Details</h3>
-
-                    <h3 class="mb-0" th:if="${typeId == 1}">New Role</h3>
-                    <h3 class="mb-0" th:if="${typeId == 3}">New Semester</h3>
-                    <h3 class="mb-0" th:if="${typeId == 2}">New Permitted Email Domain</h3>
+                    <h3 class="mb-0" th:if="${setting.id!=null}" th:text="${typeName}+' Details'"></h3>
+                    <h3 class="mb-0" th:if="${setting.id==null}" th:text="'New '+${typeName}"></h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
@@ -62,7 +57,8 @@
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="/admin/setting">Setting</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Setting Details</li>
+                        <li class="breadcrumb-item active" th:if="${setting.id!=null}" th:text="${typeName}+' Details'"></li>
+                        <li class="breadcrumb-item active" th:if="${setting.id==null}" th:text="'New '+${typeName}"></li>
                     </ol>
                 </div>
                 <div class="row">
@@ -72,9 +68,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-9" style="margin-bottom: 14px;margin-top: 12px;">
                                         <div class="mb-3">
-                                            <label class="form-label" th:if="${setting.typeId == 1 or typeId == 1}">Role</label>
-                                            <label class="form-label" th:if="${setting.typeId == 3 or typeId == 3}">Semester</label>
-                                            <label class="form-label" th:if="${setting.typeId == 2 or typeId == 2}">Permitted Email Domain</label>
+                                            <label class="form-label" th:text="${typeName}"></label>
                                             <input type="hidden" name="id" th:value="${setting.id}">
                                             <input type="hidden" name="typeId" th:value="${setting.typeId==null?typeId:setting.typeId}">
                                             <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
@@ -86,7 +80,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Display Order</label>
                                             <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
-                                                   th:value="${setting.displayOrder==null?1:setting.displayOrder}">
+                                                   th:value="${setting.displayOrder==null?displayOrder:setting.displayOrder}">
                                         </div>
                                     </div><!--end col-->
 
@@ -101,9 +95,10 @@
                                     </div><!--end col-->
                                 </div><!--end row-->
                                 <div class="row justify-content-center">
-                                    <h6 style="color: indianred; text-align: center" th:text="${errmsg}">a</h6>
-                                    <button th:if="${setting.id!=null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 18px;margin-bottom: 20px;">Save</button>
-                                    <button th:if="${setting.id==null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 18px;margin-bottom: 20px;">Save</button>
+                                    <h6 style="color: indianred; text-align: center" th:text="${errmsg}"></h6>
+                                    <h6 style="color: green; text-align: center" th:text="${msg}"></h6>
+                                    <button th:if="${setting.id!=null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 6px;margin-bottom: 20px;">Save</button>
+                                    <button th:if="${setting.id==null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 6px;margin-bottom: 20px;">Add</button>
                                 </div>
 
                             </form>

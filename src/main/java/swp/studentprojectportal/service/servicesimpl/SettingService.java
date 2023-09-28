@@ -46,12 +46,35 @@ public class SettingService implements ISettingService {
     }
 
     @Override
-    public Setting findBySettingTitle(String settingTitle) {
-        return settingRepository.findBySettingTitle(settingTitle);
+    public boolean checkExistedSettingTitle(String settingTitle, String id) {
+        Setting setting = settingRepository.findBySettingTitle(settingTitle);
+        if(setting !=null)  {
+            if (id==null || id.isEmpty())    return true;
+            if(setting.getId()!=Integer.parseInt(id))  return true;
+        }
+        return false;
     }
 
     @Override
-    public Setting findByTypeIdAndDisplayOrder(int typeId, int displayOrder) {
-        return settingRepository.findByTypeIdAndDisplayOrder(typeId, displayOrder);
+    public boolean checkExistedDisplayOrder(int typeId, int displayOrder, String id) {
+        Setting setting = settingRepository.findByTypeIdAndDisplayOrder(typeId, displayOrder);
+        if(setting !=null)  {
+            if (id==null || id.isEmpty())    return true;
+            if(setting.getId()!=Integer.parseInt(id))  return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String setTypeName(int typeId) {
+        String typeName="";
+        if(typeId==1) typeName="Role";
+        if(typeId==3) typeName="Semester";
+        if(typeId==2) typeName="Perrmitted Email Domain";
+        return typeName;
+    }
+
+    public Setting findLastDisplayOrder(int typeId){
+        return settingRepository.findTop1SettingByTypeIdOrderByDisplayOrderDesc(typeId);
     }
 }

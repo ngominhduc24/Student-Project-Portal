@@ -29,7 +29,9 @@ public class SettingController {
     @GetMapping("/admin/setting/detail")
     public String settingDetail(@RequestParam("id") Integer id, Model model) {
         Setting setting = settingService.getSettingByID(id);
+        String typeName=settingService.setTypeName(setting.getTypeId());
         model.addAttribute("setting", setting);
+        model.addAttribute("typeName", typeName);
         return "admin/setting/settingDetail";
     }
 
@@ -42,33 +44,37 @@ public class SettingController {
         String id = request.getParameter("id");
         if(id!=null && !id.isEmpty())    setting.setId(Integer.parseInt(id));
         setting.setTypeId(typeId);
+        String typeName=settingService.setTypeName(typeId);
         setting.setSettingTitle(settingTitle);
         setting.setDisplayOrder(displayOrder);
         setting.setStatus(status!=null);
-        if(settingService.findBySettingTitle(settingTitle)!=null){
-            String typeName="";
-            if(typeId==1) typeName="This role";
-            if(typeId==3) typeName="This semester";
-            if(typeId==2) typeName="This email domain";
-            model.addAttribute("errmsg", typeName + " has already existed!");
+        model.addAttribute("setting", setting);
+        if(settingService.checkExistedSettingTitle(settingTitle, id)){
+            model.addAttribute("errmsg", "This " + typeName.toLowerCase() + " has already existed!");
         }
-//        else if(settingService.findByTypeIdAndDisplayOrder(typeId, displayOrder)!=null){
-//            model.addAttribute("errmsg", "Display Order has already existed!");
-//        }
+        else if(settingService.checkExistedDisplayOrder(typeId, displayOrder, id)){
+            model.addAttribute("errmsg", "Display Order has already existed!");
+        }
         else {
             settingService.saveSetting(setting);
-            model.addAttribute("errmsg", "Successfully");
+            Setting newSetting = new Setting();
+            model.addAttribute("setting", newSetting);
+            model.addAttribute("msg", "Successfully");
         }
         model.addAttribute("typeId", typeId);
-        model.addAttribute("setting", setting);
+        model.addAttribute("typeName", typeName);
         return "admin/setting/settingDetail";
     }
 
     @GetMapping("/admin/setting/add")
     public String settingAddForm(@RequestParam("typeId") Integer typeId, Model model) {
-        model.addAttribute("typeId", typeId);
+        int displayOrder = settingService.findLastDisplayOrder(typeId).getDisplayOrder();
         Setting setting = new Setting();
+        String typeName=settingService.setTypeName(typeId);
+        model.addAttribute("typeId", typeId);
+        model.addAttribute("displayOrder", displayOrder+1);
         model.addAttribute("setting", setting);
+        model.addAttribute("typeName", typeName);
         return "admin/setting/settingDetail";
     }
 

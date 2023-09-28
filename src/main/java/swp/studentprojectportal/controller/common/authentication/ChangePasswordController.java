@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.Validate;
+
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class ChangePasswordController {
@@ -22,20 +25,24 @@ public class ChangePasswordController {
     }
 
     @PostMapping("/change-password")
-    public String changePassword(WebRequest request, Model model, HttpSession session){
+    public String changePassword(WebRequest request, Model model, HttpSession session) throws NoSuchAlgorithmException {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String reNewPassword = request.getParameter("reNewPassword");
         User user= (User) session.getAttribute("user");
-        if(user.getPassword().equals(oldPassword)){
+        if(user.getPassword().equals(Utility.hash(oldPassword))){
             if(newPassword.equals(reNewPassword)){
                 if(Validate.validPassword(newPassword) == false) {
                     model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
                     return "authentication/changePassword";
                 }
-                user.setPassword(newPassword);
+                try {
+                    user.setPassword(newPassword);
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
                 session.setAttribute("user", user);
-                model.addAttribute("errmsg", "Change password successfully");
+                model.addAttribute("msg", "Change password successfully");
                 //save to database
                 User u = userService.saveUser(user);
             } else {

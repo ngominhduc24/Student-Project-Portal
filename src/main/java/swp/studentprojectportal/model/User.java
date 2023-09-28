@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import swp.studentprojectportal.repository.ISettingRepository;
+import swp.studentprojectportal.utils.Utility;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -67,4 +69,9 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone.replace("+84", "0").replace(" ", "");
     }
+
+    public void setPassword(String password) throws NoSuchAlgorithmException {
+        this.password = Utility.hash(password);
+    }
+
 }
