@@ -141,42 +141,42 @@ VALUES
 -- admin
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)
 VALUES
-    ("admin@gmail.com","0999999999","admin","Admin",2,1,"/images/user_icon.png");
+    ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png");
 
 -- subject manager
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("gillianmorris@gmail.com","0224667148","123456","Gillian Morris","/images/user_icon.png",3,1),
-    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird","/images/user_icon.png",3,0),
-    ("kareemmacdonald4709@gmail.com","0318444787","123456","Kareem Macdonald","/images/user_icon.png",3,1),
-    ("annedonovan3197@gmail.com","0137041646","123456","Anne Donovan","/images/user_icon.png",3,1),
-    ("echonash7303@gmail.com","0534896566","123456","Echo Nash","/images/user_icon.png",3,1);
+    ("gillianmorris@gmail.com","0224667148","e10adc3949ba59abbe56e057f20f883e","Gillian Morris","/images/user_icon.png",3,1),
+    ("germanebaird3434@gmail.com","0820671142","e10adc3949ba59abbe56e057f20f883e","Germane Baird","/images/user_icon.png",3,0),
+    ("kareemmacdonald4709@gmail.com","0318444787","e10adc3949ba59abbe56e057f20f883e","Kareem Macdonald","/images/user_icon.png",3,1),
+    ("annedonovan3197@gmail.com","0137041646","e10adc3949ba59abbe56e057f20f883e","Anne Donovan","/images/user_icon.png",3,1),
+    ("echonash7303@gmail.com","0534896566","e10adc3949ba59abbe56e057f20f883e","Echo Nash","/images/user_icon.png",3,1);
 
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("julianlester@gmail.com","0027829656","123456","Julian Lester","/images/user_icon.png",1,1),
-    ("galvinbass4030@gmail.com","0037963572","123456","Galvin Bass","/images/user_icon.png",1,1),
-    ("brianmassey@gmail.com","0436285872","123456","Brian Massey","/images/user_icon.png",1,1),
-    ("judahcardenas5324@gmail.com","0681589922","123456","Judah Cardenas","/images/user_icon.png",1,1),
-    ("kellyreyes9226@gmail.com","0363517319","123456","Kelly Reyes","/images/user_icon.png",1,1),
-    ("kevinwilliam@gmail.com","0905521148","123456","Kevin William","/images/user_icon.png",1,1),
-    ("lesleycastro@gmail.com","0571427370","123456","Lesley Castro","/images/user_icon.png",1,1),
-    ("danarosario@gmail.com","0272326964","123456","Dana Rosario","/images/user_icon.png",1,1),
-    ("aimeeewing@gmail.com","0636454167","123456","Aimee Ewing","/images/user_icon.png",1,1),
-    ("amywalton@gmail.com","0858486104","123456","Amy Walton","/images/user_icon.png",1,1);
+    ("julianlester@gmail.com","0027829656","e10adc3949ba59abbe56e057f20f883e","Julian Lester","/images/user_icon.png",1,1),
+    ("galvinbass4030@gmail.com","0037963572","e10adc3949ba59abbe56e057f20f883e","Galvin Bass","/images/user_icon.png",1,1),
+    ("brianmassey@gmail.com","0436285872","e10adc3949ba59abbe56e057f20f883e","Brian Massey","/images/user_icon.png",1,1),
+    ("judahcardenas5324@gmail.com","0681589922","e10adc3949ba59abbe56e057f20f883e","Judah Cardenas","/images/user_icon.png",1,1),
+    ("kellyreyes9226@gmail.com","0363517319","e10adc3949ba59abbe56e057f20f883e","Kelly Reyes","/images/user_icon.png",1,1),
+    ("kevinwilliam@gmail.com","0905521148","e10adc3949ba59abbe56e057f20f883e","Kevin William","/images/user_icon.png",1,1),
+    ("lesleycastro@gmail.com","0571427370","e10adc3949ba59abbe56e057f20f883e","Lesley Castro","/images/user_icon.png",1,1),
+    ("danarosario@gmail.com","0272326964","e10adc3949ba59abbe56e057f20f883e","Dana Rosario","/images/user_icon.png",1,1),
+    ("aimeeewing@gmail.com","0636454167","e10adc3949ba59abbe56e057f20f883e","Aimee Ewing","/images/user_icon.png",1,1),
+    ("amywalton@gmail.com","0858486104","e10adc3949ba59abbe56e057f20f883e","Amy Walton","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("rashadrush2211@gmail.com","0860113768","123456","Rashad Rush","/images/user_icon.png",1,1),
-    ("elainelawrence@gmail.com","0721721061","123456","Elaine Lawrence","/images/user_icon.png",1,1),
-    ("larissareese@gmail.com","0279994112","123456","Larissa Reese","/images/user_icon.png",1,1),
-    ("holleemyers@gmail.com","0532678220","123456","Hollee Myers","/images/user_icon.png",1,1),
-    ("xanthusmcfadden3684@gmail.com","0302569530","123456","Xanthus Mcfadden","/images/user_icon.png",1,1),
-    ("mylesdavidson@gmail.com","0583590348","123456","Myles Davidson","/images/user_icon.png",1,1),
-    ("teegansantana@gmail.com","0547146642","123456","Teegan Santana","/images/user_icon.png",1,1),
-    ("elvisratliff@gmail.com","0911884338","123456","Elvis Ratliff","/images/user_icon.png",1,1),
-    ("rowaningram@gmail.com","0734547525","123456","Rowan Ingram","/images/user_icon.png",1,1),
-    ("oraallen@gmail.com","0298393485","123456","Ora Allen","/images/user_icon.png",1,1);
+    ("rashadrush2211@gmail.com","0860113768","e10adc3949ba59abbe56e057f20f883e","Rashad Rush","/images/user_icon.png",1,1),
+    ("elainelawrence@gmail.com","0721721061","e10adc3949ba59abbe56e057f20f883e","Elaine Lawrence","/images/user_icon.png",1,1),
+    ("larissareese@gmail.com","0279994112","e10adc3949ba59abbe56e057f20f883e","Larissa Reese","/images/user_icon.png",1,1),
+    ("holleemyers@gmail.com","0532678220","e10adc3949ba59abbe56e057f20f883e","Hollee Myers","/images/user_icon.png",1,1),
+    ("xanthusmcfadden3684@gmail.com","0302569530","e10adc3949ba59abbe56e057f20f883e","Xanthus Mcfadden","/images/user_icon.png",1,1),
+    ("mylesdavidson@gmail.com","0583590348","e10adc3949ba59abbe56e057f20f883e","Myles Davidson","/images/user_icon.png",1,1),
+    ("teegansantana@gmail.com","0547146642","e10adc3949ba59abbe56e057f20f883e","Teegan Santana","/images/user_icon.png",1,1),
+    ("elvisratliff@gmail.com","0911884338","e10adc3949ba59abbe56e057f20f883e","Elvis Ratliff","/images/user_icon.png",1,1),
+    ("rowaningram@gmail.com","0734547525","e10adc3949ba59abbe56e057f20f883e","Rowan Ingram","/images/user_icon.png",1,1),
+    ("oraallen@gmail.com","0298393485","e10adc3949ba59abbe56e057f20f883e","Ora Allen","/images/user_icon.png",1,1);
 
 
 -- subject
