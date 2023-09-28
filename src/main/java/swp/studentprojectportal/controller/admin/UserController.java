@@ -32,7 +32,7 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page) {
         model.addAttribute("page", page);
         model.addAttribute("totalPage", userService.getTotalPage(10));
-
+        model.addAttribute("roleList", settingService.getAllRole());
         return "admin/user/userList";
     }
 
