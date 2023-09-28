@@ -40,7 +40,7 @@ public class LoginController {
     public String userLogin(@RequestParam String username, @RequestParam String password,
             Model model, HttpSession session, HttpServletResponse response, WebRequest request) {
         model.addAttribute("cuser", username);
-        User user = userService.findUserByUsernameAndPassword(username, password);
+        User user = userService.findUserByUsernameAndPassword(username.trim(), password);
         if(user != null && user.isActive() && user.isStatus()) {
             session.setAttribute("user", user);
             //add to cookie

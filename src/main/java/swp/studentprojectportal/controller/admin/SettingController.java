@@ -56,9 +56,10 @@ public class SettingController {
             model.addAttribute("errmsg", "Display Order has already existed!");
         }
         else {
+            if(id==null || id.isEmpty()){
+                model.addAttribute("setting", new Setting());
+            }
             settingService.saveSetting(setting);
-            Setting newSetting = new Setting();
-            model.addAttribute("setting", newSetting);
             model.addAttribute("msg", "Successfully");
         }
         model.addAttribute("typeId", typeId);
