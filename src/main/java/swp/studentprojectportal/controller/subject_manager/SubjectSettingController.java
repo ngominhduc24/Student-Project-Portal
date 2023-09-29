@@ -41,34 +41,6 @@ public class SubjectSettingController {
             model.addAttribute("subjectSettingList", subjectSettingList);
         else
             model.addAttribute("error", "You currently do not manage any subjects.");
-        model.addAttribute("subjectList",subjectList);
-        return "subject_manager/subject_setting/subjectSettingList";
-    }
-
-    @PostMapping("/subject-manager/subject-setting")
-    public String searchPage(@RequestParam int subjectId, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        List<SubjectSetting> subjectSettingList= new ArrayList<>();
-        if (subjectId==-1) {
-            for (Subject subject : subjectList) {
-                List<SubjectSetting> complexityList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject, 1);
-                subjectSettingList.addAll(complexityList);
-                List<SubjectSetting> qualityList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject, 2);
-                subjectSettingList.addAll(qualityList);
-            }
-        } else {
-            Subject subject = subjectService.getSubjectById(subjectId);
-            List<SubjectSetting> complexityList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject, 1);
-            subjectSettingList.addAll(complexityList);
-            List<SubjectSetting> qualityList = subjectSettingService.findSubjectSettingBySubjectAndTypeIdOrderByDisplayOrder(subject, 2);
-            subjectSettingList.addAll(qualityList);
-        }
-        if(subjectSettingList!=null)
-            model.addAttribute("subjectSettingList", subjectSettingList);
-        else
-            model.addAttribute("error", "You currently do not manage any subjects.");
-        model.addAttribute("subjectList",subjectList);
         return "subject_manager/subject_setting/subjectSettingList";
     }
 
