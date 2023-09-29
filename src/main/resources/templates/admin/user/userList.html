@@ -153,9 +153,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#myTable').DataTable({
-            "dom": 'frt<"#toolbar.dt-box"><"dt-box">',
+            "dom": 'rt<"#toolbar.dt-box"><"dt-box">',
             "bInfo": false,
-            "filter": false
+            "filter": false,
+            "ordering": false
         });
 
         // $("#toolbar").html('<div class="float-left">' +
