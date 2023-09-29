@@ -41,6 +41,7 @@ public class SubjectSettingController {
             model.addAttribute("subjectSettingList", subjectSettingList);
         else
             model.addAttribute("error", "You currently do not manage any subjects.");
+        model.addAttribute("subjectList",subjectList);
         return "subject_manager/subject_setting/subjectSettingList";
     }
 
