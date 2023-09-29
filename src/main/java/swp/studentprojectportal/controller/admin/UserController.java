@@ -46,20 +46,46 @@ public class UserController {
     @PostMapping ("/addUser")
     public String addUser(
             @RequestParam String fullName,
-            @RequestParam String email,
-            @RequestParam String phone,
+            @RequestParam String username,
             @RequestParam int roleId,
             Model model) {
+        User user = new User();
+        user.setActive(false);
+        user.setFullName(fullName);
+        user.setSetting(settingService.findById(roleId));
 
-        String errorMsg = checkValidateUser(email, phone);
-
-        if(errorMsg!=null) {
-            model.addAttribute("error", errorMsg);
-            model.addAttribute("roleList", settingService.getAllRole());
-            return "admin/user/userAdd";
+        if(Validate.validEmail(username)) {
+            user.setEmail(username);
+        }
+        if(Validate.validPhoneNumber(username)) {
+            user.setPhone(username);
         }
 
-        int newUserId = userService.addUser(fullName, email, phone, roleId).getId();
+        if(!Validate.validFullname(fullName)) {
+            model.addAttribute("error", "Invalid Full Name!");
+            return "redirect:/admin/user/userAdd";
+
+        }
+
+        if(user.getEmail() == null && user.getPhone() == null) {
+            model.addAttribute("error", "Email or Phone Number invalid!");
+            return "redirect:/admin/user/userAdd";
+
+        }
+
+        if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
+            model.addAttribute("error", "Email already exist!");
+            return "redirect:/admin/user/userAdd";
+
+        }
+
+        if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
+            model.addAttribute("error", "Email domain is not allowed!");
+            return "redirect:/admin/user/userAdd";
+
+        }
+
+        int newUserId = userService.saveUser(user).getId();
         return "redirect:./userDetails?id=" + newUserId;
     }
 
