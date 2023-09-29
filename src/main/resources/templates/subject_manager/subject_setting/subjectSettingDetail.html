@@ -104,11 +104,11 @@
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-2 offset-1">
+                                    <div class="col-md-3">
                                         <div class="mb-3">
                                             <label class="form-label">Display Order</label>
-                                            <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
-                                                   th:value="${setting.displayOrder}">
+                                            <input style="width: 100%;" type="number" required class="form-control" name="displayOrder"
+                                                   th:value="${setting.displayOrder}" min="1">
                                         </div>
                                     </div>
                                     <div class="col-md-2 text-center">
