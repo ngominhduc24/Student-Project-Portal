@@ -144,17 +144,17 @@
                             Subject Setting
                         </div>
                         <div class="card-body">
-<!--                            <div class="row" style="position: absolute;left: 242px;top:72px;">-->
-<!--                                <div class="col-md-4">-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <select name="roleId" class="form-select">-->
-<!--                                            <option value="-1">All Subject</option>-->
-<!--                                            <option th:each="subject : ${subjectList}"-->
-<!--                                                    th:value="${subject.id}"-->
-<!--                                                    th:text="${subject.subjectCode}"></option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                            <div class="row" style="position: absolute;left: 242px;top:72px;">
+                                <div class="col-md-12">
+                                    <form class="mb-3" action="/subject-manager/subject-setting" method="post">
+                                        <select name="subjectId" class="form-select" onchange="this.form.submit()">
+                                            <option value="-1">All Subject</option>
+                                            <option th:each="subject : ${subjectList}"
+                                                    th:value="${subject.id}"
+                                                    th:text="${subject.subjectCode}"></option>
+                                        </select>
+                                    </form>
+                                </div>
 <!--                                <div class="col-md-4">-->
 <!--                                    <div class="mb-3">-->
 <!--                                        <select name="typeId" class="form-select">-->
@@ -173,7 +173,7 @@
 <!--                                        </select>-->
 <!--                                    </div>-->
 <!--                                </div>-->
-<!--                            </div>-->
+                            </div>
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
