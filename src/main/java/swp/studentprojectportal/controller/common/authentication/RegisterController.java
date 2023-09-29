@@ -30,7 +30,7 @@ public class RegisterController {
     public String registerAccount(WebRequest request, Model model, HttpSession session) throws NoSuchAlgorithmException {
         String fullname = request.getParameter("fullname").trim();
         String termCheckbox = request.getParameter("termCheckbox");
-        String username = request.getParameter("username").trim();
+        String username = request.getParameter("username").replace(" ", "");
         String password = request.getParameter("password");
 
         // create model user
