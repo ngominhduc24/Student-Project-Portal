@@ -21,7 +21,7 @@ public interface IUserService {
     boolean updateUserStatus(int id, boolean status);
     boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note);
 
-    User addUser(String fullName, String email, String phone, String password, int roleId);
+    User addUser(String fullName, String email, String phone, int roleId);
 
     User findUserByUsernameAndPassword(String username, String password);
 

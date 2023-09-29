@@ -239,7 +239,7 @@
 
 </script>
 
-
+<input type="hidden" class="sessionAccountId" th:value="${session.user.id}">
 
 <script>
     let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&search=&roleId=`; // Your API endpoint
@@ -300,6 +300,7 @@
         return currentPage;
     });
 
+    const sessionAccountId = document.querySelector('.sessionAccountId').value;
     // Function to fetch user data and populate the table
     const  populateUserTable =  (pageNo) => {
         pageNo = pageNo - 1;
@@ -322,7 +323,7 @@
                     <td>${user.setting.settingTitle}</td>
                     <td>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
+                            <input class="form-check-input" type="${user.id==sessionAccountId ? 'hidden' : 'checkbox'}" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
                         </div>
                     </td>
                     <td>

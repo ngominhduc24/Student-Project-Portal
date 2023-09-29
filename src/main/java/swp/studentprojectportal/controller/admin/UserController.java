@@ -14,6 +14,7 @@ import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
 import java.util.Optional;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/admin")
@@ -48,7 +49,6 @@ public class UserController {
             @RequestParam String email,
             @RequestParam String phone,
             @RequestParam int roleId,
-            @RequestParam String password,
             Model model) {
 
         String errorMsg = checkValidateUser(email, phone);
@@ -59,7 +59,7 @@ public class UserController {
             return "admin/user/userAdd";
         }
 
-        int newUserId = userService.addUser(fullName, email, phone, password, roleId).getId();
+        int newUserId = userService.addUser(fullName, email, phone, roleId).getId();
         return "redirect:./userDetails?id=" + newUserId;
     }
 
