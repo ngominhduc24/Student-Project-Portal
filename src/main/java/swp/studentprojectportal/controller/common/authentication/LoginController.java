@@ -13,6 +13,7 @@ import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.GooglePojo;
 import swp.studentprojectportal.utils.GoogleUtils;
+import swp.studentprojectportal.utils.Validate;
 
 import java.io.IOException;
 
@@ -39,6 +40,7 @@ public class LoginController {
     @PostMapping("/login")
     public String userLogin(@RequestParam String username, @RequestParam String password,
             Model model, HttpSession session, HttpServletResponse response, WebRequest request) {
+        username = username.replace("+84", "0").replace(" ", "");
         model.addAttribute("cuser", username);
         User user = userService.findUserByUsernameAndPassword(username.trim(), password);
         if(user != null && user.isActive() && user.isStatus()) {
