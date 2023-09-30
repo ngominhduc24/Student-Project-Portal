@@ -318,8 +318,8 @@
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
                     <td>${user.fullName}</td>
-                    <td>${user.email}</td>
-                    <td>${user.phone}</td>
+                    <td>${user.email ? user.email : ''}</td>
+                    <td>${user.phone ? user.phone : ''}</td>
                     <td>${user.setting.settingTitle}</td>
                     <td>
                         <div class="form-check form-switch">
