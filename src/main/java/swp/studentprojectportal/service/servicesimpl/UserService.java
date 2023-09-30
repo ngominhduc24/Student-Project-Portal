@@ -207,6 +207,7 @@ public class UserService implements IUserService {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
             user.setToken(null);
+            user.setActive(true);
             try {
                 user.setPassword("");
             } catch (NoSuchAlgorithmException e) {

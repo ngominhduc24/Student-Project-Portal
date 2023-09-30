@@ -1,6 +1,7 @@
 package swp.studentprojectportal.controller.admin;
 
 import jakarta.servlet.http.HttpSession;
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import swp.studentprojectportal.controller.common.authentication.VerifyController;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.service.servicesimpl.EmailService;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.Validate;
 
 import java.util.Optional;
@@ -19,6 +23,7 @@ import java.util.Random;
 @Controller
 @RequestMapping("/admin")
 public class UserController {
+    private final VerifyController verifyController;
     @Autowired
     private int adminRoleId;
 
@@ -27,6 +32,14 @@ public class UserController {
 
     @Autowired
     SettingService settingService;
+
+    @Autowired
+    EmailService emailservice;
+
+    @Autowired
+    public UserController(VerifyController verifyController) {
+        this.verifyController = verifyController;
+    }
 
     @GetMapping("/user")
     public String userList(Model model,
@@ -49,16 +62,13 @@ public class UserController {
             @RequestParam String username,
             @RequestParam int roleId,
             Model model) {
+
         User user = new User();
         user.setActive(false);
         user.setFullName(fullName);
-        user.setSetting(settingService.findById(roleId));
 
         if(Validate.validEmail(username)) {
             user.setEmail(username);
-        }
-        if(Validate.validPhoneNumber(username)) {
-            user.setPhone(username);
         }
 
         if(!Validate.validFullname(fullName)) {
@@ -67,8 +77,8 @@ public class UserController {
 
         }
 
-        if(user.getEmail() == null && user.getPhone() == null) {
-            model.addAttribute("error", "Email or Phone Number invalid!");
+        if(user.getEmail() == null) {
+            model.addAttribute("error", "Email is invalid!");
             return "redirect:/admin/user/userAdd";
 
         }
@@ -85,7 +95,20 @@ public class UserController {
 
         }
 
-        int newUserId = userService.saveUser(user).getId();
+        user.setSetting(settingService.findById(roleId));
+
+        String token = RandomString.make(30); // genarate token
+
+        user.setToken(token);
+        int newUserId =  userService.saveUser(user).getId();
+
+        // get href
+        String href = "reset-password";
+        String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
+
+        emailservice.sendEmail(user.getFullName(), user.getEmail(), token_sender);
+        model.addAttribute("email", user.getEmail());
+
         return "redirect:./userDetails?id=" + newUserId;
     }
 
