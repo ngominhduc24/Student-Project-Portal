@@ -67,7 +67,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Fullname</label>
                                             <input name="fullName" type="text" class="form-control"
-                                                   placeholder="Fullname" required>
+                                                   placeholder="Fullname" th:value="${fullName}" required>
                                         </div>
                                     </div><!--end col-->
 
@@ -80,8 +80,8 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Email address</label>
-                                            <input name="username" type="text" class="form-control"
-                                                   placeholder="Email address">
+                                            <input name="email" type="text" class="form-control"
+                                                   placeholder="Email address" th:value="${email}" required>
                                         </div>
                                     </div><!--end col-->
 

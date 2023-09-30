@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import swp.studentprojectportal.controller.common.authentication.VerifyController;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.EmailService;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
@@ -18,7 +17,6 @@ import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.Validate;
 
 import java.util.Optional;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/admin")
@@ -53,54 +51,51 @@ public class UserController {
     @PostMapping ("/addUser")
     public String addUser(
             @RequestParam String fullName,
-            @RequestParam String username,
+            @RequestParam String email,
             @RequestParam int roleId,
             Model model) {
+
+        model.addAttribute("roleList", settingService.getAllRole());
+        model.addAttribute("fullName", fullName);
+        model.addAttribute("email", email);
+
+        if(!Validate.validFullname(fullName)) {
+            model.addAttribute("error", "Invalid Full Name!");
+            return "admin/user/userAdd";
+        }
+
+        if(!Validate.validEmail(email)) {
+            model.addAttribute("error", "Email is invalid!");
+            return "admin/user/userAdd";
+        }
+
+        if(userService.checkExistMail(email)) {
+            model.addAttribute("error", "Email already exist!");
+            return "admin/user/userAdd";
+        }
+
+        if(!userService.checkEmailDomain(email)) {
+            model.addAttribute("error", "Email domain is not allowed!");
+            return "admin/user/userAdd";
+        }
 
         User user = new User();
         user.setActive(false);
         user.setFullName(fullName);
-
-        if(Validate.validEmail(username)) {
-            user.setEmail(username);
-        }
-
-        if(!Validate.validFullname(fullName)) {
-            model.addAttribute("error", "Invalid Full Name!");
-            return "redirect:/admin/user/userAdd";
-
-        }
-
-        if(user.getEmail() == null) {
-            model.addAttribute("error", "Email is invalid!");
-            return "redirect:/admin/user/userAdd";
-
-        }
-
-        if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
-            model.addAttribute("error", "Email already exist!");
-            return "redirect:/admin/user/userAdd";
-
-        }
-
-        if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
-            model.addAttribute("error", "Email domain is not allowed!");
-            return "redirect:/admin/user/userAdd";
-
-        }
-
+        user.setEmail(email);
         user.setSetting(settingService.findById(roleId));
 
-        String token = RandomString.make(30); // genarate token
+        String token = RandomString.make(30); // generate token
 
+        // gen token
         user.setToken(token);
         int newUserId =  userService.saveUser(user).getId();
 
-        // get href
+        // send mail
         String href = "reset-password";
-        String token_sender = Utility.getSiteURL() + "/" + href + "?key=" + token;
+        String tokenSender = Utility.getSiteURL() + "/" + href + "?key=" + token;
 
-        emailservice.sendEmail(user.getFullName(), user.getEmail(), token_sender);
+        emailservice.sendEmail(user.getFullName(), user.getEmail(), tokenSender);
         model.addAttribute("email", user.getEmail());
 
         return "redirect:./userDetails?id=" + newUserId;
@@ -160,21 +155,21 @@ public class UserController {
         return "redirect:/";
     }
 
-    private String checkValidateUser(String email, String phone) {
-        email = email.trim();
-        phone = phone.trim();
-
-        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
-        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
-
-        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
-        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
-
-        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
-        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
-
-        return null;
-    }
+//    private String checkValidateUser(String email, String phone) {
+//        email = email.trim();
+//        phone = phone.trim();
+//
+//        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
+//        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
+//
+//        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
+//        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
+//
+//        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
+//        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
+//
+//        return null;
+//    }
 
     private String checkValidateUpdateUser(String email, String phone, User user) {
         email = email.trim();

@@ -24,13 +24,13 @@ public class User {
     private Integer id;
 
     @Column(name = "email")
-    private String email;
+    private String email = null;
 
     @Column(name = "phone")
-    private String phone;
+    private String phone = null;
 
     @Column(name = "password")
-    private String password;
+    private String password = null;
 
     @Column(name = "status")
     private boolean status = true;
