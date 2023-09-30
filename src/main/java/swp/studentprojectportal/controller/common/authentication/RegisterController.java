@@ -37,6 +37,10 @@ public class RegisterController {
         String username = request.getParameter("username").replace(" ", "");
         String password = request.getParameter("password");
 
+        // set session to save data
+        session.setAttribute("r-fullname", fullname);
+        session.setAttribute("r-username", username);
+
         // create model user
         User user = new User();
         user.setActive(false);
@@ -55,37 +59,37 @@ public class RegisterController {
 
         // Validate Full Name
         if (!Validate.validFullname(fullname)) {
-            return handleError(model, "Invalid fullname");
+            return handleError(model, session, "Fullname must contain at least 2 words");
         }
 
         // Check Term Checkbox
         if (termCheckbox == null) {
-            return handleError(model, "You must agree with our terms and conditions");
+            return handleError(model, session, "You must agree with our terms and conditions");
         }
 
         // Validate Email or Phone
         if (user.getEmail() == null && user.getPhone() == null) {
-            return handleError(model, "Invalid email or phone number");
+            return handleError(model, session, "Invalid email or phone number");
         }
 
         // Check Email Existence
         if (user.getEmail() != null) {
             if (userService.checkExistMail(user.getEmail())) {
-                return handleError(model, "Email already exists!");
+                return handleError(model, session, "Email already exists!");
             }
             if (!userService.checkEmailDomain(user.getEmail())) {
-                return handleError(model, "Email domain is not allowed!");
+                return handleError(model, session, "Email domain is not allowed!");
             }
         }
 
         // Check Phone Number Existence
         if (user.getPhone() != null && userService.checkExistPhoneNumber(user.getPhone())) {
-            return handleError(model, "Phone number already exists!");
+            return handleError(model, session, "Phone number already exists!");
         }
 
         // Validate Password
         if (!Validate.validPassword(password)) {
-            return handleError(model, "Password must contain at least 8 characters and have uppercase, lowercase, and a number");
+            return handleError(model, session, "Password must contain at least 8 characters and have uppercase, lowercase, and a number");
         }
 
         // set session to verify
@@ -95,8 +99,12 @@ public class RegisterController {
     }
 
     // Helper method to handle errors
-    private String handleError(Model model, String errorMessage) {
+    private String handleError(Model model, HttpSession session, String errorMessage) {
         model.addAttribute("errmsg", errorMessage);
+        model.addAttribute("fullname", session.getAttribute("r-fullname"));
+        model.addAttribute("username", session.getAttribute("r-username"));
+        session.removeAttribute("r-fullname");
+        session.removeAttribute("r-username");
         return "authentication/register";
     }
 }

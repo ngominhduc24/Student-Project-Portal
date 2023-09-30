@@ -54,13 +54,13 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Full name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Full name" name="fullname" required="">
+                                        <input type="text" class="form-control" placeholder="Full name" name="fullname" th:value="${fullname}" required="">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Your Username <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Email address or phone number" name="username" required="">
+                                        <label class="form-label">Email address or phone number<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Your Email address or phone number" name="username" th:value="${username}" required="">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
