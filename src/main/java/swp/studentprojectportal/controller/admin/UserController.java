@@ -23,7 +23,6 @@ import java.util.Random;
 @Controller
 @RequestMapping("/admin")
 public class UserController {
-    private final VerifyController verifyController;
     @Autowired
     private int adminRoleId;
 
@@ -35,11 +34,6 @@ public class UserController {
 
     @Autowired
     EmailService emailservice;
-
-    @Autowired
-    public UserController(VerifyController verifyController) {
-        this.verifyController = verifyController;
-    }
 
     @GetMapping("/user")
     public String userList(Model model,
