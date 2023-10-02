@@ -28,7 +28,7 @@ public class VerifyController {
     RegisterService registerService;
 
     @GetMapping("/verifypage")
-    public String verifyPage(Model model, HttpSession session, WebRequest webRequest) {
+    public String verifyPage(Model model, HttpSession session) {
         User user = (User) session.getAttribute("userauthen");
         String token = RandomString.make(30); // genarate token
 

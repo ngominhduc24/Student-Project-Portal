@@ -93,6 +93,155 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
                                                         ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `swp391`.`assignment`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`assignment` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`assignment` (
+                                                     `id` INT NOT NULL AUTO_INCREMENT,
+                                                     `subject_id` INT NULL,
+                                                     `title` VARCHAR(45) NULL,
+    `description` VARCHAR(245) NULL,
+    `is_subject_assignent` BIT(1) NULL,
+    PRIMARY KEY (`id`),
+    INDEX `a_idx` (`subject_id` ASC) VISIBLE,
+    FOREIGN KEY (`subject_id`)
+    REFERENCES `swp391`.`subject` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`class`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`class` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`class` (
+                                                `id` INT NOT NULL AUTO_INCREMENT,
+                                                `class_name` VARCHAR(245) NULL,
+    `semester_id` INT NULL,
+    `teacher_id` INT NULL,
+    `status` INT NULL,
+    PRIMARY KEY (`id`),
+    INDEX ` a_idx` (`teacher_id` ASC) VISIBLE,
+    INDEX `b_idx` (`semester_id` ASC) VISIBLE,
+    FOREIGN KEY (`teacher_id`)
+    REFERENCES `swp391`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`semester_id`)
+    REFERENCES `swp391`.`setting` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`class_assignment`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`class_assignment` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`class_assignment` (
+                                                           `id` INT NOT NULL AUTO_INCREMENT,
+                                                           `class_id` INT NULL,
+                                                           `assignment_id` INT NULL,
+                                                           `start_date` DATETIME NULL,
+                                                           `end_date` DATETIME NULL,
+                                                           `status` BIT(1) NULL,
+    PRIMARY KEY (`id`),
+    INDEX `a_idx` (`class_id` ASC) VISIBLE,
+    INDEX `b_idx` (`assignment_id` ASC) VISIBLE,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`assignment_id`)
+    REFERENCES `swp391`.`assignment` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`class_issue_setting`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`class_issue_setting` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
+                                                              `id` INT NOT NULL AUTO_INCREMENT,
+                                                              `class_id` INT NULL,
+                                                              `type` INT NULL,
+                                                              `status` BIT(1) NULL,
+    `work_processes` VARCHAR(155) NULL,
+    PRIMARY KEY (`id`),
+    INDEX `a_idx` (`class_id` ASC) VISIBLE,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`project`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`project` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`project` (
+                                                  `id` INT NOT NULL,
+                                                  `class_id` INT NULL,
+                                                  `project_mentor_id` INT NULL,
+                                                  `team_leader_id` INT NULL,
+                                                  `title` VARCHAR(45) NULL,
+    `status` BIT(1) NULL,
+    PRIMARY KEY (`id`),
+    INDEX `a_idx` (`class_id` ASC) VISIBLE,
+    INDEX `a_idx1` (`project_mentor_id` ASC) VISIBLE,
+    INDEX `a_idx2` (`team_leader_id` ASC) VISIBLE,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_mentor_id`)
+    REFERENCES `swp391`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`team_leader_id`)
+    REFERENCES `swp391`.`student` (`student_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`student`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`student` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`student` (
+                                                  `student_id` INT NOT NULL,
+                                                  `class_id` INT NOT NULL,
+                                                  `project_id` INT NULL,
+                                                  PRIMARY KEY (`student_id`, `class_id`),
+    INDEX `b_idx` (`class_id` ASC) VISIBLE,
+    INDEX `a_idx` (`project_id` ASC) VISIBLE,
+    FOREIGN KEY (`student_id`)
+    REFERENCES `swp391`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
 -- -----------------------------------------------------
 -- Table `swp391`.`subject_setting`
 -- -----------------------------------------------------

@@ -105,7 +105,7 @@
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3" th:if="${user.id != session.user.id}">
                                             <label class="form-label">Status</label>
                                             <select name="status" class="form-select">
                                                 <option value="true" th:selected="${true == user.status}">Active</option>
@@ -116,7 +116,7 @@
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3"  th:if="${user.id != session.user.id}">
                                             <label class="form-label">Note</label>
                                             <input name="note" type="text" class="form-control"
                                                    th:value="${user.note}">
