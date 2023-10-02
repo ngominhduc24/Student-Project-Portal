@@ -92,6 +92,7 @@
                                                         <option th:each="manager : ${subjectManagerList}"
                                                                 th:value="${manager.id}"
                                                                 th:text="${manager.fullName}"
+                                                                th:selected="${manager.id == subjectManagerId}"
                                                                 class="managerOption"></option>
                                                     </select>
                                                 </div>

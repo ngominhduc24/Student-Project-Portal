@@ -53,7 +53,7 @@ public class SubjectController {
             model.addAttribute("subjectName", subjectName);
             model.addAttribute("subjectCode", subjectCode);
             model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-            model.addAttribute("subjectManagerId", userService.findUserById(subjectManagerId));
+            model.addAttribute("subjectManagerId", subjectManagerId);
             return "/admin/subject/subjectAdd";
         }
 
