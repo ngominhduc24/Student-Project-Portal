@@ -52,30 +52,50 @@ public class UserController {
     public String addUser(
             @RequestParam String fullName,
             @RequestParam String email,
+            @RequestParam String phone,
             @RequestParam int roleId,
             Model model) {
 
         model.addAttribute("roleList", settingService.getAllRole());
         model.addAttribute("fullName", fullName);
+        model.addAttribute("phone", phone);
         model.addAttribute("email", email);
+        model.addAttribute("roleId", roleId);
 
         if(!Validate.validFullname(fullName)) {
             model.addAttribute("error", "Invalid Full Name!");
             return "admin/user/userAdd";
         }
 
-        if(!Validate.validEmail(email)) {
+        if(email.isEmpty() && phone.isEmpty()) {
+            model.addAttribute("error", "Please input email or phone number!");
+            return "admin/user/userAdd";
+        }
+
+        //check email
+        if(!email.isEmpty() && !Validate.validEmail(email)) {
             model.addAttribute("error", "Email is invalid!");
             return "admin/user/userAdd";
         }
 
-        if(userService.checkExistMail(email)) {
+        if(!email.isEmpty() && userService.checkExistMail(email)) {
             model.addAttribute("error", "Email already exist!");
             return "admin/user/userAdd";
         }
 
-        if(!userService.checkEmailDomain(email)) {
+        if(!email.isEmpty() && !userService.checkEmailDomain(email)) {
             model.addAttribute("error", "Email domain is not allowed!");
+            return "admin/user/userAdd";
+        }
+
+        //check phone
+        if(!phone.isEmpty() && !Validate.validPhoneNumber(phone)) {
+            model.addAttribute("error", "Phone is invalid!");
+            return "admin/user/userAdd";
+        }
+
+        if(!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) {
+            model.addAttribute("error", "Phone already exist!");
             return "admin/user/userAdd";
         }
 
@@ -83,20 +103,24 @@ public class UserController {
         user.setActive(false);
         user.setFullName(fullName);
         user.setEmail(email);
+        user.setPhone(phone);
         user.setSetting(settingService.findById(roleId));
 
-        String token = RandomString.make(30); // generate token
-
-        // gen token
-        user.setToken(token);
         int newUserId =  userService.saveUser(user).getId();
 
-        // send mail
-        String href = "reset-password";
-        String tokenSender = Utility.getSiteURL() + "/" + href + "?key=" + token;
+        //if add with email -> send mail
+        if(!email.isEmpty()) {
+            String token = RandomString.make(30); // generate token
 
-        emailservice.sendEmail(user.getFullName(), user.getEmail(), tokenSender);
-        model.addAttribute("email", user.getEmail());
+            // gen token
+            user.setToken(token);
+
+            // send mail
+            String href = "reset-password";
+            String tokenSender = Utility.getSiteURL() + "/" + href + "?key=" + token;
+
+            emailservice.sendEmail(user.getFullName(), user.getEmail(), tokenSender);
+        }
 
         return "redirect:./userDetails?id=" + newUserId;
     }

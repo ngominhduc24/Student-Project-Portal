@@ -73,7 +73,13 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-
+                                            <label class="form-label">Role</label>
+                                            <select name="roleId" class="form-select">
+                                                <option th:each="role : ${roleList}"
+                                                        th:value="${role.id}"
+                                                        th:text="${role.settingTitle}"
+                                                        th:selected="${role.id == roleId}"></option>
+                                            </select>
                                         </div>
                                     </div><!--end col-->
 
@@ -81,18 +87,15 @@
                                         <div class="mb-3">
                                             <label class="form-label">Email address</label>
                                             <input name="email" type="text" class="form-control"
-                                                   placeholder="Email address" th:value="${email}" required>
+                                                   placeholder="Email address" th:value="${email}">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Role</label>
-                                            <select name="roleId" class="form-select">
-                                                <option th:each="role : ${roleList}"
-                                                        th:value="${role.id}"
-                                                        th:text="${role.settingTitle}"></option>
-                                            </select>
+                                            <label class="form-label">Phone number</label>
+                                            <input name="phone" type="text" class="form-control"
+                                                   placeholder="Phone number" th:value="${phone}">
                                         </div>
                                     </div><!--end col-->
                                 </div><!--end row-->
