@@ -39,7 +39,13 @@ public class LoginController {
     @PostMapping("/login")
     public String userLogin(@RequestParam String username, @RequestParam String password,
             Model model, HttpSession session, HttpServletResponse response, WebRequest request) {
+        username = username.replace("+84", "0").replace(" ", "");
         model.addAttribute("cuser", username);
+        model.addAttribute("cpass", password);
+        if(username.length()>35){
+            model.addAttribute("errmsg", "Your username is too long");
+            return "authentication/login";
+        }
         User user = userService.findUserByUsernameAndPassword(username.trim(), password);
         if(user != null && user.isActive() && user.isStatus()) {
             session.setAttribute("user", user);
