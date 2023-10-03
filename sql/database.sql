@@ -220,13 +220,14 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
 -- -----------------------------------------------------
 -- Table `swp391`.`student`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `swp391`.`student` ;
+DROP TABLE IF EXISTS `swp391`.`student_class` ;
 
-CREATE TABLE IF NOT EXISTS `swp391`.`student` (
-                                                  `student_id` INT NOT NULL,
-                                                  `class_id` INT NOT NULL,
-                                                  `project_id` INT NULL,
-                                                  PRIMARY KEY (`student_id`, `class_id`),
+CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
+                                                        `id` INT NOT NULL AUTO_INCREMENT,
+                                                        `student_id` INT NOT NULL,
+                                                        `class_id` INT NOT NULL,
+                                                        `project_id` INT NULL,
+                                                        PRIMARY KEY (`id`, `student_id`, `class_id`),
     INDEX `b_idx` (`class_id` ASC) VISIBLE,
     INDEX `a_idx` (`project_id` ASC) VISIBLE,
     FOREIGN KEY (`student_id`)

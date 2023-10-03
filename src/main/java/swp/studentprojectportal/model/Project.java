@@ -12,20 +12,29 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "class_issue_setting")
-public class ClassIssueSetting {
+@Table(name = "student")
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "type")
-    private Integer type;
-
-    @Column(name = "work_process")
-    private String workProcess;
-
     @Column(name = "status")
     private boolean status = true;
+
+    @Column(name = "title")
+    private String title;
+
+    @OneToOne
+    @JoinColumn(name = "project_mentor_id")
+    private User projectMentor;
+
+    @OneToOne
+    @JoinColumn(name = "team_leader_id")
+    private StudentClass teamLeader;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private Class aclass;
 
     @Column(name = "create_by")
     private Integer createBy = 0;
@@ -38,8 +47,4 @@ public class ClassIssueSetting {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
-
-    @ManyToOne
-    @JoinColumn(name = "class_id")
-    private Class aClass;
 }
