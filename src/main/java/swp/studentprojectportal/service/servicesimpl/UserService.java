@@ -120,18 +120,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User addUser(String fullName, String email, String phone, String password, int roleId) {
+    public User addUser(String fullName, String email, String phone, int roleId) {
         User user = new User();
 
-        user.setActive(true);
         user.setFullName(fullName);
         user.setEmail(email);
         user.setPhone(phone);
-        try {
-            user.setPassword(password);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
         user.setSetting(settingRepository.findById(roleId).get());
 
         userRepository.save(user);
@@ -213,6 +207,7 @@ public class UserService implements IUserService {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
             user.setToken(null);
+            user.setActive(true);
             try {
                 user.setPassword("");
             } catch (NoSuchAlgorithmException e) {

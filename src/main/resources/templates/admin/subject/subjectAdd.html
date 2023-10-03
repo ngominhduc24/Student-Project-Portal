@@ -68,6 +68,7 @@
                                             <label class="form-label">Subject Name</label>
                                             <input type="text" class="form-control"
                                                    name="subjectName"
+                                                   th:value="${subjectName}"
                                                    placeholder="Subject Name :">
                                         </div>
                                     </div><!--end col-->
@@ -77,6 +78,7 @@
                                             <label class="form-label">Subject Code</label>
                                             <input type="text" class="form-control"
                                                    name="subjectCode"
+                                                   th:value="${subjectCode}"
                                                    placeholder="Subject Code :">
                                         </div>
                                     </div><!--end col-->
@@ -90,6 +92,7 @@
                                                         <option th:each="manager : ${subjectManagerList}"
                                                                 th:value="${manager.id}"
                                                                 th:text="${manager.fullName}"
+                                                                th:selected="${manager.id == subjectManagerId}"
                                                                 class="managerOption"></option>
                                                     </select>
                                                 </div>

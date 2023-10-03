@@ -50,9 +50,13 @@ public class SubjectController {
         String errorMsg = checkValidateSubject(subjectName, subjectCode);
         if(errorMsg!=null) {
             model.addAttribute("errorMsg", errorMsg);
+            model.addAttribute("subjectName", subjectName);
+            model.addAttribute("subjectCode", subjectCode);
             model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+            model.addAttribute("subjectManagerId", subjectManagerId);
             return "/admin/subject/subjectAdd";
         }
+
         int newSubjectId = subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true).getId();
         return "redirect:./subjectDetails?id=" + newSubjectId;
     }

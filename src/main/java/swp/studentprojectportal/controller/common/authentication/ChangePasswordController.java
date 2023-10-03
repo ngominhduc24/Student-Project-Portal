@@ -29,7 +29,11 @@ public class ChangePasswordController {
     public String changePassword(@RequestParam String oldPassword, @RequestParam String newPassword,
                                  @RequestParam String reNewPassword, Model model, HttpSession session) throws NoSuchAlgorithmException {
         User user= (User) session.getAttribute("user");
-        if(!user.getPassword().equals(Utility.hash(oldPassword))){
+        System.out.println(user.getPassword()+" "+Utility.hash(oldPassword));
+        model.addAttribute("oldPassword", oldPassword);
+        model.addAttribute("newPassword", newPassword);
+        model.addAttribute("reNewPassword", reNewPassword);
+        if(!user.getPassword().equalsIgnoreCase(Utility.hash(oldPassword))){
             model.addAttribute("errmsg", "Old Password is incorrect");
         } else {
             if(!newPassword.equals(reNewPassword)){
