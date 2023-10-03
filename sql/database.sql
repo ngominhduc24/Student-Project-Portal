@@ -292,7 +292,9 @@ VALUES
 -- admin
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)
 VALUES
-    ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png");
+    ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png"),
+    ("subject@gmail.com","0999999998","e10adc3949ba59abbe56e057f20f883e","Subject manager",3,1,"/images/user_icon.png"),
+    ("class@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Class manager",4,1,"/images/user_icon.png");
 
 -- subject manager
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
@@ -335,10 +337,10 @@ INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
 VALUES
     (2,"Software development project","SWP391"),
     (2,"Java Web Application Development","PRJ301"),
-    (3,"Software Requirement","SWR302"),
+    (2,"Software Requirement","SWR302"),
     (4,"Software Testing","SWT301"),
-    (5,"Basic Cross-Platform Application Programming With .NET","PRN211"),
-    (6,"Front-End web development with React","FER201m");
+    (4,"Basic Cross-Platform Application Programming With .NET","PRN211"),
+    (4,"Front-End web development with React","FER201m");
 
 -- subject_setting
 INSERT INTO subject_setting(subject_id,type_id,setting_title,display_order)
@@ -355,3 +357,10 @@ VALUES
     (2 ,2, "Medium",2),
     (2 ,2, "Low",3);
 
+INSERT INTO `class` (`class_name`,`semester_id`,`teacher_id`,`status`)
+VALUES
+    ("SE1740",8,3,1),
+    ("SE1741",8,3,1),
+    ("SE1742",8,3,1),
+    ("SE1743",8,3,1),
+    ("SE1744",8,3,1);
