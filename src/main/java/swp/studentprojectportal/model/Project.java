@@ -30,7 +30,7 @@ public class Project {
 
     @OneToOne
     @JoinColumn(name = "team_leader_id")
-    private StudentClass teamLeader;
+    private User teamLeader;
 
     @ManyToOne
     @JoinColumn(name = "class_id")
