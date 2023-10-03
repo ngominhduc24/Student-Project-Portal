@@ -295,7 +295,7 @@ VALUES
     ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png"),
     ("subject@gmail.com","0999999998","e10adc3949ba59abbe56e057f20f883e","Subject manager",3,1,"/images/user_icon.png"),
     ("class@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Class manager",4,1,"/images/user_icon.png"),
-    ("leader@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Team leader",4,1,"/images/user_icon.png"),
+    ("leader@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Team leader",1,1,"/images/user_icon.png"),
     ("mentor@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Project mentor",4,1,"/images/user_icon.png");
 
 -- user
@@ -407,7 +407,7 @@ VALUES
     (33, 1, 5),   -- Student 33 in Project 6
     (34, 1, 5),   -- Student 34 in Project 6
     (35, 1, 5);   -- Student 35 in Project 6
-
+    
 INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
 VALUES
     (1,'Review Iteration 1','Review docs and code iteration 1 all group',1),
