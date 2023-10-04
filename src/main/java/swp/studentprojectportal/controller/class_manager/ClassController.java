@@ -17,9 +17,8 @@ public class ClassController {
     @GetMapping("/class")
     public String userList(Model model,
                            @RequestParam(defaultValue = "-1") int classId) {
-        System.out.println(classService.getAllStudent(classId));
         model.addAttribute("classId", classId);
         model.addAttribute("classList", classService.getAllStudent(classId));
-        return "admin/user/userList";
+        return "landingPage";
     }
 }
