@@ -103,8 +103,9 @@ CREATE TABLE IF NOT EXISTS `swp391`.`assignment` (
                                                      `id` INT NOT NULL AUTO_INCREMENT,
                                                      `subject_id` INT NULL,
                                                      `title` VARCHAR(45) NULL,
+    `status` BIT(1) NULL DEFAULT 1,
     `description` VARCHAR(245) NULL,
-    `is_subject_assignent` BIT(1) NULL,
+    `is_subject_assignment` BIT(1) NULL,
     PRIMARY KEY (`id`),
     INDEX `a_idx` (`subject_id` ASC) VISIBLE,
     FOREIGN KEY (`subject_id`)
@@ -124,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
                                                 `class_name` VARCHAR(245) NULL,
     `semester_id` INT NULL,
     `teacher_id` INT NULL,
-    `status` INT NULL,
+    `status` BIT(1) NULL,
     PRIMARY KEY (`id`),
     INDEX ` a_idx` (`teacher_id` ASC) VISIBLE,
     INDEX `b_idx` (`semester_id` ASC) VISIBLE,
@@ -191,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
 DROP TABLE IF EXISTS `swp391`.`project` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`project` (
-                                                  `id` INT NOT NULL,
+                                                  `id` INT NOT NULL AUTO_INCREMENT,
                                                   `class_id` INT NULL,
                                                   `project_mentor_id` INT NULL,
                                                   `team_leader_id` INT NULL,
@@ -210,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
     FOREIGN KEY (`team_leader_id`)
-    REFERENCES `swp391`.`student` (`student_id`)
+    REFERENCES `swp391`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
     ENGINE = InnoDB;
@@ -219,13 +220,14 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
 -- -----------------------------------------------------
 -- Table `swp391`.`student`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `swp391`.`student` ;
+DROP TABLE IF EXISTS `swp391`.`student_class` ;
 
-CREATE TABLE IF NOT EXISTS `swp391`.`student` (
-                                                  `student_id` INT NOT NULL,
-                                                  `class_id` INT NOT NULL,
-                                                  `project_id` INT NULL,
-                                                  PRIMARY KEY (`student_id`, `class_id`),
+CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
+                                                        `id` INT NOT NULL AUTO_INCREMENT,
+                                                        `student_id` INT NOT NULL,
+                                                        `class_id` INT NOT NULL,
+                                                        `project_id` INT NULL,
+                                                        PRIMARY KEY (`id`, `student_id`, `class_id`),
     INDEX `b_idx` (`class_id` ASC) VISIBLE,
     INDEX `a_idx` (`project_id` ASC) VISIBLE,
     FOREIGN KEY (`student_id`)
@@ -290,16 +292,11 @@ VALUES
 -- admin
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)
 VALUES
-    ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png");
-
--- subject manager
-INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
-VALUES
-    ("gillianmorris@gmail.com","0224667148","e10adc3949ba59abbe56e057f20f883e","Gillian Morris","/images/user_icon.png",3,1),
-    ("germanebaird3434@gmail.com","0820671142","e10adc3949ba59abbe56e057f20f883e","Germane Baird","/images/user_icon.png",3,0),
-    ("kareemmacdonald4709@gmail.com","0318444787","e10adc3949ba59abbe56e057f20f883e","Kareem Macdonald","/images/user_icon.png",3,1),
-    ("annedonovan3197@gmail.com","0137041646","e10adc3949ba59abbe56e057f20f883e","Anne Donovan","/images/user_icon.png",3,1),
-    ("echonash7303@gmail.com","0534896566","e10adc3949ba59abbe56e057f20f883e","Echo Nash","/images/user_icon.png",3,1);
+    ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png"),
+    ("subject@gmail.com","0999999998","e10adc3949ba59abbe56e057f20f883e","Subject manager",3,1,"/images/user_icon.png"),
+    ("class@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Class manager",4,1,"/images/user_icon.png"),
+    ("leader@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Team leader",1,1,"/images/user_icon.png"),
+    ("mentor@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Project mentor",4,1,"/images/user_icon.png");
 
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
@@ -326,17 +323,28 @@ VALUES
     ("elvisratliff@gmail.com","0911884338","e10adc3949ba59abbe56e057f20f883e","Elvis Ratliff","/images/user_icon.png",1,1),
     ("rowaningram@gmail.com","0734547525","e10adc3949ba59abbe56e057f20f883e","Rowan Ingram","/images/user_icon.png",1,1),
     ("oraallen@gmail.com","0298393485","e10adc3949ba59abbe56e057f20f883e","Ora Allen","/images/user_icon.png",1,1);
-
+INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
+VALUES
+    ("a@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","a","/images/user_icon.png",1,1),
+    ("b@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","b","/images/user_icon.png",1,1),
+    ("c@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","c","/images/user_icon.png",1,1),
+    ("d@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","d","/images/user_icon.png",1,1),
+    ("e@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","e","/images/user_icon.png",1,1),
+    ("f@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","f","/images/user_icon.png",1,1),
+    ("g@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","g","/images/user_icon.png",1,1),
+    ("h@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","h","/images/user_icon.png",1,1),
+    ("i@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","i","/images/user_icon.png",1,1),
+    ("k@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","k","/images/user_icon.png",1,1);
 
 -- subject
 INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
 VALUES
     (2,"Software development project","SWP391"),
     (2,"Java Web Application Development","PRJ301"),
-    (3,"Software Requirement","SWR302"),
+    (2,"Software Requirement","SWR302"),
     (4,"Software Testing","SWT301"),
-    (5,"Basic Cross-Platform Application Programming With .NET","PRN211"),
-    (6,"Front-End web development with React","FER201m");
+    (4,"Basic Cross-Platform Application Programming With .NET","PRN211"),
+    (4,"Front-End web development with React","FER201m");
 
 -- subject_setting
 INSERT INTO subject_setting(subject_id,type_id,setting_title,display_order)
@@ -353,3 +361,55 @@ VALUES
     (2 ,2, "Medium",2),
     (2 ,2, "Low",3);
 
+INSERT INTO `class` (`class_name`,`semester_id`,`teacher_id`,`status`)
+VALUES
+    ("SE1740",8,3,1),
+    ("SE1741",8,3,1);
+
+INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status)
+VALUES
+    (1, 5, 4, "Project A", 1),
+    (1, 5, 6, "Project B", 1),
+    (1, 5, 11, "Project C", 1),
+    (1, 5, 16, "Project D", 1),
+    (1, 5, 21, "Project E", 1),
+    (1, 5, 26, "Project F", 1);
+
+INSERT INTO student_class (student_id, class_id, project_id)
+VALUES
+    (6, 1, 1),    -- Student 6 in Project 1
+    (7, 1, 1),    -- Student 7 in Project 1
+    (8, 1, 1),    -- Student 8 in Project 1
+    (9, 1, 1),    -- Student 9 in Project 1
+    (10, 1, 1),   -- Student 10 in Project 1
+    (11, 1, 2),   -- Student 11 in Project 2
+    (12, 1, 2),   -- Student 12 in Project 2
+    (13, 1, 2),   -- Student 13 in Project 2
+    (14, 1, 2),   -- Student 14 in Project 2
+    (15, 1, 2),   -- Student 15 in Project 2
+    (16, 1, 3),   -- Student 16 in Project 3
+    (17, 1, 3),   -- Student 17 in Project 3
+    (18, 1, 3),   -- Student 18 in Project 3
+    (19, 1, 3),   -- Student 19 in Project 3
+    (20, 1, 3),   -- Student 20 in Project 3
+    (21, 1, 4),   -- Student 21 in Project 4
+    (22, 1, 4),   -- Student 22 in Project 4
+    (23, 1, 4),   -- Student 23 in Project 4
+    (24, 1, 4),   -- Student 24 in Project 4
+    (25, 1, 4),   -- Student 25 in Project 4
+    (26, 1, 5),   -- Student 26 in Project 5
+    (27, 1, 5),   -- Student 27 in Project 5
+    (28, 1, 5),   -- Student 28 in Project 5
+    (29, 1, 5),   -- Student 29 in Project 5
+    (30, 1, 5),   -- Student 30 in Project 5
+    (4, 1, 5),   -- Student 4 in Project 6
+    (32, 1, 5),   -- Student 32 in Project 6
+    (33, 1, 5),   -- Student 33 in Project 6
+    (34, 1, 5),   -- Student 34 in Project 6
+    (35, 1, 5);   -- Student 35 in Project 6
+    
+INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
+VALUES
+    (1,'Review Iteration 1','Review docs and code iteration 1 all group',1),
+    (1,'Review Iteration 2','Review docs and code iteration 2 all group',1),
+    (1,'Review Iteration 3','Review docs and code iteration 3 all group',1);
