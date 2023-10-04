@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface IStudentClassRepository extends JpaRepository<StudentClass, Integer> {
-//    List<User> findAllByAclass_Id(int classId);
+    List<StudentClass> findAllByAclass_Id(int classId);
 }
