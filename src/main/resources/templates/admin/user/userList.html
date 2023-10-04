@@ -99,12 +99,12 @@
                             <table id="myTable" class="display">
                                 <thead>
                                 <tr>
+                                    <th>Id</th>
                                     <th>Fullname</th>
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Role</th>
                                     <th>Status</th>
-                                    <th>Note</th>
                                     <th>View Details</th>
                                 </tr>
                                 </thead>
@@ -317,6 +317,7 @@
                 data.forEach(user => {
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
+                    <td>${user.id}</td>
                     <td>${user.fullName}</td>
                     <td>${user.email ? user.email : ''}</td>
                     <td>${user.phone ? user.phone : ''}</td>
@@ -325,38 +326,6 @@
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="${user.id==sessionAccountId ? 'hidden' : 'checkbox'}" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
                         </div>
-                    </td>
-                    <td>
-                        <a href="#" class="showNote" onclick="openDialog(this, ${user.id})">
-                            <i class="fas fa-pen-to-square"></i>
-                        </a>
-                                        <dialog class="userNote">
-                                            <div class="userNote_container">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="modalTitle"></h5>
-                                                            <button type="button" class="close" data-dismissem ="modal"
-                                                                    aria-label="Close" onclick="closeDialog(this)">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p></p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary"
-                                                                    data-dismiss="modal" onclick="closeDialog(this)">
-                                                                Close
-                                                            </button>
-                                                            <button type="button" class="btn btn-secondary">
-                                                                <a href="./userDetails?id=${user.id}" style="color: white;">Edit note</a>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </dialog>
                     </td>
                     <td><a href="./userDetails?id=${user.id}">View Details</a></td>
                 `;
