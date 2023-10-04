@@ -6,4 +6,5 @@ import swp.studentprojectportal.model.Class;
 
 @Repository
 public interface IClassRepository extends JpaRepository<Class, Integer> {
+
 }
