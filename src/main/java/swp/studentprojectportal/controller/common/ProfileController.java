@@ -158,19 +158,18 @@ public class ProfileController {
 
     private String saveFile(MultipartFile file) {
         try {
-            String uploadFolder = resourceLoader.getResource("classpath:/static/upload/").getFile().getAbsolutePath();
+            String uploadFolder = resourceLoader.getResource("classpath:").getFile().getAbsolutePath();
+            uploadFolder += "/static/upload/";
 
             // Create folder if not exist
             File folder = new File(uploadFolder);
-            if(!folder.exists()){
-                folder.mkdirs();
-            }
+            if(!folder.exists()) folder.mkdirs();
 
             // Generate unique file name
             String fileName = file.getOriginalFilename();
             byte[] bytes = file.getBytes();
 
-            Path uploadPath = Paths.get(uploadFolder + File.separator + fileName);
+            Path uploadPath = Paths.get(uploadFolder + fileName);
 
             Files.write(uploadPath, bytes);
 
