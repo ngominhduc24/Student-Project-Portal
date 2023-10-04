@@ -13,9 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
 
-
     Subject findSubjectBySubjectName(String subjectName);
-
     Subject findSubjectBySubjectCode(String subjectCode);
     List<Subject> findAllSubjectByUser(User user);
 
