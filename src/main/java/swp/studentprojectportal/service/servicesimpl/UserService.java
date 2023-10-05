@@ -2,6 +2,8 @@ package swp.studentprojectportal.service.servicesimpl;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -203,6 +205,13 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public int getTotalPage(int pageSize, int roleId) {
+        long count = userRepository.countAllBySettingId(roleId);
+        int totalPage = count % pageSize == 0 ? (int) (count / pageSize) : (int) (count / pageSize) + 1;
+        return totalPage;
+    }
+
+    @Override
     public User resetPasswordByToken(String token) {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
@@ -222,5 +231,10 @@ public class UserService implements IUserService {
     public User getUserByEmailOrPhone(String userName) {
         userName = userName.replace(" ", "").replace("+84", "0");
         return userRepository.findUserByEmailOrPhone(userName, userName);
+    }
+
+    @Override
+    public List<User> findAllProjectMentor() {
+        return userRepository.findAllBySettingIdOrSettingId(3,4);
     }
 }

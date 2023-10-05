@@ -114,8 +114,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`assignment` (
     INDEX `a_idx` (`subject_id` ASC) VISIBLE,
     FOREIGN KEY (`subject_id`)
     REFERENCES `swp391`.`subject` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -139,12 +139,12 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
     INDEX `b_idx` (`semester_id` ASC) VISIBLE,
     FOREIGN KEY (`teacher_id`)
     REFERENCES `swp391`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`semester_id`)
     REFERENCES `swp391`.`setting` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_assignment` (
                                                            `start_date` DATETIME NULL,
                                                            `end_date` DATETIME NULL,
                                                            `status` BIT(1) NULL,
-                                                           `create_by` INT NULL DEFAULT 0,
+    `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
     `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
@@ -169,12 +169,12 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_assignment` (
     INDEX `b_idx` (`assignment_id` ASC) VISIBLE,
     FOREIGN KEY (`class_id`)
     REFERENCES `swp391`.`class` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`assignment_id`)
     REFERENCES `swp391`.`assignment` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -197,8 +197,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
     INDEX `a_idx` (`class_id` ASC) VISIBLE,
     FOREIGN KEY (`class_id`)
     REFERENCES `swp391`.`class` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -214,6 +214,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
                                                   `team_leader_id` INT NULL,
                                                   `title` VARCHAR(45) NULL,
     `status` BIT(1) NULL,
+    `group_name` VARCHAR(45) NULL,
+    `description` VARCHAR(200) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -224,16 +226,16 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
     INDEX `a_idx2` (`team_leader_id` ASC) VISIBLE,
     FOREIGN KEY (`class_id`)
     REFERENCES `swp391`.`class` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`project_mentor_id`)
     REFERENCES `swp391`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`team_leader_id`)
     REFERENCES `swp391`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -317,48 +319,48 @@ VALUES
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)
 VALUES
     ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png"),
-    ("subject@gmail.com","0999999998","e10adc3949ba59abbe56e057f20f883e","Subject manager",3,1,"/images/user_icon.png"),
-    ("class@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Class manager",4,1,"/images/user_icon.png"),
-    ("leader@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Team leader",1,1,"/images/user_icon.png"),
-    ("mentor@gmail.com","0999999997","e10adc3949ba59abbe56e057f20f883e","Project mentor",4,1,"/images/user_icon.png");
+    ("subject@gmail.com","0999999998","c4ca4238a0b923820dcc509a6f75849b","Subject manager",3,1,"/images/user_icon.png"),
+    ("class@gmail.com","0999999997","c4ca4238a0b923820dcc509a6f75849b","Class manager",4,1,"/images/user_icon.png"),
+    ("leader@gmail.com","0999999997","c4ca4238a0b923820dcc509a6f75849b","Team leader",1,1,"/images/user_icon.png"),
+    ("mentor@gmail.com","0999999997","c4ca4238a0b923820dcc509a6f75849b","Project mentor",4,1,"/images/user_icon.png");
 
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("julianlester@gmail.com","0027829656","e10adc3949ba59abbe56e057f20f883e","Julian Lester","/images/user_icon.png",1,1),
-    ("galvinbass4030@gmail.com","0037963572","e10adc3949ba59abbe56e057f20f883e","Galvin Bass","/images/user_icon.png",1,1),
-    ("brianmassey@gmail.com","0436285872","e10adc3949ba59abbe56e057f20f883e","Brian Massey","/images/user_icon.png",1,1),
-    ("judahcardenas5324@gmail.com","0681589922","e10adc3949ba59abbe56e057f20f883e","Judah Cardenas","/images/user_icon.png",1,1),
-    ("kellyreyes9226@gmail.com","0363517319","e10adc3949ba59abbe56e057f20f883e","Kelly Reyes","/images/user_icon.png",1,1),
-    ("kevinwilliam@gmail.com","0905521148","e10adc3949ba59abbe56e057f20f883e","Kevin William","/images/user_icon.png",1,1),
-    ("lesleycastro@gmail.com","0571427370","e10adc3949ba59abbe56e057f20f883e","Lesley Castro","/images/user_icon.png",1,1),
-    ("danarosario@gmail.com","0272326964","e10adc3949ba59abbe56e057f20f883e","Dana Rosario","/images/user_icon.png",1,1),
-    ("aimeeewing@gmail.com","0636454167","e10adc3949ba59abbe56e057f20f883e","Aimee Ewing","/images/user_icon.png",1,1),
-    ("amywalton@gmail.com","0858486104","e10adc3949ba59abbe56e057f20f883e","Amy Walton","/images/user_icon.png",1,1);
+    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",1,1),
+    ("galvinbass4030@gmail.com","0037963572","c4ca4238a0b923820dcc509a6f75849b","Galvin Bass","/images/user_icon.png",1,1),
+    ("brianmassey@gmail.com","0436285872","c4ca4238a0b923820dcc509a6f75849b","Brian Massey","/images/user_icon.png",1,1),
+    ("judahcardenas5324@gmail.com","0681589922","c4ca4238a0b923820dcc509a6f75849b","Judah Cardenas","/images/user_icon.png",1,1),
+    ("kellyreyes9226@gmail.com","0363517319","c4ca4238a0b923820dcc509a6f75849b","Kelly Reyes","/images/user_icon.png",1,1),
+    ("kevinwilliam@gmail.com","0905521148","c4ca4238a0b923820dcc509a6f75849b","Kevin William","/images/user_icon.png",1,1),
+    ("lesleycastro@gmail.com","0571427370","c4ca4238a0b923820dcc509a6f75849b","Lesley Castro","/images/user_icon.png",1,1),
+    ("danarosario@gmail.com","0272326964","c4ca4238a0b923820dcc509a6f75849b","Dana Rosario","/images/user_icon.png",1,1),
+    ("aimeeewing@gmail.com","0636454167","c4ca4238a0b923820dcc509a6f75849b","Aimee Ewing","/images/user_icon.png",1,1),
+    ("amywalton@gmail.com","0858486104","c4ca4238a0b923820dcc509a6f75849b","Amy Walton","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("rashadrush2211@gmail.com","0860113768","e10adc3949ba59abbe56e057f20f883e","Rashad Rush","/images/user_icon.png",1,1),
-    ("elainelawrence@gmail.com","0721721061","e10adc3949ba59abbe56e057f20f883e","Elaine Lawrence","/images/user_icon.png",1,1),
-    ("larissareese@gmail.com","0279994112","e10adc3949ba59abbe56e057f20f883e","Larissa Reese","/images/user_icon.png",1,1),
-    ("holleemyers@gmail.com","0532678220","e10adc3949ba59abbe56e057f20f883e","Hollee Myers","/images/user_icon.png",1,1),
-    ("xanthusmcfadden3684@gmail.com","0302569530","e10adc3949ba59abbe56e057f20f883e","Xanthus Mcfadden","/images/user_icon.png",1,1),
-    ("mylesdavidson@gmail.com","0583590348","e10adc3949ba59abbe56e057f20f883e","Myles Davidson","/images/user_icon.png",1,1),
-    ("teegansantana@gmail.com","0547146642","e10adc3949ba59abbe56e057f20f883e","Teegan Santana","/images/user_icon.png",1,1),
-    ("elvisratliff@gmail.com","0911884338","e10adc3949ba59abbe56e057f20f883e","Elvis Ratliff","/images/user_icon.png",1,1),
-    ("rowaningram@gmail.com","0734547525","e10adc3949ba59abbe56e057f20f883e","Rowan Ingram","/images/user_icon.png",1,1),
-    ("oraallen@gmail.com","0298393485","e10adc3949ba59abbe56e057f20f883e","Ora Allen","/images/user_icon.png",1,1);
+    ("rashadrush2211@gmail.com","0860113768","c4ca4238a0b923820dcc509a6f75849b","Rashad Rush","/images/user_icon.png",1,1),
+    ("elainelawrence@gmail.com","0721721061","c4ca4238a0b923820dcc509a6f75849b","Elaine Lawrence","/images/user_icon.png",1,1),
+    ("larissareese@gmail.com","0279994112","c4ca4238a0b923820dcc509a6f75849b","Larissa Reese","/images/user_icon.png",1,1),
+    ("holleemyers@gmail.com","0532678220","c4ca4238a0b923820dcc509a6f75849b","Hollee Myers","/images/user_icon.png",1,1),
+    ("xanthusmcfadden3684@gmail.com","0302569530","c4ca4238a0b923820dcc509a6f75849b","Xanthus Mcfadden","/images/user_icon.png",1,1),
+    ("mylesdavidson@gmail.com","0583590348","c4ca4238a0b923820dcc509a6f75849b","Myles Davidson","/images/user_icon.png",1,1),
+    ("teegansantana@gmail.com","0547146642","c4ca4238a0b923820dcc509a6f75849b","Teegan Santana","/images/user_icon.png",1,1),
+    ("elvisratliff@gmail.com","0911884338","c4ca4238a0b923820dcc509a6f75849b","Elvis Ratliff","/images/user_icon.png",1,1),
+    ("rowaningram@gmail.com","0734547525","c4ca4238a0b923820dcc509a6f75849b","Rowan Ingram","/images/user_icon.png",1,1),
+    ("oraallen@gmail.com","0298393485","c4ca4238a0b923820dcc509a6f75849b","Ora Allen","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("a@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","a","/images/user_icon.png",1,1),
-    ("b@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","b","/images/user_icon.png",1,1),
-    ("c@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","c","/images/user_icon.png",1,1),
-    ("d@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","d","/images/user_icon.png",1,1),
-    ("e@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","e","/images/user_icon.png",1,1),
-    ("f@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","f","/images/user_icon.png",1,1),
-    ("g@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","g","/images/user_icon.png",1,1),
-    ("h@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","h","/images/user_icon.png",1,1),
-    ("i@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","i","/images/user_icon.png",1,1),
-    ("k@gmail.com",NULL,"e10adc3949ba59abbe56e057f20f883e","k","/images/user_icon.png",1,1);
+    ("a@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","a","/images/user_icon.png",1,1),
+    ("b@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","b","/images/user_icon.png",1,1),
+    ("c@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","c","/images/user_icon.png",1,1),
+    ("d@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","d","/images/user_icon.png",1,1),
+    ("e@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","e","/images/user_icon.png",1,1),
+    ("f@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","f","/images/user_icon.png",1,1),
+    ("g@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","g","/images/user_icon.png",1,1),
+    ("h@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","h","/images/user_icon.png",1,1),
+    ("i@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","i","/images/user_icon.png",1,1),
+    ("k@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","k","/images/user_icon.png",1,1);
 
 -- subject
 INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
@@ -390,14 +392,14 @@ VALUES
     ("SE1740",8,3,1),
     ("SE1741",8,3,1);
 
-INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status)
+INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (1, 5, 4, "Project A", 1),
-    (1, 5, 6, "Project B", 1),
-    (1, 5, 11, "Project C", 1),
-    (1, 5, 16, "Project D", 1),
-    (1, 5, 21, "Project E", 1),
-    (1, 5, 26, "Project F", 1);
+    (1, 5, 4, "Project A", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 6, "Project B", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 11, "Project C", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 16, "Project D", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 21, "Project E", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 26, "Project F", 1, "Group A", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
@@ -431,7 +433,7 @@ VALUES
     (33, 1, 5),   -- Student 33 in Project 6
     (34, 1, 5),   -- Student 34 in Project 6
     (35, 1, 5);   -- Student 35 in Project 6
-    
+
 INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
 VALUES
     (1,'Review Iteration 1','Review docs and code iteration 1 all group',1),

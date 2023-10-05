@@ -34,4 +34,11 @@ public class ClassService implements IClassService {
     public Class getClass(int classId) {
         return classRepository.findClassById(classId);
     }
+
+    @Override
+    public List<Class> findAllByClassManagerId(int classManagerId) {
+        return classRepository.findAllByUserId(classManagerId);
+    }
+
+
 }
