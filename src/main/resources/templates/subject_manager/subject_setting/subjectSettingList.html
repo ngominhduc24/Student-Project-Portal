@@ -112,11 +112,11 @@
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
-    <div th:replace="dashboardSidebar"></div>
+    <div th:replace="~{dashboardSidebar}"></div>
 
     <!-- Start Page Content -->
     <main class="page-content bg-light">
-        <div th:replace="dashboardHeader"></div>
+        <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row px-4">
@@ -136,43 +136,43 @@
                     </div><!--end col-->
 
                 </div><!--end row-->
-                <h3 th:text="${error}"></h3>
-                <div class="container-fluid px-4">
+                <h3 th:text="${error}" style="color:red; text-align: center;"></h3>
+                <div class="container-fluid px-4" th:if="${subjectSettingList!=null}">
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             Subject Setting
                         </div>
-                        <div class="card-body">
+                        <form class="card-body" action="/subject-manager/subject-setting" method="post">
                             <div class="row" style="position: absolute;left: 242px;top:72px;">
-                                <div class="col-md-12">
-                                    <form class="mb-3" action="/subject-manager/subject-setting" method="post">
+                                <div class="col-md-4">
+                                    <div class="mb-3" >
                                         <select name="subjectId" class="form-select" onchange="this.form.submit()">
                                             <option value="-1">All Subject</option>
                                             <option th:each="subject : ${subjectList}"
                                                     th:value="${subject.id}"
-                                                    th:text="${subject.subjectCode}"></option>
+                                                    th:text="${subject.subjectCode}" th:selected="${subjectId == subject.id}"></option>
                                         </select>
-                                    </form>
+                                    </div>
                                 </div>
-<!--                                <div class="col-md-4">-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <select name="typeId" class="form-select">-->
-<!--                                            <option value="-1">All Type</option>-->
-<!--                                            <option value="1">Complexity</option>-->
-<!--                                            <option value="2">Quality</option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="col-md-4">-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <select name="status" class="form-select">-->
-<!--                                            <option value="-1">All Status</option>-->
-<!--                                            <option value="1">Active</option>-->
-<!--                                            <option value="0">Inactive</option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <select name="typeId" class="form-select" onchange="this.form.submit()">
+                                            <option value="-1" th:selected="${typeId == -1}">All Type</option>
+                                            <option value="1" th:selected="${typeId == 1}">Complexity</option>
+                                            <option value="2" th:selected="${typeId == 2}">Quality</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <select name="status" class="form-select" onchange="this.form.submit()">
+                                            <option value="-1" th:selected="${status == -1}">All Status</option>
+                                            <option value="1" th:selected="${status == 1}">Active</option>
+                                            <option value="0" th:selected="${status == 0}">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <table id="datatablesSimple" class="display">
                                 <thead>
@@ -200,7 +200,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </form>
                     </div>
                 </div>
 
