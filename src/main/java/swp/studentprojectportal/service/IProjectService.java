@@ -13,4 +13,10 @@ public interface IProjectService {
     List<Project> findAllByClassManagerId (int classManagerId);
 
     Project addNewProject(String title, String groupName, String description, int classId);
+
+    Project update(int projectID, String title, String groupName, String description, int teamLeaderId, int mentorId);
+
+    Project updateStatus(int projectID, boolean status);
+
+    boolean deleteById(int projectID);
 }

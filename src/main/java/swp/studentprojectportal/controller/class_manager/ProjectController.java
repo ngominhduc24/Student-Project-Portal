@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
@@ -54,6 +55,19 @@ public class ProjectController {
         return "class_manager/project/projectDetails";
     }
 
+    @PostMapping("/update")
+    public String update(@RequestParam int projectId,
+                         @RequestParam String title,
+                         @RequestParam String groupName,
+                         @RequestParam String description,
+                         @RequestParam int mentorId,
+                         @RequestParam int leaderId) {
+
+        Project project = projectService.update(projectId,title,groupName,description,mentorId,leaderId);
+
+        return "redirect:./details/" + project.getId();
+    }
+
     @GetMapping("/add")
     public String add(Model model, HttpSession session) {
         User user = (User)session.getAttribute("user");
@@ -70,9 +84,23 @@ public class ProjectController {
                       @RequestParam String description,
                       @RequestParam int classId) {
 
+        Project project = projectService.addNewProject(title,groupName, description, classId);
 
+        return "redirect:./details/" + project.getId();
+    }
 
-        return "redirect:./details/";
+    @GetMapping("/freeze/{projectId}")
+    public String freeze(@PathVariable int projectId) {
+        Project project = projectService.updateStatus(projectId, true);
+
+        return "redirect:../details/" + project.getId();
+    }
+
+    @GetMapping("/delete/{projectId}")
+    public String delete(@PathVariable int projectId) {
+        if (projectService.deleteById(projectId))
+            return "redirect:../list/";
+        else return "redirect:../details/" + projectId;
     }
 
 }

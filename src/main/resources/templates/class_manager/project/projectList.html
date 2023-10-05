@@ -82,7 +82,7 @@
                         position: relative;
 
                         margin-top: 3vh;
-                        padding: 1vh 2%;
+                        padding: 2vh 2%;
                         border-radius: 10px;
 
                         background-color: #ebecef;
@@ -111,7 +111,7 @@
 
                     .project-detail div {
                         font-size: 1rem;
-                        margin-top: 2%;
+                        margin-top: 4%;
 
                         font-weight: 600;
                     }
@@ -129,13 +129,13 @@
                         <br>
                         <div class="project-detail">
                             <div>Class: <span th:text="${item.aclass.className}"></span></div>
-                            <div>Project mentor: <span th:text="${item.projectMentor.fullName}"></span></div>
-                            <div>Team leader: <span th:text="${item.teamLeader.fullName}"></span></div>
+                            <div>Project mentor: <span th:if="${item.projectMentor!=null}" th:text="${item.projectMentor.fullName}"></span></div>
+                            <div>Team leader: <span th:if="${item.teamLeader!=null}" th:text="${item.teamLeader.fullName}"></span></div>
                             <div>Group: <span th:text="${item.groupName}"></span></div>
                             <div>Description: <span th:text="${item.description}"></span></div>
                             <div>Status: <span th:text="${item.status ? 'Active' : 'Inactive'}"></span></div>
 
-                            <div style="border-bottom: solid black 2px;width: 80%;"></div>
+                            <div style="border-bottom: solid black 2px;width: 80%;margin: 3vh 0;"></div>
                             <div><a th:href="'../details/' + ${item.id}">View details</a></div>
                         </div>
                     </div>
