@@ -205,6 +205,13 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public int getTotalPage(int pageSize, int roleId) {
+        long count = userRepository.countAllBySettingId(roleId);
+        int totalPage = count % pageSize == 0 ? (int) (count / pageSize) : (int) (count / pageSize) + 1;
+        return totalPage;
+    }
+
+    @Override
     public User resetPasswordByToken(String token) {
         User user = userRepository.findUserByToken(token);
         if(user != null) {

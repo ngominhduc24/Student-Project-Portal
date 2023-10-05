@@ -74,6 +74,10 @@
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="card-body">
+                    <div class="d-flex col-md-3 pe-5 mb-1 ms-3">
+                      <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" placeholder="Search"
+                             aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
+                    </div>
                     <table id="add-student" class="table table-striped">
                       <thead>
                       <tr>
@@ -95,6 +99,19 @@
                       </tr>
                       </tbody>
                     </table>
+                    <input type="text" id="countPage" th:value="${totalPage}" hidden="">
+                    <nav aria-label="Page navigation example" style="margin-top: 20px;">
+                      <ul class="pagination justify-content-end">
+                        <li class="page-item disabled" >
+                          <a class="page-link" style="user-select: none;">Previous</a>
+                        </li>
+                        <li class="page-item active" ><a class="page-link" style="user-select: none;">1</a></li>
+                        <li class="page-item"><a class="page-link" style="user-select: none;">2</a></li>
+                        <li class="page-item" >
+                          <a class="page-link" style="user-select: none;">Next</a>
+                        </li>
+                      </ul>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -215,5 +232,148 @@
 </script>
 
 </body>
+
+<script>
+  let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&search=&roleId=`; // Your API endpoint
+
+  // Get references to the pagination elements
+  const pagination = document.querySelector('.pagination');
+  const pageItems = pagination.querySelectorAll('.page-item');
+  const pageLinks = pagination.querySelectorAll('.page-link');
+
+  // Find the maximum page number from the "countPage" div
+  let countPage = parseInt(document.getElementById('countPage').value);
+  let currentPage = 1;
+
+  if(countPage == 1) {
+    pageItems[0].classList.add('disabled');
+    pageItems[3].classList.add('disabled');
+    pageItems[2].remove();
+  }
+
+  // Handle "Previous" button click
+  pageLinks[0].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[0].classList.contains('disabled') === false) {
+      currentPage --;
+      pageItems[3].classList.remove('disabled');
+      if (pageLinks[2].textContent == 2) {
+        // Special case: When currentPage is 2, just change the active state
+        pageItems[1].classList.add('active');
+        pageItems[2].classList.remove('active');
+        pageItems[0].classList.add('disabled');
+      } else {
+        // Otherwise, decrement currentPage
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) - 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) - 1;
+      }
+      // populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  // Handle "Next" button click
+  pageLinks[3].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[3].classList.contains('disabled') === false) {
+      currentPage++;
+      pageItems[0].classList.remove('disabled');
+      if(pageLinks[1].textContent == countPage - 1) {
+        // Special case: When currentPage is the second last page, just change the active state
+        pageItems[1].classList.remove('active');
+        pageItems[2].classList.add('active');
+        pageItems[3].classList.add('disabled');
+      } else {
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) + 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) + 1;
+      }
+      // populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  const sessionAccountId = document.querySelector('.sessionAccountId').value;
+  // Function to fetch user data and populate the table
+  const  populateUserTable =  (pageNo) => {
+    pageNo = pageNo - 1;
+    // replace the pageNo in the apiUrl
+    apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
+    fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+              // Clear the table first
+              const tableBody = document.querySelector('#myTable tbody');
+
+              // Clear existing rows
+              tableBody.innerHTML = '';
+              data.forEach(user => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.fullName}</td>
+                    <td>${user.email ? user.email : ''}</td>
+                    <td>${user.phone ? user.phone : ''}</td>
+                    <td>${user.setting.settingTitle}</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="${user.id==sessionAccountId ? 'hidden' : 'checkbox'}" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
+                        </div>
+                    </td>
+                    <td><a href="./userDetails?id=${user.id}">View Details</a></td>
+                `;
+
+                tableBody.appendChild(newRow);
+              });
+            })
+            .catch(error => {
+              console.error('Error fetching user data:', error);
+              // Handle errors here (e.g., display an error message)
+            });
+  }
+
+  // Hande search input change
+  const searchInput = document.querySelector('input[name="search-input"]');
+  searchInput.addEventListener('input', function (event) {
+    const searchValue = event.target.value;
+    // where start with search=
+    let temp = apiUrl.split('&');
+    apiUrl = '';
+    temp.forEach((item) => {
+      if(item.includes('search=')) {
+        apiUrl += `search=${searchValue}`;
+      } else {
+        apiUrl += item;
+      }
+      apiUrl += '&';
+    });
+    apiUrl = apiUrl.slice(0, -1);
+    // replace the search value in the apiUrl
+    // populateUserTable(1);
+  });
+
+  // Handle role select change
+  const roleSelect = document.querySelector('select[name="roleId"]');
+  roleSelect.addEventListener('change', function (event) {
+    const roleId = event.target.value;
+    // where start with search=
+    let temp = apiUrl.split('&');
+    apiUrl = '';
+    temp.forEach((item) => {
+      if(item.includes('roleId=')) {
+        apiUrl += `roleId=${roleId}`;
+      } else {
+        apiUrl += item;
+      }
+      apiUrl += '&';
+    });
+    apiUrl = apiUrl.slice(0, -1);
+    // replace the search value in the apiUrl
+    // populateUserTable(1);
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // populateUserTable(1);
+  });
+</script>
 
 </html>

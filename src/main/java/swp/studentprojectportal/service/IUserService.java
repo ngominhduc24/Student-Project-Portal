@@ -12,22 +12,17 @@ public interface IUserService {
     boolean checkExistPhoneNumber(String phoneNumber);
     User findUserByEmailAndPassword(String username, String password);
     User findUserByPhoneAndPassword(String username, String password);
-
     List<User> getUser(Integer pageNo, Integer pageSize);
-
     List<User> findAllUser();
     Optional<User> findUserById(int id);
     List<User> findAllUserByRoleId(int roleId);
     boolean updateUserStatus(int id, boolean status);
     boolean updateUser(int id, String fullName, String email, String phone, int roleId, boolean status, String note);
-
     User addUser(String fullName, String email, String phone, int roleId);
-
     User findUserByUsernameAndPassword(String username, String password);
-
     int getTotalPage(int pageSize);
     User resetPasswordByToken(String token);
     User getUserByEmailOrPhone(String userName);
-
     List<User> findAllProjectMentor();
+    int getTotalPage(int pageSize, int roleId);
 }

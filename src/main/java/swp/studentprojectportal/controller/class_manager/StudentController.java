@@ -15,7 +15,7 @@ import swp.studentprojectportal.service.servicesimpl.UserService;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/classmanager")
+@RequestMapping("/class-manager")
 public class StudentController {
     @Autowired
     ClassService classService;
@@ -26,13 +26,15 @@ public class StudentController {
 
     @GetMapping("/class")
     public String studentList(Model model,
-                           @RequestParam(defaultValue = "-1") int classId) {
-        Class c = classService.getClass(classId);
-        if(c != null) {
-            model.addAttribute("className", c.getClassName());
-            model.addAttribute("semester", c.getSetting().getSettingTitle());
-            model.addAttribute("studentList", classService.getAllStudent(classId));
+                           @RequestParam(defaultValue = "-1") int id) {
+        Class c = classService.getClass(id);
+        if(c == null) {
+            return "redirect:/class";
         }
+        model.addAttribute("className", c.getClassName());
+        model.addAttribute("semester", c.getSetting().getSettingTitle());
+        model.addAttribute("totalPage", userService.getTotalPage(10, 1));
+        model.addAttribute("studentList", classService.getAllStudent(id));
         return "class_manager/studentList";
     }
 
