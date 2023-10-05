@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col-lg-8 mt-4">
             <div class="card border-0 p-4 rounded shadow">
-              <form action="/profile" method="post">
+              <form action="/profile" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <div class="row">
                   <div class="col-md-12">
@@ -118,6 +118,14 @@
 
                     </div>
                   </div><!--end col-->
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Upload image</label>
+                            <input name="image" type="file" class="form-control">
+
+                        </div>
+                    </div><!--end col-->
 
 
                 </div><!--end row-->

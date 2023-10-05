@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"/>
+  <title th:text="${@title}"></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+  <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+  <meta name="author" content="Shreethemes"/>
+  <meta name="email" content="support@shreethemes.in"/>
+  <meta name="website" content="../../../index.html"/>
+  <meta name="Version" content="v1.2.0"/>
+  <!-- favicon -->
+  <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+  <!-- Bootstrap -->
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- simplebar -->
+  <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+  <!-- Select2 -->
+  <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+  <!-- Date picker -->
+  <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+  <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- Icons -->
+  <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+  <!-- Css -->
+  <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+  <!-- Datatables -->
+  <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+  <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+</head>
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<body>
+<!-- Loader -->
+<div id="preloader">
+  <div id="status">
+    <div class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
+  </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+  <!-- sidebar-wrapper  -->
+  <div th:replace="~{dashboardSidebar}"></div>
+
+  <!-- Start Page Content -->
+  <main class="page-content bg-light">
+    <div th:replace="~{dashboardHeader}"></div>
+    <div class="container-fluid">
+      <div class="layout-specing">
+        <div class="row px-4">
+          <div class="col-xl-5 col-md-6">
+            <h1 th:text="${className} + ' - ' + ${semester}"></h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+              <li class="breadcrumb-item active"></li>
+            </ol>
+          </div><!--end col-->
+
+          <div class="col-xl-4 col-md-6"></div>
+
+          <div class="col-xl-3 col-md-6 mt-4 text-md-end">
+<!--            <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New User</a>-->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add student to class</button>
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="card-body">
+                    <div class="d-flex col-md-3 pe-5 mb-1 ms-3">
+                      <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" placeholder="Search"
+                             aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
+                    </div>
+                    <table id="add-student" class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Fullname</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Add to class</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="user : ${studentList}">
+                        <td th:text="${user.fullName}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.phone}"></td>
+                        <td th:text="${user.setting.settingTitle}"></td>
+                        <td><a th:href="@{'./class/addToClass?id=' + ${user.id}}">Add</a>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <input type="text" id="countPage" th:value="${totalPage}" hidden="">
+                    <nav aria-label="Page navigation example" style="margin-top: 20px;">
+                      <ul class="pagination justify-content-end">
+                        <li class="page-item disabled" >
+                          <a class="page-link" style="user-select: none;">Previous</a>
+                        </li>
+                        <li class="page-item active" ><a class="page-link" style="user-select: none;">1</a></li>
+                        <li class="page-item"><a class="page-link" style="user-select: none;">2</a></li>
+                        <li class="page-item" >
+                          <a class="page-link" style="user-select: none;">Next</a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!--end col-->
+        </div><!--end row-->
+
+        <div class="container-fluid px-4">
+          <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-table me-1"></i>
+                Student List
+            </div>
+            <div class="card-body">
+              <table id="myTable" class="display">
+                <thead>
+                <tr>
+                  <th>Fullname</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>View Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${studentList}">
+                  <td th:text="${user.fullName}"></td>
+                  <td th:text="${user.email}"></td>
+                  <td th:text="${user.phone}"></td>
+                  <td th:text="${user.setting.settingTitle}"></td>
+                  <td>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" th:checked="${user.status}"
+                             th:onclick="'updateStatus(' + ${user.id} + ', this)'">
+                    </div>
+                  </td>
+                  <td><a th:href="@{'./class/studentDetails?studentId=' + ${user.id}}">View Details</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!--end container-->
+
+    <div th:replace="~{footer}"></div>
+
+    <!-- End -->
+  </main>
+  <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#myTable').DataTable({
+      "dom": 'rtip',
+      "bInfo" : false
+    });
+  });
+</script>
+
+<!-- Status update -->
+<script>
+  function updateStatus(id, checkbox) {
+    let status = checkbox.checked;
+
+    if (confirm('Are you sure?'))
+      fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
+    else checkbox.checked = !status;
+  }
+</script>
+
+<!-- User Note -->
+<script>
+  // Get dialog element
+  function openDialog(element) {
+    // Find the closest dialog element to the clicked anchor tag
+    const dialog = element.closest('tr').querySelector('.userNote');
+
+    // Check if a dialog is found, and then show it
+    if (dialog) {
+      dialog.showModal();
+    }
+  }
+
+  // Close dialog when pressing cancel button
+  function closeDialog(element) {
+    const dialog = element.closest('dialog');
+    dialog.close();
+  }
+
+  // Close dialog when clicking outside of it
+  dialog.addEventListener("click", e => {
+    const dialogSpace = dialog.getBoundingClientRect()
+    if(e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom) {
+      dialog.close();
+    }
+  })
+
+</script>
+
+</body>
+
+<script>
+  let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&search=&roleId=`; // Your API endpoint
+
+  // Get references to the pagination elements
+  const pagination = document.querySelector('.pagination');
+  const pageItems = pagination.querySelectorAll('.page-item');
+  const pageLinks = pagination.querySelectorAll('.page-link');
+
+  // Find the maximum page number from the "countPage" div
+  let countPage = parseInt(document.getElementById('countPage').value);
+  let currentPage = 1;
+
+  if(countPage == 1) {
+    pageItems[0].classList.add('disabled');
+    pageItems[3].classList.add('disabled');
+    pageItems[2].remove();
+  }
+
+  // Handle "Previous" button click
+  pageLinks[0].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[0].classList.contains('disabled') === false) {
+      currentPage --;
+      pageItems[3].classList.remove('disabled');
+      if (pageLinks[2].textContent == 2) {
+        // Special case: When currentPage is 2, just change the active state
+        pageItems[1].classList.add('active');
+        pageItems[2].classList.remove('active');
+        pageItems[0].classList.add('disabled');
+      } else {
+        // Otherwise, decrement currentPage
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) - 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) - 1;
+      }
+      // populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  // Handle "Next" button click
+  pageLinks[3].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[3].classList.contains('disabled') === false) {
+      currentPage++;
+      pageItems[0].classList.remove('disabled');
+      if(pageLinks[1].textContent == countPage - 1) {
+        // Special case: When currentPage is the second last page, just change the active state
+        pageItems[1].classList.remove('active');
+        pageItems[2].classList.add('active');
+        pageItems[3].classList.add('disabled');
+      } else {
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) + 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) + 1;
+      }
+      // populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  const sessionAccountId = document.querySelector('.sessionAccountId').value;
+  // Function to fetch user data and populate the table
+  const  populateUserTable =  (pageNo) => {
+    pageNo = pageNo - 1;
+    // replace the pageNo in the apiUrl
+    apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
+    fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+              // Clear the table first
+              const tableBody = document.querySelector('#myTable tbody');
+
+              // Clear existing rows
+              tableBody.innerHTML = '';
+              data.forEach(user => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.fullName}</td>
+                    <td>${user.email ? user.email : ''}</td>
+                    <td>${user.phone ? user.phone : ''}</td>
+                    <td>${user.setting.settingTitle}</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="${user.id==sessionAccountId ? 'hidden' : 'checkbox'}" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
+                        </div>
+                    </td>
+                    <td><a href="./userDetails?id=${user.id}">View Details</a></td>
+                `;
+
+                tableBody.appendChild(newRow);
+              });
+            })
+            .catch(error => {
+              console.error('Error fetching user data:', error);
+              // Handle errors here (e.g., display an error message)
+            });
+  }
+
+  // Hande search input change
+  const searchInput = document.querySelector('input[name="search-input"]');
+  searchInput.addEventListener('input', function (event) {
+    const searchValue = event.target.value;
+    // where start with search=
+    let temp = apiUrl.split('&');
+    apiUrl = '';
+    temp.forEach((item) => {
+      if(item.includes('search=')) {
+        apiUrl += `search=${searchValue}`;
+      } else {
+        apiUrl += item;
+      }
+      apiUrl += '&';
+    });
+    apiUrl = apiUrl.slice(0, -1);
+    // replace the search value in the apiUrl
+    // populateUserTable(1);
+  });
+
+  // Handle role select change
+  const roleSelect = document.querySelector('select[name="roleId"]');
+  roleSelect.addEventListener('change', function (event) {
+    const roleId = event.target.value;
+    // where start with search=
+    let temp = apiUrl.split('&');
+    apiUrl = '';
+    temp.forEach((item) => {
+      if(item.includes('roleId=')) {
+        apiUrl += `roleId=${roleId}`;
+      } else {
+        apiUrl += item;
+      }
+      apiUrl += '&';
+    });
+    apiUrl = apiUrl.slice(0, -1);
+    // replace the search value in the apiUrl
+    // populateUserTable(1);
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // populateUserTable(1);
+  });
+</script>
+
+</html>
