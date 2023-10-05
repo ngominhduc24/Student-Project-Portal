@@ -30,6 +30,8 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     Page<User> searchUsersAndFilterByRole(@Param("searchTerm") String searchTerm, @Param("roleId") Integer roleId, Pageable pageable);
 
     List<User> findAllBySettingIdOrSettingId(int roleId, int roleId2);
+    int countAllBySettingId(int roleId);
+    User findUserById(int id);
 }
 
 
