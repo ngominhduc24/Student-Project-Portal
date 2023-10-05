@@ -103,4 +103,14 @@ public class ProjectController {
         else return "redirect:../details/" + projectId;
     }
 
+    @GetMapping("/arrange/{classId}")
+    public String arrange(Model model,
+                          @PathVariable Integer classId) {
+
+        model.addAttribute("projectList", projectService.findAllByClassId(classId));
+        model.addAttribute("class", classService.getClass(classId));
+
+        return "class_manager/project/projectArrange";
+    }
+
 }
