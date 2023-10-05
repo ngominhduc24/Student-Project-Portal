@@ -1,6 +1,8 @@
 package swp.studentprojectportal.controller.common;
 
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import swp.studentprojectportal.service.servicesimpl.RegisterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +16,17 @@ import swp.studentprojectportal.model.User;
 import org.springframework.ui.Model;
 import swp.studentprojectportal.utils.Validate;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
 @Controller
 public class ProfileController {
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     @Autowired
     RegisterService registerService;
     @Autowired
@@ -33,11 +44,12 @@ public class ProfileController {
     }
 
     @PostMapping(path = "/profile")
-    public String updateUser(WebRequest request, HttpSession session, Model model) {
+    public String updateUser(WebRequest request, HttpSession session,
+                             Model model, @RequestParam MultipartFile image) {
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        String avatarUrl = request.getParameter("avatarUrl");
+        String avatarUrl = saveFile(image);
         User user = (User) session.getAttribute("user");
         if (!Validate.validEmail(email) || !Validate.validPhoneNumber(phone) || !Validate.validFullname(fullName)) {
             model.addAttribute("errmsg", "Update fail!");
@@ -142,5 +154,29 @@ public class ProfileController {
         userService.saveUser(user);
         session.setAttribute("user", user);
         return "redirect:/profile";
+    }
+
+    private String saveFile(MultipartFile file) {
+        try {
+            String uploadFolder = resourceLoader.getResource("classpath:").getFile().getAbsolutePath();
+            uploadFolder += "/static/upload/";
+
+            // Create folder if not exist
+            File folder = new File(uploadFolder);
+            if(!folder.exists()) folder.mkdirs();
+
+            // Generate unique file name
+            String fileName = file.getOriginalFilename();
+            byte[] bytes = file.getBytes();
+
+            Path uploadPath = Paths.get(uploadFolder + fileName);
+
+            Files.write(uploadPath, bytes);
+
+            return "/upload/" + fileName;
+        } catch (Exception e) {
+            System.out.println(e);
+            return "/images/user_icon.png";
+        }
     }
 }
