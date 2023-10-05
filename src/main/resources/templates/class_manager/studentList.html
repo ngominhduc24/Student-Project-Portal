@@ -31,10 +31,10 @@
   <!-- Datatables -->
   <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
   <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
-
-
 </head>
-
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <body>
 <!-- Loader -->
 <div id="preloader">
@@ -68,7 +68,37 @@
           <div class="col-xl-4 col-md-6"></div>
 
           <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-            <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New User</a>
+<!--            <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New User</a>-->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add student to class</button>
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="card-body">
+                    <table id="add-student" class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Fullname</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Add to class</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="user : ${studentList}">
+                        <td th:text="${user.fullName}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.phone}"></td>
+                        <td th:text="${user.setting.settingTitle}"></td>
+                        <td><a th:href="@{'./class/addToClass?id=' + ${user.id}}">Add</a>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div><!--end col-->
         </div><!--end row-->
 
@@ -102,7 +132,7 @@
                              th:onclick="'updateStatus(' + ${user.id} + ', this)'">
                     </div>
                   </td>
-                  <td><a th:href="@{'./userDetails?id=' + ${user.id}}">View Details</a>
+                  <td><a th:href="@{'./class/studentDetails?id=' + ${user.id}}">View Details</a>
                   </td>
                 </tr>
                 </tbody>

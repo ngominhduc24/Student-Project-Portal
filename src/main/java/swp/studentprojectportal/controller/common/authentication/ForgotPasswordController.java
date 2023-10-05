@@ -32,7 +32,7 @@ public class ForgotPasswordController {
     public String forgotPassword(Model model, WebRequest request, HttpSession session) {
         String username = request.getParameter("username").replace(" ", "");;
 
-        User user = userService.getUserByEmailOrPhone(username);
+        User user = new User();
         if(user == null) {
             model.addAttribute("errmsg", "Username is't not correct");
             return "authentication/forgotPassword";
@@ -48,7 +48,7 @@ public class ForgotPasswordController {
         }
 
         if(user.getEmail() != null && !userService.checkExistMail(user.getEmail())) {
-            model.addAttribute("errmsg", "Your email is not correct");
+            model.addAttribute("errmsg", "Your email is not exist");
             return "authentication/forgotPassword";
         }
 
@@ -57,12 +57,20 @@ public class ForgotPasswordController {
             return "authentication/forgotPassword";
         }
 
+        System.out.println(user.getPhone());
         if(user.getPhone() != null && !userService.checkExistPhoneNumber(user.getPhone())) {
-            model.addAttribute("errmsg", "Your phone number is not correct");
+            model.addAttribute("errmsg", "Your phone number is not exist");
             return "authentication/forgotPassword";
         }
 
-        session.setAttribute("userauthen", user);
+        User userauthen  = userService.getUserByEmailOrPhone(username);
+
+        if(userauthen == null) {
+            model.addAttribute("errmsg", "Username is't not correct");
+            return "authentication/forgotPassword";
+        }
+
+        session.setAttribute("userauthen", userauthen);
         session.setAttribute("href", "reset-password");
         return "redirect:/verifypage";
     }

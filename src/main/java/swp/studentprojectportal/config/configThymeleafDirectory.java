@@ -111,4 +111,17 @@ public class configThymeleafDirectory {
 
         return yourTemplateResolver;
     }
+
+    @Bean
+    public ClassLoaderTemplateResolver ClassSettingTemplateResolver() {
+        ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
+        yourTemplateResolver.setPrefix("templates/class_manager/");
+        yourTemplateResolver.setSuffix(".html");
+        yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
+        yourTemplateResolver.setCharacterEncoding("UTF-8");
+        yourTemplateResolver.setOrder(1); // this is iportant. This way springboot will listen to both places 0 and 1
+        yourTemplateResolver.setCheckExistence(true);
+
+        return yourTemplateResolver;
+    }
 }
