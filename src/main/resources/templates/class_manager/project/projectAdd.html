@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+</head>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="dashboardSidebar"></div>
+    <main class="page-content bg-light">
+        <div th:replace="dashboardHeader"></div>
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div>
+                    <h4 class="mb-0">Add New Project</h4>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item"><a href="./list/">Project</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item active">Add Project</li>
+                    </ol>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8 mt-4">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form action="./add" method="post" class="mt-4">
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Title</label>
+                                            <input name="title" type="text" class="form-control"
+                                                   placeholder="Project title" th:value="${title}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Group name</label>
+                                            <input name="groupName" type="text" class="form-control"
+                                                   placeholder="Group name" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Class</label>
+                                            <select name="classId" class="form-select">
+                                                <option th:each="class : ${classList}"
+                                                        th:value="${class.id}"
+                                                        th:text="${class.className}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Description</label>
+                                            <textarea name="description" class="form-control" rows="5"
+                                                      placeholder="Description..." required></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <p th:text="${error}" style="color: indianred"></p>
+
+                                <button type="submit" class="btn btn-primary">Add Project</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+
+</head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="row px-4">
+                    <div class="col-xl-5 col-md-6">
+                        <h4>Project List</h4>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item active">Project List</li>
+                        </ol>
+                    </div><!--end col-->
+
+                    <div class="col-xl-4 col-md-6"></div>
+
+                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">
+                        <a href="../add" class="btn btn-primary" style="margin-left: 24px">Add New Project</a>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row px-4">
+                    <div class="col-xl-5 col-md-6">
+                        <h5 th:if="${class != null}" th:text="'Class: ' + ${class.className}"></h5>
+                    </div>
+                </div>
+
+                <style>
+                    .project{
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+
+                        margin-top: 3vh;
+                        padding: 1vh 2%;
+                        border-radius: 10px;
+
+                        background-color: #ebecef;
+                        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+                    }
+
+                    .project:hover{
+                        cursor: pointer;
+                    }
+
+                    .project img{
+                        width: 5%;
+                        aspect-ratio: 1;
+                        position: absolute;
+                        right: 2%;
+                    }
+
+                    .project-title{
+                        font-weight: 550;
+                        font-size: 1.3rem;
+                    }
+
+                    .project-detail {
+                        display: none;
+                    }
+
+                    .project-detail div {
+                        font-size: 1rem;
+                        margin-top: 2%;
+
+                        font-weight: 600;
+                    }
+
+                    .project-detail div span{
+                        font-weight: normal;
+                    }
+                </style>
+
+                <div class="container-fluid px-4">
+
+                    <div th:each="item : ${projectList}" class="mb-3 col-md-5 project" onclick="showDetails(this)">
+                        <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png">
+                        <div class="project-title" th:text="${item.title}"></div>
+                        <br>
+                        <div class="project-detail">
+                            <div>Class: <span th:text="${item.aclass.className}"></span></div>
+                            <div>Project mentor: <span th:text="${item.projectMentor.fullName}"></span></div>
+                            <div>Team leader: <span th:text="${item.teamLeader.fullName}"></span></div>
+                            <div>Group: <span th:text="${item.groupName}"></span></div>
+                            <div>Description: <span th:text="${item.description}"></span></div>
+                            <div>Status: <span th:text="${item.status ? 'Active' : 'Inactive'}"></span></div>
+
+                            <div style="border-bottom: solid black 2px;width: 80%;"></div>
+                            <div><a th:href="'../details/' + ${item.id}">View details</a></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function showDetails(project) {
+                let projectDetails = project.querySelector('.project-detail');
+
+                if(projectDetails.style.display == 'block')
+                    projectDetails.style.display = 'none';
+                else projectDetails.style.display = 'block';
+            }
+        </script>
+
+        <div th:replace="~{footer}"></div>
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+</body>
+
+</html>
