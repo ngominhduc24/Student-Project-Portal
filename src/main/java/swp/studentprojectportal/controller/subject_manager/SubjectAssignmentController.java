@@ -8,15 +8,20 @@ import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.repository.IAssignmentRepository;
 import swp.studentprojectportal.service.IAssignmentService;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 @Controller
 public class SubjectAssignmentController {
-    @Autowired
-    IAssignmentRepository assignmentRepository;
+
     @Autowired
     IAssignmentService assignmentService;
 
-    @GetMapping("/subjectAssignment")
+    List<Assignment> assignmentList = new CopyOnWriteArrayList<>();
+    @GetMapping("subject-manager/subject-assignment")
     public String AssignmentPage(Model model) {
+        assignmentList = assignmentService.findAllAssignment(0,10);
+        model.addAttribute("assignmentList", assignmentList);
         return "subject_manager/subject_assignment/subjectAssignmentList";
     }
 
