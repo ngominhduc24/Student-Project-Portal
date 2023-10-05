@@ -24,6 +24,9 @@ public class Setting {
     @Column(name = "setting_title")
     private String settingTitle;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "status")
     private boolean status = true;
 
