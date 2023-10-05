@@ -31,6 +31,7 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 
     List<User> findAllBySettingIdOrSettingId(int roleId, int roleId2);
     int countAllBySettingId(int roleId);
+    User findUserById(int id);
 }
 
 
