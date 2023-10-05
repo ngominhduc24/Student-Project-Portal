@@ -25,6 +25,9 @@ public class configThymeleafDirectory {
     public int userRoleId() {return 1;}
 
     @Bean
+    public int classManagerRoleId() {return 4;}
+
+    @Bean
     public ClassLoaderTemplateResolver commonTemplateResolver() {
         ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
         yourTemplateResolver.setPrefix("templates/common/");
@@ -119,6 +122,19 @@ public class configThymeleafDirectory {
     public ClassLoaderTemplateResolver projectClassManagerTemplateResolver() {
         ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
         yourTemplateResolver.setPrefix("templates/class_manager/project/");
+        yourTemplateResolver.setSuffix(".html");
+        yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
+        yourTemplateResolver.setCharacterEncoding("UTF-8");
+        yourTemplateResolver.setOrder(1); // this is iportant. This way springboot will listen to both places 0 and 1
+        yourTemplateResolver.setCheckExistence(true);
+
+        return yourTemplateResolver;
+    }
+
+    @Bean
+    public ClassLoaderTemplateResolver ClassSettingTemplateResolver() {
+        ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
+        yourTemplateResolver.setPrefix("templates/class_manager/");
         yourTemplateResolver.setSuffix(".html");
         yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
         yourTemplateResolver.setCharacterEncoding("UTF-8");
