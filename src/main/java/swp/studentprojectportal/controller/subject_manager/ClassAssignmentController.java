@@ -4,29 +4,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.repository.IAssignmentRepository;
+import swp.studentprojectportal.repository.IClassAssignmentRepository;
 import swp.studentprojectportal.service.IAssignmentService;
+import swp.studentprojectportal.service.IClassAssignmentService;
 
 @Controller
-public class SubjectAssignmentController {
+public class ClassAssignmentController {
     @Autowired
-    IAssignmentRepository assignmentRepository;
+    IClassAssignmentRepository classAssignmentRepository;
     @Autowired
-    IAssignmentService assignmentService;
+    IClassAssignmentService classAssignmentService;
 
-    @GetMapping("/subjectAssignment")
+    @GetMapping("/assignment")
     public String AssignmentPage(Model model) {
-        return "subject_manager/subject_assignment/subjectAssignmentList";
+        return "subject_manager/class_assignment/classAssignmentList";
     }
 
-    @GetMapping("/addSubjectAssignment")
+    @GetMapping("/addAssignment")
     public String AddSubjectAssignment(Model model){
-        return "subject_manager/subject_assignment/subjectAssignmentAdd";
+        return "subject_manager/class_assignment/classAssignmentAdd";
     }
 
-    @GetMapping("/subjectAssignmentDetail")
+    @GetMapping("/assignmentDetail")
     public String subjectAssignmentDetail(Model model){
-        return "subject_manager/subject_assignment/subjectAssignmentDetails";
+        return "subject_manager/class_assignment/classAssignmentDetails";
     }
 }

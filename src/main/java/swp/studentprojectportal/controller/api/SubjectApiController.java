@@ -26,6 +26,6 @@ public class SubjectApiController {
     //@RequestParam(name = "status", defaultValue = "true") Integer status)
     {
         if(pageNo < 0 || pageSize < 0 ) return null;
-        return subjectSevice.getSubject(pageNo, pageSize, search.trim(), subjectManagerId);
+        return subjectSevice.getSubject(pageNo, pageSize);
     }
 }

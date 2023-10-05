@@ -20,11 +20,10 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
     //List<Subject> findSubjectPaging(Pageable pageable);
 
     Page<Subject> findSubjectBySubjectCodeAndSubjectName(String subjectCode, String subjectName, Pageable pageable);
-    @Query(value = "SELECT * FROM subject s" +
-            "WHERE (LOWER(s.subject_name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
-            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :searchTerm, '%')))"+
-            "AND u.subject_manager_id = :subjectManagerId" +
-            "And u.status = :status",
-             nativeQuery = true)
+    @Query(value = "SELECT * FROM subject"
+//            "WHERE (LOWER(s.subject_name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+//            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :searchTerm, '%')))"+
+//            "AND u.subject_manager_id = :subjectManagerId",
+             ,nativeQuery = true)
     Page<Subject> searchSubjectAndFilterByManagerAndStatus(@Param("searchTerm") String searchTerm, @Param("subjectManagerId") Integer subjectManagerId, Pageable pageable);
 }
