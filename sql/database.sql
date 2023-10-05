@@ -114,8 +114,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`assignment` (
     INDEX `a_idx` (`subject_id` ASC) VISIBLE,
     FOREIGN KEY (`subject_id`)
     REFERENCES `swp391`.`subject` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -139,12 +139,12 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
     INDEX `b_idx` (`semester_id` ASC) VISIBLE,
     FOREIGN KEY (`teacher_id`)
     REFERENCES `swp391`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`semester_id`)
     REFERENCES `swp391`.`setting` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_assignment` (
                                                            `start_date` DATETIME NULL,
                                                            `end_date` DATETIME NULL,
                                                            `status` BIT(1) NULL,
-                                                           `create_by` INT NULL DEFAULT 0,
+    `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
     `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
@@ -169,12 +169,12 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_assignment` (
     INDEX `b_idx` (`assignment_id` ASC) VISIBLE,
     FOREIGN KEY (`class_id`)
     REFERENCES `swp391`.`class` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`assignment_id`)
     REFERENCES `swp391`.`assignment` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -197,8 +197,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
     INDEX `a_idx` (`class_id` ASC) VISIBLE,
     FOREIGN KEY (`class_id`)
     REFERENCES `swp391`.`class` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -214,6 +214,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
                                                   `team_leader_id` INT NULL,
                                                   `title` VARCHAR(45) NULL,
     `status` BIT(1) NULL,
+    `group_name` VARCHAR(45) NULL,
+    `description` VARCHAR(200) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -224,16 +226,16 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
     INDEX `a_idx2` (`team_leader_id` ASC) VISIBLE,
     FOREIGN KEY (`class_id`)
     REFERENCES `swp391`.`class` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`project_mentor_id`)
     REFERENCES `swp391`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`team_leader_id`)
     REFERENCES `swp391`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -247,10 +249,6 @@ CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
                                                         `student_id` INT NOT NULL,
                                                         `class_id` INT NOT NULL,
                                                         `project_id` INT NULL,
-                                                        `create_by` INT NULL DEFAULT 0,
-    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_by` INT NULL DEFAULT 0,
-    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
                                                         PRIMARY KEY (`id`, `student_id`, `class_id`),
     INDEX `b_idx` (`class_id` ASC) VISIBLE,
     INDEX `a_idx` (`project_id` ASC) VISIBLE,
@@ -390,14 +388,14 @@ VALUES
     ("SE1740",8,3,1),
     ("SE1741",8,3,1);
 
-INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status)
+INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (1, 5, 4, "Project A", 1),
-    (1, 5, 6, "Project B", 1),
-    (1, 5, 11, "Project C", 1),
-    (1, 5, 16, "Project D", 1),
-    (1, 5, 21, "Project E", 1),
-    (1, 5, 26, "Project F", 1);
+    (1, 5, 4, "Project A", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 6, "Project B", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 11, "Project C", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 16, "Project D", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 21, "Project E", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 26, "Project F", 1, "Group A", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
@@ -431,7 +429,7 @@ VALUES
     (33, 1, 5),   -- Student 33 in Project 6
     (34, 1, 5),   -- Student 34 in Project 6
     (35, 1, 5);   -- Student 35 in Project 6
-    
+
 INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
 VALUES
     (1,'Review Iteration 1','Review docs and code iteration 1 all group',1),

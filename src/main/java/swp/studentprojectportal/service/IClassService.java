@@ -11,4 +11,6 @@ import java.util.List;
 public interface IClassService {
     List<User> getAllStudent(int classId);
     Class getClass(int classId);
+
+    List<Class> findAllByClassManagerId(int classManagerId);
 }

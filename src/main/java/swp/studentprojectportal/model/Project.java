@@ -26,11 +26,17 @@ public class Project {
 
     @OneToOne
     @JoinColumn(name = "project_mentor_id")
-    private User projectMentor;
+    private User projectMentor = null;
 
     @OneToOne
     @JoinColumn(name = "team_leader_id")
-    private User teamLeader;
+    private User teamLeader = null;
+
+    @Column
+    private String description;
+
+    @Column(name = "group_name")
+    private String groupName;
 
     @ManyToOne
     @JoinColumn(name = "class_id")

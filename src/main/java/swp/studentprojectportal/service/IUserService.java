@@ -28,4 +28,6 @@ public interface IUserService {
     int getTotalPage(int pageSize);
     User resetPasswordByToken(String token);
     User getUserByEmailOrPhone(String userName);
+
+    List<User> findAllProjectMentor();
 }
