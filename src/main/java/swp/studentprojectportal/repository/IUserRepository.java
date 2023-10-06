@@ -29,6 +29,23 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true)
     Page<User> searchUsersAndFilterByRole(@Param("searchTerm") String searchTerm, @Param("roleId") Integer roleId, Pageable pageable);
 
+    @Query(value = "SELECT * FROM user u " +
+            "WHERE (LOWER(u.full_name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "OR LOWER(u.email) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "OR LOWER(u.phone) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "AND u.status = :status",
+            nativeQuery = true)
+    Page<User> searchUsersAndFilterByStatus(@Param("searchTerm") String searchTerm, @Param("status") Integer status, Pageable pageable);
+
+    @Query(value = "SELECT * FROM user u " +
+            "WHERE (LOWER(u.full_name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "OR LOWER(u.email) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "OR LOWER(u.phone) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "AND u.role_id = :roleId " +
+            "AND u.status = :status",
+            nativeQuery = true)
+    Page<User> searchUsersAndFilterByRoleIdAndStatus(@Param("searchTerm") String searchTerm, @Param("roleId") Integer roleId,  @Param("status") Integer status, Pageable pageable);
+
     List<User> findAllBySettingIdOrSettingId(int roleId, int roleId2);
     int countAllBySettingId(int roleId);
     User findUserById(int id);
