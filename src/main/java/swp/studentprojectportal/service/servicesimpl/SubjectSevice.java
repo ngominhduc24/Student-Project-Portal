@@ -40,12 +40,16 @@ public class SubjectSevice implements ISubjectService {
     }
 
     @Override
-    public List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId) {
+    public List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId, Integer status) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        if(subjectManagerId != -1) {
+        if(status != -1 && subjectManagerId != -1) {
+            return null;
+        } else if(status != -1) {
+            return null;
+        } else if(subjectManagerId != -1) {
             return subjectRepository.searchSubjectAndFilterByManagerAndStatus(search,subjectManagerId,pageable).getContent();
         } else {
-            return subjectRepository.findSubjectBySubjectCodeAndSubjectName(search, search, pageable).getContent();
+            return subjectRepository.findSubjectBySubjectCodeContainsIgnoreCaseOrSubjectNameContainsIgnoreCase(search, search, pageable).getContent();
         }
     }
 
