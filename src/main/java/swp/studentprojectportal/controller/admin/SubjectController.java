@@ -31,6 +31,7 @@ public class SubjectController {
         subjectList = subjectService.getSubject(0, 10);
         model.addAttribute("SubjectList", subjectList);
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+        System.out.println(userService.findAllUserByRoleId(3));
         return "admin/subject/subjectList";
     }
 
