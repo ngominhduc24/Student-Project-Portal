@@ -43,11 +43,11 @@ public class SubjectSevice implements ISubjectService {
     public List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId, Integer status) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         if(status != -1 && subjectManagerId != -1) {
-            return null;
+            return subjectRepository.searchSubjectAndFilterByManagerAndStatus(search,subjectManagerId,status,pageable).getContent();
         } else if(status != -1) {
-            return null;
+            return subjectRepository.searchSubjectAndFilterByStatus(search,status,pageable).getContent();
         } else if(subjectManagerId != -1) {
-            return subjectRepository.searchSubjectAndFilterByManagerAndStatus(search,subjectManagerId,pageable).getContent();
+            return subjectRepository.searchSubjectAndFilterByManager(search,subjectManagerId,pageable).getContent();
         } else {
             return subjectRepository.findSubjectBySubjectCodeContainsIgnoreCaseOrSubjectNameContainsIgnoreCase(search, search, pageable).getContent();
         }
