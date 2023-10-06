@@ -74,14 +74,15 @@
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="card-body">
-                    <div class="d-flex">
-                      <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" placeholder="Search"
+                    <div class="d-flex mb-2">
+                      <input class="form-control form-control-sm ml-3 h-75 w-100" style="padding: 10px" type="text" name="search-input" placeholder="Search"
                                    aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
                     </div>
-                    <table id="add-student" class="table table-striped">
+                    <table id="add-student" class="table table-striped" style="text-align: left">
                       <thead>
                       <tr>
-                        <th>Fullname</th>
+                        <th>Id</th>
+                        <th>Full Name</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Action</th>
@@ -89,6 +90,7 @@
                       </thead>
                       <tbody>
                       <tr th:each="user : ${studentList}">
+                        <td>he170788</td>
                         <td th:text="${user.fullName}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.phone}"></td>
