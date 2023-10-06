@@ -71,7 +71,7 @@
                                         <div class="mb-3">
                                             <input type="hidden" name="id" th:value="${setting.id}">
                                             <input type="hidden" name="typeId" th:value="${setting.typeId==null?typeId:setting.typeId}">
-                                            <label class="form-label" th:text="${typeName}"></label>
+                                            <label class="form-label" th:text="${typeName}"><span class="text-danger">*</span></label>
                                             <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
                                         </div>
                                         <div class="mb-3">
@@ -80,12 +80,12 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label">Display Order</label>
+                                                <label class="form-label">Display Order<span class="text-danger">*</span></label>
                                                 <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
                                                        th:value="${setting.displayOrder==null?displayOrder:setting.displayOrder}">
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="form-label">Status</label>
+                                                <label class="form-label">Status<span class="text-danger">*</span></label>
                                                 <div class="form-check form-switch" style="font-size: 24px">
                                                     <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
                                                 </div>
