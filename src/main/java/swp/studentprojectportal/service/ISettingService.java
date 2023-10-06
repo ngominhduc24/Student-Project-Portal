@@ -15,5 +15,6 @@ public interface ISettingService {
     boolean checkExistedDisplayOrder(int typeId, int displayOrder, String id);
     String setTypeName(int typeId);
     Setting findLastDisplayOrder(int typeId);
+    List<Setting> findSemesterBySubjectManagerId(int subjectManagerId);
 
 }

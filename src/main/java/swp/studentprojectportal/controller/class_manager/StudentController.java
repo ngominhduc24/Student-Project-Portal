@@ -32,7 +32,7 @@ public class StudentController {
             return "redirect:/class";
         }
         model.addAttribute("className", c.getClassName());
-        model.addAttribute("semester", c.getSetting().getSettingTitle());
+        model.addAttribute("semester", c.getSemester().getSettingTitle());
         model.addAttribute("totalPage", userService.getTotalPage(10, 1));
         model.addAttribute("studentList", classService.getAllStudent(classId));
         return "class_manager/studentList";

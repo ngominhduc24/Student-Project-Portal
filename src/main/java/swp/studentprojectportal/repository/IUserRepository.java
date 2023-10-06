@@ -32,6 +32,10 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     List<User> findAllBySettingIdOrSettingId(int roleId, int roleId2);
     int countAllBySettingId(int roleId);
     User findUserById(int id);
+
+    @Query(value="SELECT distinct user.* FROM class c join subject s on c.subject_id = s.id join user on c.teacher_id = user.id\n" +
+            "WHERE s.subject_manager_id = ?1", nativeQuery = true)
+    List<User> findTeacherBySubjectManagerId(int subjectManagerId);
 }
 
 
