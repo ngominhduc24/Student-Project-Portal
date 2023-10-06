@@ -22,10 +22,10 @@ public class SubjectApiController {
             @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(name = "search", defaultValue = "") String search,
-            @RequestParam(name = "subjectManagerId", defaultValue = "-1") Integer subjectManagerId)
-    //@RequestParam(name = "status", defaultValue = "true") Integer status)
+            @RequestParam(name = "subjectManagerId", defaultValue = "-1") Integer subjectManagerId,
+            @RequestParam(name = "status", defaultValue = "-1") Integer status)
     {
         if(pageNo < 0 || pageSize < 0 ) return null;
-        return subjectSevice.getSubject(pageNo, pageSize);
+        return subjectSevice.getSubject(pageNo, pageSize, search, subjectManagerId, status);
     }
 }

@@ -38,7 +38,7 @@ public class SettingController {
     @PostMapping("/admin/setting/update")
     public String updateSetting(
             @RequestParam Integer typeId, @RequestParam String settingTitle,
-            @RequestParam Integer displayOrder, WebRequest request, Model model) {
+            @RequestParam Integer displayOrder, @RequestParam String description, WebRequest request, Model model) {
         String status = request.getParameter("status");
         Setting setting = new Setting();
         String id = request.getParameter("id");
@@ -46,6 +46,7 @@ public class SettingController {
         setting.setTypeId(typeId);
         String typeName=settingService.setTypeName(typeId);
         setting.setSettingTitle(settingTitle);
+        setting.setDescription(description);
         setting.setDisplayOrder(displayOrder);
         setting.setStatus(status!=null);
         model.addAttribute("setting", setting);

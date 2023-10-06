@@ -19,11 +19,26 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
     List<Subject> findAllSubjectByUser(User user);
     //List<Subject> findSubjectPaging(Pageable pageable);
 
-    Page<Subject> findSubjectBySubjectCodeAndSubjectName(String subjectCode, String subjectName, Pageable pageable);
-    @Query(value = "SELECT * FROM subject"
-//            "WHERE (LOWER(s.subject_name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
-//            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :searchTerm, '%')))"+
-//            "AND u.subject_manager_id = :subjectManagerId",
-             ,nativeQuery = true)
-    Page<Subject> searchSubjectAndFilterByManagerAndStatus(@Param("searchTerm") String searchTerm, @Param("subjectManagerId") Integer subjectManagerId, Pageable pageable);
+    Page<Subject> findSubjectBySubjectCodeContainsIgnoreCaseOrSubjectNameContainsIgnoreCase(String subjectCode, String subjectName, Pageable pageable);
+    @Query(value = "SELECT * FROM subject s " +
+            "WHERE (LOWER(s.subject_name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "AND s.subject_manager_id = :subjectManagerId"
+            ,nativeQuery = true)
+    Page<Subject> searchSubjectAndFilterByManager(@Param("searchTerm") String searchTerm, @Param("subjectManagerId") Integer subjectManagerId, Pageable pageable);
+
+    @Query(value = "SELECT * FROM subject s " +
+            "WHERE (LOWER(s.subject_name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "AND s.status = :status"
+            ,nativeQuery = true)
+    Page<Subject> searchSubjectAndFilterByStatus(@Param("searchTerm") String searchTerm, @Param("status") Integer status, Pageable pageable);
+
+    @Query(value = "SELECT * FROM subject s " +
+            "WHERE (LOWER(s.subject_name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "AND s.status = :status " +
+            "AND s.subject_manager_id = :subjectManagerId"
+            ,nativeQuery = true)
+    Page<Subject> searchSubjectAndFilterByManagerAndStatus(@Param("searchTerm") String searchTerm, @Param("subjectManagerId") Integer subjectManagerId, @Param("status") Integer status, Pageable pageable);
 }
