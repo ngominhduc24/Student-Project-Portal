@@ -36,13 +36,14 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Project addNewProject(String title, String groupName, String description, int classId) {
+    public Project addNewProject(String title, String groupName, String description, int classId, int mentorId) {
         Project project = new Project();
 
         project.setTitle(title);
         project.setGroupName(groupName);
         project.setAclass(classRepository.findClassById(classId));
         project.setDescription(description);
+        project.setProjectMentor(userService.findUserById(mentorId).get());
         project.setStatus(false);
 
         projectRepository.save(project);

@@ -25,6 +25,10 @@ public class StudentClassService implements IStudentClassService {
     public List<StudentClass> findAllByProjectId(int projectId) {
         return studentClassRepository.findAllByProjectId(projectId);
     }
+
+    public List<StudentClass> findAllByClassId(int classId) {
+        return studentClassRepository.findAllByAclass_Id(classId);
+    }
     public boolean addNewStudentToClass(int classId, int studentId) {
         StudentClass studentClass = new StudentClass();
 

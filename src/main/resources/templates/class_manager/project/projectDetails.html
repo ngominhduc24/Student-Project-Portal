@@ -53,7 +53,7 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a th:href="'../list/' + ${project.aclass.id}">Project</a></li>
+                        <li class="breadcrumb-item"><a href="../list/">Project</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Project Details</li>
                     </ol>
@@ -64,7 +64,9 @@
                         <div class="card border-0 p-4 rounded shadow">
 
                             <form action="../update" method="post">
+
                                 <input type="hidden" name="projectId" th:value="${project.id}">
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
