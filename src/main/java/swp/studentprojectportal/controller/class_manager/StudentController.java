@@ -35,7 +35,7 @@ public class StudentController {
         model.addAttribute("semester", c.getSetting().getSettingTitle());
         model.addAttribute("totalPage", userService.getTotalPage(10, 1));
         model.addAttribute("studentList", classService.getAllStudent(classId));
-        return "class_manager/studentList";
+        return "class_manager/student/studentList";
     }
 
     @GetMapping("/class/studentDetails")
@@ -44,6 +44,6 @@ public class StudentController {
         Optional<User> user = userService.findUserById(studentId);
         model.addAttribute("user", user.isPresent() ? user.get() : null);
         model.addAttribute("roleList", settingService.getAllRole());
-        return "class_manager/studentDetails";
+        return "class_manager/student/studentDetails";
     }
 }

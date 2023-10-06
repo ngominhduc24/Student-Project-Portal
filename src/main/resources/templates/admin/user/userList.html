@@ -95,6 +95,15 @@
                                         </select>
                                     </div>
                                 </div><!--end col-->
+                                <div class="col-md-3 pe-5">
+                                    <div class="mb-3">
+                                        <select name="status" class="form-select">
+                                            <option value="-1">All Status</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div><!--end col-->
                             </div>
                             <table id="myTable" class="display">
                                 <thead>
@@ -242,7 +251,7 @@
 <input type="hidden" class="sessionAccountId" th:value="${session.user.id}">
 
 <script>
-    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&search=&roleId=`; // Your API endpoint
+    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&status=&search=&roleId=`; // Your API endpoint
 
     // Get references to the pagination elements
     const pagination = document.querySelector('.pagination');
@@ -379,12 +388,28 @@
         populateUserTable(1);
     });
 
+    const statusSelect = document.querySelector('select[name="status"]');
+    statusSelect.addEventListener('change', function (event) {
+        const status = event.target.value;
+        // where start with search=
+        let temp = apiUrl.split('&');
+        apiUrl = '';
+        temp.forEach((item) => {
+            if(item.includes('status=')) {
+                apiUrl += `status=${status}`;
+            } else {
+                apiUrl += item;
+            }
+            apiUrl += '&';
+        });
+        apiUrl = apiUrl.slice(0, -1);
+        // replace the search value in the apiUrl
+        populateUserTable(1);
+    });
     document.addEventListener("DOMContentLoaded", () => {
         populateUserTable(1);
     });
 </script>
-
-
 
 </body>
 

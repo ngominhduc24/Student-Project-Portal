@@ -74,9 +74,9 @@
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="card-body">
-                    <div class="d-flex col-md-3 pe-5 mb-1 ms-3">
+                    <div class="d-flex">
                       <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" placeholder="Search"
-                             aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
+                                   aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
                     </div>
                     <table id="add-student" class="table table-striped">
                       <thead>
@@ -84,8 +84,7 @@
                         <th>Fullname</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Role</th>
-                        <th>Add to class</th>
+                        <th>Action</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -93,8 +92,9 @@
                         <td th:text="${user.fullName}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.phone}"></td>
-                        <td th:text="${user.setting.settingTitle}"></td>
-                        <td><a th:href="@{'./class/addToClass?id=' + ${user.id}}">Add</a>
+                        <td>
+<!--                          <a th:href="@{'./class/addToClass?id=' + ${user.id}}">Add</a>-->
+                          <button name="addstudent" type="button" class="btn btn-primary w-75 p-0">+</button>
                         </td>
                       </tr>
                       </tbody>

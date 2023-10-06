@@ -77,6 +77,28 @@ public class UserService implements IUserService {
             return userRepository.findUserByFullNameContainsIgnoreCaseOrEmailContainsIgnoreCaseOrPhoneContainsIgnoreCase(search, search, search, pageable).getContent();
         }
     }
+
+    /*
+     * pageNo is the index of page, start from 0
+     * pageSize is the number of items in a page
+     * search is the search term for searching name, email, phone
+     * roleId is the role id of user
+     * status is the status of user where 1 is active, 0 is inactive and -1 is all
+     */
+
+    public List<User> getUser(Integer pageNo, Integer pageSize, String search, Integer roleId, Integer status) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        if(status != -1 && roleId != -1) {
+            return userRepository.searchUsersAndFilterByRoleIdAndStatus(search, roleId, status, pageable).getContent();
+        } else if(status != -1) {
+            return userRepository.searchUsersAndFilterByStatus(search, status, pageable).getContent();
+        } else
+        if(roleId != -1){
+            return userRepository.searchUsersAndFilterByRole(search, roleId, pageable).getContent();
+        } else {
+            return userRepository.findUserByFullNameContainsIgnoreCaseOrEmailContainsIgnoreCaseOrPhoneContainsIgnoreCase(search, search, search, pageable).getContent();
+        }
+    }
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
