@@ -11,7 +11,7 @@ public interface ISubjectService {
 
     List<Subject> getSubject(Integer pageNo, Integer pageSize);
 
-    List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId);
+    List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId, Integer status);
 
     Subject getSubjectById(Integer Id);
 

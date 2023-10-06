@@ -19,10 +19,11 @@ public class UserApiController {
             @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(name = "search", defaultValue = "") String search,
-            @RequestParam(name = "roleId", defaultValue = "-1") Integer roleId)
+            @RequestParam(name = "roleId", defaultValue = "-1") Integer roleId,
+            @RequestParam(name = "status", defaultValue = "-1") Integer status)
     {
         if(pageNo < 0 || pageSize < 0) return null;
-        return userService.getUser(pageNo, pageSize, search.trim(), roleId);
+        return userService.getUser(pageNo, pageSize, search.trim(), roleId, status);
     }
 
     @GetMapping("/user/{id}")

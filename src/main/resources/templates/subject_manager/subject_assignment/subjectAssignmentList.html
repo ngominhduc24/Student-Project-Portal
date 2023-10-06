@@ -93,7 +93,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="assignment : ${assignmentList}">
-                                    <td th:text="${assignment.subject}"></td>
+                                    <td th:text="${assignment.subject.subjectName}"></td>
                                     <td th:text="${assignment.title}"></td>
                                     <td th:text="${assignment.createBy}"></td>
                                     <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View
