@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.repository.ISettingRepository;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.ISubjectService;
@@ -21,6 +23,9 @@ public class SubjectSevice implements ISubjectService {
 
     @Autowired
     IUserRepository userRepository;
+
+    @Autowired
+    ISettingRepository settingRepository;
     @Override
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
@@ -109,5 +114,4 @@ public class SubjectSevice implements ISubjectService {
     public List<Subject> findAllSubjectByUser(User user) {
         return subjectRepository.findAllSubjectByUser(user);
     }
-
 }
