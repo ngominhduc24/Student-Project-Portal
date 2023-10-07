@@ -29,7 +29,10 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <!-- Datatables -->
-    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+<!--    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>-->
+<!--    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>-->
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
 
 
@@ -78,14 +81,14 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Subject table
+                            Subject Assignment
                         </div>
                         <div class="card-body">
-                            <table id="myTable" class="display">
+                            <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
                                     <th>Subject</th>
-                                    <th>Class Assignment</th>
+                                    <th>Subject Assignment</th>
                                     <th>Creator</th>
                                     <th>View Details</th>
                                     <th>Status</th>
@@ -145,6 +148,30 @@
             '</div>');
     });
 </script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple);
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script>window.addEventListener('DOMContentLoaded', event => {
+
+    // Toggle the side navigation
+    const sidebarToggle = document.body.querySelector('#sidebarToggle');
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', event => {
+            event.preventDefault();
+            document.body.classList.toggle('sb-sidenav-toggled');
+            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+        });
+    }
+
+});</script>
 
 </body>
 
