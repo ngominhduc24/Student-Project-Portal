@@ -83,12 +83,12 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="d-flex col-md-3 pe-5 mb-1 ms-3">
-                                    <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" placeholder="Search"
+                                    <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" id="searchInput" placeholder="Search"
                                            aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
                                 </div>
                                 <div class="col-md-3 pe-5">
                                     <div class="mb-3">
-                                        <select name="roleId" class="form-select">
+                                        <select name="subjectManagerId" id="managerSelect" class="form-select">
                                             <option value="-1">All Subject Manager</option>
                                             <option th:each="manager : ${subjectManagerList}"
                                                     th:value="${manager.id}"
@@ -96,18 +96,16 @@
                                         </select>
                                     </div>
                                 </div><!--end col-->
-<!--                                <div class="col-md-3 pe-5">-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <select name="status" class="form-select">-->
-<!--                                            <option value="true" th:selected="${true == subject.status}">-->
-<!--                                                Active-->
-<!--                                            </option>-->
-<!--                                            <option value="false" th:selected="${false == subject.status}">-->
-<!--                                                Inactive-->
-<!--                                            </option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>&lt;!&ndash;end col&ndash;&gt;-->
+
+                                <div class="col-md-3 pe-5">
+                                    <div class="mb-3">
+                                        <select name="status" id="statusSelect" class="form-select">
+                                            <option value="-1">All Status</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div><!--end col-->
                             </div>
                             <table id="myTable" class="display">
                                 <thead>
@@ -120,18 +118,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="Subject : ${SubjectList}">
-                                    <td th:text="${Subject.subjectCode}"></td>
-                                    <td th:text="${Subject.subjectName}"></td>
-                                    <td th:text="${Subject.user.fullName}"></td>
-                                    <td><a th:href="@{'./subjectDetails?id=' + ${Subject.id}}">View Details</a>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${Subject.status}" th:onclick="'updateStatus(' + ${Subject.id} + ', this)'">
-                                        </div>
-                                    </td>
-                                </tr>
+
                                 </tbody>
                             </table>
                             <input type="text" id="countPage" th:value="${totalPage}" hidden="">
@@ -190,7 +177,7 @@
         }
 
         // Event listener for page change
-        dataTable.on('page.dt', function () {
+        $('#myTable').on('page.dt', function () {
             currentPage = dataTable.page.info().page + 1; // Update currentPage when the page changes (add 1 to match your 1-based page numbering)
             updatePageNumber(); // Update the page number in the toolbar
         });
@@ -199,8 +186,7 @@
         updatePageNumber();
     });
 
-    let apiUrl="http://localhost:8080/api/v1/subject?pageno=0&pagesize=10";
-
+    let apiUrl="http://localhost:8080/api/v1/subject?pageNo=1&pageSize=10&status=&search=&subjectManagerId="; // Your API endpoint
     // Get references to the pagination elements
     const pagination = document.querySelector('.pagination');
     const pageItems = pagination.querySelectorAll('.page-item');
@@ -257,7 +243,6 @@
         return currentPage;
     });
 
-    const sessionAccountId = document.querySelector('.sessionAccountId').value;
     // Function to fetch user data and populate the table
     const  populateUserTable =  (pageNo) => {
         pageNo = pageNo - 1;
@@ -271,17 +256,17 @@
 
                 // Clear existing rows
                 tableBody.innerHTML = '';
-                data.forEach(user => {
+                data.forEach(subject => {
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
-                        <td th:text="${Subject.subjectCode}"></td>
-                        <td th:text="${Subject.subjectName}"></td>
-                        <td th:text="${Subject.user.fullName}"></td>
-                        <td><a th:href="@{'./subjectDetails?id=' + ${Subject.id}}">View Details</a>
+                        <td>${subject.subjectCode}</td>
+                        <td>${subject.subjectName}</td>
+                        <td>${subject.user.fullName}</td>
+                        <td><a href="/admin/subjectDetails?id=${subject.id}">View Details</a>
                         </td>
                         <td>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" th:checked="${Subject.status}" th:onclick="'updateStatus(' + ${Subject.id} + ', this)'">
+                                <input class="form-check-input" type="checkbox" ${subject.status ? 'checked' : ''} onclick="updateStatus(${subject.id}, this)">
                             </div>
                         </td>
                 `;
@@ -293,6 +278,68 @@
                 console.error('Error fetching user data:', error);
                 // Handle errors here (e.g., display an error message)
             });
+
+        // Hande search input change
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener('input', function (event) {
+            const searchValue = event.target.value;
+            // where start with search=
+            let temp = apiUrl.split('&');
+            apiUrl = '';
+            temp.forEach((item) => {
+                if(item.includes('search=')) {
+                    apiUrl += `search=${searchValue}`;
+                } else {
+                    apiUrl += item;
+                }
+                apiUrl += '&';
+            });
+            apiUrl = apiUrl.slice(0, -1);
+            // replace the search value in the apiUrl
+            populateUserTable(1);
+        });
+
+        // Handle role select change
+        const roleSelect = document.getElementById("managerSelect");
+        roleSelect.addEventListener('change', function (event) {
+            const subjectManagerId = event.target.value;
+            // where start with search=
+            let temp = apiUrl.split('&');
+            apiUrl = '';
+            temp.forEach((item) => {
+                if(item.includes('subjectManagerId=')) {
+                    apiUrl += `subjectManagerId=${subjectManagerId}`;
+                } else {
+                    apiUrl += item;
+                }
+                apiUrl += '&';
+            });
+            apiUrl = apiUrl.slice(0, -1);
+            // replace the search value in the apiUrl
+            populateUserTable(1);
+        });
+
+        const statusSelect = document.getElementById("statusSelect");
+        statusSelect.addEventListener('change', function (event) {
+            const status = event.target.value;
+            // where start with search=
+            let temp = apiUrl.split('&');
+            apiUrl = '';
+            temp.forEach((item) => {
+                if(item.includes('status=')) {
+                    apiUrl += `status=${status}`;
+                } else {
+                    apiUrl += item;
+                }
+                apiUrl += '&';
+            });
+            apiUrl = apiUrl.slice(0, -1);
+            // replace the search value in the apiUrl
+            populateUserTable(1);
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            populateUserTable(1);
+        });
     }
 </script>
 

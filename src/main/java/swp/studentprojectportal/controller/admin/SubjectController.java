@@ -27,11 +27,13 @@ public class SubjectController {
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
 
     @GetMapping("/admin/subject")
-    public String subjectPage(Model model) {
-        subjectList = subjectService.getSubject(0, 10);
-        model.addAttribute("SubjectList", subjectList);
+    public String subjectPage(Model model,
+                              @RequestParam(defaultValue = "0") int page) {
+//        subjectList = subjectService.getSubject(0, 10);
+//        model.addAttribute("SubjectList", subjectList);
+        model.addAttribute("page", page);
+        model.addAttribute("totalPage", subjectService.getTotalPage(10));
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-        System.out.println(userService.findAllUserByRoleId(3));
         return "admin/subject/subjectList";
     }
 
