@@ -61,7 +61,7 @@ public class SubjectAssignmentController {
         Assignment assignment = assignmentService.findById(id);
         model.addAttribute("setting",assignment);
         model.addAttribute("subjectList",subjectList);
-        return "subjectAssignmentDetails";
+        return "subject_manager/subject_assignment/subjectAssignmentDetails";
     }
 
     @GetMapping("/addSubjectAssignment")
