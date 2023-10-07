@@ -81,7 +81,6 @@
                     <table id="add-student" class="table table-striped" style="text-align: left">
                       <thead>
                       <tr>
-                        <th>Id</th>
                         <th>Full Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -90,12 +89,10 @@
                       </thead>
                       <tbody>
                       <tr th:each="user : ${studentList}">
-                        <td>he170788</td>
                         <td th:text="${user.fullName}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.phone}"></td>
                         <td>
-<!--                          <a th:href="@{'./class/addToClass?id=' + ${user.id}}">Add</a>-->
                           <button name="addstudent" type="button" class="btn btn-primary w-75 p-0">+</button>
                         </td>
                       </tr>
@@ -269,7 +266,7 @@
         pageLinks[1].textContent = parseInt(pageLinks[1].textContent) - 1;
         pageLinks[2].textContent = parseInt(pageLinks[2].textContent) - 1;
       }
-      // populateUserTable(currentPage);
+      populateUserTable(currentPage);
     }
     return currentPage;
   });
@@ -289,12 +286,11 @@
         pageLinks[1].textContent = parseInt(pageLinks[1].textContent) + 1;
         pageLinks[2].textContent = parseInt(pageLinks[2].textContent) + 1;
       }
-      // populateUserTable(currentPage);
+      populateUserTable(currentPage);
     }
     return currentPage;
   });
 
-  const sessionAccountId = document.querySelector('.sessionAccountId').value;
   // Function to fetch user data and populate the table
   const  populateUserTable =  (pageNo) => {
     pageNo = pageNo - 1;
@@ -304,26 +300,20 @@
             .then(response => response.json())
             .then(data => {
               // Clear the table first
-              const tableBody = document.querySelector('#myTable tbody');
+              const tableBody = document.querySelector('table#add-student tbody');
 
               // Clear existing rows
               tableBody.innerHTML = '';
               data.forEach(user => {
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td>${user.id}</td>
-                    <td>${user.fullName}</td>
-                    <td>${user.email ? user.email : ''}</td>
-                    <td>${user.phone ? user.phone : ''}</td>
-                    <td>${user.setting.settingTitle}</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="${user.id==sessionAccountId ? 'hidden' : 'checkbox'}" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
-                        </div>
-                    </td>
-                    <td><a href="./userDetails?id=${user.id}">View Details</a></td>
+                  <td>${user.fullName}</td>
+                  <td>${user.email || ''}</td>
+                  <td>${user.phone || ''}</td>
+                  <td>
+                    <button name="addstudent" type="button" class="btn btn-primary w-75 p-0">+</button>
+                  </td>
                 `;
-
                 tableBody.appendChild(newRow);
               });
             })
@@ -350,31 +340,12 @@
     });
     apiUrl = apiUrl.slice(0, -1);
     // replace the search value in the apiUrl
-    // populateUserTable(1);
+    populateUserTable(1);
   });
 
-  // Handle role select change
-  const roleSelect = document.querySelector('select[name="roleId"]');
-  roleSelect.addEventListener('change', function (event) {
-    const roleId = event.target.value;
-    // where start with search=
-    let temp = apiUrl.split('&');
-    apiUrl = '';
-    temp.forEach((item) => {
-      if(item.includes('roleId=')) {
-        apiUrl += `roleId=${roleId}`;
-      } else {
-        apiUrl += item;
-      }
-      apiUrl += '&';
-    });
-    apiUrl = apiUrl.slice(0, -1);
-    // replace the search value in the apiUrl
-    // populateUserTable(1);
-  });
 
   document.addEventListener("DOMContentLoaded", () => {
-    // populateUserTable(1);
+    populateUserTable(1);
   });
 </script>
 
