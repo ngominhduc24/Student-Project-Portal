@@ -113,14 +113,36 @@ public class ProjectController {
     }
 
     @GetMapping("/member/{classId}")
+    public String member(Model model,
+                          @PathVariable Integer classId) {
+
+        model.addAttribute("projectList", projectService.findAllByClassId(classId));
+        model.addAttribute("class", classService.getClass(classId));
+        model.addAttribute("studentList", studentClassService.findAllByClassId(classId));
+        model.addAttribute("noGroupStudentList", studentClassService.findAllNoGroupInClass(classId));
+
+        return "class_manager/project/projectMember";
+    }
+
+    @GetMapping("/arrange/{classId}")
     public String arrange(Model model,
                           @PathVariable Integer classId) {
 
         model.addAttribute("projectList", projectService.findAllByClassId(classId));
         model.addAttribute("class", classService.getClass(classId));
         model.addAttribute("studentList", studentClassService.findAllByClassId(classId));
+        model.addAttribute("noGroupStudentList", studentClassService.findAllNoGroupInClass(classId));
 
-        return "class_manager/project/projectMember";
+        return "class_manager/project/projectArrange";
+    }
+
+    @GetMapping("/arrange-member/{studentId}/{projectId}")
+    public String arrangeMember(@PathVariable Integer studentId,
+                                @PathVariable Integer projectId) {
+
+        System.out.println(studentClassService.updateProjectId(studentId, projectId));;
+
+        return "redirect:/";
     }
 
 }

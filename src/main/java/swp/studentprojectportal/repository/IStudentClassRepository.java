@@ -12,4 +12,6 @@ public interface IStudentClassRepository extends JpaRepository<StudentClass, Int
     List<StudentClass> findAllByAclass_Id(int classId);
 
     List<StudentClass> findAllByProjectId(int projectId);
+
+    List<StudentClass> findAllByAclass_IdAndProjectId(int classId, Integer projectId);
 }
