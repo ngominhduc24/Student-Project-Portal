@@ -90,9 +90,10 @@
                                     <th>Sucject ID</th>
                                     <th>Subject</th>
                                     <th>Title</th>
-                                    <th>Creator</th>
-                                    <th>View Details</th>
+<!--                                    <th>Creator</th>-->
+<!--                                    <th>View Details</th>-->
                                     <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -100,10 +101,10 @@
                                     <td th:text="${assignment.subject.id}"></td>
                                     <td th:text="${assignment.subject.subjectCode}"></td>
                                     <td th:text="${assignment.title}"></td>
-                                    <td th:text="${assignment.createBy}"></td>
-                                    <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View
-                                        Details</a>
-                                    </td>
+<!--                                    <td th:text="${assignment.createBy}"></td>-->
+<!--                                    <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View-->
+<!--                                        Details</a>-->
+<!--                                    </td>-->
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
@@ -111,6 +112,10 @@
                                                    th:onclick="'updateStatus(' + ${assignment.id} + ', this)'">
                                         </div>
                                     </td>
+<!--                                    <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View-->
+<!--                                        Details</a>-->
+<!--                                    </td>-->
+                                    <td><a th:href="@{/subject-manager/subject-assignment/detail?id={id}(id=${assignment.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
