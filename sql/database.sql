@@ -448,4 +448,15 @@ INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignmen
 VALUES
     (1,'Review Iteration 1','Review docs and code iteration 1 all group',1),
     (1,'Review Iteration 2','Review docs and code iteration 2 all group',1),
-    (1,'Review Iteration 3','Review docs and code iteration 3 all group',1);
+    (1,'Review Iteration 3','Review docs and code iteration 3 all group',1),
+    (2,'Practice HTML','Do 10 exercise about HTML',1),
+    (2,'Practice CSS','Do 13 exercise about CSS',1),
+    (2,'Practice Javascript','Do 15 exercise about JS',1),
+    (2,'Java Servlet','Intro to JavaServlet + JSP',1),
+    (2,'Connect to Database','Learn JDBC',1),
+    (3,'Requirement','Write requirement for SWP project',1),
+    (3,'Write Document','Write SRS document for SWP project',1),
+    (4,'Testcase design','Design testcase for login page, register page',1),
+    (4,'Test technique','Dymanic test + static test',1),
+    (6,'React App','Make React App to print "Hello React"',1),
+    (6,'JS ES6','Learn new synctax in JS ES6',1);

@@ -53,6 +53,7 @@ public class SubjectSettingService implements ISubjectSettingService {
         return subjectSettingRepository.save(subjectSetting);
     }
 
+
     public SubjectSetting findById(int id){
         return subjectSettingRepository.findById(id).get();
     }
