@@ -140,7 +140,16 @@ public class ProjectController {
     public String arrangeMember(@PathVariable Integer studentId,
                                 @PathVariable Integer projectId) {
 
-        System.out.println(studentClassService.updateProjectId(studentId, projectId));;
+        studentClassService.updateProjectId(studentId, projectId);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/setLeader/{studentId}/{projectId}")
+    public String setLeader(@PathVariable Integer studentId,
+                                @PathVariable Integer projectId) {
+
+        projectService.setLeader(studentId, projectId);
 
         return "redirect:/";
     }

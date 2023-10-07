@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IProjectRepository;
+import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IProjectService;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ProjectService implements IProjectService {
     @Autowired
     IClassRepository classRepository;
     @Autowired
-    UserService userService;
+    IUserRepository userRepository;
 
     @Override
     public List<Project> findAllByClassId(int classId) {
@@ -43,7 +44,7 @@ public class ProjectService implements IProjectService {
         project.setGroupName(groupName);
         project.setAclass(classRepository.findClassById(classId));
         project.setDescription(description);
-        project.setProjectMentor(userService.findUserById(mentorId).get());
+        project.setProjectMentor(userRepository.findUserById(mentorId));
         project.setStatus(false);
 
         projectRepository.save(project);
@@ -58,8 +59,8 @@ public class ProjectService implements IProjectService {
         project.setTitle(title);
         project.setGroupName(groupName);
         project.setDescription(description);
-        project.setProjectMentor(userService.findUserById(mentorId).get());
-        if(teamLeaderId>0) project.setTeamLeader(userService.findUserById(teamLeaderId).get());
+        project.setProjectMentor(userRepository.findUserById(mentorId));
+        if(teamLeaderId>0) project.setTeamLeader(userRepository.findUserById(teamLeaderId));
 
         projectRepository.save(project);
 
@@ -87,5 +88,18 @@ public class ProjectService implements IProjectService {
         }
     }
 
+    @Override
+    public boolean setLeader(Integer studentId, Integer projectId) {
+        try {
+            Project p = projectRepository.findById(projectId).get();
+
+            p.setTeamLeader(userRepository.findUserById(studentId));
+            projectRepository.save(p);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

@@ -64,9 +64,12 @@
                         </ol>
                     </div>
 
-                    <div class="col-xl-4 col-md-6"></div>
+<!--                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">-->
+<!--                        <a href="../add" class="btn btn-primary" style="margin-left: 24px">Add New Project</a>-->
+<!--                    </div>-->
 
-                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">
+                    <div class="col-xl-6 col-md-6 mt-4 text-md-end">
+                        <a th:href="'../arrange/' + ${class.id}" class="btn btn-secondary" style="margin-left: 24px">Arrange</a>
                         <a href="../add" class="btn btn-primary" style="margin-left: 24px">Add New Project</a>
                     </div>
                 </div>
@@ -116,10 +119,11 @@
                         top: 20%;
                     }
 
-                    .project label{
+                    .project a{
                         font-size: 1.1rem;
                         font-weight: 600;
                         margin-bottom: 3vh;
+                        color: black;
                     }
 
                     .dialog{
@@ -154,20 +158,13 @@
 
                         <div class="col-md-4 project">
                             <div class="mb-3">
-                                <label class="form-label">No group</label>
+                                <a class="form-label">No group</a>
 
                                 <div class="student" th:each="student : ${noGroupStudentList}"  th:id="'stu'+${student.id}">
 
                                     <p class="form-control" th:text="${student.student.fullName}"></p>
                                     <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
                                          onclick="showDialog(this.parentNode)">
-
-                                    <div class="col-md-4 dialog">
-                                        <button class="btn btn-secondary"
-                                                onclick="setLeader(this.parentNode.parentNode)">Set Team leader</button>
-                                        <button class="btn btn-secondary">Freeze</button>
-                                        <button class="btn btn-secondary">Update</button>
-                                    </div>
 
                                 </div>
 
@@ -177,15 +174,15 @@
                         <div class="col-md-4 project" th:each="project : ${projectList}" th:data-id="${project.id}"
                              th:data-leader="${project.teamLeader!=null ? 'stu'+project.teamLeader.id : '-1'}">
                             <div class="mb-3">
-                                <label class="form-label" th:text="${project.title}"></label>
+                                <a class="form-label" th:href="'../details/' + ${project.id}" th:text="${project.title}"></a>
 
                                 <div class="student" th:each="student : ${studentList}" th:id="'stu'+${student.id}"
                                      th:if="${student.project!=null && student.project.id == project.id}">
 
                                     <p class="form-control"
-                                       th:text="${student.student.fullName + (student.id==project.teamLeader.id?' - Leader⭐':'')}"></p>
+                                       th:text="${student.student.fullName + ((project.teamLeader!=null && student.id==project.teamLeader.id)?' - Leader⭐':'')}"></p>
                                     <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
-                                         onclick="showDialog(this.parentNode)">
+                                         onclick="showDialog(this.parentNode)" th:if="${!project.status}">
 
                                 </div>
 
@@ -196,6 +193,14 @@
 
                 </div>
             </div>
+        </div>
+
+<!--        dialog-->
+        <div class="col-md-4 dialog">
+            <button class="btn btn-secondary"
+                    onclick="setLeader(this.parentNode.parentNode)">Set Team leader</button>
+            <button class="btn btn-secondary">Freeze</button>
+            <button class="btn btn-secondary">Update</button>
         </div>
 
         <script>
@@ -221,10 +226,13 @@
                 student.textContent += ' - Leader⭐';
                 project.dataset.leader = id;
 
-                console.log(project.dataset.id + ' ' + project.dataset.leader.substring(3))
+                // console.log(project.dataset.id + ' ' + project.dataset.leader.substring(3))
+                fetch(`../setLeader/${id.substring(3)}/${project.dataset.id}`);
             }
 
             function removeLeader(id) {
+                if(id==-1) return;
+
                 let student = document.querySelector(`#${id} p`);
                 student.textContent = student.textContent.split(' -')[0];
             }

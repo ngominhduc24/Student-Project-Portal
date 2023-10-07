@@ -141,11 +141,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="mb-3">
                                             <div th:if="${!project.status}">
                                                 <button type="submit" class="btn btn-primary">Update</button>
-                                                <a class="btn btn-secondary" onclick="redirect(this)"
+                                                <a class="btn btn-secondary" style="margin-left: 2%;"
+                                                   th:href="'../member/' + ${project.aclass.id}">View members</a>
+                                                <a class="btn btn-secondary" onclick="redirect(this)" style="margin-left: 2%;"
                                                    th:data-link="'../freeze/' + ${project.id}">Freeze project</a>
 
                                                 <br><br>

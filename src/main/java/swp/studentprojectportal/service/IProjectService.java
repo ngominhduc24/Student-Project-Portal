@@ -19,4 +19,6 @@ public interface IProjectService {
     Project updateStatus(int projectID, boolean status);
 
     boolean deleteById(int projectID);
+
+    public boolean setLeader(Integer studentId, Integer projectId);
 }
