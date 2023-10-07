@@ -13,6 +13,7 @@ import swp.studentprojectportal.model.SubjectSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IAssignmentRepository;
 import swp.studentprojectportal.service.IAssignmentService;
+import swp.studentprojectportal.service.ISubjectService;
 import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
 
 import java.util.List;
@@ -22,7 +23,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SubjectAssignmentController {
 
     @Autowired
+    ISubjectService subjectService;
+
+    @Autowired
     IAssignmentService assignmentService;
+
 
     // List<Assignment> assignmentList = new CopyOnWriteArrayList<>();
     @GetMapping("subject-manager/subject-assignment")
@@ -47,6 +52,16 @@ public class SubjectAssignmentController {
     @RequestMapping(path = "/subject-manager/subject-assignment/add")
     public String addAssignmentPage(Model model){
         return "subject_manager/subject_assignment/subjectAssignmentAdd";
+    }
+
+    @RequestMapping("/subject-manager/subject-assignment/detail")
+    public String detailSubjectSetting(@RequestParam("id") int id, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        Assignment assignment = assignmentService.findById(id);
+        model.addAttribute("setting",assignment);
+        model.addAttribute("subjectList",subjectList);
+        return "subjectAssignmentDetails";
     }
 
     @GetMapping("/addSubjectAssignment")
