@@ -118,4 +118,10 @@ public class SubjectSevice implements ISubjectService {
     public List<Subject> findAllSubjectByUser(User user) {
         return subjectRepository.findAllSubjectByUser(user);
     }
+
+    public Object getTotalPage(int pageSize) {
+        long count = subjectRepository.count();
+        int totalPage = count % pageSize == 0 ? (int) (count/pageSize) : (int) (count/pageSize) +1;
+        return  totalPage;
+    }
 }
