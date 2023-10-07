@@ -71,7 +71,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Code</label>
+                                            <label class="form-label">Subject Code<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                                 <select name="subjectId" class="form-select">
                                                     <option th:each="subject : ${subjectList}"
@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Type</label>
+                                            <label class="form-label">Type<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                                 <select name="typeId" class="form-select w-100">
                                                     <option th:value="1" th:text="Complexity" ></option>
@@ -95,7 +95,7 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Title</label>
+                                            <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                                 <input type="text" name="settingTitle" class="form-control" required>
                                             </div>
@@ -104,13 +104,13 @@
 
                                     <div class="col-md-2 offset-1">
                                         <div class="mb-3">
-                                            <label class="form-label">Display Order</label>
+                                            <label class="form-label">Display Order<span class="text-danger">*</span></label>
                                             <input style="width: 60%;" type="number" required class="form-control" value="1" name="displayOrder">
                                         </div>
                                     </div>
                                     <div class="col-md-2 text-center">
                                         <div class="mb-3">
-                                            <label class="form-label">Status</label>
+                                            <label class="form-label">Status<span class="text-danger">*</span></label>
                                             <div class="form-check form-switch" style="font-size: 24px">
                                                 <input style="margin-left: -38px" class="form-check-input" value="on" name="status" checked type="checkbox" >
                                             </div>

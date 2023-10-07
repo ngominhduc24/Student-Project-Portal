@@ -24,11 +24,15 @@ public class Class {
     @Column(name = "status")
     private boolean status = true;
 
-    @OneToOne
-    @JoinColumn(name = "semester_id")
-    private Setting setting;
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "semester_id")
+    private Setting semester;
+
+    @ManyToOne
     @JoinColumn(name = "teacher_id")
     private User user;
 

@@ -25,4 +25,5 @@ public interface IUserService {
     User getUserByEmailOrPhone(String userName);
     List<User> findAllProjectMentor();
     int getTotalPage(int pageSize, int roleId);
+    List<User> findTeacherBySubjectManagerId(int subjectManagerId);
 }

@@ -1,18 +1,16 @@
 package swp.studentprojectportal;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import swp.studentprojectportal.utils.Validate;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
-class StudentProjectPortalApplicationTests {
-
+public class ValidateTest {
     @Test
-    void contextLoads() {
+    public void validEmail() {
         boolean rs = Validate.validEmail("abc@abc@");
-        boolean expected = false;
-        Assertions.assertEquals(expected,rs);
+        Assertions.assertFalse(rs);
     }
-
 }

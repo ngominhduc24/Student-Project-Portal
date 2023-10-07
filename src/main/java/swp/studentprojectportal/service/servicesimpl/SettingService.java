@@ -77,4 +77,9 @@ public class SettingService implements ISettingService {
     public Setting findLastDisplayOrder(int typeId){
         return settingRepository.findTop1SettingByTypeIdOrderByDisplayOrderDesc(typeId);
     }
+
+    @Override
+    public List<Setting> findSemesterBySubjectManagerId(int subjectManagerId) {
+        return settingRepository.findSemesterBySubjectManagerId(subjectManagerId);
+    }
 }
