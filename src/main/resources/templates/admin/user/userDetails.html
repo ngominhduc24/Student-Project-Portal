@@ -70,7 +70,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Fullname</label>
+                                            <label class="form-label">Fullname<span class="text-danger">*</span></label>
                                             <input name="fullName" type="text" class="form-control"
                                                    th:value="${user.fullName}" required>
                                         </div>
@@ -78,7 +78,7 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Email</label>
+                                            <label class="form-label">Email<span class="text-danger">*</span></label>
                                             <input name="email" type="text" class="form-control"
                                                    th:value="${user.email}">
                                         </div>
@@ -86,7 +86,7 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Phone</label>
+                                            <label class="form-label">Phone<span class="text-danger">*</span></label>
                                             <input name="phone" type="text" class="form-control"
                                                    th:value="${user.phone}">
                                         </div>
@@ -94,7 +94,7 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Role</label>
+                                            <label class="form-label">Role<span class="text-danger">*</span></label>
                                             <select name="roleId" class="form-select">
                                                 <option th:each="role : ${roleList}"
                                                         th:value="${role.id}"
@@ -106,7 +106,7 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3" th:if="${user.id != session.user.id}">
-                                            <label class="form-label">Status</label>
+                                            <label class="form-label">Status<span class="text-danger">*</span></label>
                                             <select name="status" class="form-select">
                                                 <option value="true" th:selected="${true == user.status}">Active</option>
                                                 <option value="false" th:selected="${false == user.status}">Inactive

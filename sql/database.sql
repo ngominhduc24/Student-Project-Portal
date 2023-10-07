@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`setting` (
                                                   `id` INT NOT NULL AUTO_INCREMENT,
                                                   `type_id` INT NULL,
                                                   `setting_title` VARCHAR(45) NULL,
+    `description` LONGTEXT NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
@@ -127,6 +128,7 @@ DROP TABLE IF EXISTS `swp391`.`class` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`class` (
                                                 `id` INT NOT NULL AUTO_INCREMENT,
                                                 `class_name` VARCHAR(245) NULL,
+    `subject_id` INT NULL,
     `semester_id` INT NULL,
     `teacher_id` INT NULL,
     `status` BIT(1) NULL,
@@ -137,6 +139,10 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
     PRIMARY KEY (`id`),
     INDEX ` a_idx` (`teacher_id` ASC) VISIBLE,
     INDEX `b_idx` (`semester_id` ASC) VISIBLE,
+    FOREIGN KEY (`subject_id`)
+    REFERENCES `swp391`.`subject` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`teacher_id`)
     REFERENCES `swp391`.`user` (`id`)
                                                         ON DELETE NO ACTION
@@ -250,9 +256,9 @@ CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
                                                         `class_id` INT NOT NULL,
                                                         `project_id` INT NULL,
                                                         `create_by` INT NULL DEFAULT 0,
-    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_by` INT NULL DEFAULT 0,
-    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+                                                        `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+                                                        `update_by` INT NULL DEFAULT 0,
+                                                        `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
                                                         PRIMARY KEY (`id`, `student_id`, `class_id`),
     INDEX `b_idx` (`class_id` ASC) VISIBLE,
     INDEX `a_idx` (`project_id` ASC) VISIBLE,
@@ -304,16 +310,16 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- 2 = mail domain
 -- 3 = semester
 
-INSERT INTO setting(type_id,setting_title,display_order)
+INSERT INTO setting(type_id,setting_title,description,display_order)
 VALUES
-    (1, "Student",4),
-    (1, "Admin",1),
-    (1, "Subject manager",2),
-    (1, "Teacher",3),
-    (2, "gmail.com",1),
-    (2, "fpt.edu.vn",2),
-    (3, "SUMMER 23",1),
-    (3, "FALL 23",2);
+    (1, "Student","Learner in an educational institution",4),
+    (1, "Admin","A person who manages and oversees administrative tasks to keep things running smoothly in an organization or system",1),
+    (1, "Subject manager","An individual who manages the curriculum and resources related to specific academic subjects",2),
+    (1, "Teacher","a=An educator who imparts knowledge, skills, and guidance to students in a classroom or educational setting",3),
+    (2, "gmail.com","Normal gmail",1),
+    (2, "fpt.edu.vn","Gmail of FPT University",2),
+    (3, "SUMMER 23","Semester start from May to October in 2023",1),
+    (3, "FALL 23","Semester start from September to December in 2023",2);
 
 -- admin
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)
@@ -327,7 +333,7 @@ VALUES
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",1,1),
+    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",4,1),
     ("galvinbass4030@gmail.com","0037963572","c4ca4238a0b923820dcc509a6f75849b","Galvin Bass","/images/user_icon.png",1,1),
     ("brianmassey@gmail.com","0436285872","c4ca4238a0b923820dcc509a6f75849b","Brian Massey","/images/user_icon.png",1,1),
     ("judahcardenas5324@gmail.com","0681589922","c4ca4238a0b923820dcc509a6f75849b","Judah Cardenas","/images/user_icon.png",1,1),
@@ -387,10 +393,14 @@ VALUES
     (2 ,2, "Medium",2),
     (2 ,2, "Low",3);
 
-INSERT INTO `class` (`class_name`,`semester_id`,`teacher_id`,`status`)
+INSERT INTO `class` (`class_name`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
-    ("SE1740",8,3,1),
-    ("SE1741",8,3,1);
+    ("SE1720",1,7,3,1),
+    ("SE1722",1,7,3,1),
+    ("SE1740",1,8,6,1),
+    ("SE1741",1,8,6,1),
+    ("SE1740",2,8,3,1),
+    ("SE1741",2,8,3,1);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES

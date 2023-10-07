@@ -234,6 +234,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> findTeacherBySubjectManagerId(int subjectManagerId) {
+        return userRepository.findTeacherBySubjectManagerId(subjectManagerId);
+    }
+
+    @Override
     public User resetPasswordByToken(String token) {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
