@@ -65,14 +65,14 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Subject List</li>
+                            <li class="breadcrumb-item active">Subject Assignment List</li>
                         </ol>
                     </div><!--end col-->
 
                     <div class="col-xl-4 col-md-6"></div>
 
-                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="/admin/subjectAdd" class="btn btn-primary" style="margin-left: 24px">Add New Subject</a>
+                    <div class="col-xl-3 col-md-6 mt-4 d-flex align-items-end justify-content-center mb-2">
+                        <a href="/subject-manager/subject-assignment/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
                 </div><!--end row-->
 
@@ -87,8 +87,9 @@
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
+                                    <th>Sucject ID</th>
                                     <th>Subject</th>
-                                    <th>Subject Assignment</th>
+                                    <th>Title</th>
                                     <th>Creator</th>
                                     <th>View Details</th>
                                     <th>Status</th>
@@ -96,7 +97,8 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="assignment : ${assignmentList}">
-                                    <td th:text="${assignment.subject.subjectName}"></td>
+                                    <td th:text="${assignment.subject.id}"></td>
+                                    <td th:text="${assignment.subject.subjectCode}"></td>
                                     <td th:text="${assignment.title}"></td>
                                     <td th:text="${assignment.createBy}"></td>
                                     <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View
@@ -115,6 +117,15 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    function updateStatus(id, checkbox) {
+                        let status = checkbox.checked;
+                        if(confirm('Are you sure?'))
+                            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
+                        else checkbox.checked = !status;
+                    }
+                </script>
+
             </div>
         </div><!--end container-->
 
@@ -136,18 +147,18 @@
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            "dom": 'frt<"#toolbar.dt-box"><"dt-box"p>',
-            "bInfo": false,
-        });
+<!--<script type="text/javascript">-->
+<!--    $(document).ready(function () {-->
+<!--        $('#myTable').DataTable({-->
+<!--            "dom": 'frt<"#toolbar.dt-box"><"dt-box"p>',-->
+<!--            "bInfo": false,-->
+<!--        });-->
 
-        $("#toolbar").html('<div class="float-left">' +
-            '<p>Page no 1</p>' +
-            '</div>');
-    });
-</script>
+<!--        $("#toolbar").html('<div class="float-left">' +-->
+<!--            '<p>Page no 1</p>' +-->
+<!--            '</div>');-->
+<!--    });-->
+<!--</script>-->
 
 <script>
     window.addEventListener('DOMContentLoaded', event => {
