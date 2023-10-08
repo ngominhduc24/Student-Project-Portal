@@ -78,7 +78,17 @@ public class SubjectSettingController {
             @RequestParam Integer typeId,
             @RequestParam String settingTitle,
             @RequestParam Integer displayOrder,
-            WebRequest request) {
+            WebRequest request,Model model,HttpSession session) {
+
+//        if(settingTitle.trim().isEmpty()){
+//            model.addAttribute("errmsg","Title not empty!");
+//            User user = (User) session.getAttribute("user");
+//            List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+//            SubjectSetting subjectSetting = subjectSettingService.findById(id);
+//            model.addAttribute("setting",subjectSetting);
+//            model.addAttribute("subjectList",subjectList);
+//            return "subjectSettingDetail";
+//        }
         String status = request.getParameter("status");
         SubjectSetting subjectSetting = new SubjectSetting();
         subjectSetting.setId(id);
