@@ -51,6 +51,7 @@
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/subject-setting"><i class="uil uil-setting me-2 d-inline-block"></i>Subject Setting</a></li>
             <!--    class manager function == 4-->
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/class"><i class="uil uil-setting me-2 d-inline-block"></i>Class Details</a></li>
+            <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>
         </ul>
         <!-- sidebar-menu  -->
     </div>

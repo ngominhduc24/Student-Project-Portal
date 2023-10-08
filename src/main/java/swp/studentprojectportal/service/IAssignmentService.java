@@ -10,4 +10,10 @@ public interface IAssignmentService {
     Assignment getAssignmentById(int assignmentId);
 
     Assignment addAssignment(String title, String description, int subjectId, boolean status);
+
+    List<Assignment> findAssignmentByManager(int subjectManagerId);
+
+    Assignment findById(int id);
+
+    Assignment saveAssignment(Assignment assignment);
 }

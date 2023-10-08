@@ -24,7 +24,7 @@ public class SubjectAssignmentController {
     AssignmentService assignmentService;
 
     List<Assignment> assignmentList = new CopyOnWriteArrayList<>();
-    @GetMapping("/subject-manager/subject-assignment")
+    @GetMapping("subject-manager/subject-assignment")
     public String AssignmentPage(Model model) {
         assignmentList = assignmentService.findAllAssignment(0,10);
         model.addAttribute("assignmentList", assignmentList);

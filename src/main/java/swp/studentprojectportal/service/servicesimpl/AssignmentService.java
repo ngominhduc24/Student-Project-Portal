@@ -41,8 +41,19 @@ public class AssignmentService implements IAssignmentService {
         assignmentRepository.save(assignment);
         return assignment;
     }
-//    public boolean checkTitleExisted(String title) {
-//    }
-//    public boolean checkDescriptionMatch(String description) {
-//    }
+    @Override
+    public List<Assignment> findAssignmentByManager(int subjectManagerId){
+        return assignmentRepository.findAssignmentByManager(subjectManagerId);
+    }
+
+    @Override
+    public Assignment findById(int id){
+        return assignmentRepository.findById(id).get();
+    }
+
+    @Override
+    public Assignment saveAssignment(Assignment assignment){
+        return  assignmentRepository.save(assignment);
+    }
+
 }

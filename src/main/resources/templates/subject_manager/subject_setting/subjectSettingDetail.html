@@ -31,6 +31,24 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Bắt sự kiện khi form được submit
+            document.querySelector('form').addEventListener('submit', function (event) {
+                // Lấy giá trị của trường settingTitle
+                var settingTitleValue = document.querySelector('input[name="settingTitle"]').value;
+
+                // Kiểm tra xem settingTitle có giá trị là null, empty hoặc chỉ chứa dấu cách không
+                if (!settingTitleValue || settingTitleValue.trim() === '') {
+                    // Ngăn chặn việc submit form
+                    event.preventDefault();
+
+                    // Hiển thị thông báo lỗi
+                    document.querySelector('#errmsg').innerText = 'Title cannot be null, empty, or consist of only spaces.';
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -99,7 +117,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
+                                                <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
                                             </div>
                                         </div>
                                     </div><!--end col-->
@@ -125,7 +143,8 @@
                                 </div>
                             </form>
 
-                            <h6 style="color: red;" th:text="${errmsg}"></h6>
+<!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
+                            <div id="errmsg" style="color: red;"></div>
                         </div>
                     </div><!--end col-->
                 </div>

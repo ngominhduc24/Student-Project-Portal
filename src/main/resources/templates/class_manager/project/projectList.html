@@ -53,6 +53,7 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row px-4">
+
                     <div class="col-xl-5 col-md-6">
                         <h4>Project List</h4>
                         <ol class="breadcrumb mb-4">
@@ -60,18 +61,31 @@
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Project List</li>
                         </ol>
-                    </div><!--end col-->
+                    </div>
 
-                    <div class="col-xl-4 col-md-6"></div>
+                    <div class="col-xl-3 col-md-3 mt-4 text-md-end">
+                        <input style="border: #ced4da solid 1px" type="text" class="form-control"
+                               placeholder="Search" oninput="search(this.value)">
+                    </div>
 
                     <div class="col-xl-3 col-md-6 mt-4 text-md-end">
                         <a href="../add" class="btn btn-primary" style="margin-left: 24px">Add New Project</a>
-                    </div><!--end col-->
-                </div><!--end row-->
+                    </div>
+
+                </div>
 
                 <div class="row px-4">
-                    <div class="col-xl-5 col-md-6">
+                    <div class="col-xl-2 col-md-6">
                         <h5 th:if="${class != null}" th:text="'Class: ' + ${class.className}"></h5>
+                        <a th:if="${class!=null}" th:href="'../member/' + ${class.id}"
+                           style="color: black;margin-left: 5%;">View members</a>
+
+                        <select class="form-select" th:if="${class==null}" onchange="filter(this.value)">
+                            <option value="0" selected>All</option>
+                            <option th:each="class : ${classList}"
+                                    th:value="${class.id}"
+                                    th:text="${class.className}"></option>
+                        </select>
                     </div>
                 </div>
 
@@ -128,6 +142,8 @@
                         <div class="project-title" th:text="${item.title}"></div>
                         <br>
                         <div class="project-detail">
+                            <input class="classId" type="hidden" th:value="${item.aclass.id}">
+
                             <div>Class: <span th:text="${item.aclass.className}"></span></div>
                             <div>Project mentor: <span th:if="${item.projectMentor!=null}" th:text="${item.projectMentor.fullName}"></span></div>
                             <div>Team leader: <span th:if="${item.teamLeader!=null}" th:text="${item.teamLeader.fullName}"></span></div>
@@ -151,6 +167,28 @@
                 if(projectDetails.style.display == 'block')
                     projectDetails.style.display = 'none';
                 else projectDetails.style.display = 'block';
+            }
+
+            const projectList = document.querySelectorAll('.project');
+
+            function filter(classId) {
+                for (let project of projectList) {
+                    if (classId==0 || project.querySelector('.classId').value==classId)
+                        project.style.display = 'flex';
+                    else project.style.display = 'none';
+                }
+            }
+
+            function search(input) {
+                input = input.toLowerCase();
+
+                for (let project of projectList) {
+                    let title = project.querySelector('.project-title').textContent.toLowerCase();
+
+                    if (title.includes(input))
+                        project.style.display = 'flex';
+                    else project.style.display = 'none';
+                }
             }
         </script>
 
