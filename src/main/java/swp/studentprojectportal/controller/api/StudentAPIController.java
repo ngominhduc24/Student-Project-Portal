@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.class_manager;
+package swp.studentprojectportal.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
