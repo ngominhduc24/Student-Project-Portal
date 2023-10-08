@@ -40,5 +40,20 @@ public class ClassService implements IClassService {
         return classRepository.findAllByUserId(classManagerId);
     }
 
+    @Override
+    public List<Class> findAllBySubjectManagerId(int subjecManagertId) {
+        return classRepository.findAllBySubjectManagerId(subjecManagertId);
+    }
+
+    @Override
+    public Class findById(int id) {
+        return classRepository.findById(id).get();
+    }
+
+    @Override
+    public Class saveClass(Class classA) {
+        return classRepository.save(classA);
+    }
+
 
 }
