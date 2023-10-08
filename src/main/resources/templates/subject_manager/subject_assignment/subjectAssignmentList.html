@@ -62,14 +62,14 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Subject List</li>
+                            <li class="breadcrumb-item active">Subject Assignment List</li>
                         </ol>
                     </div><!--end col-->
 
                     <div class="col-xl-4 col-md-6"></div>
 
                     <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="/admin/subjectAdd" class="btn btn-primary" style="margin-left: 24px">Add New Subject</a>
+                        <a href="/subject-manager/addSubjectAssignment" class="btn btn-primary" style="margin-left: 24px">Add Subject Assignment</a>
                     </div><!--end col-->
                 </div><!--end row-->
 
@@ -78,7 +78,7 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Subject table
+                            Subject Assignment
                         </div>
                         <div class="card-body">
                             <table id="myTable" class="display">
@@ -96,7 +96,7 @@
                                     <td th:text="${assignment.subject.subjectName}"></td>
                                     <td th:text="${assignment.title}"></td>
                                     <td th:text="${assignment.createBy}"></td>
-                                    <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View
+                                    <td><a th:href="@{'./subjectAssignmentDetail?id=' + ${assignment.id}}">View
                                         Details</a>
                                     </td>
                                     <td>
@@ -144,6 +144,15 @@
             '<p>Page no 1</p>' +
             '</div>');
     });
+</script>
+
+<script>
+    function updateStatus(id, checkbox) {
+        let status = checkbox.checked;
+        if(confirm('Are you sure?'))
+            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
+        else checkbox.checked = !status;
+    }
 </script>
 
 </body>

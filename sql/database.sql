@@ -404,12 +404,12 @@ VALUES
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (1, 5, 4, "Project A", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 6, "Project B", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 11, "Project C", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 16, "Project D", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 21, "Project E", 1, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 26, "Project F", 1, "Group A", "Web app with Servlet/JSP and Mysql");
+    (1, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
@@ -438,14 +438,26 @@ VALUES
     (28, 1, 5),   -- Student 28 in Project 5
     (29, 1, 5),   -- Student 29 in Project 5
     (30, 1, 5),   -- Student 30 in Project 5
-    (4, 1, 5),   -- Student 4 in Project 6
-    (32, 1, 5),   -- Student 32 in Project 6
-    (33, 1, 5),   -- Student 33 in Project 6
-    (34, 1, 5),   -- Student 34 in Project 6
-    (35, 1, 5);   -- Student 35 in Project 6
+    (4, 1, 6),   -- Student 4 in Project 6
+    (32, 1, 6),   -- Student 32 in Project 6
+    (33, 1, 6),   -- Student 33 in Project 6
+    (34, 1, 6),   -- Student 34 in Project 6
+    (35, 1, 6),   -- Student 35 in Project 6
+    (31, 1, null);
 
 INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
 VALUES
     (1,'Review Iteration 1','Review docs and code iteration 1 all group',1),
     (1,'Review Iteration 2','Review docs and code iteration 2 all group',1),
-    (1,'Review Iteration 3','Review docs and code iteration 3 all group',1);
+    (1,'Review Iteration 3','Review docs and code iteration 3 all group',1),
+    (2,'Practice HTML','Do 10 exercise about HTML',1),
+    (2,'Practice CSS','Do 13 exercise about CSS',1),
+    (2,'Practice Javascript','Do 15 exercise about JS',1),
+    (2,'Java Servlet','Intro to JavaServlet + JSP',1),
+    (2,'Connect to Database','Learn JDBC',1),
+    (3,'Requirement','Write requirement for SWP project',1),
+    (3,'Write Document','Write SRS document for SWP project',1),
+    (4,'Testcase design','Design testcase for login page, register page',1),
+    (4,'Test technique','Dymanic test + static test',1),
+    (6,'React App','Make React App to print "Hello React"',1),
+    (6,'JS ES6','Learn new synctax in JS ES6',1);

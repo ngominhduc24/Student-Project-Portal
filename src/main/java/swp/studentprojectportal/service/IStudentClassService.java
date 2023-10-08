@@ -5,5 +5,13 @@ import swp.studentprojectportal.model.StudentClass;
 import java.util.List;
 
 public interface IStudentClassService {
-    public List<StudentClass> findAllByProjectId(int projectId);
+    List<StudentClass> findAllByProjectId(int projectId);
+    boolean addNewStudentToClass(int classId, int studentId);
+
+    List<StudentClass> findAllByClassId(int classId);
+
+    List<StudentClass> findAllNoGroupInClass(int classId);
+
+    boolean updateProjectId(Integer studentId, Integer projectId);
+
 }

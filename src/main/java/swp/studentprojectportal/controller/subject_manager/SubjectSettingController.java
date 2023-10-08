@@ -14,14 +14,13 @@ import swp.studentprojectportal.model.SubjectSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.servicesimpl.SubjectSettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.SubjectService;
 
-import java.util.ArrayList;
 import java.util.List;
 @Controller
 public class SubjectSettingController {
     @Autowired
-    SubjectSevice subjectService;
+    SubjectService subjectService;
     @Autowired
     SubjectSettingService subjectSettingService;
     @Autowired
@@ -78,7 +77,17 @@ public class SubjectSettingController {
             @RequestParam Integer typeId,
             @RequestParam String settingTitle,
             @RequestParam Integer displayOrder,
-            WebRequest request) {
+            WebRequest request,Model model,HttpSession session) {
+
+//        if(settingTitle.trim().isEmpty()){
+//            model.addAttribute("errmsg","Title not empty!");
+//            User user = (User) session.getAttribute("user");
+//            List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+//            SubjectSetting subjectSetting = subjectSettingService.findById(id);
+//            model.addAttribute("setting",subjectSetting);
+//            model.addAttribute("subjectList",subjectList);
+//            return "subjectSettingDetail";
+//        }
         String status = request.getParameter("status");
         SubjectSetting subjectSetting = new SubjectSetting();
         subjectSetting.setId(id);

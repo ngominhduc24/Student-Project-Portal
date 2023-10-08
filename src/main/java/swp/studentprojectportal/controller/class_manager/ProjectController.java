@@ -30,6 +30,7 @@ public class ProjectController {
 
         User user = (User)session.getAttribute("user");
         model.addAttribute("projectList", projectService.findAllByClassManagerId(user.getId()));
+        model.addAttribute("classList", classService.findAllByClassManagerId(user.getId()));
 
         return "class_manager/project/projectList";
     }
@@ -82,9 +83,11 @@ public class ProjectController {
     public String add(@RequestParam String title,
                       @RequestParam String groupName,
                       @RequestParam String description,
-                      @RequestParam int classId) {
+                      @RequestParam int classId,
+                      HttpSession session) {
+        User user = (User)session.getAttribute("user");
 
-        Project project = projectService.addNewProject(title,groupName, description, classId);
+        Project project = projectService.addNewProject(title,groupName, description, classId, user.getId());
 
         return "redirect:./details/" + project.getId();
     }
@@ -98,9 +101,66 @@ public class ProjectController {
 
     @GetMapping("/delete/{projectId}")
     public String delete(@PathVariable int projectId) {
+
         if (projectService.deleteById(projectId))
             return "redirect:../list/";
-        else return "redirect:../details/" + projectId;
+        else {
+
+            //add model?
+
+            return "redirect:../details/" + projectId;
+        }
+    }
+
+    @GetMapping("/member/{classId}")
+    public String member(Model model,
+                          @PathVariable Integer classId) {
+
+        model.addAttribute("projectList", projectService.findAllByClassId(classId));
+        model.addAttribute("class", classService.getClass(classId));
+        model.addAttribute("studentList", studentClassService.findAllByClassId(classId));
+        model.addAttribute("noGroupStudentList", studentClassService.findAllNoGroupInClass(classId));
+
+        return "class_manager/project/projectMember";
+    }
+
+    @GetMapping("/arrange/{classId}")
+    public String arrange(Model model,
+                          @PathVariable Integer classId) {
+
+        model.addAttribute("projectList", projectService.findAllByClassId(classId));
+        model.addAttribute("class", classService.getClass(classId));
+        model.addAttribute("studentList", studentClassService.findAllByClassId(classId));
+        model.addAttribute("noGroupStudentList", studentClassService.findAllNoGroupInClass(classId));
+
+        return "class_manager/project/projectArrange";
+    }
+
+    @GetMapping("/arrange-member/{studentId}/{projectId}")
+    public String arrangeMember(@PathVariable Integer studentId,
+                                @PathVariable Integer projectId) {
+
+        studentClassService.updateProjectId(studentId, projectId);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/setLeader/{studentId}/{projectId}")
+    public String setLeader(@PathVariable Integer studentId,
+                            @PathVariable Integer projectId) {
+
+        projectService.setLeader(studentId, projectId);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/updateNote/{studentId}/{note}")
+    public String updateNote(@PathVariable Integer studentId,
+                             @PathVariable String note) {
+
+        projectService.updateNote(studentId, note);
+
+        return "redirect:/";
     }
 
 }
