@@ -42,6 +42,9 @@ public class StudentClassService implements IStudentClassService {
 
         studentClass.setStudent(student);
         studentClass.setAclass(c);
+
+        if(checkStudentInClass(classId, studentId)) return false;
+
         if(studentClassRepository.save(studentClass) == null) return false;
         
         return true;

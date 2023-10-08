@@ -234,6 +234,12 @@
 
 <script>
   let apiUrl = `/api/v1/student?pageNo=1&pageSize=10&search=`; // Your API endpoint
+  let classId = '';
+  try {
+    classId = window.location.href.split("classId=")[1];
+  } catch (e) {
+    console.log(e);
+  }
 
   // Get references to the pagination elements
   const pagination = document.querySelector('.pagination');
@@ -306,14 +312,31 @@
               tableBody.innerHTML = '';
               data.forEach(user => {
                 const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                  <td>${user.fullName}</td>
-                  <td>${user.email || ''}</td>
-                  <td>${user.phone || ''}</td>
-                  <td>
-                    <button name="addstudent" type="button" class="btn btn-primary w-75 p-0">+</button>
-                  </td>
-                `;
+                fetch('/api/v1/student/checkClass?studentId=' + user.id + '&classId=' + classId)
+                        .then(response => response.json())
+                        .then(inClass => {
+                          if (inClass) {
+                            newRow.innerHTML = `
+                              <td>${user.fullName}</td>
+                              <td>${user.email || ''}</td>
+                              <td>${user.phone || ''}</td>
+                              <td>Student has inside class</td>
+                            `;
+                          } else {
+                            newRow.innerHTML = `
+                              <td>${user.fullName}</td>
+                              <td>${user.email || ''}</td>
+                              <td>${user.phone || ''}</td>
+                              <td>
+                                <button name="addstudent" type="button" class="btn btn-primary w-75 p-0" onclick="addStudent(${user.id})">+</button>
+                              </td>
+                            `;
+                          }
+                        })
+                        .catch(error => {
+                          console.error('Error fetching user data:', error);
+                        });
+
                 tableBody.appendChild(newRow);
               });
             })
@@ -342,6 +365,23 @@
     // replace the search value in the apiUrl
     populateUserTable(1);
   });
+
+  // handel add student to class
+    function addStudent(studentId) {
+        fetch('/api/v1/student/addStudentToClass?studentId=' + studentId + '&classId=' + classId)
+                .then(response => response.json())
+                .then(data => {
+                if (data) {
+                    console.log('Add student to class successfully');
+                    populateUserTable(currentPage);
+                } else {
+                  console.log('Add student to class failed');
+                }
+                })
+                .catch(error => {
+                console.error('Error fetching user data:', error);
+                });
+    }
 
 
   document.addEventListener("DOMContentLoaded", () => {

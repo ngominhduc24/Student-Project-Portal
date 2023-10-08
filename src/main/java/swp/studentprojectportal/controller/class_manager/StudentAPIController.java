@@ -38,7 +38,7 @@ public class StudentAPIController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping("/addToClass")
+    @GetMapping("student/addStudentToClass")
     public ResponseEntity addStudentToClass(
             @RequestParam(name = "classId") Integer classId,
             @RequestParam(name = "studentId") Integer studentId) {
