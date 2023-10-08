@@ -3,11 +3,11 @@ package swp.studentprojectportal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-<<<<<<< HEAD
+
 import swp.studentprojectportal.utils.Validate;
-=======
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
->>>>>>> ntn
+
 
 @SpringBootTest
 class StudentProjectPortalApplicationTests {

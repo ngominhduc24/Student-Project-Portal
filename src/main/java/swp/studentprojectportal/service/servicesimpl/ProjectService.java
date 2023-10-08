@@ -3,8 +3,12 @@ package swp.studentprojectportal.service.servicesimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Project;
+import swp.studentprojectportal.model.StudentClass;
+import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IProjectRepository;
+import swp.studentprojectportal.repository.IStudentClassRepository;
+import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IProjectService;
 
 import java.util.List;
@@ -17,7 +21,9 @@ public class ProjectService implements IProjectService {
     @Autowired
     IClassRepository classRepository;
     @Autowired
-    UserService userService;
+    IUserRepository userRepository;
+    @Autowired
+    IStudentClassRepository studentClassRepository;
 
     @Override
     public List<Project> findAllByClassId(int classId) {
@@ -36,13 +42,14 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Project addNewProject(String title, String groupName, String description, int classId) {
+    public Project addNewProject(String title, String groupName, String description, int classId, int mentorId) {
         Project project = new Project();
 
         project.setTitle(title);
         project.setGroupName(groupName);
         project.setAclass(classRepository.findClassById(classId));
         project.setDescription(description);
+        project.setProjectMentor(userRepository.findUserById(mentorId));
         project.setStatus(false);
 
         projectRepository.save(project);
@@ -57,8 +64,8 @@ public class ProjectService implements IProjectService {
         project.setTitle(title);
         project.setGroupName(groupName);
         project.setDescription(description);
-        project.setProjectMentor(userService.findUserById(mentorId).get());
-        if(teamLeaderId>0) project.setTeamLeader(userService.findUserById(teamLeaderId).get());
+        project.setProjectMentor(userRepository.findUserById(mentorId));
+        if(teamLeaderId>0) project.setTeamLeader(userRepository.findUserById(teamLeaderId));
 
         projectRepository.save(project);
 
@@ -86,5 +93,32 @@ public class ProjectService implements IProjectService {
         }
     }
 
+    @Override
+    public boolean setLeader(Integer studentId, Integer projectId) {
+        try {
+            Project p = projectRepository.findById(projectId).get();
+
+            p.setTeamLeader(userRepository.findUserById(studentId));
+            projectRepository.save(p);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateNote(Integer studentId, String note) {
+        try {
+            StudentClass studentClass = studentClassRepository.findById(studentId).get();
+
+            studentClass.getStudent().setNote(note);
+
+            userRepository.save(studentClass.getStudent());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }
