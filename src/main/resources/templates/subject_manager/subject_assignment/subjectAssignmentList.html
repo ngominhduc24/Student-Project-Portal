@@ -112,15 +112,6 @@
                         </div>
                     </div>
                 </div>
-                <script>
-                    function updateStatus(id, checkbox) {
-                        let status = checkbox.checked;
-                        if(confirm('Are you sure?'))
-                            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
-                        else checkbox.checked = !status;
-                    }
-                </script>
-
             </div>
         </div><!--end container-->
 
@@ -154,20 +145,15 @@
             '</div>');
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script>window.addEventListener('DOMContentLoaded', event => {
 
-    // Toggle the side navigation
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', event => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-        });
+<script>
+    function updateStatus(id, checkbox) {
+        let status = checkbox.checked;
+        if(confirm('Are you sure?'))
+            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
+        else checkbox.checked = !status;
     }
-
-});</script>
+</script>
 
 </body>
 

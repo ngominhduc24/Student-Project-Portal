@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Assignment;
-import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.service.servicesimpl.AssignmentService;
-import swp.studentprojectportal.service.servicesimpl.SubjectService;
+import swp.studentprojectportal.service.IAssignmentService;
+import swp.studentprojectportal.service.ISubjectService;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -19,9 +19,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Controller
 public class SubjectAssignmentController {
     @Autowired
-    SubjectService subjectService;
+    ISubjectService subjectService;
     @Autowired
-    AssignmentService assignmentService;
+    IAssignmentService assignmentService;
 
     List<Assignment> assignmentList = new CopyOnWriteArrayList<>();
     @GetMapping("subject-manager/subject-assignment")
@@ -29,6 +29,16 @@ public class SubjectAssignmentController {
         assignmentList = assignmentService.findAllAssignment(0,10);
         model.addAttribute("assignmentList", assignmentList);
         return "subject_manager/subject_assignment/subjectAssignmentList";
+    }
+
+    @GetMapping("/subject-manager/subject-assignment/updateStatus")
+    public String updateAssignmentStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        Assignment assignment = assignmentService.getAssignmentById(id);
+        assignment.setStatus(status);
+        assignmentService.saveAssignment(assignment);
+        return "redirect:/";
     }
 
     @GetMapping("/subject-manager/addSubjectAssignment")
@@ -71,7 +81,6 @@ public class SubjectAssignmentController {
         if(description.isEmpty()) return "Please input subject assignment description";
 //        if(assignmentService.checkTitleExisted(title)) return "Subject assignment title already exist";
 //        if(assignmentService.checkDescriptionMatch(description)) return "Subject assignment description already exist";
-
         return null;
     }
 
