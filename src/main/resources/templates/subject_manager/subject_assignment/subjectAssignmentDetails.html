@@ -63,6 +63,7 @@
                         <div class="card border-0 p-4 rounded shadow">
                             <form action="./addSubject" method="post" class="mt-4">
                                 <div class="row">
+                                    <input type="hidden" name="id" th:value="${assignment.id}">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Assignment Name<span class="text-danger">*</span></label>
