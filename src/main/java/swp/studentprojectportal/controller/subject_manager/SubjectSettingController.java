@@ -40,10 +40,10 @@ public class SubjectSettingController {
     }
 
     @PostMapping("/subject-manager/subject-setting")
-    public String searchPage(@RequestParam int subjectId, @RequestParam int typeId, @RequestParam int status, Model model, HttpSession session) {
+    public String searchPage(@RequestParam(defaultValue = "-1") Integer subjectId, @RequestParam(defaultValue = "-1") Integer typeId, @RequestParam(defaultValue = "-1") Integer status, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        List<SubjectSetting> subjectSettingList= subjectSettingService.filterSubjectSettingBySubjectAndTypeAndStatus(user.getId(), subjectId, typeId, status);
+        List<SubjectSetting> subjectSettingList= subjectSettingService.filter(user.getId(), subjectId, typeId, status);
         model.addAttribute("subjectId", subjectId);
         model.addAttribute("typeId", typeId);
         model.addAttribute("status", status);

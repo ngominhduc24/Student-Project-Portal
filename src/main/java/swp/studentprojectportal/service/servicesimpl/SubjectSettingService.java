@@ -23,36 +23,14 @@ public class SubjectSettingService implements ISubjectSettingService {
     }
 
     @Override
-    public List<SubjectSetting> filterSubjectSettingBySubjectAndTypeAndStatus(int subjectManagerId, int subjectId, int typeId, int status) {
-        List<SubjectSetting> result = new ArrayList<>();
-        if(subjectId!=-1){
-              Subject subject = subjectRepository.getById(subjectId);
-              if(typeId!=-1 && status!=-1)
-                  result = subjectSettingRepository.findSubjectSettingBySubjectAndTypeIdAndStatus(subject, typeId, status==1);
-              else if (typeId!=-1 && status==-1)
-                  result = subjectSettingRepository.findSubjectSettingBySubjectAndTypeId(subject ,typeId);
-              else if (typeId==-1 && status!=-1)
-                  result = subjectSettingRepository.findSubjectSettingBySubjectAndStatus(subject, status==1);
-              else
-                  result = subjectSettingRepository.findSubjectSettingBySubject(subject);
-        } else {
-              if(typeId!=-1 && status != -1)
-                  result = subjectSettingRepository.findSubjectSettingByManagerAndTypeIdAndStatus(subjectManagerId, typeId, status);
-              else if (typeId!=-1 && status==-1)
-                  result = subjectSettingRepository.findSubjectSettingByManagerAndTypeId(subjectManagerId, typeId);
-              else if (typeId==-1 && status!=-1)
-                  result = subjectSettingRepository.findSubjectSettingByManagerAndStatus(subjectManagerId, status);
-              else
-                  result = subjectSettingRepository.findSubjectSettingByManager(subjectManagerId);
-        }
-        return result;
+    public List<SubjectSetting> filter(int subjectManagerId, Integer subjectId, Integer typeId, Integer status) {
+        return subjectSettingRepository.filter(subjectManagerId, subjectId ,typeId, status);
     }
 
     @Override
     public SubjectSetting saveSubjectSetting(SubjectSetting subjectSetting) {
         return subjectSettingRepository.save(subjectSetting);
     }
-
 
     public SubjectSetting findById(int id){
         return subjectSettingRepository.findById(id).get();

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ISubjectSettingService {
     List<SubjectSetting> findSubjectSettingByManager(int subjectManagerId);
-    List<SubjectSetting> filterSubjectSettingBySubjectAndTypeAndStatus(int subjectManagerId, int subjectId, int typeId, int status);
+    List<SubjectSetting> filter(int subjectManagerId, Integer subjectId, Integer typeId, Integer status);
 
     SubjectSetting saveSubjectSetting(SubjectSetting setting);
     SubjectSetting findById(int id);
