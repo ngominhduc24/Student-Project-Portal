@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface IAssignmentRepository extends JpaRepository<Assignment, Integer> {
-
+    Assignment findAssignmentByTitle(String title);
+    Assignment findById(int id);
+    Assignment findAssignmentByDescription(String Description);
 }

@@ -15,6 +15,8 @@ import java.util.List;
 public class AssignmentService implements IAssignmentService {
     @Autowired
     IAssignmentRepository assignmentRepository;
+    @Autowired
+    SubjectService subjectService;
 
     @Override
     public List<Assignment> findAllAssignment(Integer pageno, Integer pagesize){
@@ -23,5 +25,24 @@ public class AssignmentService implements IAssignmentService {
         List<Assignment> assignment = assignmentPage.getContent();
         return assignment;
     }
+    @Override
+    public Assignment getAssignmentById(int assignmentId){
+        return (assignmentRepository.findById(assignmentId));
+    }
+    @Override
+    public Assignment addAssignment(String title, String description, int subjectId, boolean status) {
+        Assignment assignment = new Assignment();
 
+        assignment.setTitle(title);
+        assignment.setDescription(description);
+        assignment.setSubject(subjectService.getSubjectById(subjectId));
+        assignment.setStatus(status);
+
+        assignmentRepository.save(assignment);
+        return assignment;
+    }
+//    public boolean checkTitleExisted(String title) {
+//    }
+//    public boolean checkDescriptionMatch(String description) {
+//    }
 }

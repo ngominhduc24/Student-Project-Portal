@@ -10,7 +10,7 @@ import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.SubjectService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class ClassController {
     @Autowired
     ClassService classService;
     @Autowired
-    SubjectSevice subjectService;
+    SubjectService subjectService;
     @Autowired
     UserService userService;
     @Autowired

@@ -6,10 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.service.servicesimpl.SettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.SubjectService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
-import swp.studentprojectportal.utils.Validate;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SubjectController {
 
     @Autowired
-    SubjectSevice subjectService;
+    SubjectService subjectService;
 
     @Autowired
     UserService userService;
@@ -41,7 +39,6 @@ public class SubjectController {
     public String createSubjectPage(Model model) {
         model.addAttribute("subject", new Subject());
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-//        model.addAttribute("status",subjectService.findAllUserByStatus());
         return "admin/subject/subjectAdd";
     }
 

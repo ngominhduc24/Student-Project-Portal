@@ -14,14 +14,13 @@ import swp.studentprojectportal.model.SubjectSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.servicesimpl.SubjectSettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.SubjectService;
 
-import java.util.ArrayList;
 import java.util.List;
 @Controller
 public class SubjectSettingController {
     @Autowired
-    SubjectSevice subjectService;
+    SubjectService subjectService;
     @Autowired
     SubjectSettingService subjectSettingService;
     @Autowired
