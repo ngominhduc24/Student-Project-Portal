@@ -47,11 +47,6 @@ public class AssignmentService implements IAssignmentService {
     }
 
     @Override
-    public Assignment findById(int id){
-        return assignmentRepository.findById(id).get();
-    }
-
-    @Override
     public Assignment saveAssignment(Assignment assignment){
         return  assignmentRepository.save(assignment);
     }

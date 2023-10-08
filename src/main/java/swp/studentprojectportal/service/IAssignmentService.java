@@ -13,7 +13,5 @@ public interface IAssignmentService {
 
     List<Assignment> findAssignmentByManager(int subjectManagerId);
 
-    Assignment findById(int id);
-
     Assignment saveAssignment(Assignment assignment);
 }
