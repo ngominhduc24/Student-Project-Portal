@@ -46,4 +46,10 @@ public class StudentClassService implements IStudentClassService {
         
         return true;
     }
+
+    public boolean checkStudentInClass(int classId, int studentId) {
+        StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
+        if(studentClass == null) return false;
+        return true;
+    }
 }

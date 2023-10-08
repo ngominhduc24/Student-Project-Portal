@@ -25,8 +25,17 @@ public class StudentAPIController {
             @RequestParam(name = "search", defaultValue = "") String search)
     {
         final int roleId = 1;
+        final int status = 1;
         if(pageNo < 0 || pageSize < 0) return null;
-        return userService.getUser(pageNo, pageSize, search.trim(), roleId);
+        return userService.getUser(pageNo, pageSize, search.trim(), roleId, status);
+    }
+
+    @GetMapping("/student/checkClass")
+    public ResponseEntity checkStudentInClass(
+            @RequestParam(name = "classId") Integer classId,
+            @RequestParam(name = "studentId") Integer studentId) {
+        boolean result =  studentClassService.checkStudentInClass(classId, studentId);
+        return ResponseEntity.ok().body(result);
     }
 
     @PostMapping("/addToClass")
