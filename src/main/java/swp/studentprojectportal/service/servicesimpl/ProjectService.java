@@ -3,8 +3,11 @@ package swp.studentprojectportal.service.servicesimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Project;
+import swp.studentprojectportal.model.StudentClass;
+import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IProjectRepository;
+import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IProjectService;
 
@@ -19,6 +22,8 @@ public class ProjectService implements IProjectService {
     IClassRepository classRepository;
     @Autowired
     IUserRepository userRepository;
+    @Autowired
+    IStudentClassRepository studentClassRepository;
 
     @Override
     public List<Project> findAllByClassId(int classId) {
@@ -96,6 +101,20 @@ public class ProjectService implements IProjectService {
             p.setTeamLeader(userRepository.findUserById(studentId));
             projectRepository.save(p);
 
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateNote(Integer studentId, String note) {
+        try {
+            StudentClass studentClass = studentClassRepository.findById(studentId).get();
+
+            studentClass.getStudent().setNote(note);
+
+            userRepository.save(studentClass.getStudent());
             return true;
         } catch (Exception e) {
             return false;

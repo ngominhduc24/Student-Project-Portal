@@ -147,9 +147,18 @@ public class ProjectController {
 
     @GetMapping("/setLeader/{studentId}/{projectId}")
     public String setLeader(@PathVariable Integer studentId,
-                                @PathVariable Integer projectId) {
+                            @PathVariable Integer projectId) {
 
         projectService.setLeader(studentId, projectId);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/updateNote/{studentId}/{note}")
+    public String updateNote(@PathVariable Integer studentId,
+                             @PathVariable String note) {
+
+        projectService.updateNote(studentId, note);
 
         return "redirect:/";
     }

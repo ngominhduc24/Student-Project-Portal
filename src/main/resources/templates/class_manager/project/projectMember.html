@@ -151,6 +151,11 @@
                         width: 80%;
                         margin: 1.5vh;
                     }
+
+                    .dialog textarea{
+                        width: 80%;
+                        margin: 1.5vh;
+                    }
                 </style>
 
                 <div class="container-fluid px-4">
@@ -163,8 +168,8 @@
                                 <div class="student" th:each="student : ${noGroupStudentList}"  th:id="'stu'+${student.id}">
 
                                     <p class="form-control" th:text="${student.student.fullName}"></p>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
-                                         onclick="showDialog(this.parentNode)">
+<!--                                    <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"-->
+<!--                                         onclick="showDialog(this.parentNode)">-->
 
                                 </div>
 
@@ -174,9 +179,11 @@
                         <div class="col-md-4 project" th:each="project : ${projectList}" th:data-id="${project.id}"
                              th:data-leader="${project.teamLeader!=null ? 'stu'+project.teamLeader.id : '-1'}">
                             <div class="mb-3">
-                                <a class="form-label" th:href="'../details/' + ${project.id}" th:text="${project.title}"></a>
+                                <a class="form-label" th:href="'../details/' + ${project.id}"
+                                   th:text="${project.groupName} + ${project.status?'🔒':''}"></a>
 
-                                <div class="student" th:each="student : ${studentList}" th:id="'stu'+${student.id}"
+                                <div class="student" th:each="student : ${studentList}"
+                                     th:id="'stu'+${student.id}" th:data-note="${student.student.note!=null?student.student.note:' '}"
                                      th:if="${student.project!=null && student.project.id == project.id}">
 
                                     <p class="form-control"
@@ -199,21 +206,26 @@
         <div class="col-md-4 dialog">
             <button class="btn btn-secondary"
                     onclick="setLeader(this.parentNode.parentNode)">Set Team leader</button>
-            <button class="btn btn-secondary">Freeze</button>
-            <button class="btn btn-secondary">Update</button>
+            <button class="btn btn-secondary"
+                    onclick="freeze(this.parentNode.parentNode)">Freeze Project</button>
+            <button class="btn btn-secondary"
+                    onclick="note(this.parentNode.parentNode)">Note</button>
+            <textarea class="form-control"></textarea>
         </div>
 
         <script>
             const dialog = document.querySelector('.dialog');
             const projectDialog = document.querySelectorAll('.project img');
+            const noteInput = document.querySelector('textarea');
 
             document.addEventListener('click', (e) => {
-                if (!Array.from(projectDialog).includes(e.target) && dialog!==e.target)
+                if (!Array.from(projectDialog).includes(e.target) && dialog!==e.target && noteInput!==e.target)
                     dialog.style.display = 'none';
             });
 
             function showDialog(element) {
                 element.appendChild(dialog);
+                noteInput.value = element.dataset.note.trim();
                 dialog.style.display = 'flex';
             }
 
@@ -235,6 +247,23 @@
 
                 let student = document.querySelector(`#${id} p`);
                 student.textContent = student.textContent.split(' -')[0];
+            }
+
+            function note(element) {
+                if(noteInput.value.trim().length<1)
+                    alert('Cant empty!');
+                else {
+                    fetch(`../updateNote/${element.id.substring(3)}/${noteInput.value}`);
+
+                    element.dataset.note = noteInput.value;
+                }
+            }
+
+            function freeze(element) {
+                if(confirm('Are you sure')) {
+                    fetch(`../freeze/${element.parentNode.parentNode.dataset.id}`)
+                        .then(() => location.reload());
+                }
             }
         </script>
 

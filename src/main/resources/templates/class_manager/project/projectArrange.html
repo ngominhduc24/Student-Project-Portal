@@ -145,9 +145,10 @@
                         </div>
 
                         <div class="col-md-4 project" th:each="project : ${projectList}"
-                             th:data-id="${project.id}" th:if="${!project.status}">
-                            <div class="mb-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
-                                <label class="form-label" th:text="${project.title}"></label>
+                             th:data-id="${project.id}">
+                            <div class="mb-3" th:if="${!project.status}"
+                                 ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                <label class="form-label" th:text="${project.groupName}"></label>
 
                                 <div class="student" th:each="student : ${studentList}" th:data-id="${student.id}"
                                      draggable="true" ondragstart="drag(event)"
@@ -157,7 +158,17 @@
                                        th:text="${student.student.fullName}"></p>
 
                                 </div>
+                            </div>
 
+                            <div class="mb-3" th:if="${project.status}">
+                                <label class="form-label" th:text="${project.groupName} + '🔒'"></label>
+
+                                <div class="student" th:each="student : ${studentList}" th:data-id="${student.id}"
+                                     th:if="${student.project!=null && student.project.id == project.id}">
+
+                                    <p class="form-control" th:text="${student.student.fullName}"></p>
+
+                                </div>
                             </div>
                         </div>
 

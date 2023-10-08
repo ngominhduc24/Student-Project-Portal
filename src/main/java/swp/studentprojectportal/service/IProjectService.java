@@ -21,4 +21,6 @@ public interface IProjectService {
     boolean deleteById(int projectID);
 
     public boolean setLeader(Integer studentId, Integer projectId);
+
+    public boolean updateNote(Integer studentId, String note);
 }
