@@ -245,7 +245,7 @@
                                             <input class="form-check-input" type="checkbox" th:checked="${class.isStatus()}" th:onclick="'updateStatus(' + ${class.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/subject-manager/class/detail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td><a th:href="@{/subject-manager/classDetail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>

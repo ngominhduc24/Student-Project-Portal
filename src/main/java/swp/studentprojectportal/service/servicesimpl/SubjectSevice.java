@@ -123,4 +123,9 @@ public class SubjectSevice implements ISubjectService {
     public List<Subject> findAllSubjectByClassManagerId(Integer classManagerId) {
         return subjectRepository.findAllSubjectByClassManagerId(classManagerId);
     }
+
+    @Override
+    public List<Subject> findAllSubjectByUserAndStatus(User user, Boolean status) {
+        return subjectRepository.findAllSubjectByUserAndStatus(user, status);
+    }
 }

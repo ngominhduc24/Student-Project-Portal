@@ -17,6 +17,7 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
     Subject findSubjectBySubjectName(String subjectName);
     Subject findSubjectBySubjectCode(String subjectCode);
     List<Subject> findAllSubjectByUser(User user);
+    List<Subject> findAllSubjectByUserAndStatus(User user, Boolean status);
     @Query(value = "SELECT distinct s.* FROM class c join subject s on c.subject_id = s.id\n" +
             "WHERE c.teacher_id = ?1"
             ,nativeQuery = true)

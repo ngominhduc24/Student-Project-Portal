@@ -19,6 +19,8 @@ public interface ISettingRepository extends JpaRepository<Setting, Integer> {
     @Query(value="SELECT distinct setting.* FROM class c join subject s on c.subject_id = s.id join setting on c.semester_id = setting.id\n" +
             "WHERE s.subject_manager_id = ?1", nativeQuery = true)
     List<Setting> findSemesterBySubjectManagerId(int subjectManagerId);
+
+    List<Setting> findSemesterByTypeIdAndStatus(Integer typeId, Boolean status);
     @Query(value="SELECT distinct setting.* FROM class c join setting on c.semester_id = setting.id\n" +
             "WHERE c.teacher_id = ?1", nativeQuery = true)
     List<Setting> findSemesterByClassManagerId(int classManagerId);

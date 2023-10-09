@@ -17,13 +17,10 @@ public class SettingController {
     @Autowired
     SettingService settingService;
     @GetMapping("/admin/setting")
-    public String settingPage(@RequestParam(defaultValue = "0") Integer pageNo,
-                              @RequestParam(defaultValue = "10") Integer pageSize,
-                              @RequestParam(defaultValue = "") String search,
-                              @RequestParam(defaultValue = "-1") Integer typeId,
-                              @RequestParam(defaultValue = "-1") Integer status,
-                              @RequestParam(defaultValue = "id") String sortBy,
-                              @RequestParam(defaultValue = "1") Integer sortType, Model model) {
+    public String settingPage(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+                @RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") Integer typeId,
+                @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                @RequestParam(defaultValue = "1") Integer sortType, Model model) {
         Page<Setting> settingList = settingService.filter(search, pageNo, pageSize, sortBy, sortType, typeId, status);
         model.addAttribute("settingList", settingList);
         model.addAttribute("pageSize", pageSize);

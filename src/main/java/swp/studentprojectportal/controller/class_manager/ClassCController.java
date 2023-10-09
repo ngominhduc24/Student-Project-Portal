@@ -30,14 +30,10 @@ public class ClassCController {
     SettingService settingService;
 
     @GetMapping("/class-manager/classList")
-    public String classPage(@RequestParam(defaultValue = "0") Integer pageNo,
-                            @RequestParam(defaultValue = "10") Integer pageSize,
-                            @RequestParam(defaultValue = "") String search,
-                            @RequestParam(defaultValue = "-1") Integer subjectId,
-                            @RequestParam(defaultValue = "-1") Integer semesterId,
-                            @RequestParam(defaultValue = "-1") Integer status,
-                            @RequestParam(defaultValue = "id") String sortBy,
-                            @RequestParam(defaultValue = "1") Integer sortType,
+    public String classPage(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+                @RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") Integer subjectId,
+                @RequestParam(defaultValue = "-1") Integer semesterId, @RequestParam(defaultValue = "-1") Integer status,
+                @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
                             Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Page<Class> classList = classService.findAllByClassManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, status);
