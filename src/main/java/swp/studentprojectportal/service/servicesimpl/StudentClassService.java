@@ -48,13 +48,13 @@ public class StudentClassService implements IStudentClassService {
 
             //check team leader old project
             Project oldProject = studentClass.getProject();
-            if(oldProject!=null && oldProject.getTeamLeader().getId() == studentId) {
+            if (oldProject != null && oldProject.getTeamLeader().getId() == studentId) {
                 oldProject.setTeamLeader(null);
                 projectRepository.save(oldProject);
             }
 
             //update new project
-            if (projectId>0) studentClass.setProject(projectRepository.findById(projectId).get());
+            if (projectId > 0) studentClass.setProject(projectRepository.findById(projectId).get());
             else studentClass.setProject(null);
 
             studentClassRepository.save(studentClass);
@@ -71,29 +71,35 @@ public class StudentClassService implements IStudentClassService {
 
         // get student
         User student = userRepository.findUserById(studentId);
-        if(student == null) {
+        if (student == null) {
             return false;
         }
 
         // get class
         Class c = classRepository.findClassById(classId);
-        if(c == null) {
+        if (c == null) {
             return false;
         }
 
         studentClass.setStudent(student);
         studentClass.setAclass(c);
 
-        if(checkStudentInClass(classId, studentId)) return false;
+        if (checkStudentInClass(classId, studentId)) return false;
+        if (studentClassRepository.save(studentClass) == null) return false;
 
-        if(studentClassRepository.save(studentClass) == null) return false;
-        
         return true;
     }
 
     public boolean checkStudentInClass(int classId, int studentId) {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
-        if(studentClass == null) return false;
+        if (studentClass == null) return false;
+        return true;
+    }
+
+    public boolean removeStudentFromClass(int classId, int studentId) {
+        StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
+        if (studentClass == null) return false;
+        studentClassRepository.delete(studentClass);
         return true;
     }
 }

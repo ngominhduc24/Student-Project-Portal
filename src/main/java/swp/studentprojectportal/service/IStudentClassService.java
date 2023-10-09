@@ -14,4 +14,6 @@ public interface IStudentClassService {
 
     boolean updateProjectId(Integer studentId, Integer projectId);
 
+    boolean checkStudentInClass(int classId, int studentId);
+
 }

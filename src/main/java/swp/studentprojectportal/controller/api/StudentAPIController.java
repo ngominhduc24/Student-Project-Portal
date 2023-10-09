@@ -1,9 +1,10 @@
-package swp.studentprojectportal.controller.class_manager;
+package swp.studentprojectportal.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 
@@ -17,6 +18,8 @@ public class StudentAPIController {
     UserService userService;
     @Autowired
     StudentClassService studentClassService;
+    @Autowired
+    ClassService classService;
 
     @GetMapping("/student")
     public List<User> getStudent(
