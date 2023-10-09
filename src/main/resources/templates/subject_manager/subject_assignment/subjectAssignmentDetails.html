@@ -48,20 +48,20 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div>
-                    <h3 class="mb-0">Add Subject Assignment</h3>
+                    <h3 class="mb-0">Update Subject Assignment</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="/subject-manager/subject-assignment">Assignment</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Add Subject Assignment</li>
+                        <li class="breadcrumb-item active">Update Subject Assignment</li>
                     </ol>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="./addSubject" method="post" class="mt-4">
+                            <form action="./updateAssignment" method="post" class="mt-4">
                                 <div class="row">
                                     <input type="hidden" name="id" th:value="${assignment.id}">
                                     <div class="col-md-6">
@@ -104,6 +104,21 @@
                                     </div><!--end col-->
                                 </div><!--end row-->
 
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Status<span class="text-danger">*</span></label>
+                                        <select name="status" class="form-select">
+                                            <option value="true" th:selected="${true == assignment.status}">
+                                                Active
+                                            </option>
+                                            <option value="false" th:selected="${false == assignment.status}">
+                                                Inactive
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div><!--end col-->
+
+                                <h6 style="color: green" th:text="${successMsg}">a</h6>
                                 <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
                                 <button type="submit" class="btn btn-primary">Add Assignment</button>
                             </form>
