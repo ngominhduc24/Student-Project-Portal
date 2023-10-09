@@ -50,7 +50,7 @@
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
                     <h3 class="mb-0" th:if="${setting.id!=null}" th:text="${typeName}+' Details'"></h3>
-                    <h3 class="mb-0" th:if="${setting.id==null}" th:text="'New '+${typeName}"></h3>
+                    <h3 class="mb-0" th:if="${setting.id==null}" >New Setting</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
@@ -59,7 +59,7 @@
                         <li class="breadcrumb-item"><a href="/admin/setting">Setting</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active" th:if="${setting.id!=null}" th:text="${typeName}+' Details'"></li>
-                        <li class="breadcrumb-item active" th:if="${setting.id==null}" th:text="'New '+${typeName}"></li>
+                        <li class="breadcrumb-item active" th:if="${setting.id==null}" >New Setting</li>
                     </ol>
                 </div>
                 <div class="row">
@@ -70,8 +70,9 @@
                                     <div class="col-md-11" style="margin-top: 12px;">
                                         <div class="mb-3">
                                             <input type="hidden" name="id" th:value="${setting.id}">
-                                            <input type="hidden" name="typeId" th:value="${setting.typeId==null?typeId:setting.typeId}">
-                                            <label class="form-label" th:text="${typeName}"><span class="text-danger">*</span></label>
+                                            <input type="hidden" th:if="${setting.id!=null}" name="typeId" th:value="${setting.typeId==null?typeId:setting.typeId}">
+                                            <label class="form-label" th:if="${setting.id!=null}" th:text="${typeName}"><span class="text-danger">*</span></label>
+                                            <label class="form-label" th:if="${setting.id==null}">Setting Name<span class="text-danger">*</span></label>
                                             <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
                                         </div>
                                         <div class="mb-3">
@@ -79,15 +80,24 @@
                                             <textarea type="text" rows="3" name="description" class="form-control" required th:field="${setting.description}"></textarea>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Display Order<span class="text-danger">*</span></label>
-                                                <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
-                                                       th:value="${setting.displayOrder==null?displayOrder:setting.displayOrder}">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="form-label">Status<span class="text-danger">*</span></label>
-                                                <div class="form-check form-switch" style="font-size: 24px">
-                                                    <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
+                                            <div class="mb-3">
+                                                <div class="col-md-5" style="margin-right: 60px" th:if="${setting.id==null}">
+                                                    <label class="form-label">Setting Type<span class="text-danger">*</span></label>
+                                                    <select name="typeId" class="form-select" onchange="this.form.submit()">
+                                                        <option value="2">Permitted Email Domain</option>
+                                                        <option value="3">Semester</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Display Order<span class="text-danger">*</span></label>
+                                                    <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
+                                                           th:value="${setting.displayOrder==null?displayOrder:setting.displayOrder}">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Status<span class="text-danger">*</span></label>
+                                                    <div class="form-check form-switch" style="font-size: 24px">
+                                                        <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,8 +113,8 @@
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-11">
-                                        <button th:if="${setting.id!=null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 6px;margin-bottom:12px;">Save</button>
-                                        <button th:if="${setting.id==null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 6px;margin-bottom:12px;">Add</button>
+                                        <button th:if="${setting.id!=null}" type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
+                                        <button th:if="${setting.id==null}" type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Add</button>
                                     </div>
                                 </div>
                             </form>

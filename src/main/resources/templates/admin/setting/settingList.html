@@ -44,31 +44,55 @@
             text-align: center;
         }
         th:first-child {
-            width: 36%;
+            width: 8%;
+        }
+        th:nth-child(2) {
+            width: 25%;
+        }
+        th:nth-child(5) {
+            width: 14%;
         }
         th:last-child {
-            width: 18%;
+            width: 14%;
         }
-        .datatable-selector {
-            width: 60px;
-            padding: 8px;
-            border-color: #dee2e6;
-            border-radius: 6px;
-            margin-right: 8px;
+        th {
+            position: relative;
         }
-        .datatable-bottom, .datatable-input, .datatable-dropdown, .datatable-top {
+        .search-button {
+            border: none;
+            height: 34px;
+            width: 36px;
+            float: right;
+            margin-top: -35px;
+            margin-right: 1px;
+            cursor: pointer;
+        }
+        .datatable-search, .datatable-dropdown, .datatable-bottom, .datatable-sorter::before, .datatable-sorter::after {
             display: none;
         }
-        .datatable-sorter::before {
-            border-top: 6px solid #000;
-            bottom: 2px;
+        .caret-up{
+            position: absolute;
+            right: 6px;
+            top: 10px;
+            color: #cccccc;
+            cursor: pointer;
         }
-
-        .datatable-sorter::after {
-            border-bottom: 6px solid #000;
-            top: 2px;
+        .caret-down{
+            position: absolute;
+            right: 6px;
+            top: 16px;
+            color: #cccccc;
+            cursor: pointer;
         }
-
+        .caret-up:hover, .caret-down:hover {
+            color: black;
+        }
+        .sort-active{
+            color: black;
+        }
+        .datatable-top {
+            margin-bottom: 36px;
+        }
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
@@ -96,10 +120,10 @@
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
-            <div class="layout-specing">
+            <div class="layout-specing" style="padding-top: 84px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1>Setting List</h1>
+                        <h1 style="margin: 0">Setting List</h1>
                         <ol class="breadcrumb mb-1 ms-1">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
@@ -107,33 +131,93 @@
                         </ol>
                     </div><!--end col-->
 
-                    <div class="col-xl-4 col-md-6"></div>
+                    <div class="col-xl-5 col-md-6"></div>
 
+                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-end justify-content-center mb-2">
+                        <a href="/admin/setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
+                    </div><!--end col-->
 
                 </div><!--end row-->
 
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-header">
-                            <div class="text-center" style="padding: 8px 20px 8px 0;margin-right: 16px; float: left; margin-left: 8px; font-size: 18px">
-                                <i class="fas fa-table me-1"></i>
-                                Roles
-                            </div>
-                            <a href="/admin/setting/add?typeId=1" class="btn btn-primary" style="margin-left: 16px; float: right; margin-right: 8px;">Add New</a>
+                            <i class="fas fa-table me-1"></i>
+                            Setting List
                         </div>
-                        <div class="card-body">
+                        <form class="card-body" action="/admin/setting" id="form">
+                            <div class="row" style="width: 100%; position: absolute;left: 32px;top:64px;">
+                                <div class="col-md-3 row">
+                                    <div class="mb-3 col-md-4 pe-1" >
+                                        <select name="pageSize" class="form-select" onchange="this.form.submit()">
+                                            <option th:selected="${pageSize==5}" value="5">5</option>
+                                            <option th:selected="${pageSize==10}" value="10">10</option>
+                                            <option th:selected="${pageSize==15}" value="15">15</option>
+                                            <option th:selected="${pageSize==20}" value="20">20</option>
+                                            <option th:selected="${pageSize==25}" value="25">25</option>
+                                        </select>
+                                    </div>
+                                    <p class="ps-2 col-md-5 pt-2">per page</p>
+                                </div>
+                                <div class="row col-md-8" style="margin-left: -100px">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <select name="typeId" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1" th:selected="${typeId == -1}">All Setting Type</option>
+                                                <option value="1" th:selected="${typeId == 1}">User Role</option>
+                                                <option value="2" th:selected="${typeId == 2}">Permitted Email Domain</option>
+                                                <option value="3" th:selected="${typeId == 3}">Semester</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1" th:selected="${status == -1}">All Status</option>
+                                                <option value="1" th:selected="${status == 1}">Active</option>
+                                                <option value="0" th:selected="${status == 0}">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input class="form-control form-control-sm" type="text" th:value="${search}" name="search" placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                    <button onclick="this.form.submit()" class="search-button"> <i class="fas fa-search"  aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="sortBy" id="sortBy">
+                            <input type="hidden" name="sortType" id="sortType">
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
-                                    <th>Role</th>
-                                    <th>Display Order</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th data-sortable="false">Id
+                                        <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('id',1)"></i>
+                                        <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('id',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Setting Name
+                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('setting_title',1)"></i>
+                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('setting_title',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Type
+                                        <i th:class="${(sortBy eq 'type_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('type_id',1)"></i>
+                                        <i th:class="${(sortBy eq 'type_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('type_id',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Display Order
+                                        <i th:class="${(sortBy eq 'display_order' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('display_order',1)"></i>
+                                        <i th:class="${(sortBy eq 'display_order' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('display_order',2)"></i>
+
+                                    </th>
+                                    <th data-sortable="false">Status</th>
+                                    <th data-sortable="false">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="setting : ${roleList}">
+                                <tr th:each="setting : ${settingList}">
+                                    <td th:text="${setting.id}"></td>
                                     <td th:text="${setting.settingTitle}"></td>
+                                    <td th:if="${setting.typeId==1}">User Role</td>
+                                    <td th:if="${setting.typeId==2}">Permitted Email Domain</td>
+                                    <td th:if="${setting.typeId==3}">Semester</td>
                                     <td th:text="${setting.displayOrder}"></td>
                                     <td>
                                         <div class="form-check form-switch">
@@ -144,9 +228,44 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
+
+                            <nav aria-label="Page navigation example" style="margin-top: 20px;">
+                                <ul class="pagination justify-content-end">
+                                    <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo-1}+')'">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <input type="hidden" name="pageNo" id="pageNoInput">
+                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                        <a class="page-link" th:text="${i}" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${i-1}+')'">
+                                        </a>
+                                    </li>
+                                    <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link user-select-all" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo+1}+')'">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </form>
                     </div>
                 </div>
+
+                <script>
+                    function goToPage(i) {
+                        document.getElementById('pageNoInput').value = i;
+                        document.getElementById('form').submit();
+                    }
+                    function sortData(sortBy, sortType) {
+                        document.getElementById('sortBy').value = sortBy;
+                        document.getElementById('sortType').value = sortType;
+                        document.getElementById('form').submit();
+                    }
+                </script>
 
                 <script>
                     function updateStatus(id, checkbox) {
@@ -156,81 +275,6 @@
                         else checkbox.checked = !status;
                     }
                 </script>
-
-                <div class="container-fluid px-4">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <div class="text-center" style="padding: 8px 20px 8px 0;margin-right: 16px; float: left; margin-left: 8px; font-size: 18px">
-                                <i class="fas fa-table me-1"></i>
-                                Semesters
-                            </div>
-                            <a href="/admin/setting/add?typeId=3" class="btn btn-primary" style="margin-left: 16px; float: right; margin-right: 8px;">Add New</a>
-                        </div>
-                        <div class="card-body">
-                            <table id="datatablesSimple1" class="display">
-                                <thead>
-                                <tr>
-                                    <th>Semester</th>
-                                    <th>Display Order</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="setting : ${semesterList}">
-                                    <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.displayOrder}"></td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
-                                        </div>
-                                    </td>
-                                    <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="container-fluid px-4">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <div class="text-center" style="padding: 8px 20px 8px 0;margin-right: 16px; float: left; margin-left: 8px; font-size: 18px">
-                                <i class="fas fa-table me-1"></i>
-                                Permitted Email Domains
-                            </div>
-                            <a href="/admin/setting/add?typeId=2" class="btn btn-primary" style="margin-left: 16px; float: right; margin-right: 8px;">Add New</a>
-                        </div>
-                        <div class="card-body">
-                            <table id="datatablesSimple2" class="display">
-                                <thead>
-                                <tr>
-                                    <th>Permitted Email Domain</th>
-                                    <th>Display Order</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="setting : ${emailDomainList}">
-                                    <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.displayOrder}"></td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
-                                        </div>
-                                    </td>
-                                    <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
         </div><!--end container-->
 
@@ -271,21 +315,11 @@
 <script>
     window.addEventListener('DOMContentLoaded', event => {
 
-    const datatablesSimple = document.getElementById('datatablesSimple');
-    if (datatablesSimple) {
-        new simpleDatatables.DataTable(datatablesSimple);
-    }
-
-    const datatablesSimple1 = document.getElementById('datatablesSimple1');
-    if (datatablesSimple1) {
-        new simpleDatatables.DataTable(datatablesSimple1);
-    }
-
-    const datatablesSimple2 = document.getElementById('datatablesSimple2');
-    if (datatablesSimple2) {
-        new simpleDatatables.DataTable(datatablesSimple2);
-    }
-});
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple);
+        }
+    });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script>window.addEventListener('DOMContentLoaded', event => {
