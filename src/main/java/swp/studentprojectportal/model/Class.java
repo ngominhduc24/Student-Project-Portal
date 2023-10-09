@@ -21,6 +21,9 @@ public class Class {
     @Column(name = "class_name")
     private String className;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "status")
     private boolean status = true;
 

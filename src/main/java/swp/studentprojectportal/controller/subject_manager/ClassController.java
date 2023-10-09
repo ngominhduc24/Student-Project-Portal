@@ -83,7 +83,7 @@ public class ClassController {
     }
 
     @PostMapping("/class/update")
-    public String updateClass(@RequestParam Integer id,
+    public String updateClass(@RequestParam Integer id,@RequestParam String description,
             @RequestParam String className, @RequestParam Integer subjectId,
             @RequestParam Integer semesterId, @RequestParam Integer classManagerId,
                               WebRequest request, Model model, HttpSession session) {
@@ -91,6 +91,7 @@ public class ClassController {
         Class classA = new Class();
         classA.setId(id);
         classA.setClassName(className);
+        classA.setDescription(description);
         classA.setSubject(subjectService.getSubjectById(subjectId));
         classA.setSemester(settingService.getSettingByID(semesterId));
         classA.setUser(userService.getUserById(classManagerId));

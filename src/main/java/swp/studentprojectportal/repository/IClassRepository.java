@@ -19,7 +19,7 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
     Class findClassByClassNameAndSubjectId(String className, Integer subjectId);
 
     List<Class> findAllByUserId(Integer classManagerId);
-    @Query(value="SELECT c.id, c.class_name, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at " +
+    @Query(value="SELECT c.id, c.class_name, c.description, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at " +
             "FROM class c join subject s on c.subject_id = s.id join setting st on c.semester_id = st.id join user u on c.teacher_id = u.id\n" +
             "WHERE s.subject_manager_id = :subjectManagerId " +
             "and (LOWER(c.class_name) LIKE LOWER(CONCAT('%', :search, '%'))  " +
@@ -33,7 +33,7 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
                                           @Param("teacherId") Integer teacherId, @Param("status") Integer status,
                                           Pageable pageable);
 
-    @Query(value="SELECT c.id, c.class_name, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at " +
+    @Query(value="SELECT c.id, c.class_name, c.description, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at " +
             "FROM class c join subject s on c.subject_id = s.id join setting st on c.semester_id = st.id join user u on c.teacher_id = u.id\n" +
             "WHERE c.teacher_id = :teacherId " +
             "and (LOWER(c.class_name) LIKE LOWER(CONCAT('%', :search, '%'))  " +

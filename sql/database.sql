@@ -128,6 +128,7 @@ DROP TABLE IF EXISTS `swp391`.`class` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`class` (
                                                 `id` INT NOT NULL AUTO_INCREMENT,
                                                 `class_name` VARCHAR(245) NULL,
+    `description` LONGTEXT NULL,
     `subject_id` INT NULL,
     `semester_id` INT NULL,
     `teacher_id` INT NULL,
@@ -393,14 +394,24 @@ VALUES
     (2 ,2, "Medium",2),
     (2 ,2, "Low",3);
 
-INSERT INTO `class` (`class_name`,`subject_id`,`semester_id`,`teacher_id`,`status`)
+INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
-    ("SE1720",1,7,3,1),
-    ("SE1722",1,7,3,1),
-    ("SE1740",1,8,6,1),
-    ("SE1741",1,8,6,1),
-    ("SE1740",2,8,3,1),
-    ("SE1741",2,8,3,1);
+    ("SE1720","Study software engineering",1,7,3,1),
+    ("SE1722","Study software engineering",1,7,3,1),
+    ("SE1704","Study software engineering",1,7,3,1),
+    ("SE1707","Study software engineering",1,7,3,1),
+    ("SE1712","Study software engineering",2,7,6,1),
+    ("SE1715","Study software engineering",2,7,6,1),
+    ("SE1709","Study software engineering",2,7,6,1),
+    ("SE1710","Study software engineering",2,7,6,1),
+    ("SE1740","Study software engineering",1,8,6,1),
+    ("SE1741","Study software engineering",1,8,6,1),
+    ("SE1731","Study software engineering",1,8,6,1),
+    ("SE1736","Study software engineering",1,8,6,1),
+    ("SE1740","Study software engineering",2,8,3,1),
+    ("SE1745","Study software engineering",2,8,3,1),
+    ("SE1734","Study software engineering",2,8,3,1),
+    ("SE1736","Study software engineering",2,8,3,1);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES

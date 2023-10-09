@@ -69,37 +69,19 @@
                                         <div class="mb-3 col-md-6">
                                             <input type="hidden" name="id" th:value="${class.id}">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <input type="text" name="className" class="form-control" required th:value="${class.className}">
+                                            <input type="text" class="form-control" readonly th:value="${class.className}">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subjectId" class="form-select">
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectCode}"
-                                                        th:selected="${subject.id == class.subject.id}"
-                                                ></option>
-                                            </select>
+                                            <input type="text" class="form-control" readonly th:value="${class.subject.subjectCode}">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Semester<span class="text-danger">*</span></label>
-                                            <select name="semesterId" class="form-select">
-                                                <option th:each="semester : ${semesterList}"
-                                                        th:value="${semester.id}"
-                                                        th:text="${semester.settingTitle}"
-                                                        th:selected="${semester.id == class.semester.id}"
-                                                ></option>
-                                            </select>
+                                            <input type="text" class="form-control" readonly th:value="${class.semester.settingTitle}">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <select name="classManagerId" class="form-select">
-                                                <option th:each="teacher : ${teacherList}"
-                                                        th:value="${teacher.id}"
-                                                        th:text="${teacher.fullName}"
-                                                        th:selected="${teacher.id == class.user.id}"
-                                                ></option>
-                                            </select>
+                                            <input type="text" class="form-control" readonly th:value="${class.user.fullName}">
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description</label>
@@ -108,7 +90,7 @@
                                         <div class="col-md-2">
                                             <label class="form-label">Status<span class="text-danger">*</span></label>
                                             <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${class.isStatus()}" >
+                                                <input style="margin-left: -62px" class="form-check-input" value="on" disabled name="status" type="checkbox" th:checked="${class.isStatus()}" >
                                             </div>
                                         </div>
 

@@ -227,30 +227,30 @@
                                     <td th:text="${class.semester.settingTitle}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${class.isStatus()}" th:onclick="'updateStatus(' + ${class.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" disabled th:checked="${class.isStatus()}" th:onclick="'updateStatus(' + ${class.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/class-manager/class/detail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td><a th:href="@{/class-manager/classDetail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <nav aria-label="Page navigation example" style="margin-top: 20px;">
+                            <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
                                         <a class="page-link" style="cursor: pointer"
-                                           th:onclick="'goToPage('+ ${pageNo-1}+')'">
+                                           th:onclick="'goToPage('+ ${pageNo}+')'">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
                                     <input type="hidden" name="pageNo" id="pageNoInput">
-                                    <li th:if="${totalPage!=0}" th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                    <li  th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
-                                           th:onclick="'goToPage('+ ${i-1}+')'">
+                                           th:onclick="'goToPage('+ ${i}+')'">
                                         </a>
                                     </li>
                                     <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
                                         <a class="page-link user-select-all" style="cursor: pointer"
-                                           th:onclick="'goToPage('+ ${pageNo+1}+')'">
+                                           th:onclick="'goToPage('+ ${pageNo}+')'">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
@@ -262,7 +262,7 @@
 
                 <script>
                     function goToPage(i) {
-                        document.getElementById('pageNoInput').value = i;
+                        document.getElementById('pageNoInput').value = i-1;
                         document.getElementById('form').submit();
                     }
                     function sortData(sortBy, sortType) {
