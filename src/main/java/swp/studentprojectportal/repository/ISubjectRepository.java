@@ -17,6 +17,10 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
     Subject findSubjectBySubjectName(String subjectName);
     Subject findSubjectBySubjectCode(String subjectCode);
     List<Subject> findAllSubjectByUser(User user);
+    @Query(value = "SELECT distinct s.* FROM class c join subject s on c.subject_id = s.id\n" +
+            "WHERE c.teacher_id = ?1"
+            ,nativeQuery = true)
+    List<Subject> findAllSubjectByClassManagerId(Integer classManagerId);
     //List<Subject> findSubjectPaging(Pageable pageable);
 
     Page<Subject> findSubjectBySubjectCodeContainsIgnoreCaseOrSubjectNameContainsIgnoreCase(String subjectCode, String subjectName, Pageable pageable);

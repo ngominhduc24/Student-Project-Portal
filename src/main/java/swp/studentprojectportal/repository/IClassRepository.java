@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.Class;
+import swp.studentprojectportal.model.Subject;
+import swp.studentprojectportal.model.User;
 
 import java.util.List;
 
@@ -25,8 +27,21 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
             "OR LOWER(u.full_name) LIKE LOWER(CONCAT('%', :search, '%'))) " +
             "and (:subjectId = -1 OR c.subject_id = :subjectId) and (:semesterId = -1 OR c.semester_id = :semesterId) " +
             "and (:teacherId = -1 OR c.teacher_id=:teacherId) and (:status = -1 OR c.status = :status)", nativeQuery = true)
-    Page<Class> filter(@Param("subjectManagerId") Integer subjectManagerId, @Param("search") String search,
+    Page<Class> filterClassBySubjectManager(@Param("subjectManagerId") Integer subjectManagerId, @Param("search") String search,
                                           @Param("subjectId") Integer subjectId, @Param("semesterId") Integer semesterId,
                                           @Param("teacherId") Integer teacherId, @Param("status") Integer status,
                                           Pageable pageable);
+
+    @Query(value="SELECT c.id, c.class_name, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at " +
+            "FROM class c join subject s on c.subject_id = s.id join setting st on c.semester_id = st.id join user u on c.teacher_id = u.id\n" +
+            "WHERE c.teacher_id = :teacherId " +
+            "and (LOWER(c.class_name) LIKE LOWER(CONCAT('%', :search, '%'))  " +
+            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(st.setting_title) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "and (:subjectId = -1 OR c.subject_id = :subjectId) and (:semesterId = -1 OR c.semester_id = :semesterId) " +
+            "and (:status = -1 OR c.status = :status)", nativeQuery = true)
+    Page<Class> filterClassByClassManager(@Param("teacherId") Integer teacherId, @Param("search") String search,
+                                            @Param("subjectId") Integer subjectId, @Param("semesterId") Integer semesterId,
+                                            @Param("status") Integer status,
+                                            Pageable pageable);
 }

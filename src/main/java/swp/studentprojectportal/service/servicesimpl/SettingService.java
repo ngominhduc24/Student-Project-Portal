@@ -92,4 +92,9 @@ public class SettingService implements ISettingService {
     public List<Setting> findSemesterBySubjectManagerId(int subjectManagerId) {
         return settingRepository.findSemesterBySubjectManagerId(subjectManagerId);
     }
+
+    @Override
+    public List<Setting> findSemesterByClassManagerId(int classManagerId) {
+        return settingRepository.findSemesterByClassManagerId(classManagerId);
+    }
 }

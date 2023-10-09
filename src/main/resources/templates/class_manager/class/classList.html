@@ -127,24 +127,24 @@
             <div class="layout-specing" style="padding-top: 84px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1 style="margin: 0">Subject Setting List</h1>
+                        <h1 style="margin: 0">Class List</h1>
                         <ol class="breadcrumb mb-1 ms-1">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active"><a>Subject Setting List</a></li>
+                            <li class="breadcrumb-item active"><a>Class List</a></li>
                         </ol>
                     </div><!--end col-->
 
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
-                        <a href="/subject-manager/subject-setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
+                        <a href="/class-manager/class/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
 
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form class="card-body rounded-3" action="/subject-manager/subject-setting" id="form">
+                        <form class="card-body rounded-3" action="/class-manager/classList" id="form">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1" >
@@ -171,10 +171,11 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="mb-3">
-                                            <select name="typeId" class="form-select" onchange="this.form.submit()">
-                                                <option value="-1" th:selected="${typeId == -1}">All Type</option>
-                                                <option value="1" th:selected="${typeId == 1}">Complexity</option>
-                                                <option value="2" th:selected="${typeId == 2}">Quality</option>
+                                            <select name="semesterId" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1">All Semester</option>
+                                                <option th:each="semester : ${semesterList}"
+                                                        th:value="${semester.id}"
+                                                        th:text="${semester.settingTitle}" th:selected="${semesterId == semester.id}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -198,43 +199,38 @@
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
-                                    <th data-sortable="false">Subject ID
-                                        <i th:class="${(sortBy eq 'subject_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('subject_id',1)"></i>
-                                        <i th:class="${(sortBy eq 'subject_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('subject_id',2)"></i>
+                                    <th data-sortable="false">Class ID
+                                        <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('id',1)"></i>
+                                        <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('id',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Class Name
+                                        <i th:class="${(sortBy eq 'class_name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('class_name',1)"></i>
+                                        <i th:class="${(sortBy eq 'class_name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('class_name',2)"></i>
                                     </th>
                                     <th data-sortable="false">Subject
                                         <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('s.subject_code',1)"></i>
                                         <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('s.subject_code',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Type
-                                        <i th:class="${(sortBy eq 'type_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('type_id',1)"></i>
-                                        <i th:class="${(sortBy eq 'type_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('type_id',2)"></i>
+                                    <th data-sortable="false">Semester
+                                        <i th:class="${(sortBy eq 'st.setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('st.setting_title',1)"></i>
+                                        <i th:class="${(sortBy eq 'st.setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('st.setting_title',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Tittle
-                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('setting_title',1)"></i>
-                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('setting_title',2)"></i>
-                                    </th>
-                                    <th data-sortable="false">Display Order
-                                        <i th:class="${(sortBy eq 'display_order' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('display_order',1)"></i>
-                                        <i th:class="${(sortBy eq 'display_order' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('display_order',2)"></i>
-                                    </th>
-                                    <th data-sortable="false">Status</th>
-                                    <th data-sortable="false">Actions</th>
+                                    <th data-sortable="false">Status </th>
+                                    <th data-sortable="false">Actions </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="setting : ${subjectSettingList}">
-                                    <td th:text="${setting.subject.id}"></td>
-                                    <td th:text="${setting.subject.subjectCode}"></td>
-                                    <td th:text="${setting.typeId==1?'Complexity':'Quality'}"></td>
-                                    <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.displayOrder}"></td>
+                                <tr th:each="class : ${classList}">
+                                    <td th:text="${class.id}"></td>
+                                    <td th:text="${class.className}"></td>
+                                    <td th:text="${class.subject.subjectCode}"></td>
+                                    <td th:text="${class.semester.settingTitle}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${class.isStatus()}" th:onclick="'updateStatus(' + ${class.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/subject-manager/subject-setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td><a th:href="@{/class-manager/class/detail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -247,7 +243,7 @@
                                         </a>
                                     </li>
                                     <input type="hidden" name="pageNo" id="pageNoInput">
-                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                    <li th:if="${totalPage!=0}" th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
                                            th:onclick="'goToPage('+ ${i-1}+')'">
                                         </a>
@@ -280,7 +276,7 @@
                     function updateStatus(id, checkbox) {
                         let status = checkbox.checked;
                         if(confirm('Are you sure?'))
-                            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
+                            fetch(`/class-manager/class/updateStatus?id=${id}&status=${status}`)
                         else checkbox.checked = !status;
                     }
                 </script>

@@ -52,8 +52,18 @@ public class ClassService implements IClassService {
             sort = Sort.by(sortBy).ascending();
         else
             sort = Sort.by(sortBy).descending();
-        return classRepository.filter(subjecManagertId, search, subjectId, semesterId, teacherId, status,
+        return classRepository.filterClassBySubjectManager(subjecManagertId, search, subjectId, semesterId, teacherId, status,
                 PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
+    public Page<Class> findAllByClassManagerId(int teacherId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer subjectId, Integer semesterId, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return classRepository.filterClassByClassManager(teacherId , search , subjectId, semesterId, status, PageRequest.of(pageNo, pageSize, sort));
     }
 
     @Override

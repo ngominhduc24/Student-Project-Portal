@@ -69,6 +69,7 @@
             margin-top: -35px;
             margin-right: 1px;
             cursor: pointer;
+            background-color: #ffffff;
         }
         .datatable-search, .datatable-dropdown, .datatable-bottom, .datatable-sorter::before, .datatable-sorter::after {
             display: none;
@@ -136,20 +137,15 @@
 
                     <div class="col-xl-5 col-md-6"></div>
 
-                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-end justify-content-center mb-2">
+                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
                         <a href="/subject-manager/class/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
 
                 </div><!--end row-->
-                <h3 th:text="${error}" style="color:red; text-align: center;"></h3>
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Subject Setting
-                        </div>
-                        <form class="card-body" action="/subject-manager/class" id="form">
-                            <div class="row" style="width: 100%; position: absolute;left: 32px;top:64px;">
+                        <form class="card-body rounded-3" action="/subject-manager/class" id="form">
+                            <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1" >
                                         <select name="pageSize" class="form-select" onchange="this.form.submit()">
@@ -262,7 +258,7 @@
                                         </a>
                                     </li>
                                     <input type="hidden" name="pageNo" id="pageNoInput">
-                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                    <li th:if="${totalPage!=0}" th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
                                            th:onclick="'goToPage('+ ${i-1}+')'">
                                         </a>
