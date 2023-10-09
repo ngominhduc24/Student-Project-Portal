@@ -287,6 +287,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
                                                           `subject_id` INT NULL,
                                                           `type_id` INT NULL,
                                                           `setting_title` VARCHAR(45) NULL,
+    `setting_value` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
@@ -380,19 +381,19 @@ VALUES
     (4,"Front-End web development with React","FER201m");
 
 -- subject_setting
-INSERT INTO subject_setting(subject_id,type_id,setting_title,display_order)
+INSERT INTO subject_setting(subject_id,type_id,setting_title,setting_value,display_order)
 VALUES
-    (1 ,1 , "High",1),
-    (1 ,1, "Medium",2),
-    (1 ,1, "Low",3),
-    (1 ,2, "High",1),
-    (1 ,2, "Medium",2),
-    (1 ,2, "Low",3),
-    (2 ,1, "High",1),
-    (2 ,1, "Medium",2),
-    (2 ,2, "High",1),
-    (2 ,2, "Medium",2),
-    (2 ,2, "Low",3);
+    (1 ,1, "High","240",1),
+    (1 ,1, "Medium","120",2),
+    (1 ,1, "Low","60",3),
+    (1 ,2, "High",">=80%",1),
+    (1 ,2, "Medium",">=50%",2),
+    (1 ,2, "Low","<50%",3),
+    (2 ,1, "High","240",1),
+    (2 ,1, "Medium","120",2),
+    (2 ,2, "High",">=80%",1),
+    (2 ,2, "Medium",">=50%",2),
+    (2 ,2, "Low","<50%",3);
 
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
