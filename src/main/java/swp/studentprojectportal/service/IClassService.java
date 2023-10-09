@@ -1,6 +1,7 @@
 package swp.studentprojectportal.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.SubjectSetting;
@@ -14,7 +15,9 @@ public interface IClassService {
     Class getClass(int classId);
 
     List<Class> findAllByClassManagerId(int classManagerId);
-    List<Class> findAllBySubjectManagerId(int subjectManagerId);
+    Page<Class> findAllBySubjectManagerId(int subjectManagerId, String search, Integer pageNo,
+                                          Integer pageSize, String sortBy, Integer sortType, Integer subjectId, Integer semesterId,
+                                          Integer teacherId, Integer status);
     Class findById(int id);
     Class saveClass(Class classA);
 }
