@@ -14,4 +14,6 @@ public interface IAssignmentService {
     List<Assignment> findAssignmentByManager(int subjectManagerId);
 
     Assignment saveAssignment(Assignment assignment);
+
+    boolean updateAssignment(int id, String title, String description, int subject, boolean status);
 }
