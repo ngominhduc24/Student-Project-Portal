@@ -1,6 +1,9 @@
 package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.SubjectSetting;
@@ -23,36 +26,20 @@ public class SubjectSettingService implements ISubjectSettingService {
     }
 
     @Override
-    public List<SubjectSetting> filterSubjectSettingBySubjectAndTypeAndStatus(int subjectManagerId, int subjectId, int typeId, int status) {
-        List<SubjectSetting> result = new ArrayList<>();
-        if(subjectId!=-1){
-              Subject subject = subjectRepository.getById(subjectId);
-              if(typeId!=-1 && status!=-1)
-                  result = subjectSettingRepository.findSubjectSettingBySubjectAndTypeIdAndStatus(subject, typeId, status==1);
-              else if (typeId!=-1 && status==-1)
-                  result = subjectSettingRepository.findSubjectSettingBySubjectAndTypeId(subject ,typeId);
-              else if (typeId==-1 && status!=-1)
-                  result = subjectSettingRepository.findSubjectSettingBySubjectAndStatus(subject, status==1);
-              else
-                  result = subjectSettingRepository.findSubjectSettingBySubject(subject);
-        } else {
-              if(typeId!=-1 && status != -1)
-                  result = subjectSettingRepository.findSubjectSettingByManagerAndTypeIdAndStatus(subjectManagerId, typeId, status);
-              else if (typeId!=-1 && status==-1)
-                  result = subjectSettingRepository.findSubjectSettingByManagerAndTypeId(subjectManagerId, typeId);
-              else if (typeId==-1 && status!=-1)
-                  result = subjectSettingRepository.findSubjectSettingByManagerAndStatus(subjectManagerId, status);
-              else
-                  result = subjectSettingRepository.findSubjectSettingByManager(subjectManagerId);
-        }
-        return result;
+    public Page<SubjectSetting> filter(int subjectManagerId, String search, Integer pageNo, Integer pageSize,
+                                       String sortBy, Integer sortType, Integer subjectId, Integer typeId, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return subjectSettingRepository.filter(subjectManagerId, search, subjectId ,typeId, status, PageRequest.of(pageNo, pageSize, sort));
     }
 
     @Override
     public SubjectSetting saveSubjectSetting(SubjectSetting subjectSetting) {
         return subjectSettingRepository.save(subjectSetting);
     }
-
 
     public SubjectSetting findById(int id){
         return subjectSettingRepository.findById(id).get();

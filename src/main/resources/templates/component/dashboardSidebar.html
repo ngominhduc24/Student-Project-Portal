@@ -49,6 +49,7 @@
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class-assignment"><i class="uil uil-book me-2 d-inline-block"></i>Class Assignment</a></li>
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i class="uil uil-book me-2 d-inline-block"></i>Class</a></li>
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/subject-setting"><i class="uil uil-setting me-2 d-inline-block"></i>Subject Setting</a></li>
+            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i class="uil uil-calender me-2 d-inline-block"></i>Class</a></li>
             <!--    class manager function == 4-->
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/class"><i class="uil uil-setting me-2 d-inline-block"></i>Class Details</a></li>
             <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>

@@ -1,6 +1,9 @@
 package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.repository.ISettingRepository;
@@ -13,9 +16,16 @@ public class SettingService implements ISettingService {
     @Autowired
     ISettingRepository settingRepository;
 
+
     @Override
-    public List<Setting> findSettingByTypeIdOrderByDisplayOrder(Integer typeId) {
-        return settingRepository.findSettingByTypeIdOrderByDisplayOrder(typeId);
+    public Page<Setting> filter(String search, Integer pageNo, Integer pageSize,
+                                 String sortBy, Integer sortType, Integer typeId, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return settingRepository.filter(search, typeId, status, PageRequest.of(pageNo, pageSize, sort));
     }
 
     @Override
@@ -68,7 +78,7 @@ public class SettingService implements ISettingService {
     @Override
     public String setTypeName(int typeId) {
         String typeName="";
-        if(typeId==1) typeName="Role";
+        if(typeId==1) typeName="User Role";
         if(typeId==3) typeName="Semester";
         if(typeId==2) typeName="Perrmitted Email Domain";
         return typeName;
