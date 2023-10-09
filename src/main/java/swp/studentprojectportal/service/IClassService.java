@@ -23,4 +23,5 @@ public interface IClassService {
                                           Integer status);
     Class findById(int id);
     Class saveClass(Class classA);
+    public boolean checkExistedClassName(String className, Integer subjectId, Integer id);
 }

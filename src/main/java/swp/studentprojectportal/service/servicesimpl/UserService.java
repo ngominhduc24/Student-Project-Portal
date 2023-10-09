@@ -270,4 +270,9 @@ public class UserService implements IUserService {
         return userRepository.findAllBySettingIdOrSettingId(3,4);
     }
 
+    @Override
+    public User getUserById(int id) {
+        return userRepository.getById(id);
+    }
+
 }

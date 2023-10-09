@@ -55,7 +55,7 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/admin/setting">Setting</a></li>
+                        <li class="breadcrumb-item"><a href="/subject-manager/classList">Class List</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Class Details</li>
                     </ol>
@@ -93,7 +93,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <select name="typeId" class="form-select">
+                                            <select name="classManagerId" class="form-select">
                                                 <option th:each="teacher : ${teacherList}"
                                                         th:value="${teacher.id}"
                                                         th:text="${teacher.fullName}"
@@ -108,7 +108,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mt-2">
                                             <h6 style="color: indianred;" th:text="${errmsg}"></h6>
                                             <h6 style="color: green;" th:text="${msg}"></h6>
                                         </div>

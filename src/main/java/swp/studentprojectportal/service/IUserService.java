@@ -27,4 +27,5 @@ public interface IUserService {
     int getTotalPage(int pageSize, int roleId);
     List<User> findTeacherBySubjectManagerId(int subjectManagerId);
     List<User> findTeacherByRoleIdAndStatus(Integer roleId, Boolean status);
+    User getUserById(int id);
 }
