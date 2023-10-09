@@ -134,6 +134,7 @@
                   <th>Role</th>
                   <th>Status</th>
                   <th>View Details</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -149,6 +150,12 @@
                     </div>
                   </td>
                   <td><a th:href="@{'./class/studentDetails?studentId=' + ${user.id}}">View Details</a>
+                  </td>
+                  <td>
+                    <button name="deletestudent" type="button" class="btn btn-danger w-75 p-0">
+                      <a th:href="@{'./class/removeStudentFromClass?studentId=' + ${user.id} + '&classId=' + ${classId}}" style="color: white; ">-</a>
+                    </button>
+
                   </td>
                 </tr>
                 </tbody>
@@ -232,6 +239,7 @@
 
 </body>
 
+<!-- fetch dataq for add new student to class -->
 <script>
   let apiUrl = `/api/v1/student?pageNo=1&pageSize=10&search=`; // Your API endpoint
   let classId = '';
@@ -328,7 +336,7 @@
                               <td>${user.email || ''}</td>
                               <td>${user.phone || ''}</td>
                               <td>
-                                <button name="addstudent" type="button" class="btn btn-primary w-75 p-0" onclick="addStudent(${user.id})">+</button>
+                                <button name="addstudent" type="button" class="btn btn-success w-75 p-0" onclick="addStudent(${user.id})">+</button>
                               </td>
                             `;
                           }
@@ -374,6 +382,7 @@
                 if (data) {
                     console.log('Add student to class successfully');
                     populateUserTable(currentPage);
+                  PopulateTableStudentList();
                 } else {
                   console.log('Add student to class failed');
                 }
@@ -387,6 +396,10 @@
   document.addEventListener("DOMContentLoaded", () => {
     populateUserTable(1);
   });
+
 </script>
 
+
+
+</script>
 </html>
