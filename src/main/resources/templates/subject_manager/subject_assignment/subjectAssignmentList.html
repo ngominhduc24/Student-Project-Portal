@@ -29,12 +29,75 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <!-- Datatables -->
-    <!--    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>-->
-    <!--    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>-->
-
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
 
+    <style>
+        .datatable-table {
+            border: 1px solid #dee2e6;
+            border-collapse: collapse;
+        }
+        tr, td, th {
+            border: 1px solid #dee2e6 !important;
+        }
+        td:last-child {
+            text-align: center;
+        }
+        th:first-child {
+            width: 10%;
+        }
+        th:nth-child(2) {
+            width: 17%;
+        }
+        th:nth-child(3), th:nth-child(4), th:nth-child(5), th:nth-child(6) {
+            width: 13%;
+        }
+        th:nth-child(7), th:last-child {
+            width: 11%;
+        }
+        th {
+            position: relative;
+        }
+        .search-button {
+            border: none;
+            height: 34px;
+            width: 36px;
+            float: right;
+            margin-top: -35px;
+            margin-right: 1px;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+        .datatable-search, .datatable-dropdown, .datatable-bottom, .datatable-sorter::before, .datatable-sorter::after {
+            display: none;
+        }
+        .caret-up{
+            position: absolute;
+            right: 6px;
+            top: 10px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-down{
+            position: absolute;
+            right: 6px;
+            top: 16px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-up:hover, .caret-down:hover {
+            color: black;
+        }
+        .sort-active{
+            color: black;
+        }
+        .datatable-top {
+            margin-bottom: 36px;
+        }
+        .breadcrumb .breadcrumb-item:after {
+            content: none !important;
+        }
+    </style>
 
 </head>
 
@@ -58,42 +121,85 @@
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
-            <div class="layout-specing">
+            <div class="layout-specing" style="padding-top: 84px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1>Subject List</h1>
-                        <ol class="breadcrumb mb-4">
+                        <h1 style="margin: 0">Subject Assignment List</h1>
+                        <ol class="breadcrumb mb-1 ms-1">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Subject Assignment List</li>
+                            <li class="breadcrumb-item active"><a>Subject Assignment List</a></li>
                         </ol>
                     </div><!--end col-->
 
-                    <div class="col-xl-4 col-md-6"></div>
+                    <div class="col-xl-5 col-md-6"></div>
 
-                    <div class="col-xl-3 col-md-6 mt-4 d-flex align-items-end justify-content-center mb-2">
+                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
                         <a href="/subject-manager/subject-assignment/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
+
                 </div><!--end row-->
-
-
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Subject Assignment
-                        </div>
-                        <div class="card-body">
+                        <form class="card-body rounded-3" action="/subject-manager/subject-assignment" id="form">
+                            <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
+                                <div class="col-md-3 row">
+                                    <div class="mb-3 col-md-4 pe-1" >
+                                        <select name="pageSize" class="form-select" onchange="this.form.submit()">
+                                            <option th:selected="${pageSize==5}" value="5">5</option>
+                                            <option th:selected="${pageSize==10}" value="10">10</option>
+                                            <option th:selected="${pageSize==15}" value="15">15</option>
+                                            <option th:selected="${pageSize==20}" value="20">20</option>
+                                            <option th:selected="${pageSize==25}" value="25">25</option>
+                                        </select>
+                                    </div>
+                                    <p class="ps-2 col-md-5 pt-2">per page</p>
+                                </div>
+                                <div class="row col-md-8" style="margin-left: -100px">
+                                    <div class="col-md-3">
+                                        <div class="mb-3" >
+                                            <select name="subjectId" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1">All Subject</option>
+                                                <option th:each="subject : ${subjectList}"
+                                                        th:value="${subject.id}"
+                                                        th:text="${subject.subjectCode}" th:selected="${subjectId == subject.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1" th:selected="${status == -1}">All Status</option>
+                                                <option value="1" th:selected="${status == 1}">Active</option>
+                                                <option value="0" th:selected="${status == 0}">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input class="form-control form-control-sm" type="text" th:value="${search}" name="search" placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                    <button onclick="this.form.submit()" class="search-button"> <i class="fas fa-search"  aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="sortBy" id="sortBy">
+                            <input type="hidden" name="sortType" id="sortType">
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
-                                    <th>Sucject ID</th>
-                                    <th>Subject</th>
-                                    <th>Title</th>
-                                    <!--                                    <th>Creator</th>-->
-                                    <!--                                    <th>View Details</th>-->
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th data-sortable="false">Subject ID
+                                        <i th:class="${(sortBy eq 'subject_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('subject_id',1)"></i>
+                                        <i th:class="${(sortBy eq 'subject_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('subject_id',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Subject
+                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('s.subject_code',1)"></i>
+                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('s.subject_code',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Title
+                                        <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('title',1)"></i>
+                                        <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('title',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Status</th>
+                                    <th data-sortable="false">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -101,32 +207,58 @@
                                     <td th:text="${assignment.subject.id}"></td>
                                     <td th:text="${assignment.subject.subjectCode}"></td>
                                     <td th:text="${assignment.title}"></td>
-                                    <!--                                    <td th:text="${assignment.createBy}"></td>-->
-                                    <!--                                    <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View-->
-                                    <!--                                        Details</a>-->
-                                    <!--                                    </td>-->
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                   th:checked="${assignment.status}"
-                                                   th:onclick="'updateStatus(' + ${assignment.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${assignment.isStatus()}" th:onclick="'updateStatus(' + ${assignment.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <!--                                    <td><a th:href="@{'./ClassAssignmentDetails?id=' + ${assignment.id}}">View-->
-                                    <!--                                        Details</a>-->
-                                    <!--                                    </td>-->
                                     <td><a th:href="@{/subject-manager/subject-assignment/detail?id={id}(id=${assignment.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
+                            <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
+                                <ul class="pagination justify-content-end">
+                                    <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo-1}+')'">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <input type="hidden" name="pageNo" id="pageNoInput">
+                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                        <a class="page-link" th:text="${i}" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${i-1}+')'">
+                                        </a>
+                                    </li>
+                                    <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link user-select-all" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo+1}+')'">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </form>
                     </div>
                 </div>
+
+                <script>
+                    function goToPage(i) {
+                        document.getElementById('pageNoInput').value = i;
+                        document.getElementById('form').submit();
+                    }
+                    function sortData(sortBy, sortType) {
+                        document.getElementById('sortBy').value = sortBy;
+                        document.getElementById('sortType').value = sortType;
+                        document.getElementById('form').submit();
+                    }
+                </script>
+
                 <script>
                     function updateStatus(id, checkbox) {
                         let status = checkbox.checked;
                         if(confirm('Are you sure?'))
-                            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
+                            fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`)
                         else checkbox.checked = !status;
                     }
                 </script>
@@ -134,7 +266,21 @@
             </div>
         </div><!--end container-->
 
-        <div th:replace="~{footer}"></div>
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                Copyright © Student Project Portal 2023 - All rights reserved.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
         <!-- End -->
     </main>
     <!--End page-content" -->
@@ -147,24 +293,13 @@
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
-<!-- Datatable -->
+
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
-<!--<script type="text/javascript">-->
-<!--    $(document).ready(function () {-->
-<!--        $('#myTable').DataTable({-->
-<!--            "dom": 'frt<"#toolbar.dt-box"><"dt-box"p>',-->
-<!--            "bInfo": false,-->
-<!--        });-->
-
-<!--        $("#toolbar").html('<div class="float-left">' +-->
-<!--            '<p>Page no 1</p>' +-->
-<!--            '</div>');-->
-<!--    });-->
-<!--</script>-->
-
+<!-- Datatable -->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>-->
 <script>
     window.addEventListener('DOMContentLoaded', event => {
 
@@ -188,6 +323,7 @@
     }
 
 });</script>
+
 
 </body>
 

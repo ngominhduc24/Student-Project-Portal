@@ -2,6 +2,7 @@ package swp.studentprojectportal.controller.subject_manager;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +32,23 @@ public class SubjectAssignmentController {
 
     // List<Assignment> assignmentList = new CopyOnWriteArrayList<>();
     @GetMapping("subject-manager/subject-assignment")
-    public String AssignmentPage(Model model, HttpSession session) {
+    public String AssignmentPage(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+                                 @RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") Integer subjectId,
+                                 @RequestParam(defaultValue = "-1") Integer status,
+                                 @RequestParam(defaultValue = "subject_id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
+                                 Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        //List<Assignment> assignmentList = assignmentService.findAssignmentByManager(user.getId());
-        List<Assignment> assignmentList = assignmentService.findAssignmentByManager(user.getId());
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        Page<Assignment> assignmentList = assignmentService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,subjectId,status);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("subjectId", subjectId);
+        model.addAttribute("status", status);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("totalPage", assignmentList.getTotalPages());
+        model.addAttribute("subjectList", subjectList);
         model.addAttribute("assignmentList", assignmentList);
         return "subject_manager/subject_assignment/subjectAssignmentList";
     }
