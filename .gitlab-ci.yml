@@ -14,7 +14,7 @@ stages: # định nghĩa các bước, ở đây minhd có 3 bước tương ứ
 maven-build: # đây chính là bước build file .jar mà mình đã đề cập ở bên trên
   image: maven:3.8.1-openjdk-17-slim
   stage: build
-  script: "./mvn clean package"
+  script: "apt-get update apt-get install -y maven ./mvn clean package"
   artifacts:
     paths:
       - target/*.jar
