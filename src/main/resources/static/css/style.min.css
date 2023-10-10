@@ -323,6 +323,33 @@ a.text-footer:hover, a.text-footer:focus {
     border-bottom-right-radius: 5px !important
 }
 
+.topnav {
+    overflow: hidden;
+    background-color: transparent;
+    border-bottom: 1px solid darkgray;
+    margin-top: 70px;
+    background: white;
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 26px;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    margin:0
+}
+
+.topnav a:hover {
+    border-bottom: 3px solid blue;
+}
+
+.topnav a.active {
+    border-bottom: 3px solid blue;
+}
 .rounded-md {
     border-radius: 10px !important
 }
