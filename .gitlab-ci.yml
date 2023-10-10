@@ -30,7 +30,7 @@ maven-test: # run unit test của project
 docker-build: # bước này sẽ build iamge từ Dockerfile và push lên docker hub
   stage: docker
   script:
-    - docker login -u $USERNAME_DOCKER:ngominhduc100@gmail.com -p $PASSWORD_DOCKER:24112003aA # nhập tên username và password docker hub của các bạn ở đây để có quyền push
+    - docker login -u $USERNAME_DOCKER -p $PASSWORD_DOCKER # nhập tên username và password docker hub của các bạn ở đây để có quyền push
     - docker build -t $IMAGE_NAME:1.0 . # build image, 1.0 là tag coi nó như version
     - docker push $IMAGE_NAME:1.0 # push image docker hub sau khi build thành công
 
