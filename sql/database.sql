@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
                                                               `type` VARCHAR(155) NULL,
                                                               `status` BIT(1) NULL DEFAULT 1,
     `status_issue` VARCHAR(155) NULL,
-    `work_processes` VARCHAR(155) NULL,
+    `work_process` VARCHAR(155) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -475,7 +475,7 @@ VALUES
     (6,'React App','Make React App to print "Hello React"',1),
     (6,'JS ES6','Learn new synctax in JS ES6',1);
     
-INSERT INTO class_issue_setting (`class_id`,`type`,`status_issue`,`work_processes`)
+INSERT INTO class_issue_setting (`class_id`,`type`,`status_issue`,`work_process`)
 VALUES
 	(1,'Defect','To Do','Testting'),
     (1,'Leakage','To Do','Testting'),

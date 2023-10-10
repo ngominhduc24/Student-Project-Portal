@@ -8,19 +8,27 @@ import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.ClassIssueSetting;
 import swp.studentprojectportal.repository.IClassIssueSettingRepository;
 import swp.studentprojectportal.service.IClassIssueSettingService;
+
+import java.util.List;
+
 @Service
 public class ClassIssueSettingService implements IClassIssueSettingService {
     @Autowired
     IClassIssueSettingRepository classIssueSettingRepository;
 
+//    @Override
+//    public Page<ClassIssueSetting> filter(int teacherId, String search, Integer pageNo, Integer pageSize,
+//                                   String sortBy, Integer sortType, Integer status){
+//        Sort sort;
+//        if(sortType==1)
+//            sort = Sort.by(sortBy).ascending();
+//        else
+//            sort = Sort.by(sortBy).descending();
+//        return classIssueSettingRepository.filter(teacherId,search,status, PageRequest.of(pageNo, pageSize, sort));
+//    }
+
     @Override
-    public Page<ClassIssueSetting> filter(int teacherId, String search, Integer pageNo, Integer pageSize,
-                                   String sortBy, Integer sortType, Integer status){
-        Sort sort;
-        if(sortType==1)
-            sort = Sort.by(sortBy).ascending();
-        else
-            sort = Sort.by(sortBy).descending();
-        return classIssueSettingRepository.filter(teacherId,search,status, PageRequest.of(pageNo, pageSize, sort));
+    public List<ClassIssueSetting> getALL(int teacherId){
+        return classIssueSettingRepository.getAll(teacherId);
     }
 }

@@ -12,6 +12,8 @@ import swp.studentprojectportal.model.ClassIssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.IClassIssueSettingService;
 
+import java.util.List;
+
 @Controller
 public class ClassIssueSettingController {
     @Autowired
@@ -22,7 +24,8 @@ public class ClassIssueSettingController {
                                         @RequestParam(defaultValue = "subject_id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
                                         Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
-        Page<ClassIssueSetting> classIssueSettingList = classIssueSettingService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,status);
+        List<ClassIssueSetting> classIssueSettingList = classIssueSettingService.getALL(user.getId());
+        //Page<ClassIssueSetting> classIssueSettingList = classIssueSettingService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,status);
         model.addAttribute("classIssueSettingList", classIssueSettingList);
         return "class_manager/class_issue_setting/classIssueSettingList";
     }
