@@ -20,7 +20,7 @@ import swp.studentprojectportal.service.servicesimpl.UserService;
 import java.util.List;
 @Controller
 @RequestMapping("/subject-manager")
-public class ClassController {
+public class SClassController {
     @Autowired
     ClassService classService;
     @Autowired
