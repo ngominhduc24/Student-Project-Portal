@@ -36,6 +36,7 @@ public class RegisterController {
         String termCheckbox = request.getParameter("termCheckbox");
         String username = request.getParameter("username").replace(" ", "");
         String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
 
         // set session to save data
         session.setAttribute("r-fullname", fullname);
@@ -90,6 +91,11 @@ public class RegisterController {
         // Validate Password
         if (!Validate.validPassword(password)) {
             return handleError(model, session, "Password must contain at least 8 characters and have uppercase, lowercase, and a number");
+        }
+
+
+        if (!password.equals(confirmPassword)) {
+            return handleError(model, session, "Password and confirm password must be the same");
         }
 
         // set session to verify

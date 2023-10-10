@@ -138,13 +138,13 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
-                        <a href="/subject-manager/class/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
+                        <a href="/class-manager/class/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
 
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form class="card-body rounded-3" action="/subject-manager/class" id="form">
+                        <form class="card-body rounded-3" action="/class-manager/classList" id="form">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1" >
@@ -176,16 +176,6 @@
                                                 <option th:each="semester : ${semesterList}"
                                                         th:value="${semester.id}"
                                                         th:text="${semester.settingTitle}" th:selected="${semesterId == semester.id}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <select name="teacherId" class="form-select" onchange="this.form.submit()">
-                                                <option value="-1">All Manager</option>
-                                                <option th:each="teacher : ${teacherList}"
-                                                        th:value="${teacher.id}"
-                                                        th:text="${teacher.fullName}" th:selected="${teacherId == teacher.id}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -225,10 +215,6 @@
                                         <i th:class="${(sortBy eq 'st.setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('st.setting_title',1)"></i>
                                         <i th:class="${(sortBy eq 'st.setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('st.setting_title',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Manager
-                                        <i th:class="${(sortBy eq 'u.full_name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('u.full_name',1)"></i>
-                                        <i th:class="${(sortBy eq 'u.full_name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('u.full_name',2)"></i>
-                                    </th>
                                     <th data-sortable="false">Status </th>
                                     <th data-sortable="false">Actions </th>
                                 </tr>
@@ -239,13 +225,12 @@
                                     <td th:text="${class.className}"></td>
                                     <td th:text="${class.subject.subjectCode}"></td>
                                     <td th:text="${class.semester.settingTitle}"></td>
-                                    <td th:text="${class.user.fullName}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${class.isStatus()}" th:onclick="'updateStatus(' + ${class.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" disabled th:checked="${class.isStatus()}" th:onclick="'updateStatus(' + ${class.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/subject-manager/classDetail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td><a th:href="@{/class-manager/classDetail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -258,7 +243,7 @@
                                         </a>
                                     </li>
                                     <input type="hidden" name="pageNo" id="pageNoInput">
-                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                    <li  th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
                                            th:onclick="'goToPage('+ ${i-1}+')'">
                                         </a>
@@ -291,7 +276,7 @@
                     function updateStatus(id, checkbox) {
                         let status = checkbox.checked;
                         if(confirm('Are you sure?'))
-                            fetch(`/subject-manager/class/updateStatus?id=${id}&status=${status}`)
+                            fetch(`/class-manager/class/updateStatus?id=${id}&status=${status}`)
                         else checkbox.checked = !status;
                     }
                 </script>

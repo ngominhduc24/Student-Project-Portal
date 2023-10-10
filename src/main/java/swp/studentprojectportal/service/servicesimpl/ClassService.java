@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Class;
+import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.model.StudentClass;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
@@ -52,8 +53,18 @@ public class ClassService implements IClassService {
             sort = Sort.by(sortBy).ascending();
         else
             sort = Sort.by(sortBy).descending();
-        return classRepository.filter(subjecManagertId, search, subjectId, semesterId, teacherId, status,
+        return classRepository.filterClassBySubjectManager(subjecManagertId, search, subjectId, semesterId, teacherId, status,
                 PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
+    public Page<Class> findAllByClassManagerId(int teacherId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer subjectId, Integer semesterId, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return classRepository.filterClassByClassManager(teacherId , search , subjectId, semesterId, status, PageRequest.of(pageNo, pageSize, sort));
     }
 
     @Override
@@ -64,6 +75,15 @@ public class ClassService implements IClassService {
     @Override
     public Class saveClass(Class classA) {
         return classRepository.save(classA);
+    }
+
+    @Override
+    public boolean checkExistedClassName(String className, Integer subjectId, Integer id) {
+        Class classA = classRepository.findClassByClassNameAndSubjectId(className, subjectId);
+        if(classA !=null)  {
+            if(classA.getId()!=id)  return true;
+        }
+        return false;
     }
 
 

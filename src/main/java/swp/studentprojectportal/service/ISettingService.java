@@ -18,5 +18,7 @@ public interface ISettingService {
     String setTypeName(int typeId);
     Setting findLastDisplayOrder(int typeId);
     List<Setting> findSemesterBySubjectManagerId(int subjectManagerId);
+    List<Setting> findSemesterByClassManagerId(int classManagerId);
+    List<Setting> findSemesterByStatus(Integer typeId, Boolean status);
 
 }

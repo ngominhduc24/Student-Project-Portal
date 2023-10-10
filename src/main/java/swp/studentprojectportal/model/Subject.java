@@ -39,7 +39,7 @@ public class Subject {
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "subject_manager_id")
     private User user;
 }

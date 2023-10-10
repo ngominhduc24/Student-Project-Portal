@@ -54,6 +54,7 @@
   <!-- Start Page Content -->
   <main class="page-content bg-light">
     <div th:replace="~{dashboardHeader}"></div>
+    <form class="card-body rounded-3" action="#" id="form">
     <div class="container-fluid">
       <div class="layout-specing">
         <div class="row px-4">
@@ -61,6 +62,7 @@
             <h1 th:text="${className} + ' - ' + ${semester}"></h1>
             <ol class="breadcrumb mb-4">
               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+              <li class="breadcrumb-item" name="reloadPage" style="color: red"></li>
               <li class="breadcrumb-item active"></li>
             </ol>
           </div><!--end col-->
@@ -128,13 +130,18 @@
               <table id="myTable" class="display">
                 <thead>
                 <tr>
-                  <th>Fullname</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Role</th>
-                  <th>Status</th>
+                  <th>Fullname
+<!--                    <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('id',1)"></i>-->
+                    <i class="fas fa-caret-up caret-up"></i>
+                    <i class="fas fa-caret-down caret-down" ></i></th>
+                  <th>Email
+                    <i class="fas fa-caret-up caret-up"></i>
+                    <i class="fas fa-caret-down caret-down" ></i></th>
+                  <th>Phone
+                    <i class="fas fa-caret-up caret-up"></i>
+                    <i class="fas fa-caret-down caret-down" ></i></th>
                   <th>View Details</th>
-                  <th>Action</th>
+                  <th>Remove to class</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -142,20 +149,10 @@
                   <td th:text="${user.fullName}"></td>
                   <td th:text="${user.email}"></td>
                   <td th:text="${user.phone}"></td>
-                  <td th:text="${user.setting.settingTitle}"></td>
-                  <td>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" th:checked="${user.status}"
-                             th:onclick="'updateStatus(' + ${user.id} + ', this)'">
-                    </div>
-                  </td>
                   <td><a th:href="@{'./class/studentDetails?studentId=' + ${user.id}}">View Details</a>
                   </td>
                   <td>
-                    <button name="deletestudent" type="button" class="btn btn-danger w-75 p-0">
-                      <a th:href="@{'./class/removeStudentFromClass?studentId=' + ${user.id} + '&classId=' + ${classId}}" style="color: white; ">-</a>
-                    </button>
-
+                      <a class="btn btn-danger w-75 p-0" th:href="@{'./class/removeStudentFromClass?studentId=' + ${user.id} + '&classId=' + ${classId}}" style="color: white; ">-</a>
                   </td>
                 </tr>
                 </tbody>
@@ -163,9 +160,10 @@
             </div>
           </div>
         </div>
+
       </div>
     </div><!--end container-->
-
+    </form>
     <div th:replace="~{footer}"></div>
 
     <!-- End -->
@@ -382,7 +380,8 @@
                 if (data) {
                     console.log('Add student to class successfully');
                     populateUserTable(currentPage);
-                  PopulateTableStudentList();
+                    let reload = document.querySelector('li[name="reloadPage"]');
+                    reload.textContent = 'Student have been added to class, reload page to see changes!';
                 } else {
                   console.log('Add student to class failed');
                 }
@@ -400,6 +399,11 @@
 </script>
 
 
-
+<script>
+  function sortData(sortBy, sortType) {
+    document.getElementById('sortBy').value = sortBy;
+    document.getElementById('sortType').value = sortType;
+    document.getElementById('form').submit();
+  }
 </script>
 </html>
