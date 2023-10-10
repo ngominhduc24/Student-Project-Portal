@@ -17,9 +17,9 @@ maven-build: # đây chính là bước build file .jar mà mình đã đề c�
   script:
     - apt-get update
     - apt-get install -y maven
-    - apt-get install -y openjdk-17-jdk
+    - apt-get install -y openjdk-11-jdk
     - java -version  # Kiểm tra phiên bản JDK sau khi cài đặt
-    - update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
+    - update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-11-openjdk-amd64/bin/java 1
     - update-alternatives --config java
     - java -version
     - ./mvn clean package
