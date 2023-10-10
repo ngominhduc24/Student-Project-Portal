@@ -31,6 +31,31 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <style>
+        .caret-up{
+            position: absolute;
+            right: 6px;
+            top: 10px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-down{
+            position: absolute;
+            right: 6px;
+            top: 16px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-up:hover, .caret-down:hover {
+            color: black;
+        }
+        .sort-active{
+            color: black;
+        }
+        th {
+            position: relative;
+        }
+    </style>
 
 
 </head>
@@ -85,7 +110,7 @@
                                     <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" placeholder="Search"
                                            aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
                                 </div>
-                                <div class="col-md-3 pe-5">
+                                <div class="col-md-2 pe-3 me-3" style="margin-left: -14px;">
                                     <div class="mb-3">
                                         <select name="roleId" class="form-select">
                                             <option value="-1">All Role</option>
@@ -95,7 +120,7 @@
                                         </select>
                                     </div>
                                 </div><!--end col-->
-                                <div class="col-md-3 pe-5">
+                                <div class="col-md-2 pe-3">
                                     <div class="mb-3">
                                         <select name="status" class="form-select">
                                             <option value="-1">All Status</option>
@@ -108,17 +133,30 @@
                             <table id="myTable" class="display">
                                 <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Fullname</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Role</th>
+                                    <th>Id
+                                        <i class="fas fa-caret-up caret-up sort-active"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i>
+                                    </th>
+                                    <th>Fullname
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i>
+                                    </th>
+                                    <th>Email
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i>
+                                    </th>
+                                    <th>Phone
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i></th>
+                                    <th>Role
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i></th>
                                     <th>Status</th>
                                     <th>View Details</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-<!--                                Body add by javascript api-->
+                                    <!--Body add by javascript api-->
                                 </tbody>
                             </table>
                             <input type="text" id="countPage" th:value="${totalPage}" hidden="">

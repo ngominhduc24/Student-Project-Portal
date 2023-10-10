@@ -62,7 +62,7 @@ public class User {
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Setting setting;
 

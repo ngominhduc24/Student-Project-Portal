@@ -66,6 +66,7 @@
             margin-top: -35px;
             margin-right: 1px;
             cursor: pointer;
+            background-color: #ffffff;
         }
         .datatable-search, .datatable-dropdown, .datatable-bottom, .datatable-sorter::before, .datatable-sorter::after {
             display: none;
@@ -133,7 +134,7 @@
 
                     <div class="col-xl-5 col-md-6"></div>
 
-                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-end justify-content-center mb-2">
+                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
                         <a href="/admin/setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
 
@@ -141,12 +142,8 @@
 
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Setting List
-                        </div>
-                        <form class="card-body" action="/admin/setting" id="form">
-                            <div class="row" style="width: 100%; position: absolute;left: 32px;top:64px;">
+                        <form class="card-body rounded-3" action="/admin/setting" id="form">
+                            <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1" >
                                         <select name="pageSize" class="form-select" onchange="this.form.submit()">
@@ -161,7 +158,7 @@
                                 </div>
                                 <div class="row col-md-8" style="margin-left: -100px">
                                     <div class="col-md-4">
-                                        <div class="mb-3">
+                                        <div class="mb-3 px-4">
                                             <select name="typeId" class="form-select" onchange="this.form.submit()">
                                                 <option value="-1" th:selected="${typeId == -1}">All Setting Type</option>
                                                 <option value="1" th:selected="${typeId == 1}">User Role</option>
@@ -170,7 +167,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 px-4">
                                         <div class="mb-3">
                                             <select name="status" class="form-select" onchange="this.form.submit()">
                                                 <option value="-1" th:selected="${status == -1}">All Status</option>
@@ -229,7 +226,7 @@
                                 </tbody>
                             </table>
 
-                            <nav aria-label="Page navigation example" style="margin-top: 20px;">
+                            <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
                                         <a class="page-link" style="cursor: pointer"

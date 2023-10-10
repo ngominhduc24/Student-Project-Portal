@@ -239,6 +239,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> findTeacherByRoleIdAndStatus(Integer roleId, Boolean status) {
+        return userRepository.findTeacherBySettingIdAndStatus(roleId, status);
+    }
+
+    @Override
     public User resetPasswordByToken(String token) {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
@@ -263,6 +268,11 @@ public class UserService implements IUserService {
     @Override
     public List<User> findAllProjectMentor() {
         return userRepository.findAllBySettingIdOrSettingId(3,4);
+    }
+
+    @Override
+    public User getUserById(int id) {
+        return userRepository.getById(id);
     }
 
 }

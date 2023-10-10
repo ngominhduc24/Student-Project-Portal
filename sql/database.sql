@@ -128,6 +128,7 @@ DROP TABLE IF EXISTS `swp391`.`class` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`class` (
                                                 `id` INT NOT NULL AUTO_INCREMENT,
                                                 `class_name` VARCHAR(245) NULL,
+    `description` LONGTEXT NULL,
     `subject_id` INT NULL,
     `semester_id` INT NULL,
     `teacher_id` INT NULL,
@@ -286,6 +287,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
                                                           `subject_id` INT NULL,
                                                           `type_id` INT NULL,
                                                           `setting_title` VARCHAR(45) NULL,
+    `setting_value` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
@@ -379,28 +381,38 @@ VALUES
     (4,"Front-End web development with React","FER201m");
 
 -- subject_setting
-INSERT INTO subject_setting(subject_id,type_id,setting_title,display_order)
+INSERT INTO subject_setting(subject_id,type_id,setting_title,setting_value,display_order)
 VALUES
-    (1 ,1 , "High",1),
-    (1 ,1, "Medium",2),
-    (1 ,1, "Low",3),
-    (1 ,2, "High",1),
-    (1 ,2, "Medium",2),
-    (1 ,2, "Low",3),
-    (2 ,1, "High",1),
-    (2 ,1, "Medium",2),
-    (2 ,2, "High",1),
-    (2 ,2, "Medium",2),
-    (2 ,2, "Low",3);
+    (1 ,1, "High","240",1),
+    (1 ,1, "Medium","120",2),
+    (1 ,1, "Low","60",3),
+    (1 ,2, "High",">=80%",1),
+    (1 ,2, "Medium",">=50%",2),
+    (1 ,2, "Low","<50%",3),
+    (2 ,1, "High","240",1),
+    (2 ,1, "Medium","120",2),
+    (2 ,2, "High",">=80%",1),
+    (2 ,2, "Medium",">=50%",2),
+    (2 ,2, "Low","<50%",3);
 
-INSERT INTO `class` (`class_name`,`subject_id`,`semester_id`,`teacher_id`,`status`)
+INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
-    ("SE1720",1,7,3,1),
-    ("SE1722",1,7,3,1),
-    ("SE1740",1,8,6,1),
-    ("SE1741",1,8,6,1),
-    ("SE1740",2,8,3,1),
-    ("SE1741",2,8,3,1);
+    ("SE1720","Study software engineering",1,7,3,1),
+    ("SE1722","Study software engineering",1,7,3,1),
+    ("SE1704","Study software engineering",1,7,3,1),
+    ("SE1707","Study software engineering",1,7,3,1),
+    ("SE1712","Study software engineering",2,7,6,1),
+    ("SE1715","Study software engineering",2,7,6,1),
+    ("SE1709","Study software engineering",2,7,6,1),
+    ("SE1710","Study software engineering",2,7,6,1),
+    ("SE1740","Study software engineering",1,8,6,1),
+    ("SE1741","Study software engineering",1,8,6,1),
+    ("SE1731","Study software engineering",1,8,6,1),
+    ("SE1736","Study software engineering",1,8,6,1),
+    ("SE1740","Study software engineering",2,8,3,1),
+    ("SE1745","Study software engineering",2,8,3,1),
+    ("SE1734","Study software engineering",2,8,3,1),
+    ("SE1736","Study software engineering",2,8,3,1);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
