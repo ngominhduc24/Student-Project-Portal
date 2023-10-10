@@ -111,4 +111,51 @@ public class ClassController {
         model.addAttribute("semesterList",semesterList);
         return "subject_manager/class/classDetail";
     }
+
+    @GetMapping("/class/add")
+    public String classDetail(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        Class classA = new Class();
+        classA.setSubject(new Subject());
+        classA.setSemester(new Setting());
+        classA.setUser(new User());
+        classA.setDescription("");
+        List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
+        List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
+        List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
+        model.addAttribute("subjectList",subjectList);
+        model.addAttribute("teacherList",teacherList);
+        model.addAttribute("semesterList",semesterList);
+        model.addAttribute("class",classA);
+        return "subject_manager/class/classAdd";
+    }
+
+    @PostMapping("/class/add")
+    public String addClass(@RequestParam String description,
+                              @RequestParam String className, @RequestParam Integer subjectId,
+                              @RequestParam Integer semesterId, @RequestParam Integer classManagerId,
+                              WebRequest request, Model model, HttpSession session) {
+        String status = request.getParameter("status");
+        Class classA = new Class();
+        classA.setClassName(className);
+        classA.setDescription(description);
+        classA.setSubject(subjectService.getSubjectById(subjectId));
+        classA.setSemester(settingService.getSettingByID(semesterId));
+        classA.setUser(userService.getUserById(classManagerId));
+        model.addAttribute("class", classA);
+        if(classService.checkExistedClassName(className, subjectId, null))
+            model.addAttribute("errmsg", "This class name has already existed!");
+        else {
+            classService.saveClass(classA);
+            model.addAttribute("msg", "Successfully");
+        }
+        User user = (User) session.getAttribute("user");
+        List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
+        List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
+        List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
+        model.addAttribute("subjectList",subjectList);
+        model.addAttribute("teacherList",teacherList);
+        model.addAttribute("semesterList",semesterList);
+        return "subject_manager/class/classAdd";
+    }
 }

@@ -18,15 +18,15 @@ public class StudentClass {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private User student;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "class_id")
     private Class aclass;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
