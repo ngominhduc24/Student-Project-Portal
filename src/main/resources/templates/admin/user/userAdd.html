@@ -54,7 +54,7 @@
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Add User</li>
+                        <li class="breadcrumb-item active">New User</li>
                     </ol>
                 </div>
 
@@ -65,44 +65,37 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Fullname</label>
+                                            <label class="form-label">Fullname<span class="text-danger">*</span></label>
                                             <input name="fullName" type="text" class="form-control"
-                                                   placeholder="Fullname" required>
+                                                   placeholder="Fullname" th:value="${fullName}" required>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Email</label>
-                                            <input name="email" type="email" class="form-control"
-                                                   placeholder="Email">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Phone</label>
-                                            <input name="phone" type="tel" class="form-control"
-                                                   placeholder="Phone">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Password</label>
-                                            <input name="password" type="password" class="form-control"
-                                                   placeholder="Password" required>
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Role</label>
+                                            <label class="form-label">Role<span class="text-danger">*</span></label>
                                             <select name="roleId" class="form-select">
                                                 <option th:each="role : ${roleList}"
                                                         th:value="${role.id}"
-                                                        th:text="${role.settingTitle}"></option>
+                                                        th:text="${role.settingTitle}"
+                                                        th:selected="${role.id == roleId}"></option>
                                             </select>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Email address<span class="text-danger">*</span></label>
+                                            <input name="email" type="text" class="form-control"
+                                                   placeholder="Email address" th:value="${email}">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone number<span class="text-danger">*</span></label>
+                                            <input name="phone" type="text" class="form-control"
+                                                   placeholder="Phone number" th:value="${phone}">
                                         </div>
                                     </div><!--end col-->
                                 </div><!--end row-->

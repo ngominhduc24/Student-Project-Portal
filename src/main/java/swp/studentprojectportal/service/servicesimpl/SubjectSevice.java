@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.repository.ISettingRepository;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.ISubjectService;
@@ -21,6 +23,9 @@ public class SubjectSevice implements ISubjectService {
 
     @Autowired
     IUserRepository userRepository;
+
+    @Autowired
+    ISettingRepository settingRepository;
     @Override
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
@@ -32,6 +37,20 @@ public class SubjectSevice implements ISubjectService {
         Page<Subject> subjectPage = subjectRepository.findAll(pageable);
         List<Subject> subjects = subjectPage.getContent();
         return subjects;
+    }
+
+    @Override
+    public List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId, Integer status) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        if(status != -1 && subjectManagerId != -1) {
+            return subjectRepository.searchSubjectAndFilterByManagerAndStatus(search,subjectManagerId,status,pageable).getContent();
+        } else if(status != -1) {
+            return subjectRepository.searchSubjectAndFilterByStatus(search,status,pageable).getContent();
+        } else if(subjectManagerId != -1) {
+            return subjectRepository.searchSubjectAndFilterByManager(search,subjectManagerId,pageable).getContent();
+        } else {
+            return subjectRepository.findSubjectBySubjectCodeContainsIgnoreCaseOrSubjectNameContainsIgnoreCase(search, search, pageable).getContent();
+        }
     }
 
     @Override
@@ -100,4 +119,13 @@ public class SubjectSevice implements ISubjectService {
         return subjectRepository.findAllSubjectByUser(user);
     }
 
+    @Override
+    public List<Subject> findAllSubjectByClassManagerId(Integer classManagerId) {
+        return subjectRepository.findAllSubjectByClassManagerId(classManagerId);
+    }
+
+    @Override
+    public List<Subject> findAllSubjectByUserAndStatus(User user, Boolean status) {
+        return subjectRepository.findAllSubjectByUserAndStatus(user, status);
+    }
 }

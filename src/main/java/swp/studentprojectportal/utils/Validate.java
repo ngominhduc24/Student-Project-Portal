@@ -60,4 +60,11 @@ public class Validate {
 
         return true;
     }
+
+    public static  boolean validAvatarurl(String avatarurl){
+        if (avatarurl == null || avatarurl.isEmpty() || avatarurl.trim().isEmpty()) {
+            return false;
+        }
+        return  true;
+    }
 }

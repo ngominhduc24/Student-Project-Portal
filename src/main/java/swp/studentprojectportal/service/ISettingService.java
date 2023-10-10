@@ -1,11 +1,13 @@
 package swp.studentprojectportal.service;
 
+import org.springframework.data.domain.Page;
 import swp.studentprojectportal.model.Setting;
 
 import java.util.List;
 
 public interface ISettingService {
-    List<Setting> findSettingByTypeIdOrderByDisplayOrder(Integer typeId);
+    Page<Setting> filter(String search, Integer pageNo, Integer pageSize,
+                          String sortBy, Integer sortType, Integer typeId, Integer status);
     Setting getSettingByID(Integer settingId);
     Setting saveSetting(Setting setting);
     List<Setting> getAllRole();
@@ -14,7 +16,9 @@ public interface ISettingService {
     boolean checkExistedSettingTitle(String settingTitle, String id);
     boolean checkExistedDisplayOrder(int typeId, int displayOrder, String id);
     String setTypeName(int typeId);
-
     Setting findLastDisplayOrder(int typeId);
+    List<Setting> findSemesterBySubjectManagerId(int subjectManagerId);
+    List<Setting> findSemesterByClassManagerId(int classManagerId);
+    List<Setting> findSemesterByStatus(Integer typeId, Boolean status);
 
 }

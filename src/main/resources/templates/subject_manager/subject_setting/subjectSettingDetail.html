@@ -31,6 +31,24 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Bắt sự kiện khi form được submit
+            document.querySelector('form').addEventListener('submit', function (event) {
+                // Lấy giá trị của trường settingTitle
+                var settingTitleValue = document.querySelector('input[name="settingTitle"]').value;
+
+                // Kiểm tra xem settingTitle có giá trị là null, empty hoặc chỉ chứa dấu cách không
+                if (!settingTitleValue || settingTitleValue.trim() === '') {
+                    // Ngăn chặn việc submit form
+                    event.preventDefault();
+
+                    // Hiển thị thông báo lỗi
+                    document.querySelector('#errmsg').innerText = 'Title cannot be null, empty, or consist of only spaces.';
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -72,7 +90,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Code</label>
+                                            <label class="form-label">Subject Code<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                                 <select name="subjectId" class="form-select">
                                                     <option th:each="subject : ${subjectList}"
@@ -85,7 +103,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Type</label>
+                                            <label class="form-label">Type<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                             <select name="typeId" class="form-select w-100">
                                                 <option th:value="1" th:text="Complexity" th:selected="${setting.typeId == 1}"></option>
@@ -97,23 +115,23 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Title</label>
+                                            <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
+                                                <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
                                             </div>
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-2 offset-1">
+                                    <div class="col-md-3">
                                         <div class="mb-3">
-                                            <label class="form-label">Display Order</label>
-                                            <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
-                                                   th:value="${setting.displayOrder}">
+                                            <label class="form-label">Display Order<span class="text-danger">*</span></label>
+                                            <input style="width: 100%;" type="number" required class="form-control" name="displayOrder"
+                                                   th:value="${setting.displayOrder}" min="1">
                                         </div>
                                     </div>
                                     <div class="col-md-2 text-center">
                                         <div class="mb-3">
-                                            <label class="form-label">Status</label>
+                                            <label class="form-label">Status<span class="text-danger">*</span></label>
                                             <div class="form-check form-switch" style="font-size: 24px">
                                                 <input style="margin-left: -38px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
                                             </div>
@@ -125,7 +143,8 @@
                                 </div>
                             </form>
 
-                            <h6 style="color: red;" th:text="${errmsg}"></h6>
+<!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
+                            <div id="errmsg" style="color: red;"></div>
                         </div>
                     </div><!--end col-->
                 </div>

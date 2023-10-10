@@ -11,6 +11,8 @@ public interface ISubjectService {
 
     List<Subject> getSubject(Integer pageNo, Integer pageSize);
 
+    List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId, Integer status);
+
     Subject getSubjectById(Integer Id);
 
     Subject saveSubject(Subject subject);
@@ -26,4 +28,6 @@ public interface ISubjectService {
     boolean checkSubjectNameExist(String subjectName);
 
     List<Subject> findAllSubjectByUser(User user);
+    List<Subject> findAllSubjectByClassManagerId(Integer classManagerId);
+    List<Subject> findAllSubjectByUserAndStatus(User user, Boolean status);
 }

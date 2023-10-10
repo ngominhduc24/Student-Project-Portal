@@ -25,6 +25,7 @@
     <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
     <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
 </head>
@@ -42,14 +43,14 @@
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
-    <div th:replace="dashboardSidebar"></div>
+    <div th:replace="~{dashboardSidebar}"></div>
     <main class="page-content bg-light">
-        <div th:replace="dashboardHeader"></div>
-        <div class="container">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid px-4">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
                     <h3 class="mb-0" th:if="${setting.id!=null}" th:text="${typeName}+' Details'"></h3>
-                    <h3 class="mb-0" th:if="${setting.id==null}" th:text="'New '+${typeName}"></h3>
+                    <h3 class="mb-0" th:if="${setting.id==null}" >New Setting</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
@@ -58,49 +59,62 @@
                         <li class="breadcrumb-item"><a href="/admin/setting">Setting</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active" th:if="${setting.id!=null}" th:text="${typeName}+' Details'"></li>
-                        <li class="breadcrumb-item active" th:if="${setting.id==null}" th:text="'New '+${typeName}"></li>
+                        <li class="breadcrumb-item active" th:if="${setting.id==null}" >New Setting</li>
                     </ol>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 mt-4 offset-4">
-                        <div class="card border-0 p-4 rounded shadow" style="border-radius: 28px !important;">
-                            <form action="/admin/setting/update" method="post" class="mt-4">
+                    <div class="col-lg-8">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form action="/admin/setting/update" method="post">
                                 <div class="row justify-content-center">
-                                    <div class="col-md-9" style="margin-bottom: 14px;margin-top: 12px;">
+                                    <div class="col-md-11" style="margin-top: 12px;">
                                         <div class="mb-3">
-                                            <label class="form-label" th:text="${typeName}"></label>
                                             <input type="hidden" name="id" th:value="${setting.id}">
-                                            <input type="hidden" name="typeId" th:value="${setting.typeId==null?typeId:setting.typeId}">
+                                            <input type="hidden" th:if="${setting.id!=null}" name="typeId" th:value="${setting.typeId==null?typeId:setting.typeId}">
+                                            <label class="form-label" th:if="${setting.id!=null}" th:text="${typeName}"><span class="text-danger">*</span></label>
+                                            <label class="form-label" th:if="${setting.id==null}">Setting Name<span class="text-danger">*</span></label>
                                             <input type="text" name="settingTitle" class="form-control" required th:value="${setting.settingTitle}">
                                         </div>
-                                    </div><!--end col-->
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-md-5">
                                         <div class="mb-3">
-                                            <label class="form-label">Display Order</label>
-                                            <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
-                                                   th:value="${setting.displayOrder==null?displayOrder:setting.displayOrder}">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${setting.description}"></textarea>
                                         </div>
-                                    </div><!--end col-->
-
-
-                                    <div class="col-md-4 text-center">
-                                        <div class="mb-3 h-">
-                                            <label class="form-label">Status</label>
-                                            <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -38px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
+                                        <div class="row mb-3">
+                                            <div class="col-md-5" style="margin-right: 60px" th:if="${setting.id==null}">
+                                                <label class="form-label">Setting Type<span class="text-danger">*</span></label>
+                                                <select name="typeId" class="form-select">
+                                                    <option value="2">Permitted Email Domain</option>
+                                                    <option value="3">Semester</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Display Order<span class="text-danger">*</span></label>
+                                                <input style="width: 60%;" type="number" required class="form-control" name="displayOrder"
+                                                       value="1">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                                <div class="form-check form-switch" style="font-size: 24px">
+                                                    <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="mt-2">
+                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+                                            <h6 style="color: green;" th:text="${msg}"></h6>
+                                        </div>
+
                                     </div><!--end col-->
-                                </div><!--end row-->
-                                <div class="row justify-content-center">
-                                    <h6 style="color: indianred; text-align: center" th:text="${errmsg}"></h6>
-                                    <h6 style="color: green; text-align: center" th:text="${msg}"></h6>
-                                    <button th:if="${setting.id!=null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 6px;margin-bottom: 20px;">Save</button>
-                                    <button th:if="${setting.id==null}" type="submit" class="btn btn-primary col-md-3" style="margin-top: 6px;margin-bottom: 20px;">Add</button>
                                 </div>
 
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-11">
+                                        <button th:if="${setting.id!=null}" type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
+                                        <button th:if="${setting.id==null}" type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Add</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div><!--end col-->

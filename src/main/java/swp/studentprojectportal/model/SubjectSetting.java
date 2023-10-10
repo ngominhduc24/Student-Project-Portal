@@ -23,6 +23,9 @@ public class SubjectSetting {
     @Column(name = "setting_title")
     private String settingTitle;
 
+    @Column(name = "setting_value")
+    private String settingValue;
+
     @Column(name = "status")
     private boolean status = true;
 

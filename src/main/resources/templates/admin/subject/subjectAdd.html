@@ -54,7 +54,7 @@
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="/admin/subject">Subject</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Add Subject</li>
+                        <li class="breadcrumb-item active">New Subject</li>
                     </ol>
                 </div>
 
@@ -65,31 +65,34 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Name</label>
+                                            <label class="form-label">Subject Name<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control"
                                                    name="subjectName"
+                                                   th:value="${subjectName}"
                                                    placeholder="Subject Name :">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subject Code</label>
+                                            <label class="form-label">Subject Code<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control"
                                                    name="subjectCode"
+                                                   th:value="${subjectCode}"
                                                    placeholder="Subject Code :">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label"> Subject Manager : </label>
+                                            <label class="form-label"> Subject Manager<span class="text-danger">*</span></label>
                                             <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                                                 <div class="input-group" style="flex-wrap: nowrap">
                                                     <select name="subjectManagerId" class="form-select">
                                                         <option th:each="manager : ${subjectManagerList}"
                                                                 th:value="${manager.id}"
                                                                 th:text="${manager.fullName}"
+                                                                th:selected="${manager.id == subjectManagerId}"
                                                                 class="managerOption"></option>
                                                     </select>
                                                 </div>

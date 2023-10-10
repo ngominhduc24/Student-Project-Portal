@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
+import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
@@ -27,8 +28,10 @@ public class SubjectController {
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model) {
-        subjectList = subjectService.getSubject(0, 15);
+        subjectList = subjectService.getSubject(0, 10);
         model.addAttribute("SubjectList", subjectList);
+        model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+        System.out.println(userService.findAllUserByRoleId(3));
         return "admin/subject/subjectList";
     }
 
@@ -36,6 +39,7 @@ public class SubjectController {
     public String createSubjectPage(Model model) {
         model.addAttribute("subject", new Subject());
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+//        model.addAttribute("status",subjectService.findAllUserByStatus());
         return "admin/subject/subjectAdd";
     }
 
@@ -50,9 +54,13 @@ public class SubjectController {
         String errorMsg = checkValidateSubject(subjectName, subjectCode);
         if(errorMsg!=null) {
             model.addAttribute("errorMsg", errorMsg);
+            model.addAttribute("subjectName", subjectName);
+            model.addAttribute("subjectCode", subjectCode);
             model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+            model.addAttribute("subjectManagerId", subjectManagerId);
             return "/admin/subject/subjectAdd";
         }
+
         int newSubjectId = subjectService.addSubject(subjectName, subjectCode, subjectManagerId, true).getId();
         return "redirect:./subjectDetails?id=" + newSubjectId;
     }
