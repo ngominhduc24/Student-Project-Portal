@@ -17,7 +17,6 @@ import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
-import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 
 import java.util.List;
