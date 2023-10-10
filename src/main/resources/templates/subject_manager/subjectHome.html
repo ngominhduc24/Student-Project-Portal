@@ -47,15 +47,31 @@
   <main class="page-content bg-light">
     <div th:replace="~{dashboardHeader}"></div>
     <div class="topnav">
-      <a class="active" href="#"><p style="margin:0">General</p></a>
-      <a href="#"><p style="margin:0">Assignment</p></a>
-      <a href="#"><p style="margin:0">Settings</p></a>
+      <a href="#" onclick="showDiv('general')"><p style="margin:0">General</p></a>
+      <a href="#" onclick="showDiv('assignment')"><p style="margin:0">Assignment</p></a>
+      <a href="#" onclick="showDiv('settings')"><p style="margin:0">Settings</p></a>
     </div>
-    <div class="container-fluid">
+
+    <div id="general" class="container-fluid">
       <div class="layout-specing" style="padding: 15px 14px 24px !important;">
         <h5>subject home</h5>
       </div>
     </div>
+
+    <div class="container-fluid" id="assignment">
+<!--      <div th:replace="~{subjectAssignmentList}"></div>-->
+      <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+        <h5>subject asignment</h5>
+      </div>
+    </div>
+
+    <div class="container-fluid" id="settings">
+<!--      <div th:replace="~{subjectSettingList}"></div>-->
+      <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+        <h5>subject setting</h5>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -69,6 +85,16 @@
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
+
+<script>
+  function showDiv(divId) {
+    document.getElementById('general').style.display = 'none';
+    document.getElementById('assignment').style.display = 'none';
+    document.getElementById('settings').style.display = 'none';
+
+    document.getElementById(divId).style.display = 'block';
+  }
+</script>
 
 </body>
 </html>

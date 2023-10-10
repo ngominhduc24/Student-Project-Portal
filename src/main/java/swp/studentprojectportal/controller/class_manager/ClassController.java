@@ -28,7 +28,7 @@ public class ClassController {
     ClassService classService;
     @Autowired
     SubjectService subjectService;
-    @Autowired
+@Autowired
     UserService userService;
     @Autowired
     SettingService settingService;
