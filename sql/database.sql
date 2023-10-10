@@ -193,8 +193,9 @@ DROP TABLE IF EXISTS `swp391`.`class_issue_setting` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
                                                               `id` INT NOT NULL AUTO_INCREMENT,
                                                               `class_id` INT NULL,
-                                                              `type` INT NULL,
-                                                              `status` BIT(1) NULL,
+                                                              `type` VARCHAR(155) NULL,
+                                                              `status` BIT(1) NULL DEFAULT 1,
+    `status_issue` VARCHAR(155) NULL,
     `work_processes` VARCHAR(155) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -473,3 +474,22 @@ VALUES
     (4,'Test technique','Dymanic test + static test',1),
     (6,'React App','Make React App to print "Hello React"',1),
     (6,'JS ES6','Learn new synctax in JS ES6',1);
+    
+INSERT INTO class_issue_setting (`class_id`,`type`,`status_issue`,`work_processes`)
+VALUES
+	(1,'Defect','To Do','Testting'),
+    (1,'Leakage','To Do','Testting'),
+    (2,'Req','To Do','Testting'),
+    (2,'Task','To Do','Testting'),
+    (3,'Defect','Doing','Req'),
+    (3,'Defect','Doing','Coding'),
+    (3,'Task','To Do','Testting'),
+    (4,'Defect','Done','Testting'),
+    (5,'Task','To Do','Coding'),
+    (6,'Defect','To Do','Design'),
+    (7,'Q&A','Doing','Design'),
+    (8,'Defect','To Do','Testting'),
+    (9,'Leakage','Done','Req'),
+    (10,'Q&A','To Do','Testting'),
+    (10,'Defect','To Do','Testting');
+    
