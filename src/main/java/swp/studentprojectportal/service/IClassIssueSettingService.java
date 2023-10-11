@@ -10,11 +10,14 @@ import java.util.List;
 
 public interface IClassIssueSettingService {
 
+    ClassIssueSetting findById(int id);
 
+    ClassIssueSetting saveClassIssueSetting(ClassIssueSetting classIssueSetting);
 
     List<ClassIssueSetting> getALL(int teacherId) ;
 
     Page<ClassIssueSetting> findAllByClassManagerId(int teacherId, String search, Integer pageNo,
                                         Integer pageSize, String sortBy, Integer sortType, Integer classId,
                                         Integer status);
+
 }

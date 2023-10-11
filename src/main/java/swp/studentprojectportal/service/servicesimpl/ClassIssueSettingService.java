@@ -18,6 +18,16 @@ public class ClassIssueSettingService implements IClassIssueSettingService {
     IClassIssueSettingRepository classIssueSettingRepository;
 
     @Override
+    public ClassIssueSetting findById(int id){
+        return classIssueSettingRepository.findById(id).get();
+    }
+
+    @Override
+    public ClassIssueSetting saveClassIssueSetting(ClassIssueSetting classIssueSetting){
+        return classIssueSettingRepository.save(classIssueSetting);
+    }
+
+    @Override
     public Page<ClassIssueSetting> findAllByClassManagerId(int teacherId, String search, Integer pageNo,
                                                Integer pageSize, String sortBy, Integer sortType, Integer classId,
                                                Integer status){

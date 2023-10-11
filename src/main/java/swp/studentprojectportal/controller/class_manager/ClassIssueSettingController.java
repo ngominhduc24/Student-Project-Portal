@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.ClassIssueSetting;
 import swp.studentprojectportal.model.User;
@@ -49,5 +50,28 @@ public class ClassIssueSettingController {
         model.addAttribute("classList",classList);
         model.addAttribute("classIssueSettingList", classIssueSettingList);
         return "class_manager/class_issue_setting/classIssueSettingList";
+    }
+
+    @GetMapping("/class-manager/class-issue-setting/updateStatus")
+    public String updateIssueSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        ClassIssueSetting classIssueSetting = classIssueSettingService.findById(id);
+        classIssueSetting.setStatus(status);
+        classIssueSettingService.saveClassIssueSetting(classIssueSetting);
+        return "redirect:/";
+    }
+
+    @GetMapping(path="/class-manager/class-issue-setting/detail")
+    public String classIssueSettingDetail(@RequestParam("id") Integer id, Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Class> classList = classService.findClassForIssue(user.getId());
+        Map<Integer, String> classMap = classList.stream()
+                .collect(Collectors.toMap(Class::getId, Class::getClassName));
+        ClassIssueSetting classIssueSetting = classIssueSettingService.findById(id);
+        model.addAttribute("classIssueSetting",classIssueSetting);
+        model.addAttribute("classList",classList);
+        model.addAttribute("classMap",classMap);
+        return "class_manager/class_issue_setting/classIssueSettingDetail";
     }
 }

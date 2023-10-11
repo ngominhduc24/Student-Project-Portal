@@ -30,6 +30,9 @@ public class ClassIssueSetting {
     @Column(name = "status")
     private boolean status = true;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "create_by")
     private Integer createBy = 0;
 

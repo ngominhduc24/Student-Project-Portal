@@ -195,6 +195,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
                                                               `class_id` INT NULL,
                                                               `type` VARCHAR(155) NULL,
                                                               `status` BIT(1) NULL DEFAULT 1,
+	`description` LONGTEXT NULL,
     `status_issue` VARCHAR(155) NULL,
     `work_process` VARCHAR(155) NULL,
     `create_by` INT NULL DEFAULT 0,
@@ -475,21 +476,21 @@ VALUES
     (6,'React App','Make React App to print "Hello React"',1),
     (6,'JS ES6','Learn new synctax in JS ES6',1);
     
-INSERT INTO class_issue_setting (`class_id`,`type`,`status_issue`,`work_process`)
+INSERT INTO class_issue_setting (`class_id`,`type`,`status_issue`,`work_process`,`description`)
 VALUES
-	(1,'Defect','To Do','Testting'),
-    (1,'Leakage','To Do','Testting'),
-    (2,'Req','To Do','Testting'),
-    (2,'Task','To Do','Testting'),
-    (3,'Defect','Doing','Req'),
-    (3,'Defect','Doing','Coding'),
-    (3,'Task','To Do','Testting'),
-    (4,'Defect','Done','Testting'),
-    (5,'Task','To Do','Coding'),
-    (6,'Defect','To Do','Design'),
-    (7,'Q&A','Doing','Design'),
-    (8,'Defect','To Do','Testting'),
-    (9,'Leakage','Done','Req'),
-    (10,'Q&A','To Do','Testting'),
-    (10,'Defect','To Do','Testting');
+	(1,'Defect','To Do','Testting',"Lam 1 dieu tuyet voi"),
+    (1,'Leakage','To Do','Testting',"Lam 2 dieu tuyet voi"),
+    (2,'Req','To Do','Testting',"Lam 3 dieu tuyet voi"),
+    (2,'Task','To Do','Testting',"Lam 4 dieu tuyet voi"),
+    (3,'Defect','Doing','Req',"Lam 5 dieu tuyet voi"),
+    (3,'Defect','Doing','Coding',"Lam 6 dieu tuyet voi"),
+    (3,'Task','To Do','Testting',"Lam 7 dieu tuyet voi"),
+    (4,'Defect','Done','Testting',"Lam 8 dieu tuyet voi"),
+    (5,'Task','To Do','Coding',"Lam 9 dieu tuyet voi"),
+    (6,'Defect','To Do','Design',"Lam 10 dieu tuyet voi"),
+    (7,'Q&A','Doing','Design',"Lam 11 dieu tuyet voi"),
+    (8,'Defect','To Do','Testting',"Lam 12 dieu tuyet voi"),
+    (9,'Leakage','Done','Req',"Lam 13 dieu tuyet voi"),
+    (10,'Q&A','To Do','Testting',"Lam 14 dieu tuyet voi"),
+    (10,'Defect','To Do','Testting',"Lam 15 dieu tuyet voi");
     
