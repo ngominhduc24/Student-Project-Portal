@@ -72,7 +72,7 @@ public class StudentController {
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId) {
         Class myClass = classService.getClass(classId);
-        String hrefApi = "http://localhost:3000/api/v1/users?subject=" + myClass.getSubject().getSubjectCode().toLowerCase() + "&class=" + myClass.getClassName().toLowerCase();
+        String hrefApi = "http://localhost:3000/api/v1/students?subject=" + myClass.getSubject().getSubjectCode().toLowerCase() + "&class=" + myClass.getClassName().toLowerCase();
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             // Create an HTTP GET request
