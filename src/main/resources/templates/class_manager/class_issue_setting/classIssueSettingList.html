@@ -190,6 +190,10 @@
                                         <i th:class="${(sortBy eq 'class_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('class_id',1)"></i>
                                         <i th:class="${(sortBy eq 'class_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('class_id',2)"></i>
                                     </th>
+                                    <th data-sortable="false">ClassName
+<!--                                        <i th:class="${(sortBy eq 'class_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('class_id',1)"></i>-->
+<!--                                        <i th:class="${(sortBy eq 'class_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('class_id',2)"></i>-->
+                                    </th>
                                     <th data-sortable="false">Type
                                         <i th:class="${(sortBy eq 'type' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('type',1)"></i>
                                         <i th:class="${(sortBy eq 'type' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('type',2)"></i>
@@ -209,7 +213,7 @@
                                 <tbody>
                                 <tr th:each="setting : ${classIssueSettingList}">
                                     <td th:text="${setting.aClass.id}"></td>
-<!--                                    <td th:text="${setting.aClass.class_name}"></td>-->
+                                    <td th:text="${classMap.get(setting.aClass.id)}"></td>
                                     <td th:text="${setting.type}"></td>
                                     <td th:text="${setting.statusIssue}"></td>
                                     <td th:text="${setting.workProcess}"></td>

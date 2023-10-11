@@ -15,6 +15,8 @@ import swp.studentprojectportal.service.IClassIssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class ClassIssueSettingController {
@@ -29,10 +31,13 @@ public class ClassIssueSettingController {
                                         @RequestParam(defaultValue = "class_id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
                                         Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
-        List<Class> classList = classService.findAllByClassManagerId(user.getId());
+        List<Class> classList = classService.findClassForIssue(user.getId());
+        Map<Integer, String> classMap = classList.stream()
+                .collect(Collectors.toMap(Class::getId, Class::getClassName));
         //List<ClassIssueSetting> classIssueSettingList = classIssueSettingService.getALL(user.getId());
         //Page<ClassIssueSetting> classIssueSettingList = classIssueSettingService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,status);
         Page<ClassIssueSetting> classIssueSettingList = classIssueSettingService.findAllByClassManagerId(user.getId(),search,pageNo,pageSize,sortBy,sortType,classId,status);
+        model.addAttribute("classMap",classMap);
         model.addAttribute("classId",classId);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
