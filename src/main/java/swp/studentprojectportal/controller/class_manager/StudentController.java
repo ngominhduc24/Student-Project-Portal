@@ -1,5 +1,10 @@
 package swp.studentprojectportal.controller.class_manager;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +19,7 @@ import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 
+import java.net.HttpURLConnection;
 import java.util.Optional;
 
 @Controller
@@ -58,6 +64,33 @@ public class StudentController {
             @RequestParam(name = "classId") Integer classId,
             @RequestParam(name = "studentId") Integer studentId) {
         boolean result =  studentClassService.removeStudentFromClass(classId, studentId);
+        return "redirect:/class-manager/class?classId=" + classId;
+    }
+
+    @GetMapping("/class/syncStudent")
+    public String removeStudentFromClass(
+            @RequestParam(name = "classId") Integer classId) {
+        Class myClass = classService.getClass(classId);
+        String hrefApi = "http://localhost:3000/api/v1/users?subject=" + myClass.getSubject() + "&class=" + myClass.getClassName();
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            // Create an HTTP GET request
+            HttpGet httpGet = new HttpGet(hrefApi);
+
+            // Execute the request and get the response
+            CloseableHttpResponse response = httpClient.execute(httpGet);
+
+            // Get the response entity as a string
+            String responseBody = EntityUtils.toString(response.getEntity());
+
+            // Print the response
+            System.out.println("Response:\n" + responseBody);
+
+            // Ensure the response is properly closed to release resources
+            response.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:/class-manager/class?classId=" + classId;
     }
 }
