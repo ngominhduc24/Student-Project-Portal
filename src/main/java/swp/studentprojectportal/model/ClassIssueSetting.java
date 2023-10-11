@@ -19,13 +19,19 @@ public class ClassIssueSetting {
     private Integer id;
 
     @Column(name = "type")
-    private Integer type;
+    private String type;
 
     @Column(name = "work_process")
     private String workProcess;
 
+    @Column(name = "status_issue")
+    private String statusIssue;
+
     @Column(name = "status")
     private boolean status = true;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "create_by")
     private Integer createBy = 0;
