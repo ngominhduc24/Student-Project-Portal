@@ -5,6 +5,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -71,7 +72,7 @@ public class StudentController {
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId) {
         Class myClass = classService.getClass(classId);
-        String hrefApi = "http://localhost:3000/api/v1/users?subject=" + myClass.getSubject() + "&class=" + myClass.getClassName();
+        String hrefApi = "http://localhost:3000/api/v1/users?subject=" + myClass.getSubject().getSubjectCode().toLowerCase() + "&class=" + myClass.getClassName().toLowerCase();
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             // Create an HTTP GET request
@@ -82,7 +83,6 @@ public class StudentController {
 
             // Get the response entity as a string
             String responseBody = EntityUtils.toString(response.getEntity());
-
             // Print the response
             System.out.println("Response:\n" + responseBody);
 
