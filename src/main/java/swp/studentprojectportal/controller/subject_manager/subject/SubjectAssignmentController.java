@@ -25,28 +25,6 @@ public class SubjectAssignmentController {
     @Autowired
     IAssignmentService assignmentService;
 
-    @GetMapping("subject-manager/subject-assignment")
-    public String AssignmentPage(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
-                                 @RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") Integer subjectId,
-                                 @RequestParam(defaultValue = "-1") Integer status,
-                                 @RequestParam(defaultValue = "subject_id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
-                                 Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        Page<Assignment> assignmentList = assignmentService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,subjectId,status);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("search", search);
-        model.addAttribute("subjectId", subjectId);
-        model.addAttribute("status", status);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortType", sortType);
-        model.addAttribute("totalPage", assignmentList.getTotalPages());
-        model.addAttribute("subjectList", subjectList);
-        model.addAttribute("assignmentList", assignmentList);
-        return "subject_manager/subject_assignment/subjectAssignmentList";
-    }
-
     @GetMapping("/subject-manager/subject-assignment/updateStatus")
     public String updateAssignmentStatus(
             @RequestParam int id,

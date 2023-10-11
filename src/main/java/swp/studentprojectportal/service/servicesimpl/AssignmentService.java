@@ -64,6 +64,10 @@ public class AssignmentService implements IAssignmentService {
         return assignmentRepository.findAssignmentByManager(subjectManagerId);
     }
     @Override
+    public List<Assignment> getAssignmentBySubjectId(int subjectId){
+        return assignmentRepository.findAssignmentBySubjectId(subjectId);
+    }
+    @Override
     public Assignment saveAssignment(Assignment assignment){
         return  assignmentRepository.save(assignment);
     }

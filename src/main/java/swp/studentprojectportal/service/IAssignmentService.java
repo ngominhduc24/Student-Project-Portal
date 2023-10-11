@@ -19,5 +19,7 @@ public interface IAssignmentService {
 
     Assignment saveAssignment(Assignment assignment);
 
+    List<Assignment> getAssignmentBySubjectId(int subjectId);
+
     boolean updateAssignment(int id, String title, String description, int subject, boolean status);
 }
