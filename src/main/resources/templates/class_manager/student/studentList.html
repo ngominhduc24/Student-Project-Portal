@@ -72,7 +72,7 @@
           <div class="col-xl-3 col-md-6 mt-4 text-md-end">
 <!--            <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New User</a>-->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add student to class</button>
-            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalAddStudent" aria-labelledby="myLargeModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="card-body">
@@ -194,6 +194,7 @@
 
 <!-- Status update -->
 <script>
+
   function updateStatus(id, checkbox) {
     let status = checkbox.checked;
 
@@ -373,7 +374,21 @@
   });
 
   // handel add student to class
-    function addStudent(studentId) {
+
+  let modalAddStudent = document.getElementById('modalAddStudent');
+  function startInterval() {
+    return window.setInterval(function () {
+      let reload = document.querySelector('li[name="reloadPage"]');
+      if (reload.textContent == 'Student have been added to class, reload page to see changes!' && modalAddStudent.classList.contains('show') == false) {
+        location.reload();
+      }
+      if (reload.textContent != 'Student have been added to class, reload page to see changes!') {
+        clearInterval(intervalId);
+      }
+    }, 3000);
+  }
+  var intervalId = startInterval();
+  function addStudent(studentId) {
         fetch('/api/v1/student/addStudentToClass?studentId=' + studentId + '&classId=' + classId)
                 .then(response => response.json())
                 .then(data => {
@@ -382,6 +397,7 @@
                     populateUserTable(currentPage);
                     let reload = document.querySelector('li[name="reloadPage"]');
                     reload.textContent = 'Student have been added to class, reload page to see changes!';
+                  intervalId = startInterval();
                 } else {
                   console.log('Add student to class failed');
                 }
