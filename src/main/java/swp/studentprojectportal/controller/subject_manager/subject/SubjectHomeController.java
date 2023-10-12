@@ -35,8 +35,8 @@ public class SubjectHomeController {
         model.addAttribute("subject", subject);
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        Page<Assignment> assignmentList = assignmentService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,subjectId,status);
         Page<SubjectSetting> subjectSettingList= subjectSettingService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, typeId, status);
+        Page<Assignment> assignmentList = assignmentService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,subjectId,status);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("search", search);

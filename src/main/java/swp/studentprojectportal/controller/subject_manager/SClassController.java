@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.service.servicesimpl.ClassService;
-import swp.studentprojectportal.service.servicesimpl.SettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectService;
-import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.*;
 
+import java.util.ArrayList;
 import java.util.List;
 @Controller
 @RequestMapping("/subject-manager")
@@ -29,6 +27,8 @@ public class SClassController {
     UserService userService;
     @Autowired
     SettingService settingService;
+    @Autowired
+    ClassAssignmentService classAssignmentService;
     @GetMapping("/class")
     public String classPage(@RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
@@ -149,7 +149,8 @@ public class SClassController {
         if(classService.checkExistedClassName(className, subjectId, null))
             model.addAttribute("errmsg", "This class name has already existed!");
         else {
-            classService.saveClass(classA);
+            classA = classService.saveClass(classA);
+            classAssignmentService.addClassAssignment(classA);
             model.addAttribute("msg", "Successfully");
         }
         User user = (User) session.getAttribute("user");
