@@ -57,10 +57,10 @@
             </li>
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i class="uil uil-calender me-2 d-inline-block"></i>Class</a></li>
             <!--    class manager function == 4-->
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/home"><i class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/classList"><i class="uil uil-presentation me-2 d-inline-block"></i>Assigned Classes</a></li>
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/class"><i class="uil uil-setting me-2 d-inline-block"></i>Class Details</a></li>
             <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>
-            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/classList"><i class="uil uil-presentation me-2 d-inline-block"></i>Assigned Classes</a></li>
-
         </ul>
         <!-- sidebar-menu  -->
     </div>
