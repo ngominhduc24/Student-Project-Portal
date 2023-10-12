@@ -12,6 +12,7 @@ public interface IClassIssueSettingService {
 
     ClassIssueSetting findById(int id);
 
+
     ClassIssueSetting saveClassIssueSetting(ClassIssueSetting classIssueSetting);
 
     List<ClassIssueSetting> getALL(int teacherId) ;

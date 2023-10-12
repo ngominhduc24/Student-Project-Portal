@@ -57,7 +57,7 @@
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="/class-manager/class-issue-setting">Class Issue Setting List</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Details</li>
+                        <li class="breadcrumb-item active">New Class Issue Setting</li>
                     </ol>
                 </div>
                 <div class="row">
@@ -66,52 +66,39 @@
                             <form action="/class-manager/class-issue-setting/update" method="post">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
-                                        <input type="hidden" name="id" th:value="${classIssueSetting.id}">
-                                        <input type="hidden" name="classId" th:value="${classIssueSetting.aClass.id}">
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <input type="hidden" name="id" th:value="${classIssueSetting.id}">-->
-<!--                                            <label class="form-label">ID<span class="text-danger">*</span></label>-->
-<!--                                            <input type="text" name="id" class="form-control" readonly th:value="${classIssueSetting.aClass.id}">-->
-<!--&lt;!&ndash;                                            <input type="text" name="className" class="form-control" readonly th:value="${classMap.get(classIssueSetting.aClass.id)}">&ndash;&gt;-->
-<!--                                        </div>-->
+<!--                                        <input type="hidden" name="id" th:value="${classIssueSetting.id}" />-->
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <select name="className" class="form-select">
+                                            <select name="className" class="form-select" id="classNameDropdown">
                                                 <option th:each="class : ${classList}"
                                                         th:value="${class.id}"
                                                         th:text="${class.className}"
-                                                        th:selected="${classIssueSetting.aClass.id == class.id}"
                                                 ></option>
                                             </select>
+                                            <input type="hidden" id="classId" name="classId" value=""/>
                                         </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Type<span class="text-danger">*</span></label>
-                                            <input type="text" name="type" class="form-control" required th:value="${classIssueSetting.type}">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Status Issue<span class="text-danger">*</span></label>
-                                            <input type="text" name="statusIssue" class="form-control" required th:value="${classIssueSetting.statusIssue}">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Work Process<span class="text-danger">*</span></label>
-                                            <input type="text" name="workProcess" class="form-control" required th:value="${classIssueSetting.workProcess}">
+<!--                                        <div class="mb-3 col-md-6">-->
+<!--                                            <label class="form-label">Type<span class="text-danger">*</span></label>-->
+<!--                                            <input type="text" name="type" class="form-control" required th:value="${classIssueSetting.type}">-->
+<!--                                        </div>-->
+<!--                                        <div class="mb-3 col-md-6">-->
+<!--                                            <label class="form-label">Status Issue<span class="text-danger">*</span></label>-->
+<!--                                            <input type="text" name="statusIssue" class="form-control" required th:value="${classIssueSetting.statusIssue}">-->
+<!--                                        </div>-->
+<!--                                        <div class="mb-3 col-md-6">-->
+<!--                                            <label class="form-label">Work Process<span class="text-danger">*</span></label>-->
+<!--                                            <input type="text" name="workProcess" class="form-control" required th:value="${classIssueSetting.workProcess}">-->
 
-                                        </div>
-                                        <div class="mb-3 col-md-12">
-                                            <label class="form-label">Description</label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${classIssueSetting.description}"></textarea>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                                            <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${classIssueSetting.isStatus()}" >
-                                            </div>
-                                        </div>
+<!--                                        </div>-->
+<!--                                        <div class="mb-3 col-md-12">-->
+<!--                                            <label class="form-label">Description</label>-->
+<!--                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${classIssueSetting.description}"></textarea>-->
+<!--                                        </div>-->
 
-                                        <div class="mt-2">
-                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>
-                                            <h6 style="color: green;" th:text="${msg}"></h6>
-                                        </div>
+<!--                                        <div class="mt-2">-->
+<!--                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>-->
+<!--                                            <h6 style="color: green;" th:text="${msg}"></h6>-->
+<!--                                        </div>-->
 
                                     </div><!--end col-->
                                 </div>
@@ -119,7 +106,7 @@
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 ps-4">
-                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
+                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Add</button>
                                     </div>
                                 </div>
                             </form>
@@ -130,6 +117,25 @@
         </div>
     </main>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        // Sự kiện change để theo dõi khi giá trị được chọn thay đổi
+        $("#classNameDropdown").change(function () {
+            // Lấy giá trị được chọn từ dropdown
+            var selectedClassId = $(this).val();
+
+            // Gán giá trị vào trường ẩn
+            $("#classId").val(selectedClassId);
+
+            // In giá trị lớp id ra console để kiểm tra
+            //console.log("Selected Class Id: " + selectedClassId);
+
+            // Bạn có thể thực hiện các hành động khác với giá trị này
+        });
+    });
+</script>
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
