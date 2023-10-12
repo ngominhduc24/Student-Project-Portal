@@ -81,6 +81,7 @@ public class ClassService implements IClassService {
     public boolean checkExistedClassName(String className, Integer subjectId, Integer id) {
         Class classA = classRepository.findClassByClassNameAndSubjectId(className, subjectId);
         if(classA !=null)  {
+            if(id==null) return true;
             if(classA.getId()!=id)  return true;
         }
         return false;

@@ -359,16 +359,16 @@ VALUES
     ("oraallen@gmail.com","0298393485","c4ca4238a0b923820dcc509a6f75849b","Ora Allen","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("a@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","a","/images/user_icon.png",1,1),
-    ("b@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","b","/images/user_icon.png",1,1),
-    ("c@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","c","/images/user_icon.png",1,1),
-    ("d@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","d","/images/user_icon.png",1,1),
-    ("e@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","e","/images/user_icon.png",1,1),
-    ("f@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","f","/images/user_icon.png",1,1),
-    ("g@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","g","/images/user_icon.png",1,1),
-    ("h@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","h","/images/user_icon.png",1,1),
-    ("i@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","i","/images/user_icon.png",1,1),
-    ("k@gmail.com",NULL,"c4ca4238a0b923820dcc509a6f75849b","k","/images/user_icon.png",1,1);
+    ("longpvhe170788@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","a","/images/user_icon.png",1,1),
+    ("tunghe171091@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","b","/images/user_icon.png",1,1),
+    ("ngoche172779@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","c","/images/user_icon.png",1,1),
+    ("ducnmhe13177@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","d","/images/user_icon.png",1,1),
+    ("haihe176453@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","e","/images/user_icon.png",1,1),
+    ("nhathe176486@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","f","/images/user_icon.png",1,1),
+    ("dunghe176572@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","g","/images/user_icon.png",1,1),
+    ("duche176711@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h","/images/user_icon.png",1,1),
+    ("namhe176727@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","i","/images/user_icon.png",1,1),
+    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","k","/images/user_icon.png",1,1);
 
 -- subject
 INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)

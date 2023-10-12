@@ -2,6 +2,7 @@ package swp.studentprojectportal.controller.subject_manager.subject;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Assignment;
+import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.IAssignmentService;
 import swp.studentprojectportal.service.ISubjectService;
-
-
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,15 +25,7 @@ public class SubjectAssignmentController {
     @Autowired
     IAssignmentService assignmentService;
 
-    List<Assignment> assignmentList = new CopyOnWriteArrayList<>();
-    @GetMapping("subject-manager/subject-assignment")
-    public String AssignmentPage(Model model) {
-        assignmentList = assignmentService.findAllAssignment(0,10);
-        model.addAttribute("assignmentList", assignmentList);
-        return "subject_manager/subject_assignment/subjectAssignmentList";
-    }
-
-    @GetMapping("/subject-manager/subject-assignment/updateStatus")
+    @GetMapping("/subject-manager/subject/updateStatus")
     public String updateAssignmentStatus(
             @RequestParam int id,
             @RequestParam boolean status) {
@@ -42,6 +34,7 @@ public class SubjectAssignmentController {
         assignmentService.saveAssignment(assignment);
         return "redirect:/";
     }
+
 
     @GetMapping("/subject-manager/addSubjectAssignment")
     public String AddSubjectAssignment(Model model, HttpSession session){
@@ -108,8 +101,6 @@ public class SubjectAssignmentController {
     private String checkValidateAssignment(String title, String description) {
         if(title.isEmpty()) return "Please input subject assignment title";
         if(description.isEmpty()) return "Please input subject assignment description";
-//        if(assignmentService.checkTitleExisted(title)) return "Subject assignment title already exist";
-//        if(assignmentService.checkDescriptionMatch(description)) return "Subject assignment description already exist";
         return null;
     }
 

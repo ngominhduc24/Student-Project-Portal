@@ -51,12 +51,11 @@
                 <a href="javascript:void(0)"><i class="uil uil-globe me-2 d-inline-block"></i>Subject Managing</a>
                 <div class="sidebar-submenu">
                     <ul th:each="subject : ${subjectList}">
-                        <li><a th:href="@{'/subject-manager/subject?id=' + ${subject.id}}" th:text="${subject.subjectCode}"></a></li>
+                        <li><a th:href="@{'/subject-manager/subject?subjectId=' + ${subject.id}}" th:text="${subject.subjectCode}"></a></li>
                     </ul>
                 </div>
             </li>
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i class="uil uil-calender me-2 d-inline-block"></i>Class</a></li>
-            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/subject-setting"><i class="uil uil-setting me-2 d-inline-block"></i>Subject Setting</a></li>
             <!--    class manager function == 4-->
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/class"><i class="uil uil-setting me-2 d-inline-block"></i>Class Details</a></li>
             <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>

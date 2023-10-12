@@ -48,9 +48,26 @@
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
             <div class="layout-specing">
-                <h5 class="mb-0">Home</h5>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4" th:each="subject : ${subjectList}">
+                        <div class="card blog blog-primary border-opacity-10 shadow rounded overflow-hidden">
+                            <div class="img-fluid p-4 pb-5" th:style="'background: url('+@{/images/subjectBackground.png}+'); background-size: cover'">
+                                <a th:href="@{'/subject-manager/subject?subjectId=' + ${subject.id}}" class="text-white title h5" th:text="${subject.subjectCode} + '/' + ${subject.subjectName}"></a>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="post-meta d-flex justify-content-between mt-3">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="uil uil-calender me-1"></i>33</a></li>
+                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="uil uil-assignment me-1"></i>08</a></li>
+                                    </ul>
+                                    <a th:href="@{'/subject-manager/subject?subjectId=' + ${subject.id}}" class="link">View More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div>
             </div>
-        </div>
+        </div><!--end container-->
     </main>
 </div>
 
