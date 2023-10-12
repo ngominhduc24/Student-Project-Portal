@@ -28,6 +28,7 @@
     <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
 
     <style>
         .datatable-table {
@@ -37,9 +38,12 @@
 
         tr, td, th {
             border: 1px solid #dee2e6 !important;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            padding-left: 5px;
         }
 
-        td:last-child {
+        td:nth-child(4), td:last-child {
             text-align: center;
         }
 
@@ -48,15 +52,15 @@
         }
 
         th:nth-child(2) {
-            width: 17%;
+            width: 20%;
         }
 
-        th:nth-child(3), th:nth-child(4), th:nth-child(5), th:nth-child(6) {
-            width: 13%;
+        th:nth-child(3){
+            width: 20%;
         }
 
-        th:nth-child(7), th:last-child {
-            width: 11%;
+        th:nth-child(4), th:last-child {
+            width: 7%;
         }
 
         th {
@@ -214,19 +218,19 @@
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
-                                    <th data-sortable="false">Subject ID
+                                    <th data-sortable="false">Subject Code
                                         <i th:class="${(sortBy eq 'subject_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('subject_id',1)"></i>
                                         <i th:class="${(sortBy eq 'subject_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('subject_id',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Subject
+                                    <th data-sortable="false">Subject Name
                                         <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('s.subject_code',1)"></i>
                                         <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('s.subject_code',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Title
+                                    <th data-sortable="false">Assigment Title
                                         <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('title',1)"></i>
                                         <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
@@ -238,8 +242,8 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="assignment : ${assignmentList}">
-                                    <td th:text="${assignment.subject.id}"></td>
                                     <td th:text="${assignment.subject.subjectCode}"></td>
+                                    <td th:text="${assignment.subject.subjectName}"></td>
                                     <td th:text="${assignment.title}"></td>
                                     <td>
                                         <div class="form-check form-switch">
@@ -320,7 +324,7 @@
 
                     <div class="col-xl-5 col-md-6"></div>
 
-                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
+                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
                         <a href="/subject-manager/subject-setting/add" class="btn btn-primary"
                            style="margin-left: 24px">Add
                             New</a>
@@ -334,7 +338,7 @@
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1">
-                                        <select name="pageSize" class="formSetting-select"
+                                        <select name="pageSize" class="form-select"
                                                 onchange="this.form.submit()">
                                             <option th:selected="${pageSize==5}" value="5">5</option>
                                             <option th:selected="${pageSize==10}" value="10">10</option>
@@ -348,7 +352,7 @@
                                 <div class="row col-md-8" style="margin-left: -100px">
                                     <div class="col-md-3">
                                         <div class="mb-3">
-                                            <select name="subjectId" class="formSetting-select"
+                                            <select name="subjectId" class="form-select"
                                                     onchange="this.form.submit()">
                                                 <option value="-1">All Subject</option>
                                                 <option th:each="subject : ${subjectList}"
@@ -360,7 +364,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="mb-3">
-                                            <select name="typeId" class="formSetting-select"
+                                            <select name="typeId" class="form-select"
                                                     onchange="this.form.submit()">
                                                 <option value="-1" th:selected="${typeId == -1}">All Type</option>
                                                 <option value="1" th:selected="${typeId == 1}">Complexity</option>
@@ -370,7 +374,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="mb-3">
-                                            <select name="status" class="formSetting-select"
+                                            <select name="status" class="form-select"
                                                     onchange="this.form.submit()">
                                                 <option value="-1" th:selected="${status == -1}">All Status</option>
                                                 <option value="1" th:selected="${status == 1}">Active</option>
@@ -380,7 +384,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <input class="formSetting-control formSetting-control-sm" type="text"
+                                    <input class="form-control form-control-sm" type="text"
                                            th:value="${search}" name="search"
                                            placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
                                     <button onclick="this.form.submit()" class="search-button"><i
@@ -389,8 +393,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <input type="hidden" name="sortBySetting" id="sortBySetting">
-                            <input type="hidden" name="sortTypeSetting" id="sortTypeSetting">
+                            <input type="hidden" name="sortBy" id="sortBySetting">
+                            <input type="hidden" name="sortType" id="sortTypeSetting">
                             <table id="datatablesSimpleSetting" class="display">
                                 <thead>
                                 <tr>
@@ -443,8 +447,8 @@
                                     <td th:text="${setting.settingValue}"></td>
                                     <td th:text="${setting.displayOrder}"></td>
                                     <td>
-                                        <div class="formSetting-check formSetting-switch">
-                                            <input class="formSetting-check-input" type="checkbox"
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox"
                                                    th:checked="${setting.isStatus()}"
                                                    th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
                                         </div>
