@@ -6,13 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.model.StudentClass;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.service.IClassService;
-import swp.studentprojectportal.service.IStudentClassService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +41,13 @@ public class ClassService implements IClassService {
     public List<Class> findAllByClassManagerId(int classManagerId) {
         return classRepository.findAllByUserId(classManagerId);
     }
+    @Override
+    public Page<Class> findAllBySemester(Integer pageNo, Integer teacherId, Integer pageSize, Integer semesterId){
+        return classRepository.filterClassBySemester(semesterId, teacherId, PageRequest.of(pageNo, pageSize));
+    }
 
     @Override
-    public Page<Class> findAllBySubjectManagerId(int subjecManagertId, String search, Integer pageNo, Integer pageSize,
+    public Page<Class> findAllBySubjectManagerId(int subjectManagerId, String search, Integer pageNo, Integer pageSize,
                                                  String sortBy, Integer sortType, Integer subjectId, Integer semesterId,
                                                  Integer teacherId, Integer status) {
         Sort sort;
@@ -53,7 +55,7 @@ public class ClassService implements IClassService {
             sort = Sort.by(sortBy).ascending();
         else
             sort = Sort.by(sortBy).descending();
-        return classRepository.filterClassBySubjectManager(subjecManagertId, search, subjectId, semesterId, teacherId, status,
+        return classRepository.filterClassBySubjectManager(subjectManagerId, search, subjectId, semesterId, teacherId, status,
                 PageRequest.of(pageNo, pageSize, sort));
     }
 
