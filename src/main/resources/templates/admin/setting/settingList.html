@@ -267,11 +267,81 @@
                 <script>
                     function updateStatus(id, checkbox) {
                         let status = checkbox.checked;
-                        if(confirm('Are you sure?'))
-                            fetch(`/admin/setting/updateStatus?id=${id}&status=${status}`)
-                        else checkbox.checked = !status;
+
+                        confirmCustom(
+                            ()=>{fetch(`/admin/setting/updateStatus?id=${id}&status=${status}`)},
+                            ()=>{checkbox.checked = !status}
+                        )
+
+                        // if(confirm('Are you sure?'))
+                        //     fetch(`/admin/setting/updateStatus?id=${id}&status=${status}`)
+                        // else checkbox.checked = !status;
                     }
                 </script>
+
+                <!--            modal lmao-->
+                <style>
+                    .modalBack{
+                        position: fixed;
+                        top: 0;
+                        right: 0;
+
+                        width: 100%;
+                        height: 100vh;
+
+                        display: none;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .modalCustom{
+                        width: 30%;
+                        aspect-ratio: 16/9;
+
+                        background-color: white;
+                        border-radius: 10px;
+                        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                    }
+                </style>
+
+                <div class="modalBack">
+                    <div class="modalCustom">
+                        <h4>Are you sure?</h4>
+                        <br>
+                        <br>
+                        <div>
+                            <button class="btn btn-secondary" onclick="setModalStatus(true)">Yes</button>
+                            <button class="btn btn-primary" onclick="setModalStatus(false)">No</button>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let modal = document.querySelector('.modalBack');
+                    let modalStatus = false;
+                    let yesCallback;
+                    let noCallback;
+
+                    function setModalStatus(status) {
+                        modalStatus = status;
+                        modal.style.display = 'none';
+
+                        status ? yesCallback() : noCallback();
+                    }
+
+                    function confirmCustom(yesCb, noCb) {
+                        modal.style.display = 'flex';
+                        yesCallback = yesCb;
+                        noCallback = noCb;
+                    }
+                </script>
+                <!--            modal lmao-->
+
             </div>
         </div><!--end container-->
 
