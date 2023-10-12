@@ -68,13 +68,11 @@ public class StudentClassService implements IStudentClassService {
 
     public boolean addNewStudentToClass(int classId, int studentId) {
         StudentClass studentClass = new StudentClass();
-
         // get student
         User student = userRepository.findUserById(studentId);
         if (student == null) {
             return false;
         }
-
         // get class
         Class c = classRepository.findClassById(classId);
         if (c == null) {
@@ -89,6 +87,30 @@ public class StudentClassService implements IStudentClassService {
 
         return true;
     }
+
+    // This function is accept add student to class by studentId (String) ex: HE191919
+    public boolean addNewStudentToClass(int classId, String studentId) {
+        StudentClass studentClass = new StudentClass();
+        // get student
+        User student = userRepository.findUserByEmailContainsIgnoreCase(studentId);
+        if (student == null) {
+            return false;
+        }
+        // get class
+        Class c = classRepository.findClassById(classId);
+        if (c == null) {
+            return false;
+        }
+
+        studentClass.setStudent(student);
+        studentClass.setAclass(c);
+
+        if (checkStudentInClass(classId, student.getId())) return false;
+        if (studentClassRepository.save(studentClass) == null) return false;
+
+        return true;
+    }
+
 
     public boolean checkStudentInClass(int classId, int studentId) {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
