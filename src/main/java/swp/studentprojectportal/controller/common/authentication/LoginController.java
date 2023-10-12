@@ -18,7 +18,6 @@ import java.io.IOException;
 
 @Controller
 public class LoginController {
-    private final String afterLoginRoute = "/home";
 
     @Autowired
     UserService userService;
@@ -58,7 +57,12 @@ public class LoginController {
             response.addCookie(cu);
             response.addCookie(cp);
             response.addCookie(cr);
-            return "redirect:" + afterLoginRoute;
+            if(user.getSetting().getId()==2)
+                return "redirect:admin/home" ;
+            if(user.getSetting().getId()==3)
+                return "redirect:subject-manager/home" ;
+            if(user.getSetting().getId()==4)
+                return "redirect:class-manager/home" ;
         } else if (user==null){
             model.addAttribute("errmsg", "Username or password is not correct");
         } else if(!user.isActive()) {
@@ -83,20 +87,26 @@ public class LoginController {
                 model.addAttribute("errmsg", "Your account is not allowed to log into the system");
                 return "login";
             }
+            User user = new User();
             if (!userService.checkExistMail(googlePojo.getEmail())) {
-                User user = userService.registerAccountFromGoogle(googlePojo);
+                user = userService.registerAccountFromGoogle(googlePojo);
                 session.setAttribute("user", user);
-                return "redirect:" + afterLoginRoute;
             } else {
-                User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
+                user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
                 if (!user.isStatus()) {
                     model.addAttribute("errmsg", "Your account has been blocked");
                     return "login";
                 }
                 session.setAttribute("user", user);
-                return "redirect:" + afterLoginRoute;
             }
-
+            if(user.getSetting().getId()==2)
+                return "redirect:admin/home" ;
+            else if(user.getSetting().getId()==3)
+                return "redirect:subject-manager/home" ;
+            else if (user.getSetting().getId()==4)
+                return "redirect:class-manager/home" ;
+            else
+                return "redirect:student/home" ;
         }
     }
 
