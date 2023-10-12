@@ -61,7 +61,7 @@ public class ClassController {
     @GetMapping("/class/updateStatus")
     public String updateSubjectSettingStatus(
             @RequestParam int id,
-            @RequestParam boolean status) {
+            @RequestParam Integer status) {
         Class classA = classService.findById(id);
         classA.setStatus(status);
         classService.saveClass(classA);
@@ -78,7 +78,6 @@ public class ClassController {
     @PostMapping("/class/update")
     public String updateClass(@RequestParam Integer id,
                               WebRequest request, Model model) {
-        String status = request.getParameter("status");
         Class classA = new Class();
         classA.setId(id);
         classService.saveClass(classA);

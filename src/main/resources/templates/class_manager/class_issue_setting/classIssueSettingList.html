@@ -29,7 +29,7 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <!-- Datatables -->
-    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
 
     <style>
@@ -102,29 +102,46 @@
 </head>
 
 <body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
 
-    <div class="layout-specing" th:fragment="subjectAssignmentList">
-        <div class="row px-4">
-            <div class="col-xl-5 col-md-6">
-                <h1>Subject List</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-                    <li class="breadcrumb-item">/</li>
-                    <li class="breadcrumb-item active">Subject Assignment List</li>
-                </ol>
-            </div><!--end col-->
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
 
-            <div class="col-xl-4 col-md-6"></div>
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid">
+            <div class="layout-specing" style="padding-top: 84px !important;">
+                <div class="row px-4">
+                    <div class="col-xl-5 col-md-6">
+                        <h1 style="margin: 0">Class Issue Setting List</h1>
+                        <ol class="breadcrumb mb-1 ms-1">
+                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item active"><a>Class Issue Setting List</a></li>
+                        </ol>
+                    </div><!--end col-->
+
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
-                        <a href="/subject-manager/subject-assignment/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
+                        <a href="/class-manager/class-issue-setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
 
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form class="card-body rounded-3" action="/subject-manager/subject-assignment" id="form">
+                        <form class="card-body rounded-3" action="/class-manager/class-issue-setting" id="form">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1" >
@@ -141,11 +158,11 @@
                                 <div class="row col-md-8" style="margin-left: -100px">
                                     <div class="col-md-3">
                                         <div class="mb-3" >
-                                            <select name="subjectId" class="form-select" onchange="this.form.submit()">
-                                                <option value="-1">All Subject</option>
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectCode}" th:selected="${subjectId == subject.id}"></option>
+                                            <select name="classId" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1">All Class</option>
+                                                <option th:each="class : ${classList}"
+                                                        th:value="${class.id}"
+                                                        th:text="${class.className}" th:selected="${classId == class.id}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -169,33 +186,43 @@
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
-                                    <th data-sortable="false">Subject ID
-                                        <i th:class="${(sortBy eq 'subject_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('subject_id',1)"></i>
-                                        <i th:class="${(sortBy eq 'subject_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('subject_id',2)"></i>
+                                    <th data-sortable="false">ClassID
+                                        <i th:class="${(sortBy eq 'class_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('class_id',1)"></i>
+                                        <i th:class="${(sortBy eq 'class_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('class_id',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Subject
-                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('s.subject_code',1)"></i>
-                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('s.subject_code',2)"></i>
+                                    <th data-sortable="false">ClassName
+<!--                                        <i th:class="${(sortBy eq 'class_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('class_id',1)"></i>-->
+<!--                                        <i th:class="${(sortBy eq 'class_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('class_id',2)"></i>-->
                                     </th>
-                                    <th data-sortable="false">Title
-                                        <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('title',1)"></i>
-                                        <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('title',2)"></i>
+                                    <th data-sortable="false">Type
+                                        <i th:class="${(sortBy eq 'type' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('type',1)"></i>
+                                        <i th:class="${(sortBy eq 'type' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('type',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">StatusIssue
+                                        <i th:class="${(sortBy eq 'status_issue' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('status_issue',1)"></i>
+                                        <i th:class="${(sortBy eq 'status_issue' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('status_issue',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Process
+                                        <i th:class="${(sortBy eq 'work_process' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('work_process',1)"></i>
+                                        <i th:class="${(sortBy eq 'work_process' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('work_process',2)"></i>
                                     </th>
                                     <th data-sortable="false">Status</th>
                                     <th data-sortable="false">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="assignment : ${assignmentList}">
-                                    <td th:text="${assignment.subject.id}"></td>
-                                    <td th:text="${assignment.subject.subjectCode}"></td>
-                                    <td th:text="${assignment.title}"></td>
+                                <tr th:each="setting : ${classIssueSettingList}">
+                                    <td th:text="${setting.aClass.id}"></td>
+                                    <td th:text="${classMap.get(setting.aClass.id)}"></td>
+                                    <td th:text="${setting.type}"></td>
+                                    <td th:text="${setting.statusIssue}"></td>
+                                    <td th:text="${setting.workProcess}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${assignment.isStatus()}" th:onclick="'updateStatus(' + ${assignment.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.isStatus()}" th:onclick="'updateStatus(' + ${setting.id} + ', this)'">
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/subject-manager/subject-assignment/detail?id={id}(id=${assignment.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td><a th:href="@{/class-manager/class-issue-setting/detail?id={id}(id=${setting.id})}"><i class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -241,7 +268,7 @@
                     function updateStatus(id, checkbox) {
                         let status = checkbox.checked;
                         if(confirm('Are you sure?'))
-                            fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`)
+                            fetch(`/class-manager/class-issue-setting/updateStatus?id=${id}&status=${status}`)
                         else checkbox.checked = !status;
                     }
                 </script>
@@ -276,34 +303,13 @@
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
-<!-- Datatable -->
+
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
 <!-- Datatable -->
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>-->
-<!--<script type="text/javascript">-->
-<!--    $(document).ready(function () {-->
-<!--        $('#myTable').DataTable({-->
-<!--            "dom": 'frt<"#toolbar.dt-box"><"dt-box"p>',-->
-<!--            "bInfo": false,-->
-<!--        });-->
-
-<!--        $("#toolbar").html('<div class="float-left">' +-->
-<!--            '<p>Page no 1</p>' +-->
-<!--            '</div>');-->
-<!--    });-->
-<!--</script>-->
-
-<script>
-    function updateStatus(id, checkbox) {
-        let status = checkbox.checked;
-        if (confirm('Are you sure?'))
-            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
-        else checkbox.checked = !status;
-    }
-</script>
 <script>
     window.addEventListener('DOMContentLoaded', event => {
 
@@ -313,7 +319,8 @@
         }
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script><script>window.addEventListener('DOMContentLoaded', event => {
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script>window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
@@ -326,6 +333,7 @@
     }
 
 });</script>
+
 
 </body>
 

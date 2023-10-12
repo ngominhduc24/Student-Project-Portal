@@ -15,6 +15,8 @@ public interface IClassService {
     Class getClass(int classId);
 
     List<Class> findAllByClassManagerId(int classManagerId);
+
+    List<Class> findClassForIssue(int teacherId);
     Page<Class> findAllBySubjectManagerId(int subjectManagerId, String search, Integer pageNo,
                                           Integer pageSize, String sortBy, Integer sortType, Integer subjectId, Integer semesterId,
                                           Integer teacherId, Integer status);
@@ -22,6 +24,9 @@ public interface IClassService {
                                           Integer pageSize, String sortBy, Integer sortType, Integer subjectId, Integer semesterId,
                                           Integer status);
     Class findById(int id);
+
+    Class findByClassName(String className);
     Class saveClass(Class classA);
     public boolean checkExistedClassName(String className, Integer subjectId, Integer id);
+    void delete(Class classA);
 }
