@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class Class {
     private String description;
 
     @Column(name = "status")
-    private boolean status = true;
+    private Integer status = 0;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
@@ -50,4 +51,16 @@ public class Class {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentClass> students;
+
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClassAssignment> classAssignments;
+
+    @OneToMany(mappedBy = "aClass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClassIssueSetting> classIssueSettings;
+
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> projects;
 }

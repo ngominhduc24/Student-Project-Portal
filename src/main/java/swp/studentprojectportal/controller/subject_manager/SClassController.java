@@ -61,11 +61,15 @@ public class SClassController {
     @GetMapping("/class/updateStatus")
     public String updateSubjectSettingStatus(
             @RequestParam int id,
-            @RequestParam boolean status) {
+            @RequestParam Integer status) {
         Class classA = classService.findById(id);
+        if(status==-1){
+            classService.delete(classA);
+            return "redirect:/subject-manager/class";
+        }
         classA.setStatus(status);
         classService.saveClass(classA);
-        return "redirect:/";
+        return "redirect:/subject-manager/class";
     }
 
     @GetMapping("/classDetail")
@@ -135,7 +139,6 @@ public class SClassController {
                               @RequestParam String className, @RequestParam Integer subjectId,
                               @RequestParam Integer semesterId, @RequestParam Integer classManagerId,
                               WebRequest request, Model model, HttpSession session) {
-        String status = request.getParameter("status");
         Class classA = new Class();
         classA.setClassName(className);
         classA.setDescription(description);

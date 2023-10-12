@@ -49,68 +49,64 @@
         <div class="container-fluid px-4">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">Class Details</h3>
+                    <h3 class="mb-0">Class Issue Setting Details</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
+                        <li class="breadcrumb-item"><a href="/class-manager/class-issue-setting">Class Issue Setting List</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Class Details</li>
+                        <li class="breadcrumb-item active">Details</li>
                     </ol>
                 </div>
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/class/update" method="post">
+                            <form action="/class-manager/class-issue-setting/update" method="post">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <input type="hidden" name="id" th:value="${classIssueSetting.id}">
+                                        <input type="hidden" name="classId" th:value="${classIssueSetting.aClass.id}">
+<!--                                        <div class="mb-3 col-md-6">-->
+<!--                                            <input type="hidden" name="id" th:value="${classIssueSetting.id}">-->
+<!--                                            <label class="form-label">ID<span class="text-danger">*</span></label>-->
+<!--                                            <input type="text" name="id" class="form-control" readonly th:value="${classIssueSetting.aClass.id}">-->
+<!--&lt;!&ndash;                                            <input type="text" name="className" class="form-control" readonly th:value="${classMap.get(classIssueSetting.aClass.id)}">&ndash;&gt;-->
+<!--                                        </div>-->
                                         <div class="mb-3 col-md-6">
-                                            <input type="hidden" name="id" th:value="${class.id}">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <input type="text" name="className" class="form-control" required th:value="${class.className}">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subjectId" class="form-select">
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectCode}"
-                                                        th:selected="${subject.id == class.subject.id}"
+                                            <select name="className" class="form-select">
+                                                <option th:each="class : ${classList}"
+                                                        th:value="${class.id}"
+                                                        th:text="${class.className}"
+                                                        th:selected="${classIssueSetting.aClass.id == class.id}"
                                                 ></option>
                                             </select>
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Semester<span class="text-danger">*</span></label>
-                                            <select name="semesterId" class="form-select">
-                                                <option th:each="semester : ${semesterList}"
-                                                        th:value="${semester.id}"
-                                                        th:text="${semester.settingTitle}"
-                                                        th:selected="${semester.id == class.semester.id}"
-                                                ></option>
-                                            </select>
+                                            <label class="form-label">Type<span class="text-danger">*</span></label>
+                                            <input type="text" name="type" class="form-control" required th:value="${classIssueSetting.type}">
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <select name="classManagerId" class="form-select">
-                                                <option th:each="teacher : ${teacherList}"
-                                                        th:value="${teacher.id}"
-                                                        th:text="${teacher.fullName}"
-                                                        th:selected="${teacher.id == class.user.id}"
-                                                ></option>
-                                            </select>
+                                            <label class="form-label">Status Issue<span class="text-danger">*</span></label>
+                                            <input type="text" name="statusIssue" class="form-control" required th:value="${classIssueSetting.statusIssue}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Work Process<span class="text-danger">*</span></label>
+                                            <input type="text" name="workProcess" class="form-control" required th:value="${classIssueSetting.workProcess}">
+
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description</label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${class.description}"></textarea>
+                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${classIssueSetting.description}"></textarea>
                                         </div>
-<!--                                        <div class="col-md-2">-->
-<!--                                            <label class="form-label">Status<span class="text-danger">*</span></label>-->
-<!--                                            <div class="form-check form-switch" style="font-size: 24px">-->
-<!--                                                <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${class.isStatus()}" >-->
-<!--                                            </div>-->
-<!--                                        </div>-->
+                                        <div class="col-md-2">
+                                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                                            <div class="form-check form-switch" style="font-size: 24px">
+                                                <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${classIssueSetting.isStatus()}" >
+                                            </div>
+                                        </div>
 
                                         <div class="mt-2">
                                             <h6 style="color: indianred;" th:text="${errmsg}"></h6>
