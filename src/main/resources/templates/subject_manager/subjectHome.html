@@ -168,8 +168,9 @@
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form class="card-body rounded-3" action="/subject-manager/subject-assignment" id="form">
+                        <form class="card-body rounded-3" action="/subject-manager/subject" id="form">
                             <div class="row" style="width: 100%; justify-content: space-between">
+                                <input type="hidden" name="subjectId" th:value="${subject.id}">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1">
                                         <select name="pageSize" class="form-select" onchange="this.form.submit()">
@@ -183,17 +184,6 @@
                                     <p class="ps-2 col-md-5 pt-2">per page</p>
                                 </div>
                                 <div class="row col-md-8" style="margin-left: -100px">
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <select name="subjectId" class="form-select" onchange="this.form.submit()">
-                                                <option value="-1">All Subject</option>
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectCode}"
-                                                        th:selected="${subjectId == subject.id}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-md-3">
                                         <div class="mb-3">
                                             <select name="status" class="form-select" onchange="this.form.submit()">
@@ -333,10 +323,11 @@
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form class="card-body rounded-3" action="/subject-manager/subject-setting"
+                        <form class="card-body rounded-3" action="/subject-manager/subject"
                                      id="formSetting">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
+                                    <input type="hidden" name="subjectId" th:value="${subject.id}">
                                     <div class="mb-3 col-md-4 pe-1">
                                         <select name="pageSize" class="form-select"
                                                 onchange="this.form.submit()">
@@ -350,18 +341,6 @@
                                     <p class="ps-2 col-md-5 pt-2">per page</p>
                                 </div>
                                 <div class="row col-md-8" style="margin-left: -100px">
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <select name="subjectId" class="form-select"
-                                                    onchange="this.form.submit()">
-                                                <option value="-1">All Subject</option>
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectCode}"
-                                                        th:selected="${subjectId == subject.id}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-md-3">
                                         <div class="mb-3">
                                             <select name="typeId" class="form-select"
@@ -503,7 +482,7 @@
                     function updateStatus(id, checkbox) {
                         let status = checkbox.checked;
                         if (confirm('Are you sure?'))
-                            fetch(`/subject-manager/subject-setting/updateStatus?id=${id}&status=${status}`)
+                            fetch(`/subject-manager/subject/updateStatus?id=${id}&status=${status}`)
                         else checkbox.checked = !status;
                     }
                 </script>
@@ -556,8 +535,19 @@
         document.getElementById('assignment').style.display = 'none';
         document.getElementById('settings').style.display = 'none';
 
+        // Display the div
         document.getElementById(divId).style.display = 'block';
+        // Store the ID of the displayed div in local storage
+        localStorage.setItem('lastDisplayedDiv', divId);
     }
+
+    // Retrieve the previously displayed div on page load and show it
+    document.addEventListener('DOMContentLoaded', function () {
+        const lastDisplayedDiv = localStorage.getItem('lastDisplayedDiv');
+        if (lastDisplayedDiv) {
+            showDiv(lastDisplayedDiv);
+        }
+    });
 </script>
 
 </body>
