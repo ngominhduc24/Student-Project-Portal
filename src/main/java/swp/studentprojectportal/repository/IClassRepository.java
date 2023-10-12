@@ -18,7 +18,14 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
     Class findClassById(Integer className);
     Class findClassByClassNameAndSubjectId(String className, Integer subjectId);
 
+
+    Class findClassByClassName(String className);
+
     List<Class> findAllByUserId(Integer classManagerId);
+
+    @Query(value = "SELECT DISTINCT c.id, c.class_name, c.description, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at\n" +
+            "FROM class c JOIN class_issue_setting cis ON c.id = cis.class_id WHERE c.teacher_id = :teacherId", nativeQuery = true)
+    List<Class> findClassForIssue(@Param("teacherId") Integer teacherId);
     @Query(value="SELECT c.id, c.class_name, c.description, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at " +
             "FROM class c join subject s on c.subject_id = s.id join setting st on c.semester_id = st.id join user u on c.teacher_id = u.id\n" +
             "WHERE s.subject_manager_id = :subjectManagerId " +

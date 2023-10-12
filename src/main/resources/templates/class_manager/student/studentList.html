@@ -63,6 +63,7 @@
             <ol class="breadcrumb mb-4">
               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
               <li class="breadcrumb-item" name="reloadPage" style="color: red"></li>
+              <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' to class'"></li>
               <li class="breadcrumb-item active"></li>
             </ol>
           </div><!--end col-->
@@ -71,7 +72,8 @@
 
           <div class="col-xl-3 col-md-6 mt-4 text-md-end">
 <!--            <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New User</a>-->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add student to class</button>
+            <button type="button" class="btn btn-success" style="width: 205px; margin-bottom: 8px;" ><a style="color: white;" th:href="'/class-manager/class/syncStudent?classId=' + ${classId}">Synchronize with FAP </a></button>
+            <button type="button" class="btn btn-primary" style="width: 205px;" data-toggle="modal" data-target=".bd-example-modal-lg">Add student to class</button>
             <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalAddStudent" aria-labelledby="myLargeModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -131,15 +133,8 @@
                 <thead>
                 <tr>
                   <th>Fullname
-<!--                    <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('id',1)"></i>-->
-                    <i class="fas fa-caret-up caret-up"></i>
-                    <i class="fas fa-caret-down caret-down" ></i></th>
                   <th>Email
-                    <i class="fas fa-caret-up caret-up"></i>
-                    <i class="fas fa-caret-down caret-down" ></i></th>
                   <th>Phone
-                    <i class="fas fa-caret-up caret-up"></i>
-                    <i class="fas fa-caret-down caret-down" ></i></th>
                   <th>View Details</th>
                   <th>Remove to class</th>
                 </tr>

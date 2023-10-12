@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+</head>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid px-4">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h3 class="mb-0">Class Issue Setting Details</h3>
+                </div>
+                <div>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item"><a href="/class-manager/class-issue-setting">Class Issue Setting List</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item active">Details</li>
+                    </ol>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form action="/class-manager/class-issue-setting/update" method="post">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <input type="hidden" name="id" th:value="${classIssueSetting.id}">
+                                        <input type="hidden" name="classId" th:value="${classIssueSetting.aClass.id}">
+<!--                                        <div class="mb-3 col-md-6">-->
+<!--                                            <input type="hidden" name="id" th:value="${classIssueSetting.id}">-->
+<!--                                            <label class="form-label">ID<span class="text-danger">*</span></label>-->
+<!--                                            <input type="text" name="id" class="form-control" readonly th:value="${classIssueSetting.aClass.id}">-->
+<!--&lt;!&ndash;                                            <input type="text" name="className" class="form-control" readonly th:value="${classMap.get(classIssueSetting.aClass.id)}">&ndash;&gt;-->
+<!--                                        </div>-->
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Class Name<span class="text-danger">*</span></label>
+                                            <select name="className" class="form-select">
+                                                <option th:each="class : ${classList}"
+                                                        th:value="${class.id}"
+                                                        th:text="${class.className}"
+                                                        th:selected="${classIssueSetting.aClass.id == class.id}"
+                                                ></option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Type<span class="text-danger">*</span></label>
+                                            <input type="text" name="type" class="form-control" required th:value="${classIssueSetting.type}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Status Issue<span class="text-danger">*</span></label>
+                                            <input type="text" name="statusIssue" class="form-control" required th:value="${classIssueSetting.statusIssue}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Work Process<span class="text-danger">*</span></label>
+                                            <input type="text" name="workProcess" class="form-control" required th:value="${classIssueSetting.workProcess}">
+
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${classIssueSetting.description}"></textarea>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                                            <div class="form-check form-switch" style="font-size: 24px">
+                                                <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${classIssueSetting.isStatus()}" >
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-2">
+                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+                                            <h6 style="color: green;" th:text="${msg}"></h6>
+                                        </div>
+
+                                    </div><!--end col-->
+                                </div>
+
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 ps-4">
+                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!--end col-->
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+</body>
+</html>

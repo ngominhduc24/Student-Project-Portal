@@ -20,6 +20,7 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     User findUserByPhone(String phone);
     User findUserByEmailOrPhone(String email, String phone);
     List<User> findAllBySetting(Setting setting);
+    User findUserByEmailContainsIgnoreCase(String email);
     Page<User> findUserByFullNameContainsIgnoreCaseOrEmailContainsIgnoreCaseOrPhoneContainsIgnoreCase(String fullName, String email, String phone, Pageable pageable);
     @Query(value = "SELECT * FROM user u " +
             "WHERE (LOWER(u.full_name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +

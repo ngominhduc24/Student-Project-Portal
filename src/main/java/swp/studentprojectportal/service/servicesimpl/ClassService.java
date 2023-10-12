@@ -45,6 +45,11 @@ public class ClassService implements IClassService {
     }
 
     @Override
+    public List<Class> findClassForIssue(int teacherId){
+        return  classRepository.findClassForIssue(teacherId);
+    }
+
+    @Override
     public Page<Class> findAllBySubjectManagerId(int subjecManagertId, String search, Integer pageNo, Integer pageSize,
                                                  String sortBy, Integer sortType, Integer subjectId, Integer semesterId,
                                                  Integer teacherId, Integer status) {
@@ -70,6 +75,10 @@ public class ClassService implements IClassService {
     @Override
     public Class findById(int id) {
         return classRepository.findById(id).get();
+    }
+
+    @Override public Class findByClassName(String className){
+        return  classRepository.findClassByClassName(className);
     }
 
     @Override
