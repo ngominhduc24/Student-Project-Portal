@@ -24,6 +24,8 @@ public interface IClassService {
                                           Integer pageSize, String sortBy, Integer sortType, Integer subjectId, Integer semesterId,
                                           Integer status);
     Class findById(int id);
+
+    Class findByClassName(String className);
     Class saveClass(Class classA);
     public boolean checkExistedClassName(String className, Integer subjectId, Integer id);
 }

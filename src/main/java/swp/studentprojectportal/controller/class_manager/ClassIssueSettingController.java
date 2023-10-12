@@ -122,40 +122,40 @@ public class ClassIssueSettingController {
         return "class_manager/class_issue_setting/classIssueSettingAdd";
     }
 
-    @PostMapping(path="/class-manager/class-issue-setting/add")
-    public String addClassIssueSetting(WebRequest request){
-        String classId = request.getParameter("classId");
-        if(classId!=null) System.out.println(classId);
-        else System.out.println("huhu");
-        System.out.println("halo");
-        return "class_manager/class_issue_setting/classIssueSettingAdd";
-    }
-
 //    @PostMapping(path="/class-manager/class-issue-setting/add")
-//    public String addClassIssueSetting(@RequestParam Integer classId, @RequestParam String description,
-//                                       @RequestParam String className, @RequestParam String type,
-//                                       @RequestParam String statusIssue, @RequestParam String workProcess,
-//                                       WebRequest request, Model model, HttpSession session){
-//        System.out.println("no1"+ description);
-//        System.out.println("no2"+ type);
-//        System.out.println("no3"+ statusIssue);
-//        System.out.println("no4"+ workProcess);
-//        System.out.println("no5"+ classId);
-//        System.out.println("no6"+ className);
-//        ClassIssueSetting classIssueSetting = new ClassIssueSetting();
-//        classIssueSetting.setDescription(description);
-//        classIssueSetting.setType(type);
-//        classIssueSetting.setStatusIssue(statusIssue);
-//        classIssueSetting.setWorkProcess(workProcess);
-//        classIssueSetting.setAClass(classService.findById(classId));
-//        model.addAttribute("classIssueSetting",classIssueSetting);
-//        classIssueSettingService.saveClassIssueSetting(classIssueSetting);
-//        User user = (User) session.getAttribute("user");
-//        List<Class> classList = classService.findClassForIssue(user.getId());
-//        Map<Integer, String> classMap = classList.stream()
-//                .collect(Collectors.toMap(Class::getId, Class::getClassName));
-//        model.addAttribute("classList",classList);
-//        model.addAttribute("classMap",classMap);
+//    public String addClassIssueSetting(WebRequest request){
+//        String classId = request.getParameter("classId");
+//        if(classId!=null) System.out.println(classId);
+//        else System.out.println("huhu");
+//        System.out.println("halo");
 //        return "class_manager/class_issue_setting/classIssueSettingAdd";
 //    }
+
+    @PostMapping(path="/class-manager/class-issue-setting/add")
+    public String addClassIssueSetting(@RequestParam String description, @RequestParam String type,
+                                       @RequestParam String statusIssue, @RequestParam String workProcess,
+                                       @RequestParam int className,
+                                       WebRequest request, Model model, HttpSession session){
+        System.out.println("no1"+ description);
+        System.out.println("no2"+ type);
+        System.out.println("no3"+ statusIssue);
+        System.out.println("no4"+ workProcess);
+        System.out.println("no5"+ className);
+        ClassIssueSetting classIssueSetting = new ClassIssueSetting();
+        classIssueSetting.setDescription(description);
+        classIssueSetting.setType(type);
+        classIssueSetting.setStatusIssue(statusIssue);
+        classIssueSetting.setWorkProcess(workProcess);
+        classIssueSetting.setAClass(classService.findById(className));
+        model.addAttribute("classIssueSetting",classIssueSetting);
+        classIssueSettingService.saveClassIssueSetting(classIssueSetting);
+        User user = (User) session.getAttribute("user");
+        List<Class> classList = classService.findClassForIssue(user.getId());
+        Map<Integer, String> classMap = classList.stream()
+                .collect(Collectors.toMap(Class::getId, Class::getClassName));
+        model.addAttribute("classNameSelected",className);
+        model.addAttribute("classList",classList);
+        model.addAttribute("classMap",classMap);
+        return "class_manager/class_issue_setting/classIssueSettingAdd";
+    }
 }

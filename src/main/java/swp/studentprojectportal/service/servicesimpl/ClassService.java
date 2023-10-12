@@ -77,6 +77,10 @@ public class ClassService implements IClassService {
         return classRepository.findById(id).get();
     }
 
+    @Override public Class findByClassName(String className){
+        return  classRepository.findClassByClassName(className);
+    }
+
     @Override
     public Class saveClass(Class classA) {
         return classRepository.save(classA);

@@ -18,6 +18,9 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
     Class findClassById(Integer className);
     Class findClassByClassNameAndSubjectId(String className, Integer subjectId);
 
+
+    Class findClassByClassName(String className);
+
     List<Class> findAllByUserId(Integer classManagerId);
 
     @Query(value = "SELECT DISTINCT c.id, c.class_name, c.description, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at\n" +

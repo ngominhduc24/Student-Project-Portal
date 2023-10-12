@@ -63,42 +63,42 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/class-manager/class-issue-setting/update" method="post">
+                            <form action="/class-manager/class-issue-setting/add" method="post">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
-<!--                                        <input type="hidden" name="id" th:value="${classIssueSetting.id}" />-->
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
                                             <select name="className" class="form-select" id="classNameDropdown">
                                                 <option th:each="class : ${classList}"
                                                         th:value="${class.id}"
                                                         th:text="${class.className}"
+                                                        th:selected="${class.id == classNameSelected}"
                                                 ></option>
                                             </select>
-                                            <input type="hidden" id="classId" name="classId" value=""/>
+
                                         </div>
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <label class="form-label">Type<span class="text-danger">*</span></label>-->
-<!--                                            <input type="text" name="type" class="form-control" required th:value="${classIssueSetting.type}">-->
-<!--                                        </div>-->
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <label class="form-label">Status Issue<span class="text-danger">*</span></label>-->
-<!--                                            <input type="text" name="statusIssue" class="form-control" required th:value="${classIssueSetting.statusIssue}">-->
-<!--                                        </div>-->
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <label class="form-label">Work Process<span class="text-danger">*</span></label>-->
-<!--                                            <input type="text" name="workProcess" class="form-control" required th:value="${classIssueSetting.workProcess}">-->
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Type<span class="text-danger">*</span></label>
+                                            <input type="text" name="type" class="form-control" required th:value="${classIssueSetting.type}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Status Issue<span class="text-danger">*</span></label>
+                                            <input type="text" name="statusIssue" class="form-control" required th:value="${classIssueSetting.statusIssue}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Work Process<span class="text-danger">*</span></label>
+                                            <input type="text" name="workProcess" class="form-control" required th:value="${classIssueSetting.workProcess}">
 
-<!--                                        </div>-->
-<!--                                        <div class="mb-3 col-md-12">-->
-<!--                                            <label class="form-label">Description</label>-->
-<!--                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${classIssueSetting.description}"></textarea>-->
-<!--                                        </div>-->
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${classIssueSetting.description}"></textarea>
+                                        </div>
 
-<!--                                        <div class="mt-2">-->
-<!--                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>-->
-<!--                                            <h6 style="color: green;" th:text="${msg}"></h6>-->
-<!--                                        </div>-->
+                                        <div class="mt-2">
+                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+                                            <h6 style="color: green;" th:text="${msg}"></h6>
+                                        </div>
 
                                     </div><!--end col-->
                                 </div>
@@ -119,23 +119,6 @@
 </div>
 
 
-<script>
-    $(document).ready(function () {
-        // Sự kiện change để theo dõi khi giá trị được chọn thay đổi
-        $("#classNameDropdown").change(function () {
-            // Lấy giá trị được chọn từ dropdown
-            var selectedClassId = $(this).val();
-
-            // Gán giá trị vào trường ẩn
-            $("#classId").val(selectedClassId);
-
-            // In giá trị lớp id ra console để kiểm tra
-            //console.log("Selected Class Id: " + selectedClassId);
-
-            // Bạn có thể thực hiện các hành động khác với giá trị này
-        });
-    });
-</script>
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
