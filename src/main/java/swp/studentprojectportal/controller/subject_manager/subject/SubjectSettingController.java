@@ -50,7 +50,7 @@ public class SubjectSettingController {
 //        return "subject_manager/subject_setting/subjectSettingList";
 //    }
 
-    @GetMapping("/subject-manager/subject-setting/updateStatus")
+    @GetMapping("/subject-manager/subject/updateStatusSetting")
     public String updateSubjectSettingStatus(
             @RequestParam int id,
             @RequestParam boolean status) {

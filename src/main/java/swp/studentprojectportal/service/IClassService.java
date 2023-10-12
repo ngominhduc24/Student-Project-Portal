@@ -16,6 +16,9 @@ public interface IClassService {
 
     List<Class> findAllByClassManagerId(int classManagerId);
 
+    Page<Class> findAllBySemester(Integer pageNo, Integer teacherId, Integer pageSize, Integer semesterId);
+
+
     List<Class> findClassForIssue(int teacherId);
     Page<Class> findAllBySubjectManagerId(int subjectManagerId, String search, Integer pageNo,
                                           Integer pageSize, String sortBy, Integer sortType, Integer subjectId, Integer semesterId,
