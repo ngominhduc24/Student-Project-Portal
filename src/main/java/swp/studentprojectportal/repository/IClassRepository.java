@@ -45,4 +45,6 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
                                             @Param("subjectId") Integer subjectId, @Param("semesterId") Integer semesterId,
                                             @Param("status") Integer status,
                                             Pageable pageable);
+
+
 }

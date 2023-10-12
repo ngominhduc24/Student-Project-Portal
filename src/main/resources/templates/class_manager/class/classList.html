@@ -222,11 +222,14 @@
                                     <td th:text="${class.subject.subjectCode}"></td>
                                     <td th:text="${class.semester.settingTitle}"></td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" disabled th:checked="${class.isStatus()}" th:onclick="'updateStatus(' + ${class.id} + ', this)'">
-                                        </div>
+                                        <p class="text-warning m-0" th:if="${class.getStatus()==0}">Pending</p>
+                                        <p class="text-danger m-0" th:if="${class.getStatus()==1}">Canceled</p>
+                                        <p class="text-success m-0" th:if="${class.getStatus()==2}">Started</p>
+                                        <p class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</p>
                                     </td>
-                                    <td><a th:href="@{/class-manager/classDetail?id={id}(id=${class.id})}"><i class="fas fa-pen-to-square"></i></a></td>
+                                    <td>
+                                        <a th:href="@{/class-manager/classDetail?id=${class.id}}"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="fas fa-pen-to-square action"></i></a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -265,15 +268,6 @@
                         document.getElementById('sortBy').value = sortBy;
                         document.getElementById('sortType').value = sortType;
                         document.getElementById('form').submit();
-                    }
-                </script>
-
-                <script>
-                    function updateStatus(id, checkbox) {
-                        let status = checkbox.checked;
-                        if(confirm('Are you sure?'))
-                            fetch(`/class-manager/class/updateStatus?id=${id}&status=${status}`)
-                        else checkbox.checked = !status;
                     }
                 </script>
 

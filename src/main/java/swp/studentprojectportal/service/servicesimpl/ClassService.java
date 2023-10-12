@@ -87,5 +87,10 @@ public class ClassService implements IClassService {
         return false;
     }
 
+    @Override
+    public void delete(Class classA) {
+        classRepository.delete(classA);
+    }
+
 
 }
