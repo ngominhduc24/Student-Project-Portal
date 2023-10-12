@@ -48,7 +48,6 @@ public class StudentController {
             return "redirect:/class";
         }
         if(session.getAttribute("numberStudentAdded") != null) {
-            System.out.println(session.getAttribute("numberStudentAdded"));
             model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
             session.removeAttribute("numberStudentAdded");
         }

@@ -59,11 +59,13 @@
       <div class="layout-specing">
         <div class="row px-4">
           <div class="col-xl-5 col-md-6">
-            <h1 th:text="${className} + ' - ' + ${semester}"></h1>
+            <h2 th:text="${className} + ' - ' + ${semester}"></h2>
             <ol class="breadcrumb mb-4">
               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
               <li class="breadcrumb-item" name="reloadPage" style="color: red"></li>
-              <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' to class'"></li>
+              <div th:if="${numberStudentAdded != null}">
+                <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' to class'"></li>
+              </div>
               <li class="breadcrumb-item active"></li>
             </ol>
           </div><!--end col-->
@@ -139,9 +141,9 @@
                 <tbody>
                 <tr th:each="user : ${studentList}">
                   <td th:text="${user.getStudent().getFullName()}"></td>
-                  <td th:text="${user.getStudent().getEmail()}"></td>
-                  <td th:text="${user.getStudent().getPhone()}"></td>
-                  <td th:text="${user.getProject().getGroupName()}"></td>
+                  <td th:text="${user.getStudent().getEmail() == null ? 'None' : user.getStudent().getEmail()}"></td>
+                  <td th:text="${user.getStudent().getPhone() == null ? 'None' : user.getStudent().getPhone()}"></td>
+                  <td th:text="${user.getProject() == null ? 'No group yet' : user.getProject().getGroupName()}"></td>
                   <td><a th:href="@{'./class/studentDetails?studentId=' + ${user.getStudent().getId()}}">View Details</a>
                   </td>
                   <td>
