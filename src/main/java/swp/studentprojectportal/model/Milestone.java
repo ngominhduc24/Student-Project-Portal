@@ -13,10 +13,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "class_assignment")
-public class ClassAssignment {
+public class Milestone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "start_date")
     private Timestamp startDate;
@@ -32,8 +38,8 @@ public class ClassAssignment {
     private Class aclass;
 
     @ManyToOne
-    @JoinColumn(name = "assignment_id")
-    private Assignment assignment;
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @Column(name = "create_by")
     private Integer createBy = 0;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.model.Subject;
@@ -76,12 +77,12 @@ public class ClassController {
     }
 
     @PostMapping("/class/update")
-    public String updateClass(@RequestParam Integer id,
-                              WebRequest request, Model model) {
-        Class classA = new Class();
-        classA.setId(id);
+    public String updateClass(@RequestParam Integer id, @RequestParam String description,
+                              WebRequest request, Model model, RedirectAttributes attributes) {
+        Class classA = classService.findById(id);
+        classA.setDescription(description);
         classService.saveClass(classA);
-        model.addAttribute("msg", "Successfully");
-        return "class_manager/class/classDetail";
+        attributes.addFlashAttribute("toastMessage", "Update class description successfully");
+        return "redirect:/class-manager/classList";
     }
 }

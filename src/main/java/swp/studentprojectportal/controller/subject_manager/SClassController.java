@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.*;
 
-import java.util.ArrayList;
 import java.util.List;
 @Controller
 @RequestMapping("/subject-manager")
@@ -28,7 +28,7 @@ public class SClassController {
     @Autowired
     SettingService settingService;
     @Autowired
-    ClassAssignmentService classAssignmentService;
+    MilestoneService milestoneService;
     @GetMapping("/class")
     public String classPage(@RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
@@ -72,10 +72,24 @@ public class SClassController {
         return "redirect:/subject-manager/class";
     }
 
+//    @GetMapping("/classDetail")
+//    public String classDetail(@RequestParam("id") Integer id, Model model, HttpSession session) {
+//        User user = (User) session.getAttribute("user");
+//        Class classA = classService.findById(id);
+//        List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
+//        List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
+//        List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
+//        model.addAttribute("subjectList",subjectList);
+//        model.addAttribute("teacherList",teacherList);
+//        model.addAttribute("semesterList",semesterList);
+//        model.addAttribute("class", classA);
+//        return "subject_manager/class/classDetail";
+//    }
+
     @GetMapping("/classDetail")
-    public String classDetail(@RequestParam("id") Integer id, Model model, HttpSession session) {
+    public String classDetail(@RequestParam("id") Integer classId, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        Class classA = classService.findById(id);
+        Class classA = classService.findById(classId);
         List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
         List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
         List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
@@ -83,29 +97,75 @@ public class SClassController {
         model.addAttribute("teacherList",teacherList);
         model.addAttribute("semesterList",semesterList);
         model.addAttribute("class", classA);
-        return "subject_manager/class/classDetail";
+        //class-ass
+        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , "", 0, 10,"id", 1, -1);
+        model.addAttribute("pageSize", 10);
+        model.addAttribute("pageNo", 0);
+        model.addAttribute("classId", classId);
+        model.addAttribute("sortBy", "id");
+        model.addAttribute("sortType", 1);
+        model.addAttribute("totalPage", milestoneList.getTotalPages());
+        model.addAttribute("milestoneList", milestoneList);
+        return "subject_manager/classHome";
+    }
+
+    @PostMapping("/classDetail")
+    public String milestone(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
+                            @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                            @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                            @RequestParam(defaultValue = "1") Integer sortType, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        Class classA = classService.findById(classId);
+        List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
+        List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
+        List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
+        model.addAttribute("subjectList",subjectList);
+        model.addAttribute("teacherList",teacherList);
+        model.addAttribute("semesterList",semesterList);
+        model.addAttribute("class", classA);
+        //class-ass
+        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , search, pageNo, pageSize,sortBy, sortType, status);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("classId", classId);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("status", status);
+        model.addAttribute("totalPage", milestoneList.getTotalPages());
+        model.addAttribute("milestoneList", milestoneList);
+        return "subject_manager/classHome";
     }
 
     @PostMapping("/class/update")
-    public String updateClass(@RequestParam Integer id,@RequestParam String description,
+    public String updateClass(@RequestParam("id") Integer classId,@RequestParam String description,
             @RequestParam String className, @RequestParam Integer subjectId,
             @RequestParam Integer semesterId, @RequestParam Integer classManagerId,
-                              WebRequest request, Model model, HttpSession session) {
+            WebRequest request, Model model, HttpSession session, RedirectAttributes attributes) {
         String status = request.getParameter("status");
-        Class classA = new Class();
-        classA.setId(id);
+        Class classA = classService.findById(classId);
         classA.setClassName(className);
         classA.setDescription(description);
         classA.setSubject(subjectService.getSubjectById(subjectId));
         classA.setSemester(settingService.getSettingByID(semesterId));
         classA.setUser(userService.getUserById(classManagerId));
         model.addAttribute("class", classA);
-        if(classService.checkExistedClassName(className, subjectId, id))
+        if(classService.checkExistedClassName(className, subjectId, classId))
             model.addAttribute("errmsg", "This class name has already existed!");
         else {
             classService.saveClass(classA);
-            model.addAttribute("msg", "Successfully");
+            attributes.addFlashAttribute("toastMessage", "Update class details uccessfully");
+            return "redirect:/subject-manager/class";
         }
+        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , "", 0, 10,"id", 1, -1);
+        model.addAttribute("pageSize", 10);
+        model.addAttribute("pageNo", 0);
+        model.addAttribute("classId", classId);
+        model.addAttribute("sortBy", "id");
+        model.addAttribute("sortType", 1);
+        model.addAttribute("totalPage", milestoneList.getTotalPages());
+        model.addAttribute("milestoneList", milestoneList);
+
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
         List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
@@ -113,7 +173,7 @@ public class SClassController {
         model.addAttribute("subjectList",subjectList);
         model.addAttribute("teacherList",teacherList);
         model.addAttribute("semesterList",semesterList);
-        return "subject_manager/class/classDetail";
+        return "subject_manager/classHome";
     }
 
     @GetMapping("/class/add")
@@ -138,7 +198,7 @@ public class SClassController {
     public String addClass(@RequestParam String description,
                               @RequestParam String className, @RequestParam Integer subjectId,
                               @RequestParam Integer semesterId, @RequestParam Integer classManagerId,
-                              WebRequest request, Model model, HttpSession session) {
+                              WebRequest request, Model model, HttpSession session, RedirectAttributes attributes) {
         Class classA = new Class();
         classA.setClassName(className);
         classA.setDescription(description);
@@ -147,11 +207,12 @@ public class SClassController {
         classA.setUser(userService.getUserById(classManagerId));
         model.addAttribute("class", classA);
         if(classService.checkExistedClassName(className, subjectId, null))
-            model.addAttribute("errmsg", "This class name has already existed!");
+            model.addAttribute("errmsg", "This class name has already existed in this subject!");
         else {
             classA = classService.saveClass(classA);
-            classAssignmentService.addClassAssignment(classA);
-            model.addAttribute("msg", "Successfully");
+            milestoneService.addClassAssignment(classA);
+            attributes.addFlashAttribute("toastMessage", "Add new class successfully");
+            return "redirect:/subject-manager/class";
         }
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
