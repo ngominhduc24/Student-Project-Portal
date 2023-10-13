@@ -48,7 +48,7 @@ public class ClassService implements IClassService {
     }
 
     @Override
-    public Page<Class> findAllBySemester(Integer pageNo, Integer teacherId, Integer pageSize, Integer semesterId){
+    public Page<Class> findAllBySemester(Integer semesterId, Integer teacherId, Integer pageNo, Integer pageSize){
         return classRepository.filterClassBySemester(semesterId, teacherId, PageRequest.of(pageNo, pageSize));
     }
 

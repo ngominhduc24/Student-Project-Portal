@@ -24,14 +24,17 @@ public class ClassManagerHomeController {
 
     @GetMapping("/class-manager/home")
     public String ClassManagerHome(@RequestParam(defaultValue = "0") Integer pageNo,
-                                   @RequestParam(defaultValue = "10") Integer pageSize,
-                                   @RequestParam(defaultValue = "") Integer semesterId,
+                                   @RequestParam(defaultValue = "9") Integer pageSize,
+                                   @RequestParam(defaultValue = "1") Integer semesterId,
                                     Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
-        Page<Class> classList = classService.findAllBySemester(pageNo, pageSize, semesterId, user.getId());
+        Page<Class> classList = classService.findAllBySemester( semesterId, user.getId(), pageNo, pageSize);
         List<Setting> semesterList = settingService.findSemesterByClassManagerId(user.getId());
         model.addAttribute("semesterList", semesterList);
         model.addAttribute("classList", classList);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("semesterId", semesterId);
         return "/class_manager/classManagerHome";
     }
 }
