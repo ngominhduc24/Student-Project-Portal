@@ -399,7 +399,7 @@ VALUES
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
     ("SE1720","Study software engineering",1,7,3,3),
-    ("SE1722","Study software engineering",1,7,3,3),
+    ("SE1741","Study software engineering",1,7,3,3),
     ("SE1704","Study software engineering",1,7,3,3),
     ("SE1707","Study software engineering",1,7,3,3),
     ("SE1712","Study software engineering",2,7,6,3),
