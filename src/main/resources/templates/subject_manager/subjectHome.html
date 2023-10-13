@@ -29,6 +29,9 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
 
     <style>
         .datatable-table {
@@ -297,9 +300,7 @@
                                     <td th:text="${assignment.title}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                   th:checked="${assignment.isStatus()}"
-                                                   th:onclick="'updateStatus(' + ${assignment.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${assignment.status}" th:attr="assignment-id=${assignment.id}" onchange="showConfirmationDialog1(this)">
                                         </div>
                                     </td>
                                     <td>
@@ -308,6 +309,51 @@
                                 </tr>
                                 </tbody>
                             </table>
+
+                            <div class="modal fade" id="confirmationModal1" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmationModalLabel1">Confirmation</h5>
+                                            <button type="button" class="btn-close" id="closeButton1" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to perform this action?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="cancelButton1" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" id="confirmButton1">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                let id;
+                                let status;
+                                let initialStatus;
+                                function showConfirmationDialog1(checkbox) {
+                                    id = checkbox.getAttribute("assignment-id");
+                                    status = checkbox.checked;
+                                    initialStatus = !status;
+                                    $('#confirmationModal1').modal('show');
+                                }
+                                $("#confirmButton1").click(function () {
+                                    fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`);
+                                    $('#confirmationModal1').modal('hide');
+                                });
+                                $("#cancelButton1").click(function () {
+                                    let checkbox = document.querySelector('input[assignment-id="' + id + '"]');
+                                    checkbox.checked = initialStatus;
+                                    $('#confirmationModal').modal('hide');
+                                });
+                                $("#closeButton1").click(function () {
+                                    let checkbox = document.querySelector('input[assignment-id="' + id + '"]');
+                                    checkbox.checked = initialStatus;
+                                    $('#confirmationModal').modal('hide');
+                                });
+                            </script>
+
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
@@ -345,15 +391,6 @@
                         document.getElementById('sortBy').value = sortBy;
                         document.getElementById('sortType').value = sortType;
                         document.getElementById('form').submit();
-                    }
-                </script>
-
-                <script>
-                    function updateStatus(id, checkbox) {
-                        let status = checkbox.checked;
-                        if (confirm('Are you sure?'))
-                            fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`)
-                        else checkbox.checked = !status;
                     }
                 </script>
 
@@ -486,9 +523,7 @@
                                     <td th:text="${setting.displayOrder}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                   th:checked="${setting.isStatus()}"
-                                                   th:onclick="'updateStatusSetting(' + ${setting.id} + ', this)'">
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id}" onchange="showConfirmationDialog(this)">
                                         </div>
                                     </td>
                                     <td>
@@ -497,6 +532,48 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <!-- Modal Dialog -->
+                            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                                            <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to perform this action?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="cancelButton" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                function showConfirmationDialog(checkbox) {
+                                    id = checkbox.getAttribute("update-id");
+                                    status = checkbox.checked;
+                                    initialStatus = !status;
+                                    $('#confirmationModal').modal('show');
+                                }
+                                $("#confirmButton").click(function () {
+                                    fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`);
+                                    $('#confirmationModal').modal('hide');
+                                });
+                                $("#cancelButton").click(function () {
+                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
+                                    checkbox.checked = initialStatus;
+                                    $('#confirmationModal').modal('hide');
+                                });
+                                $("#closeButton").click(function () {
+                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
+                                    checkbox.checked = initialStatus;
+                                    $('#confirmationModal').modal('hide');
+                                });
+                            </script>
+
                             <nav th:if="${totalPageS!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNoS == 0 ? 'page-item disabled' : 'page-item'}">
@@ -534,15 +611,6 @@
                         document.getElementById('sortBySetting').value = sortBySetting;
                         document.getElementById('sortTypeSetting').value = sortTypeSetting;
                         document.getElementById('form').submit();
-                    }
-                </script>
-
-                <script>
-                    function updateStatusSetting(id, checkbox) {
-                        let status = checkbox.checked;
-                        if (confirm('Are you sure?'))
-                            fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`)
-                        else checkbox.checked = !status;
                     }
                 </script>
 
