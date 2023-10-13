@@ -49,16 +49,21 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row">
-                    <form action="/class-manager/home" id="form">
-                        <input type="hidden" name="pageNo" value="0">
-                        <input type="hidden" name="pageSize" value="9">
-                        <select name="semesterId" class="form-select" onchange="this.form.submit()">
-                            <option th:each="semester : ${semesterList}"
-                                    th:value="${semester.id}"
-                                    th:text="${semester.settingTitle}" th:selected="${semesterId == semester.id}"></option>
-                        </select>
-                    </form>
-                    <button onclick="window.location('/class-manager/classList')">View full class list</button>
+                    <div class="col-xl-2 col-md-6">
+                        <form action="/class-manager/home" id="form">
+                            <input type="hidden" name="pageNo" value="0">
+                            <input type="hidden" name="pageSize" value="9">
+                            <select name="semesterId" class="form-select" onchange="this.form.submit()">
+                                <option th:each="semester : ${semesterList}"
+                                        th:value="${semester.id}"
+                                        th:text="${semester.settingTitle}" th:selected="${semesterId == semester.id}"></option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-xl-7 col-md-6"></div>
+                    <div class="col-xl-3 col-md-6 text-md-end">
+                        <a href="/class-manager/classList" class="btn btn-primary">View full class list</a>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -68,7 +73,7 @@
                                 <a th:href="@{'/class-manager/classDetail?id=' + ${class.id}}" class="text-white title h5" th:text="${class.className} + '/' + ${class.subject.subjectName}"></a>
                             </div>
                             <div class="card-body p-4">
-                                <h5 th:text="'Semester: ' + ${class.semester.settingTitle}"></h5><
+                                <h5 th:text="'Semester: ' + ${class.semester.settingTitle}"></h5>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="uil uil-user me-1"></i>33</a></li>
