@@ -48,7 +48,6 @@ public class StudentController {
             return "redirect:/class";
         }
         if(session.getAttribute("numberStudentAdded") != null) {
-            System.out.println(session.getAttribute("numberStudentAdded"));
             model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
             session.removeAttribute("numberStudentAdded");
         }
@@ -78,7 +77,7 @@ public class StudentController {
     }
 
     @GetMapping("/class/syncStudent")
-    public String removeStudentFromClass(
+    public String syncStudentToClass(
             HttpSession session,
             @RequestParam(name = "classId") Integer classId) {
         Class myClass = classService.getClass(classId);
