@@ -62,7 +62,7 @@ public class LoginController {
             if(user.getSetting().getId()==3)
                 return "redirect:subject-manager/home" ;
             if(user.getSetting().getId()==4)
-                return "redirect:class-manager/home" ;
+                return "redirect:admin/home" ;
         } else if (user==null){
             model.addAttribute("errmsg", "Username or password is not correct");
         } else if(!user.isActive()) {
@@ -104,7 +104,7 @@ public class LoginController {
             else if(user.getSetting().getId()==3)
                 return "redirect:subject-manager/home" ;
             else if (user.getSetting().getId()==4)
-                return "redirect:class-manager/home" ;
+                return "redirect:admin/home" ;
             else
                 return "redirect:student/home" ;
         }

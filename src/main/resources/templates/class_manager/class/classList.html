@@ -228,7 +228,7 @@
                                         <p class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</p>
                                     </td>
                                     <td>
-                                        <a th:href="@{/class-manager/classDetail?id=${class.id}}"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="fas fa-pen-to-square action"></i></a>
+                                        <a th:href="@{/class-manager/classDetail(id=${class.id})}"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="fas fa-pen-to-square action"></i></a>
                                     </td>
                                 </tr>
                                 </tbody>
