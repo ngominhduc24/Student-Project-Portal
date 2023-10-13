@@ -77,7 +77,7 @@ public class StudentController {
     }
 
     @GetMapping("/class/syncStudent")
-    public String removeStudentFromClass(
+    public String syncStudentToClass(
             HttpSession session,
             @RequestParam(name = "classId") Integer classId) {
         Class myClass = classService.getClass(classId);
