@@ -56,7 +56,7 @@ public class Class {
     private List<StudentClass> students;
 
     @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClassAssignment> classAssignments;
+    private List<Milestone> milestones;
 
     @OneToMany(mappedBy = "aClass", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClassIssueSetting> classIssueSettings;

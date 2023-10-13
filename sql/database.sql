@@ -128,11 +128,12 @@ DROP TABLE IF EXISTS `swp391`.`class` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`class` (
                                                 `id` INT NOT NULL AUTO_INCREMENT,
                                                 `class_name` VARCHAR(245) NULL,
+
     `description` LONGTEXT NULL,
     `subject_id` INT NULL,
     `semester_id` INT NULL,
     `teacher_id` INT NULL,
-    `status` BIT(1) NULL,
+    `status` INT NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -158,30 +159,30 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
 -- -----------------------------------------------------
 -- Table `swp391`.`class_assignment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `swp391`.`class_assignment` ;
+DROP TABLE IF EXISTS `swp391`.`milestone` ;
 
-CREATE TABLE IF NOT EXISTS `swp391`.`class_assignment` (
-                                                           `id` INT NOT NULL AUTO_INCREMENT,
-                                                           `class_id` INT NULL,
-                                                           `assignment_id` INT NULL,
-                                                           `start_date` DATETIME NULL,
-                                                           `end_date` DATETIME NULL,
-                                                           `status` BIT(1) NULL,
+CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
+                                                    `id` INT NOT NULL AUTO_INCREMENT,
+                                                    `title` VARCHAR(45) NULL,
+    `description` VARCHAR(245) NULL,
+    `class_id` INT NULL,
+    `project_id` INT NULL,
+    `start_date` DATETIME NULL,
+    `end_date` DATETIME NULL,
+    `status` BIT(1) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
     `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     INDEX `a_idx` (`class_id` ASC) VISIBLE,
-    INDEX `b_idx` (`assignment_id` ASC) VISIBLE,
     FOREIGN KEY (`class_id`)
-    REFERENCES `swp391`.`class` (`id`)
+    REFERENCES `swp391`.`class` (`id`),
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
                                                         ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
-    FOREIGN KEY (`assignment_id`)
-    REFERENCES `swp391`.`assignment` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION)
+                                                        ON UPDATE NO ACTION
+    )
     ENGINE = InnoDB;
 
 
@@ -193,11 +194,9 @@ DROP TABLE IF EXISTS `swp391`.`class_issue_setting` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
                                                               `id` INT NOT NULL AUTO_INCREMENT,
                                                               `class_id` INT NULL,
-                                                              `type` VARCHAR(155) NULL,
-                                                              `status` BIT(1) NULL DEFAULT 1,
-	`description` LONGTEXT NULL,
-    `status_issue` VARCHAR(155) NULL,
-    `work_process` VARCHAR(155) NULL,
+                                                              `type` INT NULL,
+                                                              `status` BIT(1) NULL,
+    `work_processes` VARCHAR(155) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -399,22 +398,22 @@ VALUES
 
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
-    ("SE1720","Study software engineering",1,7,3,1),
-    ("SE1722","Study software engineering",1,7,3,1),
-    ("SE1704","Study software engineering",1,7,3,1),
-    ("SE1707","Study software engineering",1,7,3,1),
-    ("SE1712","Study software engineering",2,7,6,1),
-    ("SE1715","Study software engineering",2,7,6,1),
-    ("SE1709","Study software engineering",2,7,6,1),
-    ("SE1710","Study software engineering",2,7,6,1),
-    ("SE1740","Study software engineering",1,8,6,1),
-    ("SE1741","Study software engineering",1,8,6,1),
-    ("SE1731","Study software engineering",1,8,6,1),
+    ("SE1720","Study software engineering",1,7,3,3),
+    ("SE1741","Study software engineering",1,7,3,3),
+    ("SE1704","Study software engineering",1,7,3,3),
+    ("SE1707","Study software engineering",1,7,3,3),
+    ("SE1712","Study software engineering",2,7,6,3),
+    ("SE1715","Study software engineering",2,7,6,3),
+    ("SE1709","Study software engineering",2,7,6,3),
+    ("SE1710","Study software engineering",2,7,6,3),
+    ("SE1740","Study software engineering",1,8,6,2),
+    ("SE1741","Study software engineering",1,8,6,2),
+    ("SE1731","Study software engineering",1,8,6,2),
     ("SE1736","Study software engineering",1,8,6,1),
     ("SE1740","Study software engineering",2,8,3,1),
-    ("SE1745","Study software engineering",2,8,3,1),
-    ("SE1734","Study software engineering",2,8,3,1),
-    ("SE1736","Study software engineering",2,8,3,1);
+    ("SE1745","Study software engineering",2,8,3,0),
+    ("SE1734","Study software engineering",2,8,3,0),
+    ("SE1736","Study software engineering",2,8,3,0);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
@@ -475,22 +474,22 @@ VALUES
     (4,'Test technique','Dymanic test + static test',1),
     (6,'React App','Make React App to print "Hello React"',1),
     (6,'JS ES6','Learn new synctax in JS ES6',1);
-    
-INSERT INTO class_issue_setting (`class_id`,`type`,`status_issue`,`work_process`,`description`)
+
+INSERT INTO milestone (`title`,`description`,`status`,`class_id`)
 VALUES
-	(1,'Defect','To Do','Testting',"Lam 1 dieu tuyet voi"),
-    (1,'Leakage','To Do','Testting',"Lam 2 dieu tuyet voi"),
-    (2,'Req','To Do','Testting',"Lam 3 dieu tuyet voi"),
-    (2,'Task','To Do','Testting',"Lam 4 dieu tuyet voi"),
-    (3,'Defect','Doing','Req',"Lam 5 dieu tuyet voi"),
-    (3,'Defect','Doing','Coding',"Lam 6 dieu tuyet voi"),
-    (3,'Task','To Do','Testting',"Lam 7 dieu tuyet voi"),
-    (4,'Defect','Done','Testting',"Lam 8 dieu tuyet voi"),
-    (5,'Task','To Do','Coding',"Lam 9 dieu tuyet voi"),
-    (6,'Defect','To Do','Design',"Lam 10 dieu tuyet voi"),
-    (7,'Q&A','Doing','Design',"Lam 11 dieu tuyet voi"),
-    (8,'Defect','To Do','Testting',"Lam 12 dieu tuyet voi"),
-    (9,'Leakage','Done','Req',"Lam 13 dieu tuyet voi"),
-    (10,'Q&A','To Do','Testting',"Lam 14 dieu tuyet voi"),
-    (10,'Defect','To Do','Testting',"Lam 15 dieu tuyet voi");
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,2),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,2),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,3),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,3),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,5),
+    ('Connect to Database','Learn JDBC',1,5),
+    ('Project','Pratice to create a website',1,5),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,6),
+    ('Connect to Database','Learn JDBC',1,6),
+    ('Project','Pratice to create a website',1,6);
     

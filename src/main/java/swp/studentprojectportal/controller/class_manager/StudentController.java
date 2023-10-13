@@ -21,6 +21,7 @@ import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.InstanceSingleton;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
@@ -48,7 +49,6 @@ public class StudentController {
             return "redirect:/class";
         }
         if(session.getAttribute("numberStudentAdded") != null) {
-            System.out.println(session.getAttribute("numberStudentAdded"));
             model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
             session.removeAttribute("numberStudentAdded");
         }
@@ -78,36 +78,25 @@ public class StudentController {
     }
 
     @GetMapping("/class/syncStudent")
-    public String removeStudentFromClass(
+    public String syncStudentToClass(
             HttpSession session,
             @RequestParam(name = "classId") Integer classId) {
         Class myClass = classService.getClass(classId);
-        String hrefApi = "http://localhost:3000/api/v1/students?subject=" + myClass.getSubject().getSubjectCode().toLowerCase() + "&class=" + myClass.getClassName().toLowerCase();
+        String apiEndpoint = "http://localhost:3000/api/v1/students?subject=" + myClass.getSubject().getSubjectCode().toLowerCase() + "&class=" + myClass.getClassName().toLowerCase();
         String[] studentIdList = new String[0];
         int numberStudentAdded = 0;
 
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            // Create an HTTP GET request
-            HttpGet httpGet = new HttpGet(hrefApi);
-
-            // Execute the request and get the response
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-
-            // Get the response entity as a string
-            String responseBody = EntityUtils.toString(response.getEntity());
-
-            responseBody = responseBody.substring(1, responseBody.length() - 1).replace("\"", "");
+        String responseBody = InstanceSingleton.getInstance().callApiFap(apiEndpoint);
+        if(responseBody != null) {
             studentIdList = responseBody.split(",");
-            // Ensure the response is properly closed to release resources
-            response.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        for (String studentId : studentIdList) {
-            if(studentClassService.addNewStudentToClass(classId, studentId)) {
-                numberStudentAdded++;
+
+            for (String studentId : studentIdList) {
+                if(studentClassService.addNewStudentToClass(classId, studentId)) {
+                    numberStudentAdded++;
+                }
             }
         }
+
         session.setAttribute("numberStudentAdded", numberStudentAdded);
 
         return "redirect:/class-manager/class?classId=" + classId;

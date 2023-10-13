@@ -12,7 +12,7 @@ public class DashboardController {
     @Autowired
     SettingService settingService;
 
-    @GetMapping("/home")
+    @GetMapping("admin/home")
     public String dashboard(Model model) {
         model.addAttribute("currentSemester", settingService.getLastestSemester().getSettingTitle());
         return "common/home";

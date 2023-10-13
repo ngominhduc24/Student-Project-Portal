@@ -25,7 +25,7 @@ public class SubjectAssignmentController {
     @Autowired
     IAssignmentService assignmentService;
 
-    @GetMapping("/subject-manager/subject/updateStatus")
+    @GetMapping("/subject-manager/subject-assignment/updateStatus")
     public String updateAssignmentStatus(
             @RequestParam int id,
             @RequestParam boolean status) {

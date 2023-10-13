@@ -30,7 +30,7 @@ public class Assignment {
     @Column(name = "is_subject_assignment")
     private boolean isSubjectAssignment;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
