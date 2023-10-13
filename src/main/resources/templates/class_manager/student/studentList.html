@@ -47,6 +47,9 @@
 </div>
 <!-- Loader -->
 
+<h6 id="loader">System are loading ... Please wait!</h6>
+
+<div id="root">
 <div class="page-wrapper doctris-theme toggled">
   <!-- sidebar-wrapper  -->
   <div th:replace="~{dashboardSidebar}"></div>
@@ -168,7 +171,7 @@
   <!--End page-content" -->
 </div>
 <!-- page-wrapper -->
-
+</div>
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->
@@ -181,6 +184,16 @@
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
+  const syncFapElement = document.getElementById('syncFap');
+  const preloaderElement = document.getElementById('loader');
+  const rootElement = document.getElementById('root');
+  let s = 'a'
+  syncFapElement.addEventListener('click', function () {
+    rootElement.style.display = 'none';
+    // preloaderElement.style.display = 'block';
+  });
+
+
   $(document).ready(function () {
     $('#myTable').DataTable({
       "dom": 'frtipl',
