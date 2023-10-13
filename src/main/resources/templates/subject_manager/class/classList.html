@@ -108,6 +108,14 @@
         .datatable-top {
             margin-bottom: 36px;
         }
+        .custom-toast {
+            background-color: #20ee68 !important;
+            color: #FFFFFF;
+            position: absolute;
+            top: 88px;
+            right: 0;
+            z-index: 2;
+        }
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
@@ -153,6 +161,18 @@
                     </div><!--end col-->
 
                 </div><!--end row-->
+
+                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                    <div class="toast-header">
+                        <strong class="me-auto">Success</strong>
+                        <small>Now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <span id="toastMessage" th:text="${toastMessage}"></span>
+                    </div>
+                </div>
+
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <form class="card-body rounded-3" action="/subject-manager/class" id="form">
@@ -300,6 +320,19 @@
                                     document.location.href = `/subject-manager/class/updateStatus?id=${id}&status=${status}`;
                                 });
                             </script>
+
+                            <script>
+                                var toastMessage = document.getElementById('toastMessage').textContent.trim();
+                                if (toastMessage) {
+                                    var customToast = new bootstrap.Toast(document.getElementById('customToast'));
+                                    customToast.show();
+                                    setTimeout(function () {
+                                        customToast.hide();
+                                    }, 5000);
+                                }
+                            </script>
+
+
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
