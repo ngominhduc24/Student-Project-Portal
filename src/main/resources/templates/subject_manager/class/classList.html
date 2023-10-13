@@ -224,8 +224,10 @@
                                         <div class="mb-3">
                                             <select name="status" class="form-select" onchange="this.form.submit()">
                                                 <option value="-1" th:selected="${status == -1}">All Status</option>
-                                                <option value="1" th:selected="${status == 1}">Active</option>
-                                                <option value="0" th:selected="${status == 0}">Inactive</option>
+                                                <option value="0" th:selected="${status == 0}">Pending</option>
+                                                <option value="1" th:selected="${status == 1}">Canceled</option>
+                                                <option value="2" th:selected="${status == 2}">Started</option>
+                                                <option value="3" th:selected="${status == 3}">Closed</option>
                                             </select>
                                         </div>
                                     </div>
