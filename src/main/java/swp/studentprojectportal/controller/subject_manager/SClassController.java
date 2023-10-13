@@ -72,24 +72,10 @@ public class SClassController {
         return "redirect:/subject-manager/class";
     }
 
-//    @GetMapping("/classDetail")
-//    public String classDetail(@RequestParam("id") Integer id, Model model, HttpSession session) {
-//        User user = (User) session.getAttribute("user");
-//        Class classA = classService.findById(id);
-//        List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
-//        List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
-//        List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
-//        model.addAttribute("subjectList",subjectList);
-//        model.addAttribute("teacherList",teacherList);
-//        model.addAttribute("semesterList",semesterList);
-//        model.addAttribute("class", classA);
-//        return "subject_manager/class/classDetail";
-//    }
-
     @GetMapping("/classDetail")
-    public String classDetail(@RequestParam("id") Integer classId, Model model, HttpSession session) {
+    public String classDetail(@RequestParam("id") Integer id, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        Class classA = classService.findById(classId);
+        Class classA = classService.findById(id);
         List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
         List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
         List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
@@ -97,33 +83,15 @@ public class SClassController {
         model.addAttribute("teacherList",teacherList);
         model.addAttribute("semesterList",semesterList);
         model.addAttribute("class", classA);
-        //class-ass
-        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , "", 0, 10,"id", 1, -1);
-        model.addAttribute("pageSize", 10);
-        model.addAttribute("pageNo", 0);
-        model.addAttribute("classId", classId);
-        model.addAttribute("sortBy", "id");
-        model.addAttribute("sortType", 1);
-        model.addAttribute("totalPage", milestoneList.getTotalPages());
-        model.addAttribute("milestoneList", milestoneList);
-        return "subject_manager/classHome";
+        return "subject_manager/class/classDetail";
     }
 
-    @PostMapping("/classDetail")
-    public String milestone(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
-                            @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
-                            @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
-                            @RequestParam(defaultValue = "1") Integer sortType, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        Class classA = classService.findById(classId);
-        List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
-        List<Setting> semesterList = settingService.findSemesterByStatus(3, true);
-        List<User> teacherList = userService.findTeacherByRoleIdAndStatus(4, true);
-        model.addAttribute("subjectList",subjectList);
-        model.addAttribute("teacherList",teacherList);
-        model.addAttribute("semesterList",semesterList);
-        model.addAttribute("class", classA);
-        //class-ass
+    @GetMapping("class/miletone")
+    public String milestonePage(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
+                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                                @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                                @RequestParam(defaultValue = "1") Integer sortType,
+                            Model model, HttpSession session) {
         Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , search, pageNo, pageSize,sortBy, sortType, status);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
@@ -134,7 +102,7 @@ public class SClassController {
         model.addAttribute("status", status);
         model.addAttribute("totalPage", milestoneList.getTotalPages());
         model.addAttribute("milestoneList", milestoneList);
-        return "subject_manager/classHome";
+        return "subject_manager/class/milestoneList";
     }
 
     @PostMapping("/class/update")
@@ -154,17 +122,9 @@ public class SClassController {
             model.addAttribute("errmsg", "This class name has already existed!");
         else {
             classService.saveClass(classA);
-            attributes.addFlashAttribute("toastMessage", "Update class details uccessfully");
+            attributes.addFlashAttribute("toastMessage", "Update class details successfully");
             return "redirect:/subject-manager/class";
         }
-        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , "", 0, 10,"id", 1, -1);
-        model.addAttribute("pageSize", 10);
-        model.addAttribute("pageNo", 0);
-        model.addAttribute("classId", classId);
-        model.addAttribute("sortBy", "id");
-        model.addAttribute("sortType", 1);
-        model.addAttribute("totalPage", milestoneList.getTotalPages());
-        model.addAttribute("milestoneList", milestoneList);
 
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUserAndStatus(user, true);
@@ -173,7 +133,7 @@ public class SClassController {
         model.addAttribute("subjectList",subjectList);
         model.addAttribute("teacherList",teacherList);
         model.addAttribute("semesterList",semesterList);
-        return "subject_manager/classHome";
+        return "subject_manager/classDetail";
     }
 
     @GetMapping("/class/add")

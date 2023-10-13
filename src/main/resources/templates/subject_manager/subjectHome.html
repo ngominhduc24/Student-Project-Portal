@@ -50,16 +50,15 @@
             text-align: center;
         }
         #datatablesSimpleSetting th:first-child {
-            width: 10%;
+            width: 6%;
         }
-        #datatablesSimpleSetting th:nth-child(2) {
-            width: 17%;
-        }
-        #datatablesSimpleSetting th:nth-child(3), #datatablesSimpleSetting th:nth-child(4),
-        #datatablesSimpleSetting th:nth-child(5), #datatablesSimpleSetting th:nth-child(6) {
+        #datatablesSimpleSetting th:nth-child(2), #datatablesSimpleSetting th:nth-child(3) {
             width: 13%;
         }
-        #datatablesSimpleSetting th:nth-child(7), #datatablesSimpleSetting th:last-child {
+        #datatablesSimpleSetting th:nth-child(4) {
+            width: 30%;
+        }
+        #datatablesSimpleSetting th:nth-child(5), #datatablesSimpleSetting th:last-child {
             width: 11%;
         }
 
@@ -85,10 +84,10 @@
 
         .search-button {
             border: none;
-            height: 34px;
+            height: 33px;
             width: 36px;
             float: right;
-            margin-top: -35px;
+            margin-top: -34px;
             margin-right: 1px;
             cursor: pointer;
             background-color: #ffffff;
@@ -121,9 +120,16 @@
         .sort-active {
             color: black;
         }
-
         .datatable-top {
             margin-bottom: 36px;
+        }
+        .custom-toast {
+            background-color: #20ee68 !important;
+            color: #FFFFFF;
+            position: absolute;
+            top: 88px;
+            right: 0;
+            z-index: 2;
         }
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
@@ -157,51 +163,74 @@
 <!--        General-->
         <div id="general" class="container-fluid">
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
-                <div>
-                    <h3 class="mb-0" th:text="${subject.subjectName}"></h3>
-                    <ol class="breadcrumb mb-4">
+                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                    <div class="toast-header">
+                        <strong class="me-auto">Success</strong>
+                        <small>Now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <span id="toastMessage" th:text="${toastMessage}"></span>
+                    </div>
+                </div>
+                <div class="row px-4">
+                    <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
+                    <ol class="breadcrumb mb-2">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Subject Details</li>
+                        <li class="breadcrumb-item active"><a>Subject Issue Setting List</a></li>
                     </ol>
                 </div>
-                <div class="row">
-                    <div class="col-lg-8 mt-4">
+                <div class="row px-4">
+                    <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
-                            <div class="mt-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Subject Name</label>
-                                            <input type="text" readonly class="form-control" th:value="${subject.subjectName}">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Subject Code</label>
-                                            <input type="text" readonly class="form-control" th:value="${subject.subjectCode}">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Manager</label>
-                                            <input type="text" readonly class="form-control" th:value="${subject.user.fullName}">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Status</label>
-                                            <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -62px" disabled class="form-check-input" value="on" name="status" type="checkbox" th:checked="${subject.isStatus()}" >
+                            <form action="/subject-manager/subject/update" method="post">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <input type="hidden" name="id" th:value="${subject.id}">
+                                                <label class="form-label">Subject Name</label>
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectName}">
                                             </div>
                                         </div>
-                                    </div><!--end col-->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Subject Code</label>
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectCode}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Manager</label>
+                                                <input type="text" readonly class="form-control" th:value="${subject.user.fullName}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Status:
+                                                    <h5 class="text-danger pt-2 ps-2 m-0 mt-1" th:if="${!subject.status}">Inactive</h5>
+                                                    <h5 class="text-primary pt-2 ps-2 m-0 mt-1" th:if="${subject.status}">Active</h5>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${subject.description}"></textarea>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+                                            <h6 style="color: green;" th:text="${msg}"></h6>
+                                        </div>
 
+                                    </div><!--end col-->
                                 </div>
-                            </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 ps-4">
+                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div><!--end col-->
                 </div>
@@ -214,7 +243,8 @@
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4" style="width: 100%; justify-content: space-between">
                     <div class="col-xl-5 col-md-6">
-                        <ol class="breadcrumb mb-4">
+                        <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
+                        <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Subject Assignment List</li>
@@ -266,8 +296,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <input type="hidden" name="sortBy" id="sortBy">
-                            <input type="hidden" name="sortType" id="sortType">
+                            <input type="hidden" name="sortBy" id="sortBy" th:value="${sortBy}">
+                            <input type="hidden" name="sortType" id="sortType" th:value="${sortType}">
                             <table id="datatablesSimple" class="display" style="width: 100%">
                                 <thead>
                                 <tr>
@@ -277,17 +307,17 @@
                                         <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('id',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Subject Code
-                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortData('s.subject_code',1)"></i>
-                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortData('s.subject_code',2)"></i>
-                                    </th>
                                     <th data-sortable="false">Assigment Title
                                         <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('title',1)"></i>
                                         <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('title',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Description
+                                        <i th:class="${(sortBy eq 'description' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('description',1)"></i>
+                                        <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('description',2)"></i>
                                     </th>
                                     <th data-sortable="false">Status</th>
                                     <th data-sortable="false">Actions</th>
@@ -296,8 +326,9 @@
                                 <tbody>
                                 <tr th:each="assignment : ${assignmentList}">
                                     <td th:text="${assignment.id}"></td>
-                                    <td th:text="${assignment.subject.subjectCode}"></td>
                                     <td th:text="${assignment.title}"></td>
+                                    <td th:text="${assignment.description}"></td>
+
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" th:checked="${assignment.status}" th:attr="assignment-id=${assignment.id}" onchange="showConfirmationDialog1(this)">
@@ -354,6 +385,7 @@
                                 });
                             </script>
 
+                            <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
@@ -362,7 +394,6 @@
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <input type="hidden" name="pageNo" id="pageNoInput">
                                     <li th:each="i : ${#numbers.sequence(1, totalPage)}"
                                         th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
@@ -402,10 +433,11 @@
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <ol class="breadcrumb mb-1 ms-1">
+                        <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
+                        <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active"><a>Subject Setting List</a></li>
+                            <li class="breadcrumb-item active"><a>Subject Issue Setting List</a></li>
                         </ol>
                     </div><!--end col-->
 
@@ -439,11 +471,12 @@
                                 <div class="row col-md-8" style="margin-left: -100px">
                                     <div class="col-md-3">
                                         <div class="mb-3">
-                                            <select name="typeIdS" class="form-select"
+                                            <select name="settingGroupS" class="form-select"
                                                     onchange="this.form.submit()">
-                                                <option value="-1" th:selected="${typeIdS == -1}">All Type</option>
-                                                <option value="1" th:selected="${typeIdS == 1}">Complexity</option>
-                                                <option value="2" th:selected="${typeIdS == 2}">Quality</option>
+                                                <option value="" th:selected="${settingGroupS.isEmpty()}">All Type</option>
+                                                <option th:each="group : ${settingGroupList}"
+                                                        th:value="${group}"
+                                                        th:text="${group}" th:selected="${settingGroupS.equalsIgnoreCase(group)}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -468,8 +501,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <input type="hidden" name="sortByS" id="sortBySetting">
-                            <input type="hidden" name="sortTypeS" id="sortTypeSetting">
+                            <input type="hidden" name="sortByS" id="sortBySetting" th:value="${sortByS}">
+                            <input type="hidden" name="sortTypeS" id="sortTypeSetting" th:value="${sortTypeS}">
                             <table id="datatablesSimpleSetting" class="display">
                                 <thead>
                                 <tr>
@@ -479,17 +512,11 @@
                                         <i th:class="${(sortByS eq 'id' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortDataS('id',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Subject
-                                        <i th:class="${(sortByS eq 's.subject_code' && sortTypeS == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortDataS('s.subject_code',1)"></i>
-                                        <i th:class="${(sortByS eq 's.subject_code' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortDataS('s.subject_code',2)"></i>
-                                    </th>
-                                    <th data-sortable="false">Type
-                                        <i th:class="${(sortByS eq 'type_id' && sortTypeS == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortDataS('type_id',1)"></i>
-                                        <i th:class="${(sortByS eq 'type_id' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortDataS('type_id',2)"></i>
+                                    <th data-sortable="false">Group
+                                        <i th:class="${(sortByS eq 'setting_group' && sortTypeS == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortDataS('setting_group',1)"></i>
+                                        <i th:class="${(sortByS eq 'setting_group' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortDataS('setting_group',2)"></i>
                                     </th>
                                     <th data-sortable="false">Name
                                         <i th:class="${(sortByS eq 'setting_title' && sortTypeS == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
@@ -497,37 +524,29 @@
                                         <i th:class="${(sortByS eq 'setting_title' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortDataS('setting_title',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Value
-                                        <i th:class="${(sortByS eq 'setting_value' && sortTypeS == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortDataS('setting_value',1)"></i>
-                                        <i th:class="${(sortByS eq 'setting_value' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortDataS('setting_value',2)"></i>
-                                    </th>
-                                    <th data-sortable="false">Display Order
-                                        <i th:class="${(sortByS eq 'display_order' && sortTypeS == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortDataS('display_order',1)"></i>
-                                        <i th:class="${(sortByS eq 'display_order' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortDataS('display_order',2)"></i>
+                                    <th data-sortable="false">Description
+                                        <i th:class="${(sortByS eq 'description' && sortTypeS == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortDataS('description',1)"></i>
+                                        <i th:class="${(sortByS eq 'description' && sortTypeS == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortDataS('description',2)"></i>
                                     </th>
                                     <th data-sortable="false">Status</th>
                                     <th data-sortable="false">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="setting : ${subjectSettingList}">
+                                <tr th:each="setting : ${issueSettingList}">
                                     <td th:text="${setting.id}"></td>
-                                    <td th:text="${setting.subject.subjectCode}"></td>
-                                    <td th:text="${setting.typeId==1?'Complexity':'Quality'}"></td>
+                                    <td th:text="${setting.settingGroup}"></td>
                                     <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.settingValue}"></td>
-                                    <td th:text="${setting.displayOrder}"></td>
+                                    <td th:text="${setting.description}"></td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id}" onchange="showConfirmationDialog(this)">
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/subject-setting/detail?id={id}(id=${setting.id})}"><i
+                                        <a th:href="@{/subject-manager/subject-setting/detail(id=${setting.id})}"><i
                                                 class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
@@ -574,6 +593,7 @@
                                 });
                             </script>
 
+                            <input type="hidden" name="pageNoS" id="pageNoInputSetting" th:value="${pageNoS}">
                             <nav th:if="${totalPageS!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNoS == 0 ? 'page-item disabled' : 'page-item'}">
@@ -582,7 +602,6 @@
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <input type="hidden" name="pageNoS" id="pageNoInputSetting">
                                     <li th:each="i : ${#numbers.sequence(1, totalPageS)}"
                                         th:class="${pageNoS == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
@@ -680,6 +699,17 @@
             showDiv(lastDisplayedDiv);
         }
     });
+</script>
+
+<script>
+    var toastMessage = document.getElementById('toastMessage').textContent.trim();
+    if (toastMessage) {
+        var customToast = new bootstrap.Toast(document.getElementById('customToast'));
+        customToast.show();
+        setTimeout(function () {
+            customToast.hide();
+        }, 5000);
+    }
 </script>
 
 </body>
