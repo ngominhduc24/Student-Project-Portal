@@ -97,6 +97,14 @@
         .datatable-top {
             margin-bottom: 36px;
         }
+        .custom-toast {
+            background-color: #20ee68 !important;
+            color: #FFFFFF;
+            position: absolute;
+            top: 88px;
+            right: 0;
+            z-index: 2;
+        }
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
@@ -138,6 +146,17 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                 </div><!--end row-->
+
+                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                    <div class="toast-header">
+                        <strong class="me-auto">Success</strong>
+                        <small>Now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <span id="toastMessage" th:text="${toastMessage}"></span>
+                    </div>
+                </div>
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <form class="card-body rounded-3" action="/class-manager/classList" id="form">
@@ -179,8 +198,10 @@
                                         <div class="mb-3">
                                             <select name="status" class="form-select" onchange="this.form.submit()">
                                                 <option value="-1" th:selected="${status == -1}">All Status</option>
-                                                <option value="1" th:selected="${status == 1}">Active</option>
-                                                <option value="0" th:selected="${status == 0}">Inactive</option>
+                                                <option value="0" th:selected="${status == 0}">Pending</option>
+                                                <option value="1" th:selected="${status == 1}">Canceled</option>
+                                                <option value="2" th:selected="${status == 2}">Started</option>
+                                                <option value="3" th:selected="${status == 3}">Closed</option>
                                             </select>
                                         </div>
                                     </div>
@@ -228,7 +249,7 @@
                                         <p class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</p>
                                     </td>
                                     <td>
-                                        <a th:href="@{/class-manager/classDetail?id=${class.id}}"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="fas fa-pen-to-square action"></i></a>
+                                        <a th:href="@{/class-manager/classDetail(id=${class.id})}"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="fas fa-pen-to-square action"></i></a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -268,6 +289,17 @@
                         document.getElementById('sortBy').value = sortBy;
                         document.getElementById('sortType').value = sortType;
                         document.getElementById('form').submit();
+                    }
+                </script>
+
+                <script>
+                    var toastMessage = document.getElementById('toastMessage').textContent.trim();
+                    if (toastMessage) {
+                        var customToast = new bootstrap.Toast(document.getElementById('customToast'));
+                        customToast.show();
+                        setTimeout(function () {
+                            customToast.hide();
+                        }, 5000);
                     }
                 </script>
 

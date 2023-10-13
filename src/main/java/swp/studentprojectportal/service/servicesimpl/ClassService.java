@@ -24,13 +24,9 @@ public class ClassService implements IClassService {
     IStudentClassRepository studentClassRepository;
 
     @Override
-    public List<User> getAllStudent(int classId) {
+    public List<StudentClass> getAllStudent(int classId) {
         List<StudentClass> data = studentClassRepository.findAllByAclass_Id(classId);
-        List<User> listStudent = new ArrayList<>();
-        for (StudentClass studentClass : data) {
-            listStudent.add(studentClass.getStudent());
-        }
-        return listStudent;
+        return data;
     }
 
     public Class getClass(int classId) {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 
@@ -46,7 +47,7 @@ public class SettingController {
     @PostMapping("/admin/setting/update")
     public String updateSetting(
             @RequestParam Integer typeId, @RequestParam String settingTitle,
-            @RequestParam Integer displayOrder, @RequestParam String description, WebRequest request, Model model) {
+            @RequestParam Integer displayOrder, @RequestParam String description, WebRequest request, Model model, RedirectAttributes attributes) {
         String status = request.getParameter("status");
         Setting setting = new Setting();
         String id = request.getParameter("id");
@@ -65,11 +66,12 @@ public class SettingController {
             model.addAttribute("errmsg", "Display Order has already existed!");
         }
         else {
+            attributes.addFlashAttribute("toastMessage", "Update setting details successfully");
             if(id==null || id.isEmpty()){
-                model.addAttribute("setting", new Setting());
+                attributes.addFlashAttribute("toastMessage", "Add new setting successfully");
             }
             settingService.saveSetting(setting);
-            model.addAttribute("msg", "Successfully");
+            return "redirect:/admin/setting";
         }
         model.addAttribute("typeId", typeId);
         model.addAttribute("typeName", typeName);
