@@ -27,11 +27,11 @@ public class ClassAssignment {
     @Column(name = "status")
     private boolean status = true;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "class_id")
     private Class aclass;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "assignment_id")
     private Assignment assignment;
 

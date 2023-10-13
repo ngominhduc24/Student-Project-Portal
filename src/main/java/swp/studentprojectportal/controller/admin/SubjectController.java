@@ -6,10 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.service.servicesimpl.SettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectSevice;
+import swp.studentprojectportal.service.servicesimpl.SubjectService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
-import swp.studentprojectportal.utils.Validate;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SubjectController {
 
     @Autowired
-    SubjectSevice subjectService;
+    SubjectService subjectService;
 
     @Autowired
     UserService userService;
@@ -27,11 +25,13 @@ public class SubjectController {
     List<Subject> subjectList = new CopyOnWriteArrayList<>();
 
     @GetMapping("/admin/subject")
-    public String subjectPage(Model model) {
-        subjectList = subjectService.getSubject(0, 10);
-        model.addAttribute("SubjectList", subjectList);
+    public String subjectPage(Model model,
+                              @RequestParam(defaultValue = "0") int page) {
+//        subjectList = subjectService.getSubject(0, 10);
+//        model.addAttribute("SubjectList", subjectList);
+        model.addAttribute("page", page);
+        model.addAttribute("totalPage", subjectService.getTotalPage(10));
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-        System.out.println(userService.findAllUserByRoleId(3));
         return "admin/subject/subjectList";
     }
 
@@ -39,7 +39,6 @@ public class SubjectController {
     public String createSubjectPage(Model model) {
         model.addAttribute("subject", new Subject());
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
-//        model.addAttribute("status",subjectService.findAllUserByStatus());
         return "admin/subject/subjectAdd";
     }
 

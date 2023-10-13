@@ -68,30 +68,33 @@
                                     <div class="col-md-12 row" style="margin-top: 12px;">
                                         <div class="mb-3 col-md-6">
                                             <input type="hidden" name="id" th:value="${class.id}">
-                                            <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" readonly th:value="${class.className}">
+                                            <label class="form-label">Class Name</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.className}">
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" readonly th:value="${class.subject.subjectCode}">
+                                            <label class="form-label">Subject</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.subject.subjectCode}">
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Semester<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" readonly th:value="${class.semester.settingTitle}">
+                                            <label class="form-label">Semester</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.semester.settingTitle}">
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" readonly th:value="${class.user.fullName}">
+                                            <label class="form-label">Class Manager</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.user.fullName}">
                                         </div>
                                         <div class="mb-3 col-md-12">
-                                            <label class="form-label">Description</label>
+                                            <label class="form-label">Description <span style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">(You only can change this field)</span></label>
+
                                             <textarea type="text" rows="3" name="description" class="form-control" th:field="${class.description}"></textarea>
                                         </div>
-                                        <div class="col-md-2">
-                                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                                            <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -62px" class="form-check-input" value="on" disabled name="status" type="checkbox" th:checked="${class.isStatus()}" >
-                                            </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Status:
+                                                <span class="text-warning m-0" th:if="${class.getStatus()==0}">Pending</span>
+                                                <span class="text-danger m-0" th:if="${class.getStatus()==1}">Canceled</span>
+                                                <span class="text-success m-0" th:if="${class.getStatus()==2}">Started</span>
+                                                <span class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</span>
+                                            </label>
                                         </div>
 
                                         <div class="mt-2">

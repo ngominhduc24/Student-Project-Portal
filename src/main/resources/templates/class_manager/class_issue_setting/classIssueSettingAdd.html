@@ -49,57 +49,50 @@
         <div class="container-fluid px-4">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">New Class</h3>
+                    <h3 class="mb-0">Class Issue Setting Details</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
+                        <li class="breadcrumb-item"><a href="/class-manager/class-issue-setting">Class Issue Setting List</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">new Class</li>
+                        <li class="breadcrumb-item active">New Class Issue Setting</li>
                     </ol>
                 </div>
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/class/add" method="post">
+                            <form action="/class-manager/class-issue-setting/add" method="post">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <input type="text" name="className" class="form-control" required th:value="${class.className}">
+                                            <select name="className" class="form-select" id="classNameDropdown">
+                                                <option th:each="class : ${classList}"
+                                                        th:value="${class.id}"
+                                                        th:text="${class.className}"
+                                                        th:selected="${class.id == classNameSelected}"
+                                                ></option>
+                                            </select>
+
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subjectId" class="form-select">
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectCode}"
-                                                        th:selected="${subject.id == class.subject.id}"></option>
-                                            </select>
+                                            <label class="form-label">Type<span class="text-danger">*</span></label>
+                                            <input type="text" name="type" class="form-control" required th:value="${classIssueSetting.type}">
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Semester<span class="text-danger">*</span></label>
-                                            <select name="semesterId" class="form-select">
-                                                <option th:each="semester : ${semesterList}"
-                                                        th:value="${semester.id}"
-                                                        th:text="${semester.settingTitle}"
-                                                        th:selected="${semester.id == class.semester.id}"></option>
-                                            </select>
+                                            <label class="form-label">Status Issue<span class="text-danger">*</span></label>
+                                            <input type="text" name="statusIssue" class="form-control" required th:value="${classIssueSetting.statusIssue}">
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <select name="classManagerId" class="form-select">
-                                                <option th:each="teacher : ${teacherList}"
-                                                        th:value="${teacher.id}"
-                                                        th:text="${teacher.fullName}"
-                                                        th:selected="${teacher.id == class.user.id}"></option>
-                                            </select>
+                                            <label class="form-label">Work Process<span class="text-danger">*</span></label>
+                                            <input type="text" name="workProcess" class="form-control" required th:value="${classIssueSetting.workProcess}">
+
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description</label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${class.description}"></textarea>
+                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${classIssueSetting.description}"></textarea>
                                         </div>
 
                                         <div class="mt-2">
@@ -113,7 +106,7 @@
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 ps-4">
-                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Add New</button>
+                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Add</button>
                                     </div>
                                 </div>
                             </form>
@@ -124,6 +117,8 @@
         </div>
     </main>
 </div>
+
+
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
