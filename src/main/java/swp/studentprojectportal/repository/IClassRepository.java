@@ -26,7 +26,7 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
     @Query(value="SELECT c.id, c.class_name, c.description, c.subject_id, c.semester_id, c.teacher_id, c.status, c.create_by, c.create_at, c.update_by, c.update_at " +
             "FROM class c join subject s on c.subject_id = s.id join setting st on c.semester_id = st.id join user u on c.teacher_id = u.id " +
             "WHERE c.teacher_id = :teacherId " +
-            "AND (:semesterId = -1 OR c.semester_id = :semesterId))", nativeQuery = true)
+            "AND c.semester_id = :semesterId", nativeQuery = true)
     Page<Class> filterClassBySemester(@Param("semesterId") Integer semesterId, @Param("teacherId") Integer teacherId, Pageable pageable);
 
 

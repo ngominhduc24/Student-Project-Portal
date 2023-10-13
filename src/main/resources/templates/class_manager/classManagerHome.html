@@ -49,10 +49,21 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row">
-                    <option value="">
-
-                    </option>
-                    <button onclick="window.location('/class-manager/classList')">View full class list</button>
+                    <div class="col-xl-2 col-md-6">
+                        <form action="/class-manager/home" id="form">
+                            <input type="hidden" name="pageNo" value="0">
+                            <input type="hidden" name="pageSize" value="9">
+                            <select name="semesterId" class="form-select" onchange="this.form.submit()">
+                                <option th:each="semester : ${semesterList}"
+                                        th:value="${semester.id}"
+                                        th:text="${semester.settingTitle}" th:selected="${semesterId == semester.id}"></option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-xl-7 col-md-6"></div>
+                    <div class="col-xl-3 col-md-6 text-md-end">
+                        <a href="/class-manager/classList" class="btn btn-primary">View full class list</a>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -62,7 +73,7 @@
                                 <a th:href="@{'/class-manager/classDetail?id=' + ${class.id}}" class="text-white title h5" th:text="${class.className} + '/' + ${class.subject.subjectName}"></a>
                             </div>
                             <div class="card-body p-4">
-                                <h5 th:text="'Semester: ' + ${class.semester.settingTitle}"></h5><
+                                <h5 th:text="'Semester: ' + ${class.semester.settingTitle}"></h5>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="uil uil-user me-1"></i>33</a></li>
@@ -74,6 +85,29 @@
                         </div>
                     </div><!--end col-->
                 </div>
+
+                <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
+                    <ul class="pagination justify-content-end">
+                        <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" style="cursor: pointer"
+                               th:onclick="'goToPage('+ ${pageNo-1}+')'">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <input type="hidden" name="pageNo" id="pageNoInput">
+                        <li  th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:text="${i}" style="cursor: pointer"
+                               th:onclick="'goToPage('+ ${i-1}+')'">
+                            </a>
+                        </li>
+                        <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link user-select-all" style="cursor: pointer"
+                               th:onclick="'goToPage('+ ${pageNo+1}+')'">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div><!--end container-->
     </main>
@@ -89,6 +123,13 @@
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
+
+<script>
+    function goToPage(i) {
+        document.getElementById('pageNoInput').value = i;
+        document.getElementById('form').submit();
+    }
+</script>
 
 </body>
 </html>
