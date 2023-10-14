@@ -86,13 +86,15 @@ public class SClassController {
         return "subject_manager/class/classDetail";
     }
 
-    @GetMapping("class/miletone")
+    @GetMapping("/class/milestone")
     public String milestonePage(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
                                 @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
                                 @RequestParam(defaultValue = "1") Integer sortType,
                             Model model, HttpSession session) {
         Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , search, pageNo, pageSize,sortBy, sortType, status);
+        Class classA = classService.findById(classId);
+        model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("search", search);
@@ -102,7 +104,7 @@ public class SClassController {
         model.addAttribute("status", status);
         model.addAttribute("totalPage", milestoneList.getTotalPages());
         model.addAttribute("milestoneList", milestoneList);
-        return "subject_manager/class/milestoneList";
+        return "subject_manager/milestone/classMilestoneList";
     }
 
     @PostMapping("/class/update")
