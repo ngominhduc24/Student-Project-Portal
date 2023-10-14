@@ -40,7 +40,7 @@ public class IssueSettingController {
         IssueSetting issueSetting = issueSettingService.findById(id);
         model.addAttribute("setting", issueSetting);
         model.addAttribute("subjectList",subjectList);
-        return "subject_manager/issue_setting/issueSettingAdd";
+        return "subject_manager/issue_setting/issueSettingDetail";
     }
 
 //    @PostMapping("/subject-manager/subject-setting/update")
@@ -78,7 +78,7 @@ public class IssueSettingController {
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         model.addAttribute("subjectList",subjectList);
-        return  "subject_manager/subject_issue_setting/subjectSettingAdd";
+        return  "subject_manager/issue_setting/issueSettingAdd";
     }
 
 //    @PostMapping("/subject-manager/subject-setting/add")
