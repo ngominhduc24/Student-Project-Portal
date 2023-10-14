@@ -57,7 +57,7 @@
                     <div class="col-xl-5 col-md-6">
                         <h4>Project List</h4>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Project List</li>
                         </ol>
@@ -187,7 +187,7 @@
 
                 <div class="container-fluid px-4" style="display: flex; flex-wrap: wrap; justify-content: space-between">
 
-                    <div class="mb-3 col-md-5 project">
+                    <div class="mb-3 col-md-5 project" id="noGroup">
                         <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png" class="drop-arrow">
                         <div class="project-title" onclick="showDetails(this.parentNode)">Waiting list</div>
                         <br>
@@ -292,6 +292,13 @@
 
             function setLeader(element) {
                 let project = element.parentNode.parentNode;
+
+                //check no group
+                if(project.getAttribute('id')=='noGroup') {
+                    alert('You cant set team leader for this group!');
+                    return;
+                }
+
                 removeLeader(project.dataset.leader);
 
                 let id = element.getAttribute('id');
@@ -303,10 +310,7 @@
             }
 
             function removeLeader(id) {
-                if(id==-1) {
-                    alert('Cant set leader this group!');
-                    return;
-                }
+                if(id==-1) return;
 
                 let student = document.querySelector(`#${id} p`);
                 student.textContent = student.textContent.split(' -')[0];

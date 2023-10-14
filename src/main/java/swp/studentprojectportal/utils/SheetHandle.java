@@ -109,7 +109,7 @@ public class SheetHandle {
                     .map(Project::getGroupName)
                     .collect(Collectors.toList());
             options.add("No group");
-            CellRangeAddressList addressList = new CellRangeAddressList(1, list.size(), 2, 2); // (startRow, endRow, startCol, endCol)
+            CellRangeAddressList addressList = new CellRangeAddressList(1, Math.max(list.size(), 1), 2, 2); // (startRow, endRow, startCol, endCol)
 
             // Create a data validation object
             DataValidationHelper dataValidationHelper = sheet.getDataValidationHelper();
