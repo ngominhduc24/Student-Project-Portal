@@ -71,21 +71,22 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">Subject Setting Details</h3>
+                    <h3 class="mb-0">Issue Setting Details</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Subject Setting</a></li>
+                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Issue Setting</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Subject Setting Details</li>
+                        <li class="breadcrumb-item active">Issue Setting Details</li>
                     </ol>
                 </div>
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/subject-setting/add" method="post">
+                            <form action="/subject-manager/subject-setting/update" method="post">
+                                <input type="hidden" name="id" th:value="${setting.id}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -94,7 +95,8 @@
                                                 <select name="subjectId" class="form-select">
                                                     <option th:each="subject : ${subjectList}"
                                                             th:value="${subject.id}"
-                                                            th:text="${subject.subjectCode}"></option>
+                                                            th:text="${subject.subjectCode}"
+                                                            th:selected="${subject.id == setting.subject.id}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -103,10 +105,10 @@
                                         <div class="mb-3">
                                             <label class="form-label">Type<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <select name="typeId" class="form-select w-100">
-                                                    <option th:value="1" th:text="Complexity" ></option>
-                                                    <option th:value="2" th:text="Quality" ></option>
-                                                </select>
+                                            <select name="typeId" class="form-select w-100">
+<!--                                                <option th:value="1" th:text="Complexity" th:selected="${setting.typeId == 1}"></option>-->
+<!--                                                <option th:value="2" th:text="Quality" th:selected="${setting.typeId == 2}"></option>-->
+                                            </select>
                                             </div>
                                         </div>
                                     </div><!--end col-->
@@ -115,38 +117,27 @@
                                         <div class="mb-3">
                                             <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingTitle" class="form-control" required>
+                                                <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
                                             </div>
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-<<<<<<< HEAD
-                                            <label class="form-label">Display Order<span class="text-danger">*</span></label>
-                                            <input style="width: 60%;" type="number" required class="form-control" value="1" name="displayOrder">
-=======
-                                            <label class="form-label">Display Order</label>
-                                            <input style="width: 100%;" type="number" required class="form-control" value="1" name="displayOrder" min="1">
->>>>>>> ntn
-                                        </div>
-                                    </div>
                                     <div class="col-md-2 text-center">
                                         <div class="mb-3">
                                             <label class="form-label">Status<span class="text-danger">*</span></label>
                                             <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -38px" class="form-check-input" value="on" name="status" checked type="checkbox" >
+                                                <input style="margin-left: -38px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${setting.isStatus()}" >
                                             </div>
                                         </div>
                                     </div>
                                 </div><!--end row-->
                                 <div class="row">
-                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button> </div>
+                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Update</button> </div>
                                 </div>
                             </form>
 
 <!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
-                            <div     id="errmsg" style="color: red;"></div>
+                            <div id="errmsg" style="color: red;"></div>
                         </div>
                     </div><!--end col-->
                 </div>

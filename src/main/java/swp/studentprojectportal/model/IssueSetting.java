@@ -11,26 +11,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "subject_setting")
-public class SubjectSetting {
+@Table(name = "issue_setting")
+public class IssueSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "type_id")
-    private Integer typeId;
+    @Column(name = "setting_group")
+    private String settingGroup;
 
     @Column(name = "setting_title")
     private String settingTitle;
 
-    @Column(name = "setting_value")
-    private String settingValue;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "status")
     private boolean status = true;
-
-    @Column(name = "display_order")
-    private Integer displayOrder;
 
     @Column(name = "create_by")
     private Integer createBy = 0;
@@ -47,6 +44,14 @@ public class SubjectSetting {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private Class aclass;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public void setSubject(Subject subject) {
         this.subject = subject;

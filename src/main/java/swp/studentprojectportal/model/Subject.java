@@ -25,6 +25,9 @@ public class Subject {
     @Column(name = "subject_code")
     private String subjectCode;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "status")
     private boolean status = true;
 
