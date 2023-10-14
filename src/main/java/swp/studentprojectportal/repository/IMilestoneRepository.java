@@ -13,6 +13,7 @@ import swp.studentprojectportal.model.Milestone;
 
 @Repository
 public interface IMilestoneRepository extends JpaRepository<Milestone, Integer> {
+    Milestone findMilestoneById(Integer id);
     @Query(value="SELECT * FROM  milestone\n" +
             "WHERE class_id= :classId " +
             "and (LOWER(title) LIKE LOWER(CONCAT('%', :search, '%'))  " +

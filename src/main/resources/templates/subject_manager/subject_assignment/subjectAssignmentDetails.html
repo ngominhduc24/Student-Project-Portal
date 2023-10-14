@@ -69,25 +69,19 @@
                                             <label class="form-label">Assignment Name<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control"
                                                    name="title"
-                                                   th:value="${assignment.title}"
-                                                   placeholder="Title :">
+                                                   th:value="${assignment.title}">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label"> Subject<span class="text-danger">*</span></label>
-                                            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                                                <div class="input-group" style="flex-wrap: nowrap">
-                                                    <select name="subject" class="form-select">
-                                                        <option th:each="subject : ${subject}"
-                                                                th:value="${subject.id}"
-                                                                th:text="${subject.subjectName}"
-                                                                th:selected="${subject.id == assignment.subject.id}"
-                                                                class="subject"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control"
+                                                   name="subject"
+                                                   style="background-color: white"
+                                                   th:value="${assignment.subject.subjectName}"
+                                                   disabled
+                                                   placeholder="Description :">
                                         </div>
                                     </div><!--end col-->
 
@@ -117,8 +111,6 @@
                                         </select>
                                     </div>
                                 </div><!--end col-->
-
-                                <h6 style="color: green" th:text="${successMsg}">a</h6>
                                 <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
                                 <button type="submit" class="btn btn-primary">Add Assignment</button>
                             </form>

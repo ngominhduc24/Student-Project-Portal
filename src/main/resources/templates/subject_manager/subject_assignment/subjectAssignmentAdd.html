@@ -75,18 +75,13 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label"> Subject<span class="text-danger">*</span></label>
-                                            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                                                <div class="input-group" style="flex-wrap: nowrap">
-                                                    <select name="subject" class="form-select">
-                                                        <option th:each="subject : ${subject}"
-                                                                th:value="${subject.id}"
-                                                                th:text="${subject.subjectName}"
-                                                                th:selected="${subject.id == subject}"
-                                                                class="subject"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control"
+                                                   name="subject"
+                                                   style="background-color: white"
+                                                   th:value="${subject.subjectName}"
+                                                   disabled
+                                                   placeholder="Description :">
                                         </div>
                                     </div><!--end col-->
 

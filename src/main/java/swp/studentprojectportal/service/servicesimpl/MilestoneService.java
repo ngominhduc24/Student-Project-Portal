@@ -3,7 +3,6 @@ package swp.studentprojectportal.service.servicesimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Assignment;
@@ -30,6 +29,11 @@ public class MilestoneService implements IMilestoneService {
         else
             sort = Sort.by(sortBy).descending();
         return milestoneRepository.filterClassBySubjectManager(classId, search, status, PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
+    public Milestone findMilestoneById(Integer id){
+        return milestoneRepository.findMilestoneById(id);
     }
 
     @Override

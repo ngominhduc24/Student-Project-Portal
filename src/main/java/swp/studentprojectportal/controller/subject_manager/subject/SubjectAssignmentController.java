@@ -37,10 +37,10 @@ public class SubjectAssignmentController {
 
 
     @GetMapping("/subject-manager/addSubjectAssignment")
-    public String AddSubjectAssignment(Model model, HttpSession session){
-        User user = (User) session.getAttribute("user");
+    public String AddSubjectAssignment(Model model, @RequestParam("subjectId") Integer subjectId){
+        Subject subject = subjectService.getSubjectById(subjectId);
+        model.addAttribute("subject", subject);
         model.addAttribute("assignment", new Assignment());
-        model.addAttribute("subject", subjectService.findAllSubjectByUser(user));
         return "subject_manager/subject_assignment/subjectAssignmentAdd";
     }
 
@@ -66,11 +66,9 @@ public class SubjectAssignmentController {
     }
 
     @GetMapping("/subject-manager/subjectAssignmentDetail")
-    public String subjectAssignmentDetail(Model model, @RequestParam("id") Integer id, HttpSession session){
-        User user = (User) session.getAttribute("user");
+    public String subjectAssignmentDetail(Model model, @RequestParam("id") Integer id){
         Assignment assignment = assignmentService.getAssignmentById(id);
         model.addAttribute("assignment", assignment);
-        model.addAttribute("subject", subjectService.findAllSubjectByUser(user));
         return "subject_manager/subject_assignment/subjectAssignmentDetails";
     }
 

@@ -17,8 +17,6 @@ import java.util.List;
 public interface IClassRepository extends JpaRepository<Class, Integer> {
     Class findClassById(Integer className);
     Class findClassByClassNameAndSubjectId(String className, Integer subjectId);
-
-
     Class findClassByClassName(String className);
 
     List<Class> findAllByUserId(Integer classManagerId);

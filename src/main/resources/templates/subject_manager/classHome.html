@@ -242,7 +242,7 @@
                     <div class="col-xl-4 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a href="/subject-manager/addSubjectAssignment" class="btn btn-primary"
+                        <a th:href="@{/subject-manager/addClassAssignment?id={id}(id=${class.id})}" class="btn btn-primary"
                            style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
 
