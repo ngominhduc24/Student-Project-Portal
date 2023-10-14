@@ -1,13 +1,8 @@
 package swp.studentprojectportal.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.SubjectSetting;
-import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.repository.IClassRepository;
 
 import java.util.List;
 

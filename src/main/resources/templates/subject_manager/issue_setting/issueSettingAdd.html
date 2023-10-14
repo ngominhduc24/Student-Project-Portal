@@ -71,15 +71,15 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">Subject Setting Details</h3>
+                    <h3 class="mb-0">New Subject Setting</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Subject Setting</a></li>
+                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Issue Setting</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Subject Setting Details</li>
+                        <li class="breadcrumb-item active">New Issue Setting</li>
                     </ol>
                 </div>
                 <div class="row">
@@ -104,8 +104,8 @@
                                             <label class="form-label">Type<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                                 <select name="typeId" class="form-select w-100">
-                                                    <option th:value="1" th:text="Complexity" ></option>
-                                                    <option th:value="2" th:text="Quality" ></option>
+<!--                                                    <option th:value="1" th:text="Complexity" ></option>-->
+<!--                                                    <option th:value="2" th:text="Quality" ></option>-->
                                                 </select>
                                             </div>
                                         </div>
@@ -120,25 +120,13 @@
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label class="form-label">Display Order<span class="text-danger">*</span></label>
-                                            <input style="width: 60%;" type="number" required class="form-control" value="1" name="displayOrder" min="1">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 text-center">
+
+                                    <div class="col-md-2 text-center">
                                         <div class="mb-3">
                                             <label class="form-label">Status<span class="text-danger">*</span></label>
                                             <div class="form-check form-switch" style="font-size: 24px">
                                                 <input style="margin-left: -38px" class="form-check-input" value="on" name="status" checked type="checkbox" >
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Description<span class="text-danger">*</span></label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required
-                                                      ></textarea>
                                         </div>
                                     </div>
                                 </div><!--end row-->

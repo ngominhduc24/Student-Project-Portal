@@ -28,6 +28,16 @@
 
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+    <style>
+        .breadcrumb .breadcrumb-item:after {
+            content: none !important;
+        }
+    </style>
+
 </head>
 <body>
 <!-- Loader -->
@@ -46,13 +56,19 @@
     <div th:replace="~{dashboardSidebar}"></div>
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
-        <div class="container-fluid px-4">
-            <div class="layout-specing">
-                <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">Class Details</h3>
-                </div>
-                <div>
-                    <ol class="breadcrumb mb-4">
+
+        <div class="topnav">
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/subject-manager/classDetail(id=${class.id})}"><p style="margin:0; ">General</p></a>
+            <a style="cursor: pointer;" th:href="@{/subject-manager/class/milestone(classId=${class.id})}"><p style="margin:0;"  >Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/subject-manager/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
+
+        </div>
+        <!--    Genenal-->
+        <div id="general" class="container-fluid" >
+            <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+                <div class="row px-4">
+                    <h2 class="mb-0" th:text="${class.className}"></h2>
+                    <ol class="breadcrumb mb-2 ms-2">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
@@ -60,7 +76,7 @@
                         <li class="breadcrumb-item active">Class Details</li>
                     </ol>
                 </div>
-                <div class="row">
+                <div class="row px-4">
                     <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
                             <form action="/subject-manager/class/update" method="post">
@@ -134,17 +150,15 @@
                 </div>
             </div>
         </div>
+
     </main>
 </div>
 
 <!-- javascript -->
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
-
-<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 

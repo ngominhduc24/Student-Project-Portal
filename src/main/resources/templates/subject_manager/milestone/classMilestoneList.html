@@ -50,13 +50,10 @@
         th:nth-child(2) {
             width: 12%;
         }
-        th:nth-child(3) {
-            width: 20%;
+        th:nth-child(3), th:nth-child(4) {
+            width: 14%;
         }
-        th:nth-child(4), th:nth-child(5) {
-            width: 10%;
-        }
-        th:nth-child(6),th:last-child {
+        th:nth-child(5),th:last-child {
             width: 8%;
         }
         td:last-child {
@@ -135,95 +132,10 @@
         <div th:replace="~{dashboardHeader}"></div>
 
         <div class="topnav">
-            <a onclick="showDiv('general')" class="general" style="cursor: pointer"><p style="margin:0; user-select: none;">General</p></a>
-            <a onclick="showDiv('assignment')" class="assignment" style="cursor: pointer"><p style="margin:0; user-select: none;">Milestones</p></a>
-        </div>
-        <!--    Genenal-->
-        <div id="general" class="container-fluid" >
-            <div class="layout-specing" style="padding: 15px 14px 24px !important;">
-                <div>
-                    <h2 class="mb-0" th:text="${class.className}"></h2>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-                        <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
-                        <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">Class Details</li>
-                    </ol>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/class/update" method="post">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-12 row" style="margin-top: 12px;">
-                                        <div class="mb-3 col-md-6">
-                                            <input type="hidden" name="id" th:value="${class.id}">
-                                            <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <input type="text" name="className" class="form-control" required th:value="${class.className}">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subjectId" class="form-select">
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectCode}"
-                                                        th:selected="${subject.id == class.subject.id}"
-                                                ></option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Semester<span class="text-danger">*</span></label>
-                                            <select name="semesterId" class="form-select">
-                                                <option th:each="semester : ${semesterList}"
-                                                        th:value="${semester.id}"
-                                                        th:text="${semester.settingTitle}"
-                                                        th:selected="${semester.id == class.semester.id}"
-                                                ></option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <select name="classManagerId" class="form-select">
-                                                <option th:each="teacher : ${teacherList}"
-                                                        th:value="${teacher.id}"
-                                                        th:text="${teacher.fullName}"
-                                                        th:selected="${teacher.id == class.user.id}"
-                                                ></option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-md-12">
-                                            <label class="form-label">Description</label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${class.description}"></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Status:
-                                                <span class="text-warning m-0" th:if="${class.getStatus()==0}">Pending</span>
-                                                <span class="text-danger m-0" th:if="${class.getStatus()==1}">Canceled</span>
-                                                <span class="text-success m-0" th:if="${class.getStatus()==2}">Started</span>
-                                                <span class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</span>
-                                            </label>
-                                        </div>
+            <a style="cursor: pointer;" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/subject-manager/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/subject-manager/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
 
-                                        <div class="mt-2">
-                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>
-                                            <h6 style="color: green;" th:text="${msg}"></h6>
-                                        </div>
-
-                                    </div><!--end col-->
-                                </div>
-
-
-                                <div class="row justify-content-center">
-                                    <div class="col-md-12 ps-4">
-                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div><!--end col-->
-                </div>
-            </div>
         </div>
 
         <!--    Assignment-->
@@ -232,8 +144,10 @@
                 <div class="row px-4" style="width: 100%; justify-content: space-between">
                     <div class="col-xl-5 col-md-6">
                         <h2 class="mb-0" th:text="${class.className}"></h2>
-                        <ol class="breadcrumb mb-4">
+                        <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Milestone List</li>
                         </ol>
@@ -249,7 +163,7 @@
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form action="/subject-manager/classDetail" method="post" class="card-body rounded-3" id="form">
+                        <form action="/subject-manager/class/milestone" class="card-body rounded-3" id="form">
                             <div class="row" style="width: 100%; justify-content: space-between">
                                 <input type="hidden" name="classId" th:value="${class.id}">
                                 <div class="col-md-3 row">
@@ -301,12 +215,6 @@
                                         <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('title',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Description
-                                        <i th:class="${(sortBy eq 'description' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortData('description',1)"></i>
-                                        <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortData('description',2)"></i>
-                                    </th>
                                     <th data-sortable="false">Start Date
                                         <i th:class="${(sortBy eq 'start_date' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('start_date',1)"></i>
@@ -327,7 +235,6 @@
                                 <tr th:each="milestone : ${milestoneList}">
                                     <td th:text="${milestone.id}"></td>
                                     <td th:text="${milestone.title}"></td>
-                                    <td th:text="${milestone.description}"></td>
                                     <td th:text="${milestone.startDate}"></td>
                                     <td th:text="${milestone.endDate}"></td>
                                     <td>
@@ -440,30 +347,6 @@
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
-<script>
-    function showDiv(divId) {
-        var links = document.querySelectorAll('.topnav a');
-        links.forEach(function(link) {
-            link.style.borderBottom = '';
-        });
-        document.getElementById('general').style.display = 'none';
-        document.getElementById('assignment').style.display = 'none';
-
-        // Display the div
-        document.querySelector('.'+divId).style.borderBottom = '3px solid blue';
-        document.getElementById(divId).style.display = 'block';
-        // Store the ID of the displayed div in local storage
-        localStorage.setItem('lastDisplayedDiv', divId);
-    }
-
-    // Retrieve the previously displayed div on page load and show it
-    document.addEventListener('DOMContentLoaded', function () {
-        const lastDisplayedDiv = localStorage.getItem('lastDisplayedDiv');
-        if (lastDisplayedDiv) {
-            showDiv(lastDisplayedDiv);
-        }
-    });
-</script>
 
 </body>
 </html>

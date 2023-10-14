@@ -2,7 +2,6 @@ package swp.studentprojectportal.service;
 
 import org.springframework.data.domain.Page;
 import swp.studentprojectportal.model.Assignment;
-import swp.studentprojectportal.model.SubjectSetting;
 
 import java.util.List;
 

@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
                                                   `subject_manager_id` INT NULL,
                                                   `subject_name` VARCHAR(255) NULL,
     `subject_code` VARCHAR(45) NULL,
+    `description` VARCHAR(255) NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -185,31 +186,6 @@ CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
     )
     ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `swp391`.`class_issue_setting`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `swp391`.`class_issue_setting` ;
-
-CREATE TABLE IF NOT EXISTS `swp391`.`class_issue_setting` (
-                                                              `id` INT NOT NULL AUTO_INCREMENT,
-                                                              `class_id` INT NULL,
-                                                              `type` INT NULL,
-                                                              `status` BIT(1) NULL,
-    `work_processes` VARCHAR(155) NULL,
-    `create_by` INT NULL DEFAULT 0,
-    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_by` INT NULL DEFAULT 0,
-    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    INDEX `a_idx` (`class_id` ASC) VISIBLE,
-    FOREIGN KEY (`class_id`)
-    REFERENCES `swp391`.`class` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `swp391`.`project`
 -- -----------------------------------------------------
@@ -281,16 +257,17 @@ CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
 -- -----------------------------------------------------
 -- Table `swp391`.`subject_setting`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `swp391`.`subject_setting` ;
+DROP TABLE IF EXISTS `swp391`.`issue_setting` ;
 
-CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
-                                                          `id` INT NOT NULL AUTO_INCREMENT,
-                                                          `subject_id` INT NULL,
-                                                          `type_id` INT NULL,
-                                                          `setting_title` VARCHAR(45) NULL,
-    `setting_value` VARCHAR(45) NULL,
+CREATE TABLE IF NOT EXISTS `swp391`.`issue_setting` (
+                                                        `id` INT NOT NULL AUTO_INCREMENT,
+                                                        `subject_id` INT NULL,
+                                                        `class_id` INT NULL,
+                                                        `project_id` INT NULL,
+                                                        `setting_group` VARCHAR(45) NULL,
+    `setting_title` VARCHAR(45) NULL,
+    `description` VARCHAR(200) NULL,
     `status` BIT(1) NULL DEFAULT 1,
-    `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -298,6 +275,14 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`subject_id`)
     REFERENCES `swp391`.`subject` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
                                                         ON DELETE NO ACTION
                                                         ON UPDATE NO ACTION)
     ENGINE = InnoDB;
@@ -372,34 +357,65 @@ VALUES
     ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","k","/images/user_icon.png",1,1);
 
 -- subject
-INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
+INSERT INTO `subject` (`subject_manager_id`, `subject_name`, `subject_code`, `description`)
 VALUES
-    (2,"Software development project","SWP391"),
-    (2,"Java Web Application Development","PRJ301"),
-    (2,"Software Requirement","SWR302"),
-    (4,"Software Testing","SWT301"),
-    (4,"Basic Cross-Platform Application Programming With .NET","PRN211"),
-    (4,"Front-End web development with React","FER201m");
+    (2, "Software development project", "SWP391", "Description for Software development project"),
+    (2, "Java Web Application Development", "PRJ301", "Description for Java Web Application Development"),
+    (2, "Software Requirement", "SWR302", "Description for Software Requirement"),
+    (4, "Software Testing", "SWT301", "Description for Software Testing"),
+    (4, "Basic Cross-Platform Application Programming With .NET", "PRN211", "Description for Basic Cross-Platform Application Programming With .NET"),
+    (4, "Front-End web development with React", "FER201m", "Description for Front-End web development with React");
 
--- subject_setting
-INSERT INTO subject_setting(subject_id,type_id,setting_title,setting_value,display_order)
+
+-- issue_setting
+INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
 VALUES
-    (1 ,1, "High","240",1),
-    (1 ,1, "Medium","120",2),
-    (1 ,1, "Low","60",3),
-    (1 ,2, "High",">=80%",1),
-    (1 ,2, "Medium",">=50%",2),
-    (1 ,2, "Low","<50%",3),
-    (2 ,1, "High","240",1),
-    (2 ,1, "Medium","120",2),
-    (2 ,2, "High",">=80%",1),
-    (2 ,2, "Medium",">=50%",2),
-    (2 ,2, "Low","<50%",3);
+    (1 ,"Process", "Coding","Trong giai đoan code",1),
+    (1 ,"Process", "Design","Trong giai đoan thiet ke",0),
+    (1 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
+    (1 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
+    (1 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
+    (1 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
+    (1 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1),
+    (2 ,"Process", "Coding","Trong giai đoan code",1),
+    (2 ,"Process", "Design","Trong giai đoan thiet ke",1),
+    (2 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
+    (2 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
+    (2 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
+    (2 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
+    (2 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1),
+    (3 ,"Process", "Coding","Trong giai đoan code",1),
+    (3 ,"Process", "Design","Trong giai đoan thiet ke",1),
+    (3 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
+    (3 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
+    (3 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
+    (3 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
+    (3 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1);
+
+INSERT INTO issue_setting(class_id,setting_group,setting_title,description, status)
+VALUES
+    (1 ,"Process", "Req","Trong giai đoan requirement",1),
+    (1 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (1 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (1 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",0),
+    (1 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1),
+    (2 ,"Process", "Req","Trong giai đoan requirement",1),
+    (2 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (2 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (2 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
+    (2 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1),
+    (2 ,"Type","Risks", "Các vấn đề rủi ro theo dõi các rủi ro tiềm ẩn đối với dự án, cùng với các kế hoạch giảm thiểu.",1),
+    (3 ,"Process", "Req","Trong giai đoan requirement",1),
+    (3 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
+    (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
+
 
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
     ("SE1720","Study software engineering",1,7,3,3),
-    ("SE1741","Study software engineering",1,7,3,3),
+    ("SE1722","Study software engineering",1,7,3,3),
     ("SE1704","Study software engineering",1,7,3,3),
     ("SE1707","Study software engineering",1,7,3,3),
     ("SE1712","Study software engineering",2,7,6,3),
@@ -411,8 +427,8 @@ VALUES
     ("SE1731","Study software engineering",1,8,6,2),
     ("SE1736","Study software engineering",1,8,6,1),
     ("SE1740","Study software engineering",2,8,3,1),
-    ("SE1745","Study software engineering",2,8,3,0),
-    ("SE1734","Study software engineering",2,8,3,0),
+    ("SE1745","Study software engineering",2,8,3,2),
+    ("SE1734","Study software engineering",2,8,3,2),
     ("SE1736","Study software engineering",2,8,3,0);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
@@ -475,21 +491,21 @@ VALUES
     (6,'React App','Make React App to print "Hello React"',1),
     (6,'JS ES6','Learn new synctax in JS ES6',1);
 
-INSERT INTO milestone (`title`,`description`,`status`,`class_id`)
+INSERT INTO milestone (`title`,`description`,`status`,`class_id`,`start_date`, `end_date`)
 VALUES
-    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1),
-    ('Review Iteration 1','Review docs and code iteration 1 all group',1,2),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,2),
-    ('Review Iteration 1','Review docs and code iteration 1 all group',1,3),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,3),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3),
-    ('Java Servlet','Intro to JavaServlet + JSP',1,5),
-    ('Connect to Database','Learn JDBC',1,5),
-    ('Project','Pratice to create a website',1,5),
-    ('Java Servlet','Intro to JavaServlet + JSP',1,6),
-    ('Connect to Database','Learn JDBC',1,6),
-    ('Project','Pratice to create a website',1,6);
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,'2023-09-05', '2023-09-26'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,'2023-09-27', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,'2023-10-18', '2023-11-08'),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,2,'2023-09-05', '2023-09-25'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2,'2023-09-26', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,2,'2023-10-18', '2023-11-09'),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,3,'2023-09-05', '2023-09-25'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,3,'2023-09-28', '2023-10-17'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,'2023-10-18', '2023-11-08'),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,5,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,5,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,5,'2023-10-18', '2023-11-08'),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
     

@@ -25,7 +25,7 @@ public interface IAssignmentRepository extends JpaRepository<Assignment, Integer
                     "WHERE s.subject_manager_id= :subjectManagerId "+
             "and (LOWER(ass.subject_id) LIKE LOWER(CONCAT('%', :search, '%')) \n" +
             "OR LOWER(ass.title) LIKE LOWER(CONCAT('%', :search, '%'))\n" +
-            "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :search, '%'))) \n" +
+            "OR LOWER(ass.description) LIKE LOWER(CONCAT('%', :search, '%'))) \n" +
             "and (:subjectId = -1 OR ass.subject_id= :subjectId ) " +
             "and (:status = -1 OR ass.status = :status) \n",nativeQuery = true)
     Page<Assignment> filter(

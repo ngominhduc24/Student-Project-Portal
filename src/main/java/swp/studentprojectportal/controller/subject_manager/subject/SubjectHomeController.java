@@ -8,13 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.model.SubjectSetting;
+import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.IAssignmentService;
 import swp.studentprojectportal.service.ISubjectService;
-import swp.studentprojectportal.service.servicesimpl.SubjectSettingService;
+import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 
 import java.util.List;
 
@@ -25,19 +26,18 @@ public class SubjectHomeController {
     @Autowired
     IAssignmentService assignmentService;
     @Autowired
-    SubjectSettingService subjectSettingService;
+    IssueSettingService issueSettingService;
     @GetMapping("/subject-manager/subject")
     public String subjectPage(@RequestParam Integer subjectId,
                               Model model, HttpSession session){
         Subject subject = subjectService.getSubjectById(subjectId);
         model.addAttribute("subject", subject);
         User user = (User) session.getAttribute("user");
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        Page<SubjectSetting> subjectSettingList= subjectSettingService.filter(user.getId(), "", 0, 10, "id", 1, subjectId, -1, -1);
+        Page<IssueSetting> issueSettingList= issueSettingService.filter(subjectId, "", 0, 10, "id", 1, "", -1);
         Page<Assignment> assignmentList = assignmentService.filter(user.getId(),"",0,10,"id",1,subjectId,-1);
+        List<String> settingGroupList = issueSettingService.findAllDistinctSettingGroup(subjectId);
         model.addAttribute("pageSize", 10);
         model.addAttribute("pageNo", 0);
-        model.addAttribute("subjectId", subjectId);
         model.addAttribute("sortBy", "id");
         model.addAttribute("sortType", 1);
         model.addAttribute("totalPage", assignmentList.getTotalPages());
@@ -46,34 +46,34 @@ public class SubjectHomeController {
         model.addAttribute("pageNoS", 0);
         model.addAttribute("sortByS", "id");
         model.addAttribute("sortTypeS", 1);
-        model.addAttribute("totalPageS", subjectSettingList.getTotalPages());
+        model.addAttribute("settingGroupS", "");
+        model.addAttribute("totalPageS", issueSettingList.getTotalPages());
 
-        model.addAttribute("subjectSettingList", subjectSettingList);
-        model.addAttribute("subjectList", subjectList);
+        model.addAttribute("issueSettingList", issueSettingList);
         model.addAttribute("assignmentList", assignmentList);
+        model.addAttribute("settingGroupList", settingGroupList);
         return "/subject_manager/subjectHome";
     }
 
     @PostMapping("/subject-manager/subject")
-    public String subject(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
-                              @RequestParam(defaultValue = "") String search, @RequestParam Integer subjectId,
-                              @RequestParam(defaultValue = "-1") Integer status,
-                              @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
-                              @RequestParam(defaultValue = "0") Integer pageNoS, @RequestParam(defaultValue = "10") Integer pageSizeS,
-                              @RequestParam(defaultValue = "") String searchS,
-                              @RequestParam(defaultValue = "-1") Integer statusS, @RequestParam(defaultValue = "-1") Integer typeIdS,
-                              @RequestParam(defaultValue = "id") String sortByS, @RequestParam(defaultValue = "1") Integer sortTypeS,
+    public String subject(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
+                              @RequestParam String search, @RequestParam Integer subjectId,
+                              @RequestParam Integer status,
+                              @RequestParam String sortBy, @RequestParam Integer sortType,
+                              @RequestParam Integer pageNoS, @RequestParam Integer pageSizeS,
+                              @RequestParam String searchS,
+                              @RequestParam Integer statusS, @RequestParam String settingGroupS,
+                              @RequestParam String sortByS, @RequestParam Integer sortTypeS,
                               Model model, HttpSession session){
         Subject subject = subjectService.getSubjectById(subjectId);
         model.addAttribute("subject", subject);
         User user = (User) session.getAttribute("user");
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        Page<SubjectSetting> subjectSettingList= subjectSettingService.filter(user.getId(), searchS, pageNoS, pageSizeS, sortByS, sortTypeS, subjectId, typeIdS, statusS);
+        Page<IssueSetting> issueSettingList= issueSettingService.filter(subjectId, searchS, pageNoS, pageSizeS, sortByS, sortTypeS, settingGroupS, statusS);
         Page<Assignment> assignmentList = assignmentService.filter(user.getId(),search,pageNo,pageSize,sortBy,sortType,subjectId,status);
+        List<String> settingGroupList = issueSettingService.findAllDistinctSettingGroup(subjectId);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("search", search);
-        model.addAttribute("subjectId", subjectId);
         model.addAttribute("status", status);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortType", sortType);
@@ -84,13 +84,24 @@ public class SubjectHomeController {
         model.addAttribute("searchS", searchS);
         model.addAttribute("statusS", statusS);
         model.addAttribute("sortByS", sortByS);
-        model.addAttribute("typeIdS", typeIdS);
+        model.addAttribute("settingGroupS", settingGroupS);
         model.addAttribute("sortTypeS", sortTypeS);
-        model.addAttribute("totalPageS", subjectSettingList.getTotalPages());
+        model.addAttribute("totalPageS", issueSettingList.getTotalPages());
 
-        model.addAttribute("subjectSettingList", subjectSettingList);
-        model.addAttribute("subjectList", subjectList);
+        model.addAttribute("issueSettingList", issueSettingList);
         model.addAttribute("assignmentList", assignmentList);
+        model.addAttribute("settingGroupList", settingGroupList);
         return "/subject_manager/subjectHome";
     }
+
+    @PostMapping("/subject-manager/subject/update")
+    public String subject(@RequestParam("id") Integer id, @RequestParam String description,
+                          Model model, HttpSession session, RedirectAttributes attributes){
+        Subject subject =  subjectService.getSubjectById(id);
+        subject.setDescription(description);
+        subjectService.saveSubject(subject);
+        attributes.addFlashAttribute("toastMessage", "Update subject description successfully");
+        return "redirect:/subject-manager/subject?subjectId="+id;
+    }
+
 }

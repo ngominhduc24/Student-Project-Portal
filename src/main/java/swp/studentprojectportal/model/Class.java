@@ -58,8 +58,8 @@ public class Class {
     @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Milestone> milestones;
 
-    @OneToMany(mappedBy = "aClass", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClassIssueSetting> classIssueSettings;
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<IssueSetting> issueSettings;
 
     @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects;
