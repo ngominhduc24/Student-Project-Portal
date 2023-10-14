@@ -51,14 +51,14 @@ public class ProfileController {
         String phone = request.getParameter("phone");
         String avatarUrl = saveFile(image);
         User user = (User) session.getAttribute("user");
+        user.setAvatarUrl(avatarUrl);
+        user.setPhone(phone);
+        user.setEmail(email);
+        user.setFullName(fullName);
+        session.setAttribute("user", user);
         if (!Validate.validEmail(email) || !Validate.validPhoneNumber(phone) || !Validate.validFullname(fullName) || !Validate.validAvatarurl(avatarUrl)) {
             model.addAttribute("errmsg", "Update fail!");
         } else {
-            user.setAvatarUrl(avatarUrl);
-            user.setPhone(phone);
-            user.setEmail(email);
-            user.setFullName(fullName);
-            session.setAttribute("user", user);
             userService.saveUser(user);
             model.addAttribute("errmsg", "Update success!");
 
