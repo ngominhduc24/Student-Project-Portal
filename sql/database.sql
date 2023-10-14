@@ -371,7 +371,7 @@ VALUES
 INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
 VALUES
     (1 ,"Process", "Coding","Trong giai đoan code",1),
-    (1 ,"Process", "Design","Trong giai đoan thiet ke",1),
+    (1 ,"Process", "Design","Trong giai đoan thiet ke",0),
     (1 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
     (1 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
     (1 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
@@ -391,6 +391,26 @@ VALUES
     (3 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
     (3 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
     (3 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1);
+
+INSERT INTO issue_setting(class_id,setting_group,setting_title,description, status)
+VALUES
+    (1 ,"Process", "Req","Trong giai đoan requirement",1),
+    (1 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (1 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (1 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",0),
+    (1 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1),
+    (2 ,"Process", "Req","Trong giai đoan requirement",1),
+    (2 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (2 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (2 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
+    (2 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1),
+    (2 ,"Type","Risks", "Các vấn đề rủi ro theo dõi các rủi ro tiềm ẩn đối với dự án, cùng với các kế hoạch giảm thiểu.",1),
+    (3 ,"Process", "Req","Trong giai đoan requirement",1),
+    (3 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
+    (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
+
 
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES

@@ -134,6 +134,8 @@
         <div class="topnav">
             <a style="cursor: pointer;" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
             <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/subject-manager/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/subject-manager/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
+
         </div>
 
         <!--    Assignment-->
@@ -144,6 +146,8 @@
                         <h2 class="mb-0" th:text="${class.className}"></h2>
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Milestone List</li>
                         </ol>
