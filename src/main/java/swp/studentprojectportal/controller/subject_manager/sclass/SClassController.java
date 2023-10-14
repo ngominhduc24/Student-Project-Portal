@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.subject_manager;
+package swp.studentprojectportal.controller.subject_manager.sclass;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

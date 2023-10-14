@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.subject_manager;
+package swp.studentprojectportal.controller.subject_manager.sclass;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,16 +9,16 @@ import swp.studentprojectportal.service.IMilestoneService;
 @Controller
 public class MilestoneController {
     @Autowired
-    IMilestoneService classAssignmentService;
+    IMilestoneService milestoneService;
 
 
-    @GetMapping("/addAssignment")
+    @GetMapping("/milestone/add")
     public String AddSubjectAssignment(Model model){
-        return "subject_manager/class_assignment/classAssignmentAdd";
+        return "subject_manager/milestone/milestoneAdd";
     }
 
-    @GetMapping("/assignmentDetail")
+    @GetMapping("/milestoneDetail")
     public String subjectAssignmentDetail(Model model){
-        return "subject_manager/class_assignment/classAssignmentDetails";
+        return "subject_manager/milestone/milestoneDetails";
     }
 }
