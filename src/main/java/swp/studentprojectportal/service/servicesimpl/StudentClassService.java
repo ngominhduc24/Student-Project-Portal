@@ -46,15 +46,27 @@ public class StudentClassService implements IStudentClassService {
         try {
             StudentClass studentClass = studentClassRepository.findById(studentId).get();
 
-            //check team leader old project
+            //check status current project
             Project oldProject = studentClass.getProject();
-            if (oldProject != null && oldProject.getTeamLeader().getId() == studentId) {
+            if(oldProject!=null && oldProject.isStatus()) return false;
+
+            //check team leader old project
+            if (oldProject != null && oldProject.getTeamLeader()!=null &&
+                    oldProject.getTeamLeader().getId() == studentClass.getStudent().getId()) {
+
                 oldProject.setTeamLeader(null);
                 projectRepository.save(oldProject);
             }
 
             //update new project
-            if (projectId > 0) studentClass.setProject(projectRepository.findById(projectId).get());
+            if (projectId > 0) {
+                Project project = projectRepository.findById(projectId).get();
+
+                //check status
+                if (project.isStatus()) return false;
+
+                studentClass.setProject(project);
+            }
             else studentClass.setProject(null);
 
             studentClassRepository.save(studentClass);
@@ -116,6 +128,11 @@ public class StudentClassService implements IStudentClassService {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
         if (studentClass == null) return false;
         return true;
+    }
+
+    @Override
+    public List<StudentClass> findAllByClassManager(int classManagerId) {
+        return studentClassRepository.findAllByAclassUserId(classManagerId);
     }
 
     public boolean removeStudentFromClass(int classId, int studentId) {

@@ -187,7 +187,8 @@
                                      th:if="${student.project!=null && student.project.id == project.id}">
 
                                     <p class="form-control"
-                                       th:text="${student.student.fullName + ((project.teamLeader!=null && student.id==project.teamLeader.id)?' - Leader⭐':'')}"></p>
+                                       th:text="${student.student.fullName + ((project.teamLeader!=null && student.id==project.teamLeader.id)?' - Leader⭐':'')}">
+                                    </p>
                                     <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
                                          onclick="showDialog(this.parentNode)" th:if="${!project.status}">
 

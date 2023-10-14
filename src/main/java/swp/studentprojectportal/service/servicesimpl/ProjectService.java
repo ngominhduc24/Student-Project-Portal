@@ -121,4 +121,9 @@ public class ProjectService implements IProjectService {
         }
     }
 
+    @Override
+    public Project checkDuplicateGroupNameInClass(int classId, String groupName) {
+        return projectRepository.findByAclass_IdAndGroupName(classId, groupName);
+    }
+
 }

@@ -3,13 +3,18 @@ package swp.studentprojectportal.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import swp.studentprojectportal.model.Project;
+import swp.studentprojectportal.model.StudentClass;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -20,6 +25,8 @@ public class StudentAPIController {
     StudentClassService studentClassService;
     @Autowired
     ClassService classService;
+    @Autowired
+    IStudentClassRepository studentClassRepository;
 
     @GetMapping("/student")
     public List<User> getStudent(
