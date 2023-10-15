@@ -122,13 +122,22 @@
                                             <label class="form-label">Description</label>
                                             <textarea type="text" rows="3" name="description" class="form-control" required th:field="${class.description}"></textarea>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Status:
-                                                <span class="text-warning m-0" th:if="${class.getStatus()==0}">Pending</span>
-                                                <span class="text-danger m-0" th:if="${class.getStatus()==1}">Canceled</span>
-                                                <span class="text-success m-0" th:if="${class.getStatus()==2}">Started</span>
-                                                <span class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</span>
-                                            </label>
+                                        <div class="col-md-12">
+                                            <label class="form-label">Status:</label>
+                                            <div>
+                                                <label th:if="${class.status==0}" class="text-warning pe-3">
+                                                    <input name="status" type="radio" th:checked="${class.status==0}" value="0"> Pending
+                                                </label>
+                                                <label th:if="${class.status==1 || class.status==2}" class="text-danger pe-3">
+                                                    <input name="status" type="radio"  th:checked="${class.status==1}" value="1"> Canceled
+                                                </label>
+                                                <label th:if="${class.status==0 || class.status==1 || class.status==2}" class="text-success pe-3">
+                                                    <input name="status" type="radio"  th:checked="${class.status==2}"  value="2"> Started
+                                                </label>
+                                                <label  th:if="${class.status==2 || class.status==3}" class="text-primary pe-3">
+                                                    <input name="status" type="radio"  th:checked="${class.status==3}" value="3"> Closed
+                                                </label>
+                                            </div>
                                         </div>
 
                                         <div class="mt-2">
