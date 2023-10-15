@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
@@ -23,6 +24,8 @@ public class ExportController {
     StudentClassService studentClassService;
     @Autowired
     ProjectService projectService;
+    @Autowired
+    ClassService classService;
 
     @GetMapping("/user")
     public void exportExcel(HttpServletResponse response) throws IOException {

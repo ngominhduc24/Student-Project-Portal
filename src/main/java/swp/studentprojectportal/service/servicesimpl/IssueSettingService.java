@@ -35,6 +35,17 @@ public class IssueSettingService implements IIssueSettingService {
     }
 
     @Override
+    public Page<IssueSetting> filterClassIssueSetting(Integer subjectId, Integer classId, String search, Integer pageNo,
+                                                      Integer pageSize, String sortBy, Integer sortType, String settingGroup, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return issueSettingRepository.filterClassIssueSetting(subjectId, classId, search, settingGroup, status, PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
     public IssueSetting saveSubjectSetting(IssueSetting issueSetting) {
         return issueSettingRepository.save(issueSetting);
     }
@@ -46,5 +57,10 @@ public class IssueSettingService implements IIssueSettingService {
     @Override
     public List<String> findAllDistinctSettingGroup(Integer subjectId) {
         return issueSettingRepository.findAllDistinctSettingGroup(subjectId);
+    }
+
+    @Override
+    public List<String> findAllDistinctClassSettingGroup(Integer subjectId, Integer classId) {
+        return issueSettingRepository.findAllDistinctClassSettingGroup(subjectId, classId);
     }
 }

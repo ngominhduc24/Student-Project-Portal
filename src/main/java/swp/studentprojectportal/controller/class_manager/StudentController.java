@@ -1,15 +1,7 @@
 package swp.studentprojectportal.controller.class_manager;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +14,6 @@ import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.InstanceSingleton;
-
-import java.net.HttpURLConnection;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Controller

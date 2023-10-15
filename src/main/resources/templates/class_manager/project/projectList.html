@@ -204,11 +204,12 @@
                         </div>
                     </div>
 
-                    <div th:each="project : ${projectList}" th:data-id="${project.id}"
+                    <div th:each="project : ${projectList}" th:data-id="${project.id}" th:id="'project'+${project.id}"
                          th:data-leader="${project.teamLeader!=null ? 'stu'+project.teamLeader.id : '-1'}"
                          class="mb-3 col-md-5 project">
 
-                        <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png" class="drop-arrow">
+                        <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png"
+                             class="drop-arrow" onclick="showDetails(this.parentNode)">
                         <div class="project-title" th:text="${project.groupName} + ${project.status?'🔒':''}"
                              onclick="showDetails(this.parentNode)"></div>
                         <br>
@@ -233,12 +234,91 @@
             </div>
         </div>
 
+        <!--            modal lmao-->
+        <style>
+            .modalBack, .moveBack{
+                position: fixed;
+                top: 0;
+                right: 0;
+
+                width: 100%;
+                height: 100vh;
+
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modalCustom, .moveModal{
+                width: 30%;
+                aspect-ratio: 16/9;
+
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            .moveModal button{
+                width: 40%;
+            }
+        </style>
+
+        <div class="modalBack">
+            <div class="modalCustom">
+                <h4>Upload Excel file: </h4>
+                <br>
+                <br>
+                <form action="../importStudent" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" accept=".xlsx, .xls" class="form-control" required>
+                    <input type="hidden" name="classId" th:value="${class.id}">
+                    <br>
+                    <div style="display: flex; justify-content: space-around">
+                        <input type="submit" value="Upload" class="btn btn-primary">
+                        <input type="button" value="Cancel" class="btn btn-secondary" onclick="hideModal()">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="moveBack" data-stuId="-1">
+            <div class="moveModal p-4">
+                <h4>Choose group to move:</h4>
+                <br>
+                <br>
+                <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap; width: 80%">
+                    <button class="btn btn-secondary mb-2" onclick="moveToGroup(-1)">No group</button>
+                    <button th:each="project : ${projectList}" th:onclick="'moveToGroup(' + ${project.id} + ')'"
+                            th:text="${project.groupName}" class="btn btn-secondary mb-2" ></button>
+                    <button class="btn btn-primary mb-2" onclick="hideMoveModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let modal = document.querySelector('.modalBack');
+
+            function hideModal() {
+                modal.style.display = 'none';
+            }
+
+            function showModal(event) {
+                event.preventDefault();
+                modal.style.display = 'flex';
+            }
+        </script>
+        <!--            modal lmao-->
+
         <!--        dialog-->
         <div class="col-md-4 dialog">
             <button class="btn btn-secondary"
                     onclick="setLeader(this.parentNode.parentNode)">Set Team leader</button>
             <button class="btn btn-secondary"
-                    onclick="move(this.parentNode.parentNode)">Move</button>
+                    onclick="showMoveModal(this.parentNode.parentNode)">Move</button>
             <button class="btn btn-secondary"
                     onclick="note(this.parentNode.parentNode)">Note</button>
             <textarea class="form-control"></textarea>
@@ -278,6 +358,7 @@
             const dialog = document.querySelector('.dialog');
             const projectDialog = document.querySelectorAll('.project .dots');
             const noteInput = document.querySelector('textarea');
+            const moveModal = document.querySelector('.moveBack');
 
             document.addEventListener('click', (e) => {
                 if (!Array.from(projectDialog).includes(e.target) && dialog!==e.target && noteInput!==e.target)
@@ -325,68 +406,31 @@
                     element.dataset.note = noteInput.value;
                 }
             }
-        </script>
 
-        <!--            modal lmao-->
-        <style>
-            .modalBack{
-                position: fixed;
-                top: 0;
-                right: 0;
-
-                width: 100%;
-                height: 100vh;
-
-                display: none;
-                justify-content: center;
-                align-items: center;
+            function showMoveModal(element) {
+                moveModal.style.display = 'flex';
+                moveModal.dataset.stuId = element.getAttribute('id');
             }
 
-            .modalCustom{
-                width: 30%;
-                aspect-ratio: 16/9;
-
-                background-color: white;
-                border-radius: 10px;
-                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-            }
-        </style>
-
-        <div th:fragment="modalCustom" class="modalBack">
-            <div class="modalCustom">
-                <h4>Upload Excel file: </h4>
-                <br>
-                <br>
-                <form action="../importStudent" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" accept=".xlsx, .xls" class="form-control" required>
-                    <input type="hidden" name="classId" th:value="${class.id}">
-                    <br>
-                    <div style="display: flex; justify-content: space-around">
-                        <input type="submit" value="Upload" class="btn btn-primary">
-                        <input type="button" value="Cancel" class="btn btn-secondary" onclick="hideModal()">
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <script>
-            let modal = document.querySelector('.modalBack');
-
-            function hideModal() {
-                modal.style.display = 'none';
+            function hideMoveModal() {
+                moveModal.style.display = 'none';
             }
 
-            function showModal(event) {
-                event.preventDefault();
-                modal.style.display = 'flex';
+            function moveToGroup(projectId) {
+                let stuId = moveModal.dataset.stuId;
+
+                let student = document.getElementById(stuId);
+                let project = projectId>0 ? document.getElementById(`project${projectId}`) : document.getElementById('noGroup');
+                project.querySelector('.project-detail').appendChild(student);
+
+                //check leader
+                console.log(project.dataset.leader == stuId)
+                    removeLeader(stuId);
+
+                fetch(`../arrange-member/${stuId.substring(3)}/${projectId}`);
+                moveModal.style.display = 'none';
             }
         </script>
-        <!--            modal lmao-->
 
         <div th:replace="~{footer}"></div>
         <!-- End -->

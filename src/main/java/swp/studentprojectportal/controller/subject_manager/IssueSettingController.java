@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.subject_manager.subject;
+package swp.studentprojectportal.controller.subject_manager;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class IssueSettingController {
     @Autowired
     ISubjectRepository subjectRepository;
 
-    @GetMapping("/subject-manager/subject/updateStatusSetting")
+    @GetMapping("/issue-setting/updateStatus")
     public String updateSubjectSettingStatus(
             @RequestParam int id,
             @RequestParam boolean status) {
@@ -33,14 +33,14 @@ public class IssueSettingController {
         issueSettingService.saveSubjectSetting(issueSetting);
         return "redirect:/";
     }
-    @RequestMapping("/subject-manager/subject-setting/detail")
+    @RequestMapping("/issue-setting/detail")
     public String detailSubjectSetting(@RequestParam("id") int id, Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         IssueSetting issueSetting = issueSettingService.findById(id);
         model.addAttribute("setting", issueSetting);
         model.addAttribute("subjectList",subjectList);
-        return "subjectSettingDetail";
+        return "subject_manager/issue_setting/issueSettingDetail";
     }
 
 //    @PostMapping("/subject-manager/subject-setting/update")
@@ -73,12 +73,12 @@ public class IssueSettingController {
 //        return "redirect:/subject-manager/subject-setting";
 //    }
 
-    @RequestMapping(path = "/subject-manager/subject-setting/add")
+    @RequestMapping(path = "/issue-setting/add")
     public String addSubjectSettingaPage(Model model,HttpSession session){
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         model.addAttribute("subjectList",subjectList);
-        return  "subject_manager/subject_setting/subjectSettingAdd";
+        return  "subject_manager/issue_setting/issueSettingAdd";
     }
 
 //    @PostMapping("/subject-manager/subject-setting/add")

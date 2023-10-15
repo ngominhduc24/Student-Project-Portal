@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.subject_manager;
+package swp.studentprojectportal.controller.subject_manager.sclass;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import swp.studentprojectportal.service.servicesimpl.*;
 import java.util.List;
 @Controller
 @RequestMapping("/subject-manager")
-public class SClassController {
+public class ClassHomeController {
     @Autowired
     ClassService classService;
     @Autowired
@@ -29,6 +29,8 @@ public class SClassController {
     SettingService settingService;
     @Autowired
     MilestoneService milestoneService;
+    @Autowired
+    IssueSettingService issueSettingService;
     @GetMapping("/class")
     public String classPage(@RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
@@ -86,13 +88,15 @@ public class SClassController {
         return "subject_manager/class/classDetail";
     }
 
-    @GetMapping("class/miletone")
+    @GetMapping("/class/milestone")
     public String milestonePage(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
                                 @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
                                 @RequestParam(defaultValue = "1") Integer sortType,
                             Model model, HttpSession session) {
         Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , search, pageNo, pageSize,sortBy, sortType, status);
+        Class classA = classService.findById(classId);
+        model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("search", search);
@@ -102,7 +106,34 @@ public class SClassController {
         model.addAttribute("status", status);
         model.addAttribute("totalPage", milestoneList.getTotalPages());
         model.addAttribute("milestoneList", milestoneList);
-        return "subject_manager/class/milestoneList";
+        return "subject_manager/milestone/classMilestoneList";
+    }
+
+    @GetMapping("/class/issue-setting")
+    public String issueSettingPage(@RequestParam("id") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
+                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                                @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                                @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") String settingGroup,
+                                Model model, HttpSession session) {
+        Class classA = classService.findById(classId);
+        Page<IssueSetting> issueSettingList= issueSettingService.filterClassIssueSetting(classA.getSubject().getId(), classId,search, pageNo, pageSize, sortBy, sortType, settingGroup, status);
+        List<String> settingGroupList = issueSettingService.findAllDistinctClassSettingGroup(classA.getSubject().getId(), classId);
+
+        model.addAttribute("class", classA);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("classId", classId);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("status", status);
+        model.addAttribute("totalPage", issueSettingList.getTotalPages());
+        model.addAttribute("settingGroup", settingGroup);
+
+        model.addAttribute("issueSettingList", issueSettingList);
+        model.addAttribute("settingGroupList", settingGroupList);
+
+        return "class_manager/class/issueSettingList";
     }
 
     @PostMapping("/class/update")

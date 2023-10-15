@@ -175,10 +175,10 @@
                 </div>
                 <div class="row px-4">
                     <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
-                    <ol class="breadcrumb mb-2">
+                    <ol class="breadcrumb mb-2 ms-2">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active"><a>Subject Issue Setting List</a></li>
+                        <li class="breadcrumb-item active"><a>Subject Details</a></li>
                     </ol>
                 </div>
                 <div class="row px-4">
@@ -437,14 +437,14 @@
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active"><a>Subject Issue Setting List</a></li>
+                            <li class="breadcrumb-item active"><a>Issue Setting List</a></li>
                         </ol>
                     </div><!--end col-->
 
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a href="/subject-manager/subject-setting/add" class="btn btn-primary"
+                        <a href="/issue-setting/add" class="btn btn-primary"
                            style="margin-left: 24px">Add
                             New</a>
                     </div><!--end col-->
@@ -546,7 +546,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/subject-setting/detail(id=${setting.id})}"><i
+                                        <a th:href="@{/issue-setting/detail(id=${setting.id})}"><i
                                                 class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
@@ -578,7 +578,7 @@
                                     $('#confirmationModal').modal('show');
                                 }
                                 $("#confirmButton").click(function () {
-                                    fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`);
+                                    fetch(`issue-setting/updateStatus?id=${id}&status=${status}`);
                                     $('#confirmationModal').modal('hide');
                                 });
                                 $("#cancelButton").click(function () {
