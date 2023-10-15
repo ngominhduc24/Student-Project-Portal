@@ -42,6 +42,7 @@ public class StudentController {
         }
         model.addAttribute("classId", classId);
         model.addAttribute("className", c.getClassName());
+        model.addAttribute("class", c);
         model.addAttribute("semester", c.getSemester().getSettingTitle());
         model.addAttribute("totalPage", userService.getTotalPage(10, roleId));
         model.addAttribute("studentList", classService.getAllStudent(classId));
