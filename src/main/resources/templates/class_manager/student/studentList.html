@@ -57,14 +57,24 @@
   <!-- Start Page Content -->
   <main class="page-content bg-light">
     <div th:replace="~{dashboardHeader}"></div>
+    <div class="topnav" style="margin-top: 40px">
+      <a style="cursor: pointer;" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:href="@{/subject-manager/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
+      <a style="cursor: pointer;" th:href="@{/subject-manager/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
+      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class-manager/class(classId=${classId})}" ><p style="margin:0;">Students</p></a>
+    </div>
     <form class="card-body rounded-3" action="#" id="form">
     <div class="container-fluid">
-      <div class="layout-specing">
+      <div class="layout-specing" style="padding: 15px 14px 24px !important;">
         <div class="row px-4">
           <div class="col-xl-5 col-md-6">
-            <h2 th:text="${className} + ' - ' + ${semester}"></h2>
-            <ol class="breadcrumb mb-4">
+            <h3 style="margin-top: -14px;margin-bottom: 20px;" th:text="${className} + ' - ' + ${semester}"></h3>
+            <ol class="breadcrumb mb-2">
               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+              <li class="breadcrumb-item">/</li>
+              <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
+              <li class="breadcrumb-item">/</li>
+              <li class="breadcrumb-item active">Student List</li>
               <li class="breadcrumb-item" name="reloadPage" style="color: red"></li>
               <div th:if="${numberStudentAdded != null}">
                 <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' student to class'"></li>
@@ -75,7 +85,7 @@
           <div th:text="${classId}" id="classId" hidden="hidden"></div>
           <div class="col-xl-4 col-md-6"></div>
 
-          <div class="col-xl-3 col-md-6 mt-4 text-md-end">
+          <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -4px;">
             <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #fca310 " >
               <a style="color: white;" th:href="'/class-manager/class/syncStudent?classId=' + ${classId}"><i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1 1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0 0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
                Synchronize with FAP</a></button>
