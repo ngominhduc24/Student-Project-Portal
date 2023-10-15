@@ -28,4 +28,8 @@ public interface IUserService {
     List<User> findTeacherBySubjectManagerId(int subjectManagerId);
     List<User> findTeacherByRoleIdAndStatus(Integer roleId, Boolean status);
     User getUserById(int id);
+
+    User findByEmail(String email);
+
+    User findByPhone(String phone);
 }
