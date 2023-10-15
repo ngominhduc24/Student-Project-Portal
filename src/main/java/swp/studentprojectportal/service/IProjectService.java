@@ -23,4 +23,6 @@ public interface IProjectService {
     public boolean setLeader(Integer studentId, Integer projectId);
 
     public boolean updateNote(Integer studentId, String note);
+
+    public Project checkDuplicateGroupNameInClass(int classId, String groupName);
 }

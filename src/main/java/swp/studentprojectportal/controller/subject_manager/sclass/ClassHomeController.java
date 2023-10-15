@@ -17,7 +17,6 @@ import swp.studentprojectportal.service.servicesimpl.*;
 
 import java.util.List;
 @Controller
-@RequestMapping("/subject-manager")
 public class ClassHomeController {
     @Autowired
     ClassService classService;
@@ -31,7 +30,7 @@ public class ClassHomeController {
     MilestoneService milestoneService;
     @Autowired
     IssueSettingService issueSettingService;
-    @GetMapping("/class")
+    @GetMapping("/subject-manager/class")
     public String classPage(@RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "-1") Integer subjectId, @RequestParam(defaultValue = "-1") Integer semesterId,
@@ -43,6 +42,7 @@ public class ClassHomeController {
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         List<User> teacherList = userService.findTeacherBySubjectManagerId(user.getId());
         List<Setting> semesterList = settingService.findSemesterBySubjectManagerId(user.getId());
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("classList", classList);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
@@ -60,21 +60,24 @@ public class ClassHomeController {
         return "subject_manager/class/classList";
     }
 
-    @GetMapping("/class/updateStatus")
-    public String updateSubjectSettingStatus(
-            @RequestParam int id,
-            @RequestParam Integer status) {
+    @GetMapping("/subject-manager/class/updateStatus")
+    public String updateSubjectSettingStatus(@RequestParam int id,
+            @RequestParam Integer status, RedirectAttributes attributes) {
         Class classA = classService.findById(id);
         if(status==-1){
             classService.delete(classA);
+            attributes.addFlashAttribute("toastMessage", "Delete a class successfully");
             return "redirect:/subject-manager/class";
         }
         classA.setStatus(status);
+        if(status==1) attributes.addFlashAttribute("toastMessage", "Cancel a class successfully");
+        if(status==2) attributes.addFlashAttribute("toastMessage", "Start a class successfully");
+        if(status==3) attributes.addFlashAttribute("toastMessage", "Close a class successfully");
         classService.saveClass(classA);
         return "redirect:/subject-manager/class";
     }
 
-    @GetMapping("/classDetail")
+    @GetMapping("/subject-manager/classDetail")
     public String classDetail(@RequestParam("id") Integer id, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Class classA = classService.findById(id);
@@ -96,6 +99,8 @@ public class ClassHomeController {
                             Model model, HttpSession session) {
         Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , search, pageNo, pageSize,sortBy, sortType, status);
         Class classA = classService.findById(classId);
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
@@ -119,6 +124,8 @@ public class ClassHomeController {
         Page<IssueSetting> issueSettingList= issueSettingService.filterClassIssueSetting(classA.getSubject().getId(), classId,search, pageNo, pageSize, sortBy, sortType, settingGroup, status);
         List<String> settingGroupList = issueSettingService.findAllDistinctClassSettingGroup(classA.getSubject().getId(), classId);
 
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
@@ -136,15 +143,15 @@ public class ClassHomeController {
         return "class_manager/class/issueSettingList";
     }
 
-    @PostMapping("/class/update")
+    @PostMapping("/subject-manager/class/update")
     public String updateClass(@RequestParam("id") Integer classId,@RequestParam String description,
             @RequestParam String className, @RequestParam Integer subjectId,
-            @RequestParam Integer semesterId, @RequestParam Integer classManagerId,
+            @RequestParam Integer semesterId, @RequestParam Integer classManagerId, @RequestParam Integer status,
             WebRequest request, Model model, HttpSession session, RedirectAttributes attributes) {
-        String status = request.getParameter("status");
         Class classA = classService.findById(classId);
         classA.setClassName(className);
         classA.setDescription(description);
+        classA.setStatus(status);
         classA.setSubject(subjectService.getSubjectById(subjectId));
         classA.setSemester(settingService.getSettingByID(semesterId));
         classA.setUser(userService.getUserById(classManagerId));
@@ -167,7 +174,7 @@ public class ClassHomeController {
         return "subject_manager/classDetail";
     }
 
-    @GetMapping("/class/add")
+    @GetMapping("/subject-manager/class/add")
     public String classDetail(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Class classA = new Class();
@@ -185,7 +192,7 @@ public class ClassHomeController {
         return "subject_manager/class/classAdd";
     }
 
-    @PostMapping("/class/add")
+    @PostMapping("/subject-manager/class/add")
     public String addClass(@RequestParam String description,
                               @RequestParam String className, @RequestParam Integer subjectId,
                               @RequestParam Integer semesterId, @RequestParam Integer classManagerId,

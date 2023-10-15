@@ -1,16 +1,19 @@
 package swp.studentprojectportal.utils;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
+import swp.studentprojectportal.model.Project;
+import swp.studentprojectportal.model.StudentClass;
 import swp.studentprojectportal.model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SheetHandle {
 
@@ -20,7 +23,7 @@ public class SheetHandle {
             List<List<String>> data = new ArrayList<>();
 
             XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-            XSSFSheet worksheet = workbook.getSheetAt(1); //get data from second row
+            XSSFSheet worksheet = workbook.getSheetAt(0); //get data from first row
 
             //loop through rows
             for (Row row : worksheet) {
@@ -38,6 +41,7 @@ public class SheetHandle {
             }
 
             workbook.close();
+            data.remove(0); //remove header in data
             return data;
 
         } catch (IOException e) {
@@ -58,6 +62,7 @@ public class SheetHandle {
                 user.setEmail(row.get(0));
                 user.setPhone(row.get(1));
 
+                userList.add(user);
             }
 
             return userList;
@@ -84,7 +89,51 @@ public class SheetHandle {
 
                 row.createCell(row.getLastCellNum()+1).setCellValue(user.getEmail());
                 row.createCell(row.getLastCellNum()).setCellValue(user.getPhone());
-                row.createCell(row.getLastCellNum()).setCellValue(user.getId());
+            }
+
+            return workbook;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public XSSFWorkbook exportStudentClass(List<StudentClass> list, List<Project> groupList) {
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Data");
+
+            //set options group
+            List<String> options = groupList.stream()
+                    .map(Project::getGroupName)
+                    .collect(Collectors.toList());
+            options.add("No group");
+            CellRangeAddressList addressList = new CellRangeAddressList(1, Math.max(list.size(), 1), 2, 2); // (startRow, endRow, startCol, endCol)
+
+            // Create a data validation object
+            DataValidationHelper dataValidationHelper = sheet.getDataValidationHelper();
+            DataValidationConstraint dvConstraint = dataValidationHelper.createExplicitListConstraint(options.toArray(new String[options.size()]));
+            DataValidation dataValidation = dataValidationHelper.createValidation(dvConstraint, addressList);
+
+            // Add the data validation to the cell
+            sheet.addValidationData(dataValidation);
+
+            // Write header
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Id");
+            headerRow.createCell(1).setCellValue("Student name");
+            headerRow.createCell(2).setCellValue("Group name");
+
+            // Write data
+            for (StudentClass student : list) {
+                Row row = sheet.createRow(sheet.getLastRowNum()+1);
+
+                row.createCell(row.getLastCellNum()+1).setCellValue(student.getId().toString());
+                row.createCell(row.getLastCellNum()).setCellValue(student.getStudent().getFullName());
+
+                String groupName = student.getProject()==null ? "No group" : student.getProject().getGroupName();
+                row.createCell(row.getLastCellNum()).setCellValue(groupName);
             }
 
             return workbook;

@@ -16,4 +16,6 @@ public interface IStudentClassService {
 
     boolean checkStudentInClass(int classId, int studentId);
 
+    public List<StudentClass> findAllByClassManager(int classManagerId);
+
 }

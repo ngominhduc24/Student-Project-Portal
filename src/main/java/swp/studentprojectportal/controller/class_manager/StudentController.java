@@ -1,15 +1,7 @@
 package swp.studentprojectportal.controller.class_manager;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +14,9 @@ import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.InstanceSingleton;
-
-import java.net.HttpURLConnection;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/class-manager")
 public class StudentController {
     @Autowired
     ClassService classService;
@@ -39,14 +27,14 @@ public class StudentController {
     @Autowired
     StudentClassService studentClassService;
 
-    @GetMapping("/class")
+    @GetMapping("class/student")
     public String studentList(Model model,
                            HttpSession session,
                            @RequestParam(defaultValue = "-1") int classId) {
         final int roleId = 1;
         Class c = classService.getClass(classId);
         if(c == null) {
-            return "redirect:/class";
+            return "redirect:class/student";
         }
         if(session.getAttribute("numberStudentAdded") != null) {
             model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
@@ -54,13 +42,14 @@ public class StudentController {
         }
         model.addAttribute("classId", classId);
         model.addAttribute("className", c.getClassName());
+        model.addAttribute("class", c);
         model.addAttribute("semester", c.getSemester().getSettingTitle());
         model.addAttribute("totalPage", userService.getTotalPage(10, roleId));
         model.addAttribute("studentList", classService.getAllStudent(classId));
         return "class_manager/student/studentList";
     }
 
-    @GetMapping("/class/studentDetails")
+    @GetMapping("/class-manager/class/studentDetails")
     public String studentDetails(Model model,
                            @RequestParam(defaultValue = "-1") int studentId) {
         Optional<User> user = userService.findUserById(studentId);
@@ -69,15 +58,15 @@ public class StudentController {
         return "class_manager/student/studentDetails";
     }
 
-    @GetMapping("/class/removeStudentFromClass")
+    @GetMapping("/class-manager/class/removeStudentFromClass")
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId,
             @RequestParam(name = "studentId") Integer studentId) {
         boolean result =  studentClassService.removeStudentFromClass(classId, studentId);
-        return "redirect:/class-manager/class?classId=" + classId;
+        return "redirect:/class/student?classId=" + classId;
     }
 
-    @GetMapping("/class/syncStudent")
+    @GetMapping("/class-manager/class/syncStudent")
     public String syncStudentToClass(
             HttpSession session,
             @RequestParam(name = "classId") Integer classId) {
@@ -99,6 +88,6 @@ public class StudentController {
 
         session.setAttribute("numberStudentAdded", numberStudentAdded);
 
-        return "redirect:/class-manager/class?classId=" + classId;
+        return "redirect:/class/student?classId=" + classId;
     }
 }

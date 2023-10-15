@@ -50,7 +50,7 @@
                 <div>
                     <h4 class="mb-0">Add New Project</h4>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="./list/">Project</a></li>
                         <li class="breadcrumb-item">/</li>
@@ -76,7 +76,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Group name</label>
                                             <input name="groupName" type="text" class="form-control"
-                                                   placeholder="Group name" required>
+                                                   placeholder="Group name" th:value="${groupName}" required>
                                         </div>
                                     </div>
 
@@ -86,7 +86,8 @@
                                             <select name="classId" class="form-select">
                                                 <option th:each="class : ${classList}"
                                                         th:value="${class.id}"
-                                                        th:text="${class.className}"></option>
+                                                        th:text="${class.className}"
+                                                        th:selected="${classId==class.id}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -95,12 +96,12 @@
                                         <div class="mb-3">
                                             <label class="form-label">Description</label>
                                             <textarea name="description" class="form-control" rows="5"
-                                                      placeholder="Description..." required></textarea>
+                                                      placeholder="Description..." th:text="${description}" required></textarea>
                                         </div>
                                     </div>
 
                                 </div>
-                                <p th:text="${error}" style="color: indianred"></p>
+                                <h6 th:text="${error}" style="color: indianred"></h6>
 
                                 <button type="submit" class="btn btn-primary">Add Project</button>
                             </form>

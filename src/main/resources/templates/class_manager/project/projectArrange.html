@@ -56,18 +56,16 @@
                     <div class="col-xl-6 col-md-6">
                         <h4>Project Member</h4>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item"><a th:href="'../list/' + ${class.id}">Project List</a></li>
-                            <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item"><a th:href="'../member/' + ${class.id}">Project Member</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Project Arrange</li>
                         </ol>
                     </div>
 
                     <div class="col-xl-5 col-md-6 mt-4 text-md-end">
-                        <a th:href="'../member/' + ${class.id}" class="btn btn-primary" style="margin-left: 24px">Done</a>
+                        <a th:href="'../list/' + ${class.id}" class="btn btn-primary" style="margin-left: 24px">Done</a>
                     </div>
                 </div>
 

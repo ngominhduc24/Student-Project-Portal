@@ -51,9 +51,9 @@
                 <div>
                     <h4 class="mb-0">Project Details</h4>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="../list/">Project</a></li>
+                        <li class="breadcrumb-item"><a th:href="'/class-manager/project/list/' + ${project.aclass.id}">Project</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Project Details</li>
                     </ol>
@@ -126,6 +126,14 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Description</label>
+                                            <textarea name="description" class="form-control" rows="3"
+                                                      th:text="${project.description}" required></textarea>
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <h6 style="color: green" th:text="${msg}">a</h6>
@@ -134,25 +142,18 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Description</label>
-                                            <textarea name="description" class="form-control" rows="3"
-                                                      th:text="${project.description}" required></textarea>
-                                        </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <div th:if="${!project.status}">
                                                 <button type="submit" class="btn btn-primary">Update</button>
-                                                <a class="btn btn-secondary" style="margin-left: 2%;"
-                                                   th:href="'../member/' + ${project.aclass.id}">View members</a>
                                                 <a class="btn btn-secondary" onclick="redirect(this)" style="margin-left: 2%;"
                                                    th:data-link="'../freeze/' + ${project.id}">Freeze project</a>
 
-                                                <br><br>
-                                                <a class="btn btn-danger" onclick="redirect(this)"
-                                                   th:data-link="'../delete/' + ${project.id}">Delete</a>
+<!--                                                <br><br>-->
+<!--                                                <a class="btn btn-danger" onclick="redirect(this)"-->
+<!--                                                   th:data-link="'../delete/' + ${project.id}">Delete</a>-->
                                             </div>
 
                                             <div th:if="${project.status}">
@@ -162,15 +163,79 @@
                                     </div>
 
                                 </div>
-
-                                <script>
-                                    function redirect(element) {
-                                        if (confirm("Are you sure?"))
-                                            window.location.href = element.dataset.link;
-                                    }
-                                </script>
-
                             </form>
+
+                            <!--            modal lmao-->
+                            <style>
+                                .modalBack{
+                                    position: fixed;
+                                    top: 0;
+                                    right: 0;
+
+                                    width: 100%;
+                                    height: 100vh;
+
+                                    display: none;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+
+                                .modalCustom{
+                                    width: 30%;
+                                    aspect-ratio: 16/9;
+
+                                    background-color: white;
+                                    border-radius: 10px;
+                                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    flex-direction: column;
+                                }
+                            </style>
+
+                            <div th:fragment="modalCustom" class="modalBack">
+                                <div class="modalCustom">
+                                    <h4>Are you sure?</h4>
+                                    <br>
+                                    <br>
+                                    <div>
+                                        <button class="btn btn-secondary" onclick="setModalStatus(true)">Yes</button>
+                                        <button class="btn btn-primary" onclick="setModalStatus(false)">No</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                let modal = document.querySelector('.modalBack');
+                                let modalStatus = false;
+                                let yesCallback;
+                                let noCallback;
+
+                                function setModalStatus(status) {
+                                    modalStatus = status;
+                                    modal.style.display = 'none';
+
+                                    status ? yesCallback() : noCallback();
+                                }
+
+                                function confirmCustom(yesCb, noCb) {
+                                    modal.style.display = 'flex';
+                                    yesCallback = yesCb;
+                                    noCallback = noCb;
+                                }
+                            </script>
+                            <!--            modal lmao-->
+
+                            <script>
+                                function redirect(element) {
+                                    confirmCustom(
+                                        ()=>{window.location.href = element.dataset.link;},
+                                        ()=>{});
+                                }
+                            </script>
+
                         </div>
                     </div>
                 </div>

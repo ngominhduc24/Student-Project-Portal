@@ -49,6 +49,7 @@ public class SubjectHomeController {
         model.addAttribute("settingGroupS", "");
         model.addAttribute("totalPageS", issueSettingList.getTotalPages());
 
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("issueSettingList", issueSettingList);
         model.addAttribute("assignmentList", assignmentList);
         model.addAttribute("settingGroupList", settingGroupList);
@@ -88,6 +89,7 @@ public class SubjectHomeController {
         model.addAttribute("sortTypeS", sortTypeS);
         model.addAttribute("totalPageS", issueSettingList.getTotalPages());
 
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("issueSettingList", issueSettingList);
         model.addAttribute("assignmentList", assignmentList);
         model.addAttribute("settingGroupList", settingGroupList);
