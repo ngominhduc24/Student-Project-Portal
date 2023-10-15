@@ -10,17 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Setting;
-import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.service.servicesimpl.ClassService;
-import swp.studentprojectportal.service.servicesimpl.SettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectService;
-import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.*;
+import swp.studentprojectportal.utils.SheetHandle;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/class-manager")
@@ -33,6 +31,8 @@ public class ClassController {
     UserService userService;
     @Autowired
     SettingService settingService;
+    @Autowired
+    StudentClassService studentClassService;
 
     @GetMapping("/classList")
     public String classPage(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
@@ -84,5 +84,34 @@ public class ClassController {
         classService.saveClass(classA);
         attributes.addFlashAttribute("toastMessage", "Update class description successfully");
         return "redirect:/class-manager/classList";
+    }
+
+    @PostMapping("/class/importStudent")
+    public String importStudent(@RequestParam MultipartFile file,
+                                @RequestParam int classId) {
+        List<User> userList = new SheetHandle().importSheetUser(file);
+
+        for(User userData : userList) {
+            try {
+                //find by email
+                User user = userService.findByEmail(userData.getEmail());
+
+                //find by phone
+                if (user==null) {
+                    user = userService.findByPhone(user.getPhone());
+
+                    if (user==null) continue;
+                }
+
+                //add student to class
+                studentClassService.addNewStudentToClass(classId, user.getId());
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+        }
+
+        return "redirect:./classDetail?id=" + classId;
     }
 }

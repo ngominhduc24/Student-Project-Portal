@@ -275,4 +275,14 @@ public class UserService implements IUserService {
         return userRepository.getById(id);
     }
 
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public User findByPhone(String phone) {
+        return userRepository.findUserByPhone(phone);
+    }
+
 }
