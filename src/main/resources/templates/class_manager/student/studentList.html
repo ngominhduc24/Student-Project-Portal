@@ -58,10 +58,11 @@
   <main class="page-content bg-light">
     <div th:replace="~{dashboardHeader}"></div>
     <div class="topnav" style="margin-top: 40px">
-      <a style="cursor: pointer;" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
-      <a style="cursor: pointer;" th:href="@{/subject-manager/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
-      <a style="cursor: pointer;" th:href="@{/subject-manager/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
-      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class-manager/class(classId=${classId})}" ><p style="margin:0;">Students</p></a>
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
+      <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
+      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>
     </div>
     <form class="card-body rounded-3" action="#" id="form">
     <div class="container-fluid">
@@ -160,7 +161,7 @@
                   </td>
                   <td>
                     <div style="">
-                      <a class="btn btn-danger w-75 p-0" th:href="@{'./class/removeStudentFromClass?studentId=' + ${user.getStudent().getId()} + '&classId=' + ${classId}}" style="color: white; ">-</a>
+                      <a class="btn btn-danger w-75 p-0" th:href="@{'/class-manager/class/removeStudentFromClass?studentId=' + ${user.getStudent().getId()} + '&classId=' + ${classId}}" style="color: white; ">-</a>
                     </div>
                   </td>
                 </tr>

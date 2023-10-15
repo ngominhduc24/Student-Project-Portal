@@ -133,9 +133,9 @@
 
         <div class="topnav">
             <a style="cursor: pointer;" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
-            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/subject-manager/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
-            <a style="cursor: pointer;" th:href="@{/subject-manager/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
-            <a style="cursor: pointer;" th:href="@{/class-manager/class(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
         </div>
 
         <!--    Assignment-->
@@ -163,7 +163,7 @@
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form action="/subject-manager/class/milestone" class="card-body rounded-3" id="form">
+                        <form action="/class/milestone" class="card-body rounded-3" id="form">
                             <div class="row" style="width: 100%; justify-content: space-between">
                                 <input type="hidden" name="classId" th:value="${class.id}">
                                 <div class="col-md-3 row">

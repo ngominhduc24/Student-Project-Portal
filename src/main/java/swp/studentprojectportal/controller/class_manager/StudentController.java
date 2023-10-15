@@ -17,7 +17,6 @@ import swp.studentprojectportal.utils.InstanceSingleton;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/class-manager")
 public class StudentController {
     @Autowired
     ClassService classService;
@@ -28,14 +27,14 @@ public class StudentController {
     @Autowired
     StudentClassService studentClassService;
 
-    @GetMapping("/class")
+    @GetMapping("class/student")
     public String studentList(Model model,
                            HttpSession session,
                            @RequestParam(defaultValue = "-1") int classId) {
         final int roleId = 1;
         Class c = classService.getClass(classId);
         if(c == null) {
-            return "redirect:/class";
+            return "redirect:class/student";
         }
         if(session.getAttribute("numberStudentAdded") != null) {
             model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
@@ -49,7 +48,7 @@ public class StudentController {
         return "class_manager/student/studentList";
     }
 
-    @GetMapping("/class/studentDetails")
+    @GetMapping("/class-manager/class/studentDetails")
     public String studentDetails(Model model,
                            @RequestParam(defaultValue = "-1") int studentId) {
         Optional<User> user = userService.findUserById(studentId);
@@ -58,15 +57,15 @@ public class StudentController {
         return "class_manager/student/studentDetails";
     }
 
-    @GetMapping("/class/removeStudentFromClass")
+    @GetMapping("/class-manager/class/removeStudentFromClass")
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId,
             @RequestParam(name = "studentId") Integer studentId) {
         boolean result =  studentClassService.removeStudentFromClass(classId, studentId);
-        return "redirect:/class-manager/class?classId=" + classId;
+        return "redirect:/class/student?classId=" + classId;
     }
 
-    @GetMapping("/class/syncStudent")
+    @GetMapping("/class-manager/class/syncStudent")
     public String syncStudentToClass(
             HttpSession session,
             @RequestParam(name = "classId") Integer classId) {
@@ -88,6 +87,6 @@ public class StudentController {
 
         session.setAttribute("numberStudentAdded", numberStudentAdded);
 
-        return "redirect:/class-manager/class?classId=" + classId;
+        return "redirect:/class/student?classId=" + classId;
     }
 }

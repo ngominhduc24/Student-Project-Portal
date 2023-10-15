@@ -17,7 +17,6 @@ import swp.studentprojectportal.service.servicesimpl.*;
 
 import java.util.List;
 @Controller
-@RequestMapping("/subject-manager")
 public class ClassHomeController {
     @Autowired
     ClassService classService;
@@ -31,7 +30,7 @@ public class ClassHomeController {
     MilestoneService milestoneService;
     @Autowired
     IssueSettingService issueSettingService;
-    @GetMapping("/class")
+    @GetMapping("/subject-manager/class")
     public String classPage(@RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "-1") Integer subjectId, @RequestParam(defaultValue = "-1") Integer semesterId,
@@ -61,7 +60,7 @@ public class ClassHomeController {
         return "subject_manager/class/classList";
     }
 
-    @GetMapping("/class/updateStatus")
+    @GetMapping("/subject-manager/class/updateStatus")
     public String updateSubjectSettingStatus(@RequestParam int id,
             @RequestParam Integer status, RedirectAttributes attributes) {
         Class classA = classService.findById(id);
@@ -78,7 +77,7 @@ public class ClassHomeController {
         return "redirect:/subject-manager/class";
     }
 
-    @GetMapping("/classDetail")
+    @GetMapping("/subject-manager/classDetail")
     public String classDetail(@RequestParam("id") Integer id, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Class classA = classService.findById(id);
@@ -144,7 +143,7 @@ public class ClassHomeController {
         return "class_manager/class/issueSettingList";
     }
 
-    @PostMapping("/class/update")
+    @PostMapping("/subject-manager/class/update")
     public String updateClass(@RequestParam("id") Integer classId,@RequestParam String description,
             @RequestParam String className, @RequestParam Integer subjectId,
             @RequestParam Integer semesterId, @RequestParam Integer classManagerId, @RequestParam Integer status,
@@ -175,7 +174,7 @@ public class ClassHomeController {
         return "subject_manager/classDetail";
     }
 
-    @GetMapping("/class/add")
+    @GetMapping("/subject-manager/class/add")
     public String classDetail(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Class classA = new Class();
@@ -193,7 +192,7 @@ public class ClassHomeController {
         return "subject_manager/class/classAdd";
     }
 
-    @PostMapping("/class/add")
+    @PostMapping("/subject-manager/class/add")
     public String addClass(@RequestParam String description,
                               @RequestParam String className, @RequestParam Integer subjectId,
                               @RequestParam Integer semesterId, @RequestParam Integer classManagerId,

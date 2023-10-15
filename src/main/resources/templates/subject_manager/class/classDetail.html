@@ -36,6 +36,9 @@
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
+        .form-select:disabled {
+            background-color: white !important;
+        }
     </style>
 
 </head>
@@ -59,10 +62,9 @@
 
         <div class="topnav">
             <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/subject-manager/classDetail(id=${class.id})}"><p style="margin:0; ">General</p></a>
-            <a style="cursor: pointer;" th:href="@{/subject-manager/class/milestone(classId=${class.id})}"><p style="margin:0;"  >Milestones</p></a>
-            <a style="cursor: pointer;" th:href="@{/subject-manager/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
-            <a style="cursor: pointer;" th:href="@{/class-manager/class(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
-
+            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;"  >Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
         </div>
         <!--    Genenal-->
         <div id="general" class="container-fluid" >
@@ -124,6 +126,7 @@
                                         </div>
                                         <div class="col-md-12">
                                             <label class="form-label">Status:</label>
+                                            <input type="hidden" id="statusCheck" th:value="${class.status}">
                                             <div>
                                                 <label th:if="${class.status==0}" class="text-warning pe-3">
                                                     <input name="status" type="radio" th:checked="${class.status==0}" value="0"> Pending
@@ -171,6 +174,34 @@
 <script th:src="@{/js/feather.min.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        checkAndSetReadonly();
+    });
+    // Hàm kiểm tra và đặt các ô input và textarea thành readonly nếu trạng thái là "closed"
+    function checkAndSetReadonly() {
+        const status = document.getElementById("statusCheck").value;
+        const inputElements = document.querySelectorAll("input");
+        const textAreaElements = document.querySelectorAll("textarea")
+        const selectElements = document.querySelectorAll("select");
+
+        if (status == 3) {
+            inputElements.forEach(input => {
+                input.readOnly = true;
+            });
+
+            selectElements.forEach(select => {
+                select.disabled = true;
+            })
+
+            textAreaElements.forEach(textArea => {
+                textArea.readOnly = true;
+            });
+        }
+    }
+
+</script>
 
 </body>
 </html>
