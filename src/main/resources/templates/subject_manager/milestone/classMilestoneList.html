@@ -205,8 +205,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="createMilestoneButton">Save changes</button>
                                 </div>
                         </div>
                     </div>
@@ -372,6 +372,53 @@
                         </form>
                     </div>
                 </div>
+
+                <script>
+                    // Get a reference to the button
+                    var createMilestoneButton = document.getElementById('createMilestoneButton');
+
+                    // Add a click event listener to the button
+                    createMilestoneButton.addEventListener('click', function() {
+                        // Get values from the form fields
+                        var title = document.querySelector('input[name="milestone-title"]').value;
+                        var status = document.querySelector('input[type="checkbox"]').checked ? 1 : 0;
+                        var startDate = document.getElementById('start-date').value;
+                        var endDate = document.getElementById('end-date').value;
+                        var description = document.querySelector('textarea[name="description"]').value;
+                        var classId = document.querySelector('input[name="classId"]').value;
+
+                        // Prepare the URL with query parameters
+                        var endPoint = 'http://localhost:8080/api/v1/newMilestone' +
+                            '?classId=' + classId +
+                            '&title=' + title +
+                            '&description=' + description +
+                            '&startDate=' + startDate +
+                            '&endDate=' + endDate +
+                            '&status=' + status;
+
+                        // Make an API request using fetch with GET method
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    // Handle a successful API response
+                                    console.log('Milestone created successfully.');
+                                    // Close the modal
+                                    // document.getElementById('closeModal').click();
+                                    // reload page
+                                    location.reload();
+                                } else {
+                                    // Handle API errors
+                                    console.error('Error creating milestone.');
+                                }
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                    });
+                </script>
+
+
 
                 <script>
                     function goToPage(i) {
