@@ -51,6 +51,7 @@
     </script>
 </head>
 <body>
+
 <!-- Loader -->
 <div id="preloader">
     <div id="status">
@@ -70,36 +71,31 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">Issue Setting Details</h3>
+                    <h3 class="mb-0">New Issue Setting</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-<!--                        <li class="breadcrumb-item"><a href="/subject-manager/issue-setting/">Issue Setting</a></li>-->
-<!--                        <li class="breadcrumb-item">/</li>-->
-                        <li class="breadcrumb-item active">Issue Setting Details</li>
+                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Issue Setting</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item active">New Issue Setting</li>
                     </ol>
                 </div>
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/issue-setting/update" method="post">
-                                <input type="hidden" name="id" th:value="${setting.id}">
+                            <form action="/class-manager/issue-setting/add" method="post">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Subject Code<span class="text-danger">*</span></label>
-                                            <div class="d-flex">
-                                                <input type="text" name="settingSubjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingClassName" class="form-control" th:value="${setting.aclass.className}" readonly>
+                                                <select name="classId" class="form-select">
+                                                    <option th:each="class : ${classList}"
+                                                            th:value="${class.id}"
+                                                            th:text="${class.className}"></option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -112,40 +108,41 @@
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Title</label>
+                                            <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                                 <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
                                             </div>
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-2 ">
-                                        <div class="mb-3">
-                                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                                            <div class="form-check form-switch" style="font-size: 24px">
-                                                <input class="form-check-input" value="on" name="settingStatus" type="checkbox" th:checked="${setting.isStatus()}" >
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    <!--                                    <div class="col-md-6">-->
+                                    <!--                                        <div class="mb-3">-->
+                                    <!--                                            <label class="form-label">Status<span class="text-danger">*</span></label>-->
+                                    <!--                                            <div class="form-check form-switch" style="font-size: 24px">-->
+                                    <!--                                                <input class="form-check-input" value="on" name="settingStatus" type="checkbox" th:checked="${setting.isStatus()}" >-->
+                                    <!--                                            </div>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Description</label>
                                             <div class="d-flex">
                                                 <input type="text" name="settingDescription" class="form-control" th:value="${setting.description}" size="3">
-<!--                                                <textarea type="text" rows="3" name="settingDescription" class="form-control" th:field="${setting.description}"></textarea>-->
+                                                <!--                                                <textarea type="text" rows="3" name="settingDescription" class="form-control" th:field="${setting.description}"></textarea>-->
                                             </div>
                                         </div>
                                     </div>
                                 </div><!--end row-->
                                 <div class="row">
-                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Update</button> </div>
+                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button> </div>
                                 </div>
                             </form>
 
-<!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
-                            <div id="errmsg" style="color: red;"></div>
+                            <!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
+                            <div     id="errmsg" style="color: red;"></div>
                         </div>
                     </div><!--end col-->
                 </div>

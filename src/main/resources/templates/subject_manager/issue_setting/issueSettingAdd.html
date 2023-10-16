@@ -85,7 +85,7 @@
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/subject-setting/add" method="post">
+                            <form action="/subject-manager/issue-setting/add" method="post">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -101,12 +101,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Type<span class="text-danger">*</span></label>
+                                            <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <select name="typeId" class="form-select w-100">
-<!--                                                    <option th:value="1" th:text="Complexity" ></option>-->
-<!--                                                    <option th:value="2" th:text="Quality" ></option>-->
-                                                </select>
+                                                <input type="text" name="settingGroup" class="form-control" th:value="${setting.settingGroup}">
                                             </div>
                                         </div>
                                     </div><!--end col-->
@@ -115,17 +112,26 @@
                                         <div class="mb-3">
                                             <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingTitle" class="form-control" required>
+                                                <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
                                             </div>
                                         </div>
                                     </div><!--end col-->
 
 
-                                    <div class="col-md-2 text-center">
+<!--                                    <div class="col-md-6">-->
+<!--                                        <div class="mb-3">-->
+<!--                                            <label class="form-label">Status<span class="text-danger">*</span></label>-->
+<!--                                            <div class="form-check form-switch" style="font-size: 24px">-->
+<!--                                                <input class="form-check-input" value="on" name="settingStatus" type="checkbox" th:checked="${setting.isStatus()}" >-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                    <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                                            <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -38px" class="form-check-input" value="on" name="status" checked type="checkbox" >
+                                            <label class="form-label">Description</label>
+                                            <div class="d-flex">
+                                                <input type="text" name="settingDescription" class="form-control" th:value="${setting.description}" size="3">
+                                                <!--                                                <textarea type="text" rows="3" name="settingDescription" class="form-control" th:field="${setting.description}"></textarea>-->
                                             </div>
                                         </div>
                                     </div>

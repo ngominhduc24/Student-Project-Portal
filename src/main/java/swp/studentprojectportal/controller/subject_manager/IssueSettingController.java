@@ -4,13 +4,14 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.Subject;
+import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
+import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
 
@@ -19,6 +20,8 @@ import java.util.List;
 public class IssueSettingController {
     @Autowired
     SubjectService subjectService;
+    @Autowired
+    ClassService classService;
     @Autowired
     IssueSettingService issueSettingService;
     @Autowired
@@ -33,8 +36,9 @@ public class IssueSettingController {
         issueSettingService.saveSubjectSetting(issueSetting);
         return "redirect:/";
     }
-    @RequestMapping("/issue-setting/detail")
-    public String detailSubjectSetting(@RequestParam("id") int id, Model model, HttpSession session){
+    @GetMapping("/subject-manager/issue-setting/detail")
+    public String detailIssueSetting(@RequestParam("id") Integer id, Model model, HttpSession session){
+        System.out.println("id is "+id);
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         IssueSetting issueSetting = issueSettingService.findById(id);
@@ -43,60 +47,97 @@ public class IssueSettingController {
         return "subject_manager/issue_setting/issueSettingDetail";
     }
 
-//    @PostMapping("/subject-manager/subject-setting/update")
-//    public String updateSetting(
-//            @RequestParam Integer id,
-//            @RequestParam Integer subjectId,
-//            @RequestParam Integer typeId,
-//            @RequestParam String settingTitle,
-//            @RequestParam Integer displayOrder,
-//            WebRequest request,Model model,HttpSession session) {
 
-//        if(settingTitle.trim().isEmpty()){
-//            model.addAttribute("errmsg","Title not empty!");
-//            User user = (User) session.getAttribute("user");
-//            List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-//            SubjectSetting subjectSetting = subjectSettingService.findById(id);
-//            model.addAttribute("setting",subjectSetting);
-//            model.addAttribute("subjectList",subjectList);
-//            return "subjectSettingDetail";
-//        }
-//        String status = request.getParameter("status");
-//        IssueSetting issueSetting = new IssueSetting();
-//        issueSetting.setId(id);
-//        issueSetting.setSubject(subjectRepository.getById(subjectId));
-//        issueSetting.setTypeId(typeId);
-//        issueSetting.setSettingTitle(settingTitle);
-//        issueSetting.setDisplayOrder(displayOrder);
-//        issueSetting.setStatus(status!=null);
-//        issueSettingService.saveSubjectSetting(issueSetting);
-//        return "redirect:/subject-manager/subject-setting";
-//    }
+    @PostMapping("/subject-manager/issue-setting/update")
+    public String updateSetting(
+            @RequestParam Integer id,
+            @RequestParam String settingGroup,
+            @RequestParam String settingTitle,
+            @RequestParam String settingDescription,
+            WebRequest request, Model model, HttpSession session) {
 
-    @RequestMapping(path = "/issue-setting/add")
-    public String addSubjectSettingaPage(Model model,HttpSession session){
+        String status = request.getParameter("settingStatus");
+        boolean isStatus = status != null && status.equals("on");
+        IssueSetting issueSetting = issueSettingService.findById(id);
+        issueSetting.setStatus(isStatus);
+        issueSetting.setSettingGroup(settingGroup);
+        issueSetting.setSettingTitle(settingTitle);
+        issueSetting.setDescription(settingDescription);
+        issueSettingService.saveSubjectSetting(issueSetting);
+        model.addAttribute("setting",issueSetting);
+        return "subject_manager/issue_setting/issueSettingDetail";
+    }
+
+    @GetMapping(path = "/subject-manager/issue-setting/add")
+    public String addIssueSettingPage(Model model,HttpSession session){
+        IssueSetting issueSettingg = new IssueSetting();
+        issueSettingg.setDescription("");
+        issueSettingg.setSettingGroup("");
+        issueSettingg.setSettingGroup("");
+        model.addAttribute("setting",issueSettingg);
+
         User user = (User) session.getAttribute("user");
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         model.addAttribute("subjectList",subjectList);
         return  "subject_manager/issue_setting/issueSettingAdd";
     }
 
-//    @PostMapping("/subject-manager/subject-setting/add")
-//    public String addSetting(
-//            @RequestParam Integer subjectId,
-//            @RequestParam Integer typeId,
-//            @RequestParam String settingTitle,
-//            @RequestParam Integer displayOrder,
-//            WebRequest request) {
-//        String status = request.getParameter("status");
-//        IssueSetting issueSetting = new IssueSetting();
-//        issueSetting.setSubject(subjectRepository.getById(subjectId));
-//        issueSetting.setTypeId(typeId);
-//        issueSetting.setSettingTitle(settingTitle);
-//        issueSetting.setDisplayOrder(displayOrder);
-//        issueSetting.setStatus(status!=null);
-//        issueSettingService.saveSubjectSetting(issueSetting);
-//        return "redirect:/subject-manager/subject-setting";
-//    }
+    @GetMapping(path = "/class-manager/issue-setting/add")
+    public String addIssueSettingPage2(Model model,HttpSession session){
+        IssueSetting issueSettingg = new IssueSetting();
+        issueSettingg.setDescription("");
+        issueSettingg.setSettingGroup("");
+        issueSettingg.setSettingGroup("");
+        model.addAttribute("setting",issueSettingg);
+
+        User user = (User) session.getAttribute("user");
+        List<Class> classList = classService.findAllByClassManagerId(user.getId());
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        model.addAttribute("subjectList",subjectList);
+        model.addAttribute("classList",classList);
+        return  "subject_manager/issue_setting/issueSettingClassAdd";
+    }
+
+    @PostMapping("/subject-manager/issue-setting/add")
+    public String addIssueSetting(
+            @RequestParam Integer subjectId,
+            @RequestParam String settingTitle,
+            @RequestParam String settingGroup,
+            @RequestParam String settingDescription,
+            Model model, HttpSession session) {
+        IssueSetting issueSetting = new IssueSetting();
+        issueSetting.setSubject(subjectRepository.getById(subjectId));
+        issueSetting.setSettingTitle(settingTitle);
+        issueSetting.setSettingGroup(settingGroup);
+        issueSetting.setDescription(settingDescription);
+        issueSettingService.saveSubjectSetting(issueSetting);
+        model.addAttribute("setting",issueSetting);
+
+        User user = (User) session.getAttribute("user");
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        model.addAttribute("subjectList",subjectList);
+        return "subject_manager/issue_setting/issueSettingAdd";
+    }
+
+    @PostMapping("/class-manager/issue-setting/add")
+    public String addIssueSetting2(
+            @RequestParam Integer subjectId,
+            @RequestParam String settingTitle,
+            @RequestParam String settingGroup,
+            @RequestParam String settingDescription,
+            Model model, HttpSession session) {
+        IssueSetting issueSetting = new IssueSetting();
+        issueSetting.setSubject(subjectRepository.getById(subjectId));
+        issueSetting.setSettingTitle(settingTitle);
+        issueSetting.setSettingGroup(settingGroup);
+        issueSetting.setDescription(settingDescription);
+        issueSettingService.saveSubjectSetting(issueSetting);
+        model.addAttribute("setting",issueSetting);
+
+        User user = (User) session.getAttribute("user");
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        model.addAttribute("subjectList",subjectList);
+        return "subject_manager/issue_setting/issueSettingAdd";
+    }
 
 }
