@@ -12,6 +12,7 @@ import swp.studentprojectportal.repository.IAssignmentRepository;
 import swp.studentprojectportal.repository.IMilestoneRepository;
 import swp.studentprojectportal.service.IMilestoneService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -51,6 +52,12 @@ public class MilestoneService implements IMilestoneService {
             assign.setAclass(classA);
             save(assign);
         }
+    }
+
+    @Override
+    public boolean addNewMilestone(Integer classId, Integer subjectId, String title, String description, LocalDateTime startDate,LocalDateTime endDate,int status) {
+        Milestone milestone = new Milestone();
+        return true;
     }
 
 }
