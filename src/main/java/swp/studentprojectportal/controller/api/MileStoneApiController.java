@@ -25,12 +25,12 @@ public class MileStoneApiController {
         @GetMapping("/newMilestone")
         public ResponseEntity addNewMilestone(
                 @RequestParam(name = "classId") Integer classId,
-                @RequestParam(name = "subjectId") Integer subjectId,
+                @RequestParam(name = "subjectId") String subjectCode,
                 @RequestParam(name = "title") String title,
                 @RequestParam(name = "description") String description,
                 @RequestParam(name = "startdate") LocalDateTime startDate,
                 @RequestParam(name = "enddate") LocalDateTime endDate,
                 @RequestParam(name = "status", defaultValue = "1") Integer status) {
-            boolean result =  milestoneService.addNewMilestone(classId, subjectId, title, description, startDate, endDate, status);
+            boolean result =  milestoneService.addNewMilestone(classId, subjectCode, title, description, startDate, endDate, status);
         }
 }

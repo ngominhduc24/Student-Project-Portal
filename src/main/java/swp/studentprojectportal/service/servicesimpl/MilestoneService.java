@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Milestone;
+import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.IAssignmentRepository;
+import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IMilestoneRepository;
+import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.IMilestoneService;
 
 import java.time.LocalDateTime;
@@ -21,6 +24,10 @@ public class MilestoneService implements IMilestoneService {
     IMilestoneRepository milestoneRepository;
     @Autowired
     IAssignmentRepository assignmentRepository;
+    @Autowired
+    IClassRepository classRepository;
+    @Autowired
+    ISubjectRepository subjectRepository;
 
     @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
@@ -55,8 +62,30 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
-    public boolean addNewMilestone(Integer classId, Integer subjectId, String title, String description, LocalDateTime startDate,LocalDateTime endDate,int status) {
+    public boolean addNewMilestone(Integer classId, String subjectCode, String title, String description, LocalDateTime startDate,LocalDateTime endDate,int status) {
+        // get class by classId
+        Class _class =  classRepository.findClassById(classId);
+        Subject subject = subjectRepository.findSubjectBySubjectCode(subjectCode);
+        if(_class == null || subject == null) {
+            return false;
+        }
+
+        // create obj assignment
+        Assignment assignment = new Assignment();
+        assignment.setSubjectAssignment(false);
+        assignment.setTitle(title);
+        assignment.setDescription(description);
+        assignment.setSubject(subject);
+
+        // create obj milestone
         Milestone milestone = new Milestone();
+        milestone.setStatus(status == 1 ? true : false);
+        milestone.setAclass(_class);
+        milestone.setProject(null);
+        milestone.setStartDate(java.sql.Timestamp.valueOf(startDate));
+        milestone.setEndDate(java.sql.Timestamp.valueOf(endDate));
+        milestone.setTitle(title);
+        // TODO: save to dataabse
         return true;
     }
 

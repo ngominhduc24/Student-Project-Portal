@@ -19,6 +19,6 @@ public interface IMilestoneService {
 
     void addClassAssignment(Class classA);
 
-    boolean addNewMilestone(Integer classId,Integer subjectId, String title, String description, LocalDateTime startDate, LocalDateTime endDate, int status);
+    boolean addNewMilestone(Integer classId,String subjectCode, String title, String description, LocalDateTime startDate, LocalDateTime endDate, int status);
 
 }
