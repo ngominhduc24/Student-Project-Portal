@@ -91,29 +91,6 @@ public class ClassHomeController {
         return "subject_manager/class/classDetail";
     }
 
-    @GetMapping("/class/milestone")
-    public String milestonePage(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
-                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
-                                @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
-                                @RequestParam(defaultValue = "1") Integer sortType,
-                            Model model, HttpSession session) {
-        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , search, pageNo, pageSize,sortBy, sortType, status);
-        Class classA = classService.findById(classId);
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
-        model.addAttribute("class", classA);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("search", search);
-        model.addAttribute("classId", classId);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortType", sortType);
-        model.addAttribute("status", status);
-        model.addAttribute("totalPage", milestoneList.getTotalPages());
-        model.addAttribute("milestoneList", milestoneList);
-        return "subject_manager/milestone/classMilestoneList";
-    }
-
     @GetMapping("/class/issue-setting")
     public String issueSettingPage(@RequestParam("id") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,

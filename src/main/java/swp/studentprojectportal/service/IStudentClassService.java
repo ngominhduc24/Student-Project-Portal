@@ -18,4 +18,6 @@ public interface IStudentClassService {
 
     public List<StudentClass> findAllByClassManager(int classManagerId);
 
+    public boolean removeAllStudentFromClass(int classId);
+
 }

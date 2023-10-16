@@ -135,6 +135,20 @@ public class StudentClassService implements IStudentClassService {
         return studentClassRepository.findAllByAclassUserId(classManagerId);
     }
 
+    @Override
+    public boolean removeAllStudentFromClass(int classId) {
+        try{
+            List<StudentClass> studentClassList = studentClassRepository.findAllByAclass_Id(classId);
+
+            studentClassRepository.deleteAll(studentClassList);
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
     public boolean removeStudentFromClass(int classId, int studentId) {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
         if (studentClass == null) return false;
