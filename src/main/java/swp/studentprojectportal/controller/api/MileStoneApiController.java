@@ -1,6 +1,7 @@
 package swp.studentprojectportal.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +26,12 @@ public class MileStoneApiController {
         @GetMapping("/newMilestone")
         public ResponseEntity addNewMilestone(
                 @RequestParam(name = "classId") Integer classId,
-                @RequestParam(name = "subjectId") String subjectCode,
                 @RequestParam(name = "title") String title,
                 @RequestParam(name = "description") String description,
-                @RequestParam(name = "startdate") LocalDateTime startDate,
-                @RequestParam(name = "enddate") LocalDateTime endDate,
+                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
                 @RequestParam(name = "status", defaultValue = "1") Integer status) {
-            boolean result =  milestoneService.addNewMilestone(classId, subjectCode, title, description, startDate, endDate, status);
+            boolean result =  milestoneService.addNewMilestone(classId, title, description, startDate, endDate, status);
             if(result)
                 return ResponseEntity.ok().body("Add new milestone successfully");
             else

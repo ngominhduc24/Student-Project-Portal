@@ -62,31 +62,26 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
-    public boolean addNewMilestone(Integer classId, String subjectCode, String title, String description, LocalDateTime startDate,LocalDateTime endDate,int status) {
+    public boolean addNewMilestone(Integer classId, String title, String description, LocalDateTime startDate,LocalDateTime endDate,int status) {
         // get class by classId
         Class _class =  classRepository.findClassById(classId);
-        Subject subject = subjectRepository.findSubjectBySubjectCode(subjectCode);
-        if(_class == null || subject == null) {
+        if(_class == null) {
             return false;
         }
 
-        // create obj assignment
-        Assignment assignment = new Assignment();
-        assignment.setSubjectAssignment(false);
-        assignment.setTitle(title);
-        assignment.setDescription(description);
-        assignment.setSubject(subject);
-
         // create obj milestone
         Milestone milestone = new Milestone();
+        milestone.setTitle(title);
+        milestone.setDescription(description);
         milestone.setStatus(status == 1 ? true : false);
         milestone.setAclass(_class);
         milestone.setProject(null);
         milestone.setStartDate(java.sql.Timestamp.valueOf(startDate));
         milestone.setEndDate(java.sql.Timestamp.valueOf(endDate));
-        milestone.setTitle(title);
-        // TODO: save to dataabse
-        return true;
+        if(milestoneRepository.save(milestone) != null)
+            return true;
+        else
+            return false;
     }
 
 }
