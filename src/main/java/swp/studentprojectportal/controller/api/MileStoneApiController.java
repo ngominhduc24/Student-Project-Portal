@@ -32,5 +32,9 @@ public class MileStoneApiController {
                 @RequestParam(name = "enddate") LocalDateTime endDate,
                 @RequestParam(name = "status", defaultValue = "1") Integer status) {
             boolean result =  milestoneService.addNewMilestone(classId, subjectCode, title, description, startDate, endDate, status);
+            if(result)
+                return ResponseEntity.ok().body("Add new milestone successfully");
+            else
+                return ResponseEntity.badRequest().body("Add new milestone failed");
         }
 }
