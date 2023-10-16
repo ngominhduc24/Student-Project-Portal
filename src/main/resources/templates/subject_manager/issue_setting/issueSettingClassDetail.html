@@ -36,15 +36,15 @@
             // Bắt sự kiện khi form được submit
             document.querySelector('form').addEventListener('submit', function (event) {
                 // Lấy giá trị của trường settingTitle
-                var settingTitleValue = document.querySelector('input[name="settingTitle"]').value;
+                var settingGroupValue = document.querySelector('input[name="settingGroup"]').value;
 
-                // Kiểm tra xem settingTitle có giá trị là null, empty hoặc chỉ chứa dấu cách không
-                if (!settingTitleValue || settingTitleValue.trim() === '') {
+                // Kiểm tra xem settingGroup có giá trị là null, empty hoặc chỉ chứa dấu cách không
+                if (!settingGroupValue || settingGroupValue.trim() === '') {
                     // Ngăn chặn việc submit form
                     event.preventDefault();
 
                     // Hiển thị thông báo lỗi
-                    document.querySelector('#errmsg').innerText = 'Title cannot be null, empty, or consist of only spaces.';
+                    document.querySelector('#errmsg').innerText = 'Group cannot be null, empty, or consist of only spaces.';
                 }
             });
         });
@@ -84,7 +84,7 @@
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="/subject-manager/issue-setting/update" method="post">
+                            <form action="/class-manager/issue-setting/update" method="post">
                                 <input type="hidden" name="id" th:value="${setting.id}">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -138,8 +138,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Description</label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingDescription" class="form-control" th:value="${setting.description}" size="3">
-                                                <!--                                                <textarea type="text" rows="3" name="settingDescription" class="form-control" th:field="${setting.description}"></textarea>-->
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${setting.description}"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +149,10 @@
                             </form>
 
                             <!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
-                            <div id="errmsg" style="color: red;"></div>
+                            <div class="mt-2">
+                                <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+                                <h6 style="color: green;" th:text="${msg}"></h6>
+                            </div>
                         </div>
                     </div><!--end col-->
                 </div>
