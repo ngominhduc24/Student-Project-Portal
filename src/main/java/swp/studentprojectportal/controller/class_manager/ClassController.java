@@ -85,33 +85,4 @@ public class ClassController {
         attributes.addFlashAttribute("toastMessage", "Update class description successfully");
         return "redirect:/class-manager/classList";
     }
-
-    @PostMapping("/class/importStudent")
-    public String importStudent(@RequestParam MultipartFile file,
-                                @RequestParam int classId) {
-        List<User> userList = new SheetHandle().importSheetUser(file);
-
-        for(User userData : userList) {
-            try {
-                //find by email
-                User user = userService.findByEmail(userData.getEmail());
-
-                //find by phone
-                if (user==null) {
-                    user = userService.findByPhone(user.getPhone());
-
-                    if (user==null) continue;
-                }
-
-                //add student to class
-                studentClassService.addNewStudentToClass(classId, user.getId());
-
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-        }
-
-        return "redirect:./classDetail?id=" + classId;
-    }
 }

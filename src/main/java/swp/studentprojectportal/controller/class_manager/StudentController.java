@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.model.Class;
@@ -14,6 +16,9 @@ import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.InstanceSingleton;
+import swp.studentprojectportal.utils.SheetHandle;
+
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -89,5 +94,37 @@ public class StudentController {
         session.setAttribute("numberStudentAdded", numberStudentAdded);
 
         return "redirect:/class/student?classId=" + classId;
+    }
+
+    @PostMapping("/class/importStudent")
+    public String importStudent(@RequestParam MultipartFile file,
+                                @RequestParam int classId) {
+        //remove all student in current class
+        studentClassService.removeAllStudentFromClass(classId);
+
+        //read sheet data
+        List<User> userList = new SheetHandle().importSheetUser(file);
+
+        for(User userData : userList) {
+            try {
+                //find by email
+                User user = userService.findByEmail(userData.getEmail());
+
+                //find by phone
+                if (user==null) {
+                    user = userService.findByPhone(user.getPhone());
+
+                    if (user==null) continue;
+                }
+
+                //add student to class
+                studentClassService.addNewStudentToClass(classId, user.getId());
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+
+        return "redirect:./student?classId=" + classId;
     }
 }
