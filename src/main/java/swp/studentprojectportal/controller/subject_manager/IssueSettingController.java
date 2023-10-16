@@ -47,6 +47,17 @@ public class IssueSettingController {
         return "subject_manager/issue_setting/issueSettingDetail";
     }
 
+    @GetMapping("/class-manager/issue-setting/detail")
+    public String detailClassIssueSetting(@RequestParam("id") Integer id, Model model, HttpSession session){
+        System.out.println("id is "+id);
+        User user = (User) session.getAttribute("user");
+        IssueSetting issueSetting = issueSettingService.findById(id);
+        model.addAttribute("setting", issueSetting);
+        List<Class> classList = classService.findAllByClassManagerId(user.getId());
+        model.addAttribute("classList",classList);
+        return "subject_manager/issue_setting/issueSettingClassDetail";
+    }
+
 
     @PostMapping("/subject-manager/issue-setting/update")
     public String updateSetting(
@@ -92,8 +103,7 @@ public class IssueSettingController {
 
         User user = (User) session.getAttribute("user");
         List<Class> classList = classService.findAllByClassManagerId(user.getId());
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        model.addAttribute("subjectList",subjectList);
+
         model.addAttribute("classList",classList);
         return  "subject_manager/issue_setting/issueSettingClassAdd";
     }
@@ -121,13 +131,13 @@ public class IssueSettingController {
 
     @PostMapping("/class-manager/issue-setting/add")
     public String addIssueSetting2(
-            @RequestParam Integer subjectId,
+            @RequestParam Integer classId,
             @RequestParam String settingTitle,
             @RequestParam String settingGroup,
             @RequestParam String settingDescription,
             Model model, HttpSession session) {
         IssueSetting issueSetting = new IssueSetting();
-        issueSetting.setSubject(subjectRepository.getById(subjectId));
+        issueSetting.setAclass(classService.findById(classId));
         issueSetting.setSettingTitle(settingTitle);
         issueSetting.setSettingGroup(settingGroup);
         issueSetting.setDescription(settingDescription);
@@ -135,9 +145,9 @@ public class IssueSettingController {
         model.addAttribute("setting",issueSetting);
 
         User user = (User) session.getAttribute("user");
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        model.addAttribute("subjectList",subjectList);
-        return "subject_manager/issue_setting/issueSettingAdd";
+        List<Class> classList = classService.findAllByClassManagerId(user.getId());
+        model.addAttribute("classList",classList);
+        return "subject_manager/issue_setting/issueSettingClassAdd";
     }
 
 }
