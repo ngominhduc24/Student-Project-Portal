@@ -45,8 +45,6 @@
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i class="uil uil-setting me-2 d-inline-block"></i>Setting</a></li>
             <!--    subject manager function == 3-->
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/home"><i class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
-<!--            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/subject-assignment"><i class="uil uil-globe me-2 d-inline-block"></i>Subject Assignment</a></li>-->
-<!--            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class-assignment"><i class="uil uil-book me-2 d-inline-block"></i>Class Assignment</a></li>-->
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}" class="sidebar-dropdown">
                 <a href="javascript:void(0)"><i class="uil uil-globe me-2 d-inline-block"></i>Subject Managing</a>
                 <div class="sidebar-submenu">
@@ -59,7 +57,6 @@
             <!--    class manager function == 4-->
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/home"><i class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/classList"><i class="uil uil-presentation me-2 d-inline-block"></i>Assigned Classes</a></li>
-            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/class"><i class="uil uil-setting me-2 d-inline-block"></i>Class Details</a></li>
             <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>
         </ul>
         <!-- sidebar-menu  -->
