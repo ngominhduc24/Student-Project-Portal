@@ -31,24 +31,24 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Bắt sự kiện khi form được submit
-            document.querySelector('form').addEventListener('submit', function (event) {
-                // Lấy giá trị của trường settingTitle
-                var settingGroupValue = document.querySelector('input[name="settingGroup"]').value;
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function () {-->
+<!--            // Bắt sự kiện khi form được submit-->
+<!--            document.querySelector('form').addEventListener('submit', function (event) {-->
+<!--                // Lấy giá trị của trường settingTitle-->
+<!--                var settingGroupValue = document.querySelector('input[name="settingGroup"]').value;-->
 
-                // Kiểm tra xem settingTitle có giá trị là null, empty hoặc chỉ chứa dấu cách không
-                if (!settingGroupValue || settingGroupValue.trim() === '') {
-                    // Ngăn chặn việc submit form
-                    event.preventDefault();
+<!--                // Kiểm tra xem settingTitle có giá trị là null, empty hoặc chỉ chứa dấu cách không-->
+<!--                if (!settingGroupValue || settingGroupValue.trim() === '') {-->
+<!--                    // Ngăn chặn việc submit form-->
+<!--                    event.preventDefault();-->
 
-                    // Hiển thị thông báo lỗi
-                    document.querySelector('#errmsg').innerText = 'Group cannot be null, empty, or consist of only spaces.';
-                }
-            });
-        });
-    </script>
+<!--                    // Hiển thị thông báo lỗi-->
+<!--                    document.querySelector('#errmsg').innerText = 'Group cannot be null, empty, or consist of only spaces.';-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
 </head>
 <body>
 
@@ -104,7 +104,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingGroup" class="form-control" th:value="${setting.settingGroup}">
+                                                <input type="text" name="settingGroup" class="form-control" th:value="${setting.settingGroup}" required>
                                             </div>
                                         </div>
                                     </div><!--end col-->
