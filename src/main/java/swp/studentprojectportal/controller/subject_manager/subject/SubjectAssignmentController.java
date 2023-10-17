@@ -1,5 +1,6 @@
 package swp.studentprojectportal.controller.subject_manager.subject;
 
+import com.sun.mail.imap.protocol.INTERNALDATE;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,67 +38,61 @@ public class SubjectAssignmentController {
 
 
     @GetMapping("/subject-manager/addSubjectAssignment")
-    public String AddSubjectAssignment(Model model, HttpSession session){
-        User user = (User) session.getAttribute("user");
-        List<Subject> subject = subjectService.findAllSubjectByUser(user);
-        model.addAttribute("subjectList", subject);
+    public String AddSubjectAssignment(Model model, @RequestParam("subjectId") Integer subjectId){
+        Subject subject = subjectService.getSubjectById(subjectId);
         model.addAttribute("assignment", new Assignment());
+        model.addAttribute("subject", subject);
         return "subject_manager/subject_assignment/subjectAssignmentAdd";
     }
 
     @PostMapping("/subject-manager/addAssignment")
-    public String createAssignment(Model model, WebRequest request, HttpSession session){
-        User user = (User) session.getAttribute("user");
+    public String createAssignment(Model model, WebRequest request){
         String title = Objects.requireNonNull(request.getParameter("title")).trim();
-        int subjectId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subject")).trim());
         String description = Objects.requireNonNull(request.getParameter("description")).trim();
-
         String errorMessage = checkValidateAssignment(title, description);
+        int subjectId = Integer.parseInt(request.getParameter("subject"));
         if(errorMessage != null) {
             model.addAttribute("errorMsg", errorMessage);
             model.addAttribute("title", title);
             model.addAttribute("description", description);
-            model.addAttribute("subject", subjectService.findAllSubjectByUser(user));
             model.addAttribute("subject", subjectId);
             return "subject_manager/subject_assignment/subjectAssignmentAdd";
         }
 
-        int newAssignmentId = assignmentService.addAssignment(title, description, subjectId, true).getId();
-        return "redirect:/subject-manager/subjectAssignmentDetail?id=" + newAssignmentId;
+        assignmentService.addAssignment(title, description, subjectId, true);
+        return "redirect:/subject-manager/subject?subjectId=" + subjectId;
     }
 
     @GetMapping("/subject-manager/subjectAssignmentDetail")
-    public String subjectAssignmentDetail(Model model, @RequestParam("id") Integer id, HttpSession session){
-        User user = (User) session.getAttribute("user");
+    public String subjectAssignmentDetail(Model model, @RequestParam("id") Integer id, @RequestParam("subjectId") Integer subjectId){
         Assignment assignment = assignmentService.getAssignmentById(id);
-        List<Subject> subject = subjectService.findAllSubjectByUser(user);
+        Subject subject = subjectService.getSubjectById(subjectId);
         model.addAttribute("assignment", assignment);
-        model.addAttribute("subjectList", subject);
+        model.addAttribute("subject", subject);
         return "subject_manager/subject_assignment/subjectAssignmentDetails";
     }
 
     @PostMapping("/subject-manager/updateAssignment")
-    public String updateAssignment(Model model, WebRequest request, HttpSession session){
-        User user = (User) session.getAttribute("user");
+    public String updateAssignment(Model model, WebRequest request){
+
         int id = Integer.parseInt(Objects.requireNonNull(request.getParameter("id")));
         String title = Objects.requireNonNull(request.getParameter("title")).trim();
         String description = Objects.requireNonNull(request.getParameter("description")).trim();
-        int subject = Integer.parseInt(Objects.requireNonNull(request.getParameter("subject")));
+        int subjectId = Integer.parseInt(request.getParameter("subject"));
         boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
         String errMessage = checkValidateAssignment(title, description);
         if (errMessage != null) {
             model.addAttribute("errorMsg", errMessage);
         } else {
-            boolean ans = assignmentService.updateAssignment(id, title, description, subject, status);
+            boolean ans = assignmentService.updateAssignment(id, title, description, subjectId, status);
             if (ans) model.addAttribute("successMsg", "Update success");
             else model.addAttribute("errorMsg", "Update failed");
         }
 
         model.addAttribute("assignment", assignmentService.getAssignmentById(id));
-        model.addAttribute("subject", subjectService.findAllSubjectByUser(user));
 
-        return "redirect:/subject-manager/subjectAssignmentDetail?id=" + id;
+        return "redirect:/subject-manager/subjectAssignmentDetail?id=" + id +"&subjectId=" + subjectId ;
     }
 
     private String checkValidateAssignment(String title, String description) {

@@ -335,7 +335,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/subjectAssignmentDetail?id={id}(id=${assignment.id})}"><i
+                                        <a th:href="@{/subject-manager/subjectAssignmentDetail(id=${assignment.id}, subjectId=${subject.id})}"><i
                                                 class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
