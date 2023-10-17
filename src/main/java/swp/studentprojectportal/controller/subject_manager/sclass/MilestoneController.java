@@ -38,9 +38,9 @@ public class MilestoneController {
     public String milestonePage(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
                                 @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
-                                @RequestParam(defaultValue = "1") Integer sortType,
+                                @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") Integer milestoneId,
                                 Model model, HttpSession session) {
-        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId , search, pageNo, pageSize,sortBy, sortType, status);
+        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId, search, pageNo, pageSize,sortBy, sortType, status);
         Class classA = classService.findById(classId);
         User user = (User) session.getAttribute("user");
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
@@ -54,6 +54,10 @@ public class MilestoneController {
         model.addAttribute("status", status);
         model.addAttribute("totalPage", milestoneList.getTotalPages());
         model.addAttribute("milestoneList", milestoneList);
+
+        //milestone detail
+        Milestone milestone = milestoneService.findMilestoneById(milestoneId);
+        model.addAttribute("milestone", milestone);
         return "subject_manager/milestone/classMilestoneList";
     }
 }
