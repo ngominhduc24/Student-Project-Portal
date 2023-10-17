@@ -31,27 +31,26 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
-<!--    <script>-->
-<!--        document.addEventListener('DOMContentLoaded', function () {-->
-<!--            // Bắt sự kiện khi form được submit-->
-<!--            document.querySelector('form').addEventListener('submit', function (event) {-->
-<!--                // Lấy giá trị của trường settingTitle-->
-<!--                var settingGroupValue = document.querySelector('input[name="settingGroup"]').value;-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Bắt sự kiện khi form được submit
+            document.querySelector('form').addEventListener('submit', function (event) {
+                // Lấy giá trị của trường settingTitle
+                var settingGroupValue = document.querySelector('input[name="settingGroup"]').value;
 
-<!--                // Kiểm tra xem settingTitle có giá trị là null, empty hoặc chỉ chứa dấu cách không-->
-<!--                if (!settingGroupValue || settingGroupValue.trim() === '') {-->
-<!--                    // Ngăn chặn việc submit form-->
-<!--                    event.preventDefault();-->
+                // Kiểm tra xem settingGroup có giá trị là null, empty hoặc chỉ chứa dấu cách không
+                if (!settingGroupValue || settingGroupValue.trim() === '') {
+                    // Ngăn chặn việc submit form
+                    event.preventDefault();
 
-<!--                    // Hiển thị thông báo lỗi-->
-<!--                    document.querySelector('#errmsg').innerText = 'Group cannot be null, empty, or consist of only spaces.';-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
+                    // Hiển thị thông báo lỗi
+                    document.querySelector('#errmsg').innerText = 'Group cannot be null, empty, or consist of only spaces.';
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-
 <!-- Loader -->
 <div id="preloader">
     <div id="status">
@@ -71,22 +70,31 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">New Issue Setting</h3>
+                    <h3 class="mb-0">Issue Setting Details</h3>
                 </div>
                 <div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Issue Setting</a></li>
-                        <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item active">New Issue Setting</li>
+                        <!--                        <li class="breadcrumb-item"><a href="/subject-manager/issue-setting/">Issue Setting</a></li>-->
+                        <!--                        <li class="breadcrumb-item">/</li>-->
+                        <li class="breadcrumb-item active">Issue Setting Details</li>
                     </ol>
                 </div>
                 <div class="row">
                     <div class="col-lg-8 mt-4">
-                        <h6 class="card border-0 p-4 rounded shadow">
-                            <form action="/class-manager/issue-setting/add" method="post">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form action="/class-manager/issue-setting/update" method="post">
+                                <input type="hidden" name="id" th:value="${setting.id}">
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Subject Code<span class="text-danger">*</span></label>
+                                            <div class="d-flex">
+                                                <input type="text" name="settingSubjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
@@ -95,7 +103,7 @@
                                                     <option th:each="class : ${classList}"
                                                             th:value="${class.id}"
                                                             th:text="${class.className}"
-                                                            th:selected="${class.id == (setting.aclass != null ? setting.aclass.id : null)}"></option>
+                                                            th:seleted="${class.id == setting.aclass.id}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -104,12 +112,12 @@
                                         <div class="mb-3">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" name="settingGroup" class="form-control" th:value="${setting.settingGroup}" required>
+                                                <input type="text" name="settingGroup" class="form-control" th:value="${setting.settingGroup}">
                                             </div>
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">Title</label>
                                             <div class="d-flex">
@@ -118,15 +126,14 @@
                                         </div>
                                     </div><!--end col-->
 
-
-                                    <!--                                    <div class="col-md-6">-->
-                                    <!--                                        <div class="mb-3">-->
-                                    <!--                                            <label class="form-label">Status<span class="text-danger">*</span></label>-->
-                                    <!--                                            <div class="form-check form-switch" style="font-size: 24px">-->
-                                    <!--                                                <input class="form-check-input" value="on" name="settingStatus" type="checkbox" th:checked="${setting.isStatus()}" >-->
-                                    <!--                                            </div>-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
+                                    <div class="col-md-2 ">
+                                        <div class="mb-3">
+                                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                                            <div class="form-check form-switch" style="font-size: 24px">
+                                                <input class="form-check-input" value="on" name="settingStatus" type="checkbox" th:checked="${setting.isStatus()}" >
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Description</label>
@@ -137,11 +144,15 @@
                                     </div>
                                 </div><!--end row-->
                                 <div class="row">
-                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button> </div>
+                                    <div class="col-md-3"><button type="submit" class="btn btn-primary">Update</button> </div>
                                 </div>
                             </form>
-                            <h6 style="color: green;" th:text="${msg}"></h6>
-                            <h6 style="color: red;" th:text="${errmsg}"></h6>
+
+                            <!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
+                            <div class="mt-2">
+                                <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+                                <h6 style="color: green;" th:text="${msg}"></h6>
+                            </div>
                         </div>
                     </div><!--end col-->
                 </div>
