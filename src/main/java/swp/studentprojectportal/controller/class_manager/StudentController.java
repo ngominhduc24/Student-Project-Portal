@@ -99,11 +99,13 @@ public class StudentController {
     @PostMapping("/class/importStudent")
     public String importStudent(@RequestParam MultipartFile file,
                                 @RequestParam int classId) {
-        //remove all student in current class
-        studentClassService.removeAllStudentFromClass(classId);
-
         //read sheet data
         List<User> userList = new SheetHandle().importSheetUser(file);
+
+        if(userList == null) return "redirect:./student?classId=" + classId;
+
+        //remove all student in current class
+        studentClassService.removeAllStudentFromClass(classId);
 
         for(User userData : userList) {
             try {
