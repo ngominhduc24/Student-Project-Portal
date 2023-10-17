@@ -46,11 +46,6 @@ public class Validate {
             return false;
         }
 
-        // Kiểm tra xem chuỗi fullname có ít nhất 2 từ
-        String[] words = fullname.split("\\s+");
-        if (words.length < 2) {
-            return false;
-        }
 
         // Kiểm tra xem chuỗi fullname có chứa số hay không
         if(fullname.matches(".*[0-9].*")) return false;
@@ -59,6 +54,13 @@ public class Validate {
         if(fullname.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~-].*")) return false;
 
         return true;
+    }
+
+    public static  boolean validNotempty(String str){
+        if (str == null || str.isEmpty() || str.trim().isEmpty()) {
+            return false;
+        }
+        return  true;
     }
 
     public static  boolean validAvatarurl(String avatarurl){

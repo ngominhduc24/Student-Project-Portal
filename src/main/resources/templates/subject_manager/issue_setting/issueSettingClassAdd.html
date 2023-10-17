@@ -84,7 +84,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-8 mt-4">
-                        <div class="card border-0 p-4 rounded shadow">
+                        <h6 class="card border-0 p-4 rounded shadow">
                             <form action="/class-manager/issue-setting/add" method="post">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -94,7 +94,8 @@
                                                 <select name="classId" class="form-select">
                                                     <option th:each="class : ${classList}"
                                                             th:value="${class.id}"
-                                                            th:text="${class.className}"></option>
+                                                            th:text="${class.className}"
+                                                            th:selected="${class.id == (setting.aclass != null ? setting.aclass.id : null)}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -110,7 +111,7 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Title<span class="text-danger">*</span></label>
+                                            <label class="form-label">Title</label>
                                             <div class="d-flex">
                                                 <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
                                             </div>
@@ -139,9 +140,8 @@
                                     <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button> </div>
                                 </div>
                             </form>
-
-                            <!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
-                            <div     id="errmsg" style="color: red;" th:text="${errmsg}"></div>
+                            <h6 style="color: green;" th:text="${msg}"></h6>
+                            <h6 style="color: red;" th:text="${errmsg}"></h6>
                         </div>
                     </div><!--end col-->
                 </div>

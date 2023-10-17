@@ -14,6 +14,7 @@ import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
+import swp.studentprojectportal.utils.Validate;
 
 import java.util.List;
 @Controller
@@ -168,14 +169,27 @@ public class IssueSettingController {
         issueSetting.setSettingTitle(settingTitle);
         issueSetting.setSettingGroup(settingGroup);
         issueSetting.setDescription(description);
-        issueSettingService.saveSubjectSetting(issueSetting);
-        model.addAttribute("setting",issueSetting);
 
+        if(Validate.validNotempty(settingGroup) == false){
+            String errmsg = "Group can't empty. Add failed!";
+            model.addAttribute("errmsg",errmsg);
+        }
+        else{
+            if(issueSettingService.findByClassAndGroupAndTitle(classId,settingGroup,settingTitle)!=null){
+                String errmsg = "Issue setting existed. Add failed!";
+                model.addAttribute("errmsg",errmsg);
+            }
+            else {
+                issueSettingService.saveSubjectSetting(issueSetting);
+                String msg = "Add successfully!";
+                model.addAttribute("msg", msg);
+            }
+        }
+
+        model.addAttribute("setting",issueSetting);
         User user = (User) session.getAttribute("user");
         List<Class> classList = classService.findAllByClassManagerId(user.getId());
         model.addAttribute("classList",classList);
-        String errmsg = "Add successfully!";
-        model.addAttribute("errmsg",errmsg);
         return "subject_manager/issue_setting/issueSettingClassAdd";
     }
 

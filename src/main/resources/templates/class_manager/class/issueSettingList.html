@@ -291,6 +291,9 @@
                             </div>
 
                             <script>
+                                let id;
+                                let status;
+                                let initialStatus;
                                 function showConfirmationDialog(checkbox) {
                                     id = checkbox.getAttribute("update-id");
                                     status = checkbox.checked;
@@ -298,7 +301,7 @@
                                     $('#confirmationModal').modal('show');
                                 }
                                 $("#confirmButton").click(function () {
-                                    fetch(`issue-setting/updateStatus?id=${id}&status=${status}`);
+                                    fetch(`/issue-setting/updateStatus?id=${id}&status=${status}`);
                                     $('#confirmationModal').modal('hide');
                                 });
                                 $("#cancelButton").click(function () {
