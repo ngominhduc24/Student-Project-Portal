@@ -243,20 +243,7 @@
       </form>
     </div>
   </div>
-  <!-- Status update -->
-  <script>
-    function updateStatus(id, checkbox) {
-      let status = checkbox.checked;
 
-      confirmCustom(
-              ()=>{fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)},
-              ()=>{checkbox.checked = !status;});
-
-      // if (confirm('Are you sure?'))
-      //     fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
-      // else checkbox.checked = !status;
-    }
-  </script>
   <script>
     let importModal = document.querySelector('.modalBack');
 
