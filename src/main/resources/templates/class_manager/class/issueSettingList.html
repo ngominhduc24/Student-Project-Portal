@@ -263,8 +263,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></td>
+                                        <div th:if="${session.user.setting.id==3}" ><a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i
+                                                class="fas fa-pen-to-square"></i></a></div>
+                                        <div th:if="${session.user.setting.id==4}" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i
+                                                class="fas fa-pen-to-square"></i></a></div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -288,6 +291,9 @@
                             </div>
 
                             <script>
+                                let id;
+                                let status;
+                                let initialStatus;
                                 function showConfirmationDialog(checkbox) {
                                     id = checkbox.getAttribute("update-id");
                                     status = checkbox.checked;
@@ -295,7 +301,7 @@
                                     $('#confirmationModal').modal('show');
                                 }
                                 $("#confirmButton").click(function () {
-                                    fetch(`issue-setting/updateStatus?id=${id}&status=${status}`);
+                                    fetch(`/issue-setting/updateStatus?id=${id}&status=${status}`);
                                     $('#confirmationModal').modal('hide');
                                 });
                                 $("#cancelButton").click(function () {
