@@ -298,8 +298,6 @@
                                     <td>
                                         <div th:onclick="'details(' + ${milestone.id} + ')'" style="border: none; background-color: white; color: blue"><i
                                                 class="fas fa-pen-to-square"></i></div>
-<!--                                        <a th:href="@{/subject-manager/milestoneDetail?id={id}(id=${milestone.id})}"><i-->
-<!--                                                class="fas fa-pen-to-square"></i></a>-->
                                     </td>
                                 </tr>
                                 </tbody>
@@ -392,8 +390,8 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Title<span class="text-danger">*</span></label>
-                                            <input type="text" name="milestone-title" class="form-control" value="1">
+                                            <label class="form-label">Title</label>
+                                            <input type="text" id="details-milestone-title" class="form-control" value="1">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <div class="form-switch">
@@ -423,13 +421,39 @@
                         </div>
                     </div>
                 </div>
-
+<!--                milestone details-->
                 <script>
                     function details(id) {
                        console.log(id);
-                       // open modal
-                          document.getElementById('btndetails').click();
+                       let endPoint = '/api/v1/milestone?milestoneId=' + id;
+                          fetch(endPoint)
+                            .then(response => {
+                                 if (response.ok) {
+                                      // Handle a successful API response
+                                      response.json().then(data => {
+                                        console.log(data);
+                                        document.querySelector('input[id="details-milestone-title"]').value = data.title;
+                                        document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                        document.getElementById('detail-start-date').value = data.startDate;
+                                        document.getElementById('detail-end-date').value = data.endDate;
+                                        document.getElementById('detail-status').checked = data.status == 1 ? true : false;
+                                        document.getElementById('updateMilestoneButton').setAttribute('onclick', 'updateMilestone(' + data.id + ')');
+                                      });
+                                 } else {
+                                      // Handle API errors
+                                      console.error('Error getting milestone.');
+                                 }
+                            })
+                            .catch(error => {
+                                 // Handle network errors
+                                 console.error('Network error:', error);
+                            });
+                      document.getElementById('btndetails').click();
                     }
+                </script>
+<!--                milestone update-->
+                <script>
+
                 </script>
 
                 <script>
