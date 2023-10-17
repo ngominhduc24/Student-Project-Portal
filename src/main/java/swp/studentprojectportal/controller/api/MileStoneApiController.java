@@ -48,6 +48,7 @@ public class MileStoneApiController {
             // create response entity with milestone object
             if(milestone != null){
                 Map<String, Object> response = new HashMap<>();
+                response.put("id", milestone.getId());
                 response.put("title", milestone.getTitle());
                 response.put("description", milestone.getDescription());
                 response.put("startDate", milestone.getStartDate().toString());
@@ -61,4 +62,19 @@ public class MileStoneApiController {
                 return ResponseEntity.badRequest().body("Milestone not found");
 
         }
+
+    @GetMapping("/updateMilestone")
+    public ResponseEntity updateMileStone(
+            @RequestParam(name = "milestoneId") Integer milestoneId,
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "description") String description,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            @RequestParam(name = "status", defaultValue = "1") Integer status) {
+        boolean result =  milestoneService.updateMilestone(milestoneId, title, description, startDate, endDate, status);
+        if(result)
+            return ResponseEntity.ok().body("Update milestone successfully");
+        else
+            return ResponseEntity.badRequest().body("Update milestone failed");
+    }
 }

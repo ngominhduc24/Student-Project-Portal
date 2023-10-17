@@ -84,4 +84,18 @@ public class MilestoneService implements IMilestoneService {
             return false;
     }
 
+    public boolean updateMilestone(Integer milestoneId,String title,String description,LocalDateTime startDate,LocalDateTime endDate,int status) {
+        Milestone milestone = milestoneRepository.findMilestoneById(milestoneId);
+        if(milestone == null)
+            return false;
+        milestone.setTitle(title);
+        milestone.setDescription(description);
+        milestone.setStartDate(java.sql.Timestamp.valueOf(startDate));
+        milestone.setEndDate(java.sql.Timestamp.valueOf(endDate));
+        milestone.setStatus(status == 1 ? true : false);
+        if(milestoneRepository.save(milestone) != null)
+            return true;
+        else
+            return false;
+    }
 }
