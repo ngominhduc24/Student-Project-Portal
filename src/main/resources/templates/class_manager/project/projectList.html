@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="../add" class="btn btn-primary" style="margin-left: 24px">Add New Project</a>
+                        <button class="btn btn-primary" style="margin-left: 24px"  onclick="stateAddModal('flex')">Add New Project</button>
                     </div>
 
                 </div>
@@ -236,7 +236,7 @@
 
         <!--            modal lmao-->
         <style>
-            .modalBack, .moveBack{
+            .modalBack, .moveBack, .modalAddBack{
                 position: fixed;
                 top: 0;
                 right: 0;
@@ -310,8 +310,64 @@
                 event.preventDefault();
                 modal.style.display = 'flex';
             }
+
+            function stateAddModal(state) {
+                document.querySelector('.modalAddBack').style.display = state;
+            }
         </script>
         <!--            modal lmao-->
+
+<!--        modal add back-->
+        <div class="modalAddBack">
+            <div class="card border-0 p-4 rounded shadow">
+                <i class="fa fa-times fa-2x" style="position: absolute; right: 3%; top: 2vh" onclick="stateAddModal('none')"></i>
+                <form action="../add" method="post" class="mt-4">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Title</label>
+                                <input name="title" type="text" class="form-control"
+                                       placeholder="Project title" th:value="${title}" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Group name</label>
+                                <input name="groupName" type="text" class="form-control"
+                                       placeholder="Group name" th:value="${groupName}" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Class</label>
+                                <select name="classId" class="form-select">
+                                    <option th:each="class : ${classList}"
+                                            th:value="${class.id}"
+                                            th:text="${class.className}"
+                                            th:selected="${classId==class.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea name="description" class="form-control" rows="5"
+                                          placeholder="Description..." th:text="${description}" required></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <h6 th:text="${error}" style="color: indianred"></h6>
+
+                    <button type="submit" class="btn btn-primary">Add Project</button>
+                </form>
+            </div>
+        </div>
+<!--        modal add back-->
 
         <!--        dialog-->
         <div class="col-md-4 dialog">
