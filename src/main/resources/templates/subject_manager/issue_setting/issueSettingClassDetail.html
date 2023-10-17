@@ -76,8 +76,12 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <!--                        <li class="breadcrumb-item"><a href="/subject-manager/issue-setting/">Issue Setting</a></li>-->
-                        <!--                        <li class="breadcrumb-item">/</li>-->
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+                        <li class="breadcrumb-item">/</li>
+<!--                        <li class="breadcrumb-item"><a href="/class/issue-setting">Class List</a></li>-->
+                        <li class="breadcrumb-item"><a th:href="@{/class/issue-setting(id=${setting.aclass.id})}" >Issue Setting List</a></li>
+                        <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Issue Setting Details</li>
                     </ol>
                 </div>

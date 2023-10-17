@@ -97,10 +97,27 @@ public class IssueSettingController {
         issueSetting.setSettingTitle(settingTitle);
         issueSetting.setDescription(description);
         issueSetting.setAclass(classService.findById(classId));
-        issueSettingService.saveSubjectSetting(issueSetting);
+
+        if(Validate.validNotempty(settingGroup) == false){
+            String errmsg = "Group can't empty. Add failed!";
+            model.addAttribute("errmsg",errmsg);
+        }
+        else{
+            IssueSetting findIssueSetting = issueSettingService.findByClassAndGroupAndTitle(classId,settingGroup,settingTitle);
+
+            if(findIssueSetting!=null && findIssueSetting.getId() != id){
+                String errmsg = "Issue setting existed. Update failed!";
+                model.addAttribute("errmsg",errmsg);
+            }
+            else {
+                issueSettingService.saveSubjectSetting(issueSetting);
+                String msg = "Update successfully!";
+                model.addAttribute("msg", msg);
+            }
+        }
+
+
         model.addAttribute("setting",issueSetting);
-        String errmsg = "Update successfully!";
-        model.addAttribute("errmsg",errmsg);
         User user = (User) session.getAttribute("user");
         List<Class> classList = classService.findAllByClassManagerId(user.getId());
         model.addAttribute("classList",classList);
