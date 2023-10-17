@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        .datatable-table {
+            border: 1px solid #dee2e6;
+            border-collapse: collapse;
+        }
+
+        tr, td, th {
+            border: 1px solid #dee2e6 !important;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            padding-left: 5px;
+        }
+        th:first-child {
+            width: 4%;
+        }
+        th:nth-child(2) {
+            width: 12%;
+        }
+        th:nth-child(3), th:nth-child(4) {
+            width: 14%;
+        }
+        th:nth-child(5),th:last-child {
+            width: 8%;
+        }
+        td:last-child {
+            font-size: 18px;
+            text-align: center;
+        }
+
+        th {
+            position: relative;
+        }
+
+        .search-button {
+            border: none;
+            height: 33px;
+            width: 36px;
+            float: right;
+            margin-top: -34px;
+            margin-right: 1px;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+
+        .datatable-search, .datatable-dropdown, .datatable-bottom, .datatable-sorter::before, .datatable-sorter::after {
+            display: none;
+        }
+
+        .caret-up {
+            position: absolute;
+            right: 6px;
+            top: 10px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+
+        .caret-down {
+            position: absolute;
+            right: 6px;
+            top: 16px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+
+        .caret-up:hover, .caret-down:hover {
+            color: black;
+        }
+
+        .sort-active {
+            color: black;
+        }
+
+        .datatable-top {
+            margin-bottom: 36px;
+        }
+        .breadcrumb .breadcrumb-item:after {
+            content: none !important;
+        }
+    </style>
+
+</head>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+
+        <div class="topnav">
+            <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
+        </div>
+
+        <!--    Assignment-->
+        <div class="container-fluid" id="assignment">
+            <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+                <div class="row px-4" style="width: 100%; justify-content: space-between">
+                    <div class="col-xl-5 col-md-6">
+                        <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
+                        <ol class="breadcrumb mb-2">
+                            <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
+                            <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item active">Milestone List</li>
+                        </ol>
+                    </div><!--end col-->
+
+                    <div class="col-xl-4 col-md-6"></div>
+
+                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-left: 24px">
+                            Add New
+                        </button>
+                    </div><!--end col-->
+                        <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
+                      </div><!--end row-->
+
+                <!-- Modal add new-->
+                <div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add new milestone</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+                                            <div class="mb-3 col-md-12">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" name="milestone-title" class="form-control" required>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Start date<span class="text-danger">*</span></label>
+                                                <input type="datetime-local" id="start-date" name="start" required>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">End date<span class="text-danger">*</span></label>
+                                                <input type="datetime-local" id="end-date" name="end" required>
+                                            </div>
+                                            <div class="mb-3 col-md-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea type="text" rows="3" name="description" class="form-control"></textarea>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="createMilestoneButton">Save changes</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container-fluid px-4">
+                    <div class="card mb-4">
+                        <form action="/class/milestone" class="card-body rounded-3" id="form">
+                            <div class="row" style="width: 100%; justify-content: space-between">
+                                <input type="hidden" name="classId" th:value="${class.id}">
+                                <div class="col-md-3 row">
+                                    <div class="mb-3 col-md-5 pe-3">
+                                        <select name="pageSize" class="form-select" onchange="this.form.submit()">
+                                            <option th:selected="${pageSize==5}" value="5">5</option>
+                                            <option th:selected="${pageSize==10}" value="10">10</option>
+                                            <option th:selected="${pageSize==15}" value="15">15</option>
+                                            <option th:selected="${pageSize==20}" value="20">20</option>
+                                            <option th:selected="${pageSize==25}" value="25">25</option>
+                                        </select>
+                                    </div>
+                                    <p class="ps-2 col-md-5 pt-2">per page</p>
+                                </div>
+                                <div class="row col-md-8" style="margin-left: -100px">
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1" th:selected="${status == -1}">All Status</option>
+                                                <option value="1" th:selected="${status == 1}">Active</option>
+                                                <option value="0" th:selected="${status == 0}">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input class="form-control form-control-sm" type="text" th:value="${search}"
+                                           name="search" placeholder="Search" style="border-color: #ced4da;"
+                                           aria-label="Search">
+                                    <button onclick="this.form.submit()" class="search-button"><i class="fas fa-search"
+                                                                                                  aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="sortBy" id="sortBy">
+                            <input type="hidden" name="sortType" id="sortType">
+                            <table id="datatablesSimple" class="display" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th data-sortable="false">Id
+                                        <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('id',1)"></i>
+                                        <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('id',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Title
+                                        <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('title',1)"></i>
+                                        <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('title',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Start Date
+                                        <i th:class="${(sortBy eq 'start_date' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('start_date',1)"></i>
+                                        <i th:class="${(sortBy eq 'start_date' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('start_date',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">End Date
+                                        <i th:class="${(sortBy eq 'end_date' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('end_date',1)"></i>
+                                        <i th:class="${(sortBy eq 'end_date' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('end_date',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Status</th>
+                                    <th data-sortable="false">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="milestone : ${milestoneList}">
+                                    <td th:text="${milestone.id}"></td>
+                                    <td th:text="${milestone.title}"></td>
+                                    <td th:text="${milestone.startDate}"></td>
+                                    <td th:text="${milestone.endDate}"></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" th:checked="${milestone.status}" th:attr="update-id=${milestone.id}" onchange="showConfirmationDialog(this)">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div th:onclick="'details(' + ${milestone.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                class="fas fa-pen-to-square"></i></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Modal Dialog -->
+                            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                                            <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to perform this action?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="cancelButton" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                let id;
+                                let status;
+                                let initialStatus;
+                                function showConfirmationDialog(checkbox) {
+                                    id = checkbox.getAttribute("update-id");
+                                    status = checkbox.checked;
+                                    initialStatus = !status;
+                                    $('#confirmationModal').modal('show');
+                                }
+                                $("#confirmButton").click(function () {
+                                    fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`);
+                                    $('#confirmationModal').modal('hide');
+                                });
+                                $("#cancelButton").click(function () {
+                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
+                                    checkbox.checked = initialStatus;
+                                    $('#confirmationModal').modal('hide');
+                                });
+                                $("#closeButton").click(function () {
+                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
+                                    checkbox.checked = initialStatus;
+                                    $('#confirmationModal').modal('hide');
+                                });
+                            </script>
+
+                            <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
+                                <ul class="pagination justify-content-end">
+                                    <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo-1}+')'">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <input type="hidden" name="pageNo" id="pageNoInput">
+                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+                                        th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                        <a class="page-link" th:text="${i}" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${i-1}+')'">
+                                        </a>
+                                    </li>
+                                    <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link user-select-all" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo+1}+')'">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Modal details-->
+                <div class="modal fade" id="detailsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailsModalLongTitle">Milestone details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Title</label>
+                                            <input type="text" id="details-milestone-title" class="form-control" value="1">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <div class="form-switch">
+                                                <label class="form-label" style="margin-left: -40px">Status</label><br/>
+                                                <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 25px;" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Start date</label>
+                                            <input type="datetime-local" id="detail-start-date" name="start" value="">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">End date</label>
+                                            <input type="datetime-local" id="detail-end-date" name="end" value="">
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="detail-description" class="form-control" content="description"></textarea>
+                                        </div>
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal">Close</button>
+                                <button type="button" class="btn btn-primary" id="updateMilestoneButton">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--                milestone details-->
+                <script>
+                    function details(id) {
+                       let endPoint = '/api/v1/milestone?milestoneId=' + id;
+                          fetch(endPoint)
+                            .then(response => {
+                                 if (response.ok) {
+                                      // Handle a successful API response
+                                      response.json().then(data => {
+                                        document.querySelector('input[id="details-milestone-title"]').value = data.title;
+                                        document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                        document.getElementById('detail-start-date').value = data.startDate;
+                                        document.getElementById('detail-end-date').value = data.endDate;
+                                        document.getElementById('detail-status').checked = data.status == 1 ? true : false;
+                                        document.getElementById('updateMilestoneButton').setAttribute('onclick', 'updateMilestone(' + data.id + ')');
+                                      });
+                                 } else {
+                                      // Handle API errors
+                                      console.error('Error getting milestone.');
+                                 }
+                            })
+                            .catch(error => {
+                                 // Handle network errors
+                                 console.error('Network error:', error);
+                            });
+                      document.getElementById('btndetails').click();
+                    }
+                </script>
+<!--                milestone update-->
+                <script>
+                    function updateMilestone(id){
+                        const title = document.querySelector('input[id="details-milestone-title"]').value;
+                        const description = document.querySelector('textarea[name="detail-description"]').value;
+                        const startDate = document.getElementById('detail-start-date').value;
+                        const endDate = document.getElementById('detail-end-date').value;
+                        const status = document.getElementById('detail-status').checked ? 1 : 0;
+                        let endPoint = '/api/v1/updateMilestone?milestoneId=' + id + '&title=' + title + '&description=' + description + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status;
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    // Handle a successful API response
+                                    console.log('Milestone updated successfully.');
+                                    // Close the modal
+                                    document.getElementById('detailcloseModal').click();
+                                    // reload page
+                                    location.reload();
+                                } else {
+                                    // Handle API errors
+                                    console.error('Error updating milestone.');
+                                }
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                        location.reload();
+                    }
+                </script>
+
+                <script>
+                    // Get a reference to the button
+                    var createMilestoneButton = document.getElementById('createMilestoneButton');
+
+                    // Add a click event listener to the button
+                    createMilestoneButton.addEventListener('click', function() {
+                        // Get values from the form fields
+                        var title = document.querySelector('input[name="milestone-title"]').value;
+                        var status = document.querySelector('input[type="checkbox"]').checked ? 1 : 0;
+                        var startDate = document.getElementById('start-date').value;
+                        var endDate = document.getElementById('end-date').value;
+                        var description = document.querySelector('textarea[name="description"]').value;
+                        var classId = document.querySelector('input[name="classId"]').value;
+
+                        // Prepare the URL with query parameters
+                        var endPoint = 'http://localhost:8080/api/v1/newMilestone' +
+                            '?classId=' + classId +
+                            '&title=' + title +
+                            '&description=' + description +
+                            '&startDate=' + startDate +
+                            '&endDate=' + endDate +
+                            '&status=' + status;
+
+                        // Make an API request using fetch with GET method
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    // Handle a successful API response
+                                    console.log('Milestone created successfully.');
+                                    // Close the modal
+                                    // document.getElementById('closeModal').click();
+                                    // reload page
+                                    location.reload();
+                                } else {
+                                    // Handle API errors
+                                    console.error('Error creating milestone.');
+                                }
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                    });
+                </script>
+
+
+
+                <script>
+                    function goToPage(i) {
+                        document.getElementById('pageNoInput').value = i;
+                        document.getElementById('form').submit();
+                    }
+
+                    function sortData(sortBy, sortType) {
+                        document.getElementById('sortBy').value = sortBy;
+                        document.getElementById('sortType').value = sortType;
+                        document.getElementById('form').submit();
+                    }
+                </script>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- javascript -->
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

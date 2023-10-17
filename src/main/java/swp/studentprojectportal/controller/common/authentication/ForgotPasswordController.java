@@ -11,7 +11,10 @@ import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.RegisterService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.Validate;
+
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class ForgotPasswordController {
@@ -29,7 +32,7 @@ public class ForgotPasswordController {
     public String forgotPassword(Model model, WebRequest request, HttpSession session) {
         String username = request.getParameter("username").replace(" ", "");;
 
-        User user = userService.getUserByEmailOrPhone(username);
+        User user = new User();
         if(user == null) {
             model.addAttribute("errmsg", "Username is't not correct");
             return "authentication/forgotPassword";
@@ -45,7 +48,7 @@ public class ForgotPasswordController {
         }
 
         if(user.getEmail() != null && !userService.checkExistMail(user.getEmail())) {
-            model.addAttribute("errmsg", "Your email is not correct");
+            model.addAttribute("errmsg", "Your email is not exist");
             return "authentication/forgotPassword";
         }
 
@@ -54,12 +57,20 @@ public class ForgotPasswordController {
             return "authentication/forgotPassword";
         }
 
+        System.out.println(user.getPhone());
         if(user.getPhone() != null && !userService.checkExistPhoneNumber(user.getPhone())) {
-            model.addAttribute("errmsg", "Your phone number is not correct");
+            model.addAttribute("errmsg", "Your phone number is not exist");
             return "authentication/forgotPassword";
         }
 
-        session.setAttribute("userauthen", user);
+        User userauthen  = userService.getUserByEmailOrPhone(username);
+
+        if(userauthen == null) {
+            model.addAttribute("errmsg", "Username is't not correct");
+            return "authentication/forgotPassword";
+        }
+
+        session.setAttribute("userauthen", userauthen);
         session.setAttribute("href", "reset-password");
         return "redirect:/verifypage";
     }
@@ -83,20 +94,37 @@ public class ForgotPasswordController {
         User user= (User) session.getAttribute("user");
 
         // check old password empty
-        if(user.getPassword() != "") {
-            return "redirect:/forgotPassword";
+        try {
+            if(!user.getPassword().equals(Utility.hash(""))) {
+                return "redirect:/forgotPassword";
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(!newPassword.equals(reNewPassword)) {
+            model.addAttribute("errmsg", "New Password and Re-new Password do not match");
+            return "authentication/resetPassword";
+
+        }
+
+        if(!Validate.validPassword(newPassword)) {
+            model.addAttribute("errmsg", "Password must be at least 8 characters, including uppercase, lowercase letters and numbers");
+            return "authentication/resetPassword";
         }
 
         // check equal password and re-password
         if(newPassword.equals(reNewPassword)){
-            user.setPassword(newPassword);
+            try {
+                user.setPassword(newPassword);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
             session.setAttribute("user", user);
             model.addAttribute("errmsg", "Reset password successfully");
             //save to database
             User u = userService.saveUser(user);
             return "redirect:/login";
-        } else {
-            model.addAttribute("errmsg", "New Password and Re-new Password do not match");
         }
 
         return "authentication/resetPassword";

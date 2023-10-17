@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+
+</head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="row px-4">
+                    <div class="col-xl-6 col-md-6">
+                        <h4>Project Member</h4>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item"><a th:href="'../list/' + ${class.id}">Project List</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item active">Project Arrange</li>
+                        </ol>
+                    </div>
+
+                    <div class="col-xl-5 col-md-6 mt-4 text-md-end">
+                        <a th:href="'../list/' + ${class.id}" class="btn btn-primary" style="margin-left: 24px">Done</a>
+                    </div>
+                </div>
+
+                <div class="row px-4">
+                    <div class="col-xl-5 col-md-6">
+                        <h5 th:text="'Class: ' + ${class.className}"></h5>
+                    </div>
+                </div>
+
+                <br>
+
+                <style>
+                    .project{
+                        margin-top: 5vh;
+                        text-align: center;
+                    }
+
+                    .project div:first-child{
+                        position: relative;
+                        padding-top: 2vh;
+                        height: 100%;
+
+                        background-color: #ebecef;
+                        border-radius: 10px;
+
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    .student{
+                        position: relative;
+                        width: 70%;
+                    }
+
+                    .student:hover{
+                        cursor: pointer;
+                    }
+
+                    .student p{
+                        width: 100%;
+                    }
+
+                    .student img{
+                        height: 30%;
+                        aspect-ratio: 1;
+
+                        position: absolute;
+                        right: 2%;
+                        top: 20%;
+                    }
+
+                    .project label{
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                        margin-bottom: 3vh;
+                    }
+                </style>
+
+                <div class="container-fluid px-4">
+                    <div class="row">
+
+                        <div class="col-md-4 project" data-id="-1">
+                            <div class="mb-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                <label class="form-label">No group</label>
+
+                                <div class="student" th:each="student : ${noGroupStudentList}"  th:data-id="${student.id}"
+                                     draggable="true" ondragstart="drag(event)">
+
+                                    <p class="form-control" th:text="${student.student.fullName}"></p>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 project" th:each="project : ${projectList}"
+                             th:data-id="${project.id}">
+                            <div class="mb-3" th:if="${!project.status}"
+                                 ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                <label class="form-label" th:text="${project.groupName}"></label>
+
+                                <div class="student" th:each="student : ${studentList}" th:data-id="${student.id}"
+                                     draggable="true" ondragstart="drag(event)"
+                                     th:if="${student.project!=null && student.project.id == project.id}">
+
+                                    <p class="form-control"
+                                       th:text="${student.student.fullName}"></p>
+
+                                </div>
+                            </div>
+
+                            <div class="mb-3" th:if="${project.status}">
+                                <label class="form-label" th:text="${project.groupName} + '🔒'"></label>
+
+                                <div class="student" th:each="student : ${studentList}" th:data-id="${student.id}"
+                                     th:if="${student.project!=null && student.project.id == project.id}">
+
+                                    <p class="form-control" th:text="${student.student.fullName}"></p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let dragElement = null;
+
+            function drag(event) {
+                dragElement = event.target;
+            }
+
+            function allowDrop(event) {
+                event.preventDefault();
+            }
+
+            function drop(event, element) {
+                event.preventDefault();
+
+                element.appendChild(dragElement);
+
+                // console.log(dragElement.dataset.id + "_" + element.parentNode.dataset.id);
+                fetch(`../arrange-member/${dragElement.dataset.id}/${element.parentNode.dataset.id}`);
+            }
+        </script>
+
+
+        <div th:replace="~{footer}"></div>
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+</body>
+
+</html>

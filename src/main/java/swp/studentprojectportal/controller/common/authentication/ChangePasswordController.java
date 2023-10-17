@@ -7,10 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.Validate;
+
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class ChangePasswordController {
@@ -22,27 +26,34 @@ public class ChangePasswordController {
     }
 
     @PostMapping("/change-password")
-    public String changePassword(WebRequest request, Model model, HttpSession session){
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
-        String reNewPassword = request.getParameter("reNewPassword");
+    public String changePassword(@RequestParam String oldPassword, @RequestParam String newPassword,
+                                 @RequestParam String reNewPassword, Model model, HttpSession session) throws NoSuchAlgorithmException {
         User user= (User) session.getAttribute("user");
-        if(user.getPassword().equals(oldPassword)){
-            if(newPassword.equals(reNewPassword)){
+        System.out.println(user.getPassword()+" "+Utility.hash(oldPassword));
+        model.addAttribute("oldPassword", oldPassword);
+        model.addAttribute("newPassword", newPassword);
+        model.addAttribute("reNewPassword", reNewPassword);
+        if(!user.getPassword().equalsIgnoreCase(Utility.hash(oldPassword))){
+            model.addAttribute("errmsg", "Old Password is incorrect");
+        } else {
+            if(!newPassword.equals(reNewPassword)){
+                model.addAttribute("errmsg", "New Password and Re-new Password do not match");
+            } else {
                 if(Validate.validPassword(newPassword) == false) {
                     model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
-                    return "authentication/changePassword";
+                } else {
+                    if (oldPassword.equals(newPassword)){
+                        model.addAttribute("errmsg", "New password must be different from the old password");
+                    } else {
+                        session.setAttribute("user", user);
+                        model.addAttribute("msg", "Change password successfully");
+                        try {user.setPassword(newPassword);}
+                        catch (NoSuchAlgorithmException e) {throw new RuntimeException(e);}
+                        userService.saveUser(user);
+                        session.setAttribute("user", user);
+                    }
                 }
-                user.setPassword(newPassword);
-                session.setAttribute("user", user);
-                model.addAttribute("errmsg", "Change password successfully");
-                //save to database
-                User u = userService.saveUser(user);
-            } else {
-                model.addAttribute("errmsg", "New Password and Re-new Password do not match");
             }
-        } else {
-            model.addAttribute("errmsg", "Old Password is incorrect");
         }
         return "authentication/changePassword";
     }

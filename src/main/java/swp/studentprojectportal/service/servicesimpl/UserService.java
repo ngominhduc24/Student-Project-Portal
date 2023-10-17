@@ -2,6 +2,8 @@ package swp.studentprojectportal.service.servicesimpl;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +13,9 @@ import swp.studentprojectportal.repository.ISettingRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IUserService;
 import swp.studentprojectportal.utils.GooglePojo;
+import swp.studentprojectportal.utils.Utility;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +68,37 @@ public class UserService implements IUserService {
         List<User> users = userPage.getContent();
         return users;
     }
+
+    public List<User> getUser(Integer pageNo, Integer pageSize, String search, Integer roleId) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        if(roleId != -1){
+            return userRepository.searchUsersAndFilterByRole(search, roleId, pageable).getContent();
+        } else {
+            return userRepository.findUserByFullNameContainsIgnoreCaseOrEmailContainsIgnoreCaseOrPhoneContainsIgnoreCase(search, search, search, pageable).getContent();
+        }
+    }
+
+    /*
+     * pageNo is the index of page, start from 0
+     * pageSize is the number of items in a page
+     * search is the search term for searching name, email, phone
+     * roleId is the role id of user
+     * status is the status of user where 1 is active, 0 is inactive and -1 is all
+     */
+
+    public List<User> getUser(Integer pageNo, Integer pageSize, String search, Integer roleId, Integer status) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        if(status != -1 && roleId != -1) {
+            return userRepository.searchUsersAndFilterByRoleIdAndStatus(search, roleId, status, pageable).getContent();
+        } else if(status != -1) {
+            return userRepository.searchUsersAndFilterByStatus(search, status, pageable).getContent();
+        } else
+        if(roleId != -1){
+            return userRepository.searchUsersAndFilterByRole(search, roleId, pageable).getContent();
+        } else {
+            return userRepository.findUserByFullNameContainsIgnoreCaseOrEmailContainsIgnoreCaseOrPhoneContainsIgnoreCase(search, search, search, pageable).getContent();
+        }
+    }
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
@@ -109,14 +144,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User addUser(String fullName, String email, String phone, String password, int roleId) {
+    public User addUser(String fullName, String email, String phone, int roleId) {
         User user = new User();
 
-        user.setActive(true);
         user.setFullName(fullName);
         user.setEmail(email);
         user.setPhone(phone);
-        user.setPassword(password);
         user.setSetting(settingRepository.findById(roleId).get());
 
         userRepository.save(user);
@@ -126,21 +159,33 @@ public class UserService implements IUserService {
 
     @Override
     public User findUserByEmailAndPassword(String username, String password) {
-        return userRepository.findUserByEmailAndPassword(username, password);
+        try {
+            return userRepository.findUserByEmailAndPassword(username, Utility.hash(password));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public User findUserByPhoneAndPassword(String username, String password) {
-        return userRepository.findUserByPhoneAndPassword(username, password);
+        try {
+            return userRepository.findUserByPhoneAndPassword(username, Utility.hash(password));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public User findUserByUsernameAndPassword(String username, String password) {
         User user;
-        if (username.contains("@"))
-            user = userRepository.findUserByEmailAndPassword(username, password);
-        else
-            user = userRepository.findUserByPhoneAndPassword(username, password);
+        try {
+            if (username.contains("@"))
+                    user = userRepository.findUserByEmailAndPassword(username, Utility.hash(password));
+            else
+                user = userRepository.findUserByPhoneAndPassword(username, Utility.hash(password));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         return user;
     }
 
@@ -151,7 +196,11 @@ public class UserService implements IUserService {
         User newUser = new User();
         newUser.setFullName(fullName);
         newUser.setEmail(googlePojo.getEmail());
-        newUser.setPassword(googlePojo.getId());
+        try {
+            newUser.setPassword(googlePojo.getId());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         newUser.setAvatarUrl(googlePojo.getPicture());
         newUser.setActive(true);
         newUser.setSetting(settingRepository.findById(1).get());
@@ -178,11 +227,33 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public int getTotalPage(int pageSize, int roleId) {
+        long count = userRepository.countAllBySettingId(roleId);
+        int totalPage = count % pageSize == 0 ? (int) (count / pageSize) : (int) (count / pageSize) + 1;
+        return totalPage;
+    }
+
+    @Override
+    public List<User> findTeacherBySubjectManagerId(int subjectManagerId) {
+        return userRepository.findTeacherBySubjectManagerId(subjectManagerId);
+    }
+
+    @Override
+    public List<User> findTeacherByRoleIdAndStatus(Integer roleId, Boolean status) {
+        return userRepository.findTeacherBySettingIdAndStatus(roleId, status);
+    }
+
+    @Override
     public User resetPasswordByToken(String token) {
         User user = userRepository.findUserByToken(token);
         if(user != null) {
             user.setToken(null);
-            user.setPassword("");
+            user.setActive(true);
+            try {
+                user.setPassword("");
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
             userRepository.save(user);
         }
         return user;
@@ -190,6 +261,28 @@ public class UserService implements IUserService {
 
     @Override
     public User getUserByEmailOrPhone(String userName) {
+        userName = userName.replace(" ", "").replace("+84", "0");
         return userRepository.findUserByEmailOrPhone(userName, userName);
     }
+
+    @Override
+    public List<User> findAllProjectMentor() {
+        return userRepository.findAllBySettingIdOrSettingId(3,4);
+    }
+
+    @Override
+    public User getUserById(int id) {
+        return userRepository.getById(id);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public User findByPhone(String phone) {
+        return userRepository.findUserByPhone(phone);
+    }
+
 }

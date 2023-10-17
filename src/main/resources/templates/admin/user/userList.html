@@ -31,6 +31,31 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <style>
+        .caret-up{
+            position: absolute;
+            right: 6px;
+            top: 10px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-down{
+            position: absolute;
+            right: 6px;
+            top: 16px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-up:hover, .caret-down:hover {
+            color: black;
+        }
+        .sort-active{
+            color: black;
+        }
+        th {
+            position: relative;
+        }
+    </style>
 
 
 </head>
@@ -58,11 +83,11 @@
             <div class="layout-specing">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1>User</h1>
+                        <h1>User List</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">User</li>
+                            <li class="breadcrumb-item active">User List</li>
                         </ol>
                     </div><!--end col-->
 
@@ -77,27 +102,65 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            DataTable Example
+                            User Table
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="d-flex col-md-3 pe-5 mb-1 ms-3">
+                                    <input class="form-control form-control-sm ml-3 h-75 w-100" type="text" name="search-input" placeholder="Search"
+                                           aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-md-2 pe-3 me-3" style="margin-left: -14px;">
+                                    <div class="mb-3">
+                                        <select name="roleId" class="form-select">
+                                            <option value="-1">All Role</option>
+                                            <option th:each="role : ${roleList}"
+                                                    th:value="${role.id}"
+                                                    th:text="${role.settingTitle}"></option>
+                                        </select>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-md-2 pe-3">
+                                    <div class="mb-3">
+                                        <select name="status" class="form-select">
+                                            <option value="-1">All Status</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div><!--end col-->
+                            </div>
                             <table id="myTable" class="display">
                                 <thead>
                                 <tr>
-                                    <th>Fullname</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Role</th>
+                                    <th>Id
+                                        <i class="fas fa-caret-up caret-up sort-active"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i>
+                                    </th>
+                                    <th>Fullname
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i>
+                                    </th>
+                                    <th>Email
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i>
+                                    </th>
+                                    <th>Phone
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i></th>
+                                    <th>Role
+                                        <i class="fas fa-caret-up caret-up"></i>
+                                        <i class="fas fa-caret-down caret-down" ></i></th>
                                     <th>Status</th>
-                                    <th>Note</th>
                                     <th>View Details</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-<!--                                Body add by javascript api-->
+                                    <!--Body add by javascript api-->
                                 </tbody>
                             </table>
                             <input type="text" id="countPage" th:value="${totalPage}" hidden="">
-                            <nav aria-label="Page navigation example">
+                            <nav aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item disabled" >
                                         <a class="page-link" style="user-select: none;">Previous</a>
@@ -110,6 +173,70 @@
                                 </ul>
                             </nav>
                         </div>
+
+                        <!--            modal lmao-->
+                        <style>
+                            .modalBack{
+                                position: fixed;
+                                top: 0;
+                                right: 0;
+
+                                width: 100%;
+                                height: 100vh;
+
+                                display: none;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .modalCustom{
+                                width: 30%;
+                                aspect-ratio: 16/9;
+
+                                background-color: white;
+                                border-radius: 10px;
+                                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                flex-direction: column;
+                            }
+                        </style>
+
+                        <div class="modalBack">
+                            <div class="modalCustom">
+                                <h4>Are you sure?</h4>
+                                <br>
+                                <br>
+                                <div>
+                                    <button class="btn btn-secondary" onclick="setModalStatus(true)">Yes</button>
+                                    <button class="btn btn-primary" onclick="setModalStatus(false)">No</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            let modal = document.querySelector('.modalBack');
+                            let modalStatus = false;
+                            let yesCallback;
+                            let noCallback;
+
+                            function setModalStatus(status) {
+                                modalStatus = status;
+                                modal.style.display = 'none';
+
+                                status ? yesCallback() : noCallback();
+                            }
+
+                            function confirmCustom(yesCb, noCb) {
+                                modal.style.display = 'flex';
+                                yesCallback = yesCb;
+                                noCallback = noCb;
+                            }
+                        </script>
+                        <!--            modal lmao-->
+
                     </div>
                 </div>
 
@@ -137,20 +264,22 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#myTable').DataTable({
-            "dom": 'frt<"#toolbar.dt-box"><"dt-box">',
+            "dom": 'rt<"#toolbar.dt-box"><"dt-box">',
             "bInfo": false,
+            "filter": false,
+            "ordering": false
         });
 
-        $("#toolbar").html('<div class="float-left">' +
-            '<p>Page no <span id="currentPageSpan">1</span></p>' +
-            '</div>');
+        // $("#toolbar").html('<div class="float-left">' +
+        //     '<p> <span id="currentPageSpan"> </span></p>' +
+        //     '</div>');
 
         // Initialize the page number
         let currentPage = 1;
 
         // Function to update the page number in the toolbar
         function updatePageNumber() {
-            $("#currentPageSpan").text(currentPage);
+            $("#currentPageSpan").textContent = currentPage;
         }
 
         // Event listener for page change
@@ -166,16 +295,16 @@
 
 <!-- Status update -->
 <script>
-    window.addEventListener('load', function() {
-        // Scroll to the bottom of the page
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
-    });
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
-        if (confirm('Are you sure?'))
-            fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
-        else checkbox.checked = !status;
+        confirmCustom(
+            ()=>{fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)},
+            ()=>{checkbox.checked = !status;});
+
+        // if (confirm('Are you sure?'))
+        //     fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
+        // else checkbox.checked = !status;
     }
 </script>
 
@@ -225,9 +354,11 @@
 
 </script>
 
-
+<input type="hidden" class="sessionAccountId" th:value="${session.user.id}">
 
 <script>
+    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&status=&search=&roleId=`; // Your API endpoint
+
     // Get references to the pagination elements
     const pagination = document.querySelector('.pagination');
     const pageItems = pagination.querySelectorAll('.page-item');
@@ -284,11 +415,12 @@
         return currentPage;
     });
 
+    const sessionAccountId = document.querySelector('.sessionAccountId').value;
     // Function to fetch user data and populate the table
     const  populateUserTable =  (pageNo) => {
         pageNo = pageNo - 1;
-        const apiUrl = `/api/v1/user?pageNo=${pageNo}&pageSize=10`; // Your API endpoint
-
+        // replace the pageNo in the apiUrl
+        apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -300,46 +432,15 @@
                 data.forEach(user => {
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
+                    <td>${user.id}</td>
                     <td>${user.fullName}</td>
-                    <td>${user.email}</td>
-                    <td>${user.phone}</td>
+                    <td>${user.email ? user.email : ''}</td>
+                    <td>${user.phone ? user.phone : ''}</td>
                     <td>${user.setting.settingTitle}</td>
                     <td>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
+                            <input class="form-check-input" type="${user.id==sessionAccountId ? 'hidden' : 'checkbox'}" ${user.status ? 'checked' : ''} onclick="updateStatus(${user.id}, this)">
                         </div>
-                    </td>
-                    <td>
-                        <a href="#" class="showNote" onclick="openDialog(this, ${user.id})">
-                            <i class="fas fa-pen-to-square"></i>
-                        </a>
-                                        <dialog class="userNote">
-                                            <div class="userNote_container">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="modalTitle"></h5>
-                                                            <button type="button" class="close" data-dismissem ="modal"
-                                                                    aria-label="Close" onclick="closeDialog(this)">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p></p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary"
-                                                                    data-dismiss="modal" onclick="closeDialog(this)">
-                                                                Close
-                                                            </button>
-                                                            <button type="button" class="btn btn-secondary">
-                                                                <a th:href="@{'./userDetails?id=' + ${user.id}}" style="color: white;">Edit note</a>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </dialog>
                     </td>
                     <td><a href="./userDetails?id=${user.id}">View Details</a></td>
                 `;
@@ -353,12 +454,68 @@
             });
     }
 
+    // Hande search input change
+    const searchInput = document.querySelector('input[name="search-input"]');
+    searchInput.addEventListener('input', function (event) {
+        const searchValue = event.target.value;
+        // where start with search=
+        let temp = apiUrl.split('&');
+        apiUrl = '';
+        temp.forEach((item) => {
+            if(item.includes('search=')) {
+                apiUrl += `search=${searchValue}`;
+            } else {
+                apiUrl += item;
+            }
+            apiUrl += '&';
+        });
+        apiUrl = apiUrl.slice(0, -1);
+        // replace the search value in the apiUrl
+        populateUserTable(1);
+    });
+
+    // Handle role select change
+    const roleSelect = document.querySelector('select[name="roleId"]');
+    roleSelect.addEventListener('change', function (event) {
+        const roleId = event.target.value;
+        // where start with search=
+        let temp = apiUrl.split('&');
+        apiUrl = '';
+        temp.forEach((item) => {
+            if(item.includes('roleId=')) {
+                apiUrl += `roleId=${roleId}`;
+            } else {
+                apiUrl += item;
+            }
+            apiUrl += '&';
+        });
+        apiUrl = apiUrl.slice(0, -1);
+        // replace the search value in the apiUrl
+        populateUserTable(1);
+    });
+
+    const statusSelect = document.querySelector('select[name="status"]');
+    statusSelect.addEventListener('change', function (event) {
+        const status = event.target.value;
+        // where start with search=
+        let temp = apiUrl.split('&');
+        apiUrl = '';
+        temp.forEach((item) => {
+            if(item.includes('status=')) {
+                apiUrl += `status=${status}`;
+            } else {
+                apiUrl += item;
+            }
+            apiUrl += '&';
+        });
+        apiUrl = apiUrl.slice(0, -1);
+        // replace the search value in the apiUrl
+        populateUserTable(1);
+    });
     document.addEventListener("DOMContentLoaded", () => {
         populateUserTable(1);
     });
 </script>
-
-
 
 </body>
 

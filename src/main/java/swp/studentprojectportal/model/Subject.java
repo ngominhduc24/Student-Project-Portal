@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,6 +25,9 @@ public class Subject {
     @Column(name = "subject_code")
     private String subjectCode;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "status")
     private boolean status = true;
 
@@ -39,7 +43,7 @@ public class Subject {
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "subject_manager_id")
     private User user;
 }

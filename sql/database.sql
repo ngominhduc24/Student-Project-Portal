@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`setting` (
                                                   `id` INT NOT NULL AUTO_INCREMENT,
                                                   `type_id` INT NULL,
                                                   `setting_title` VARCHAR(45) NULL,
+    `description` LONGTEXT NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
@@ -80,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
                                                   `subject_manager_id` INT NULL,
                                                   `subject_name` VARCHAR(255) NULL,
     `subject_code` VARCHAR(45) NULL,
+    `description` VARCHAR(255) NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -93,18 +95,179 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
                                                         ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `swp391`.`assignment`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`assignment` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`assignment` (
+                                                     `id` INT NOT NULL AUTO_INCREMENT,
+                                                     `subject_id` INT NULL,
+                                                     `title` VARCHAR(45) NULL,
+    `status` BIT(1) NULL DEFAULT 1,
+    `description` VARCHAR(245) NULL,
+    `is_subject_assignment` BIT(1) NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    INDEX `a_idx` (`subject_id` ASC) VISIBLE,
+    FOREIGN KEY (`subject_id`)
+    REFERENCES `swp391`.`subject` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`class`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`class` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`class` (
+                                                `id` INT NOT NULL AUTO_INCREMENT,
+                                                `class_name` VARCHAR(245) NULL,
+
+    `description` LONGTEXT NULL,
+    `subject_id` INT NULL,
+    `semester_id` INT NULL,
+    `teacher_id` INT NULL,
+    `status` INT NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    INDEX ` a_idx` (`teacher_id` ASC) VISIBLE,
+    INDEX `b_idx` (`semester_id` ASC) VISIBLE,
+    FOREIGN KEY (`subject_id`)
+    REFERENCES `swp391`.`subject` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`teacher_id`)
+    REFERENCES `swp391`.`user` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`semester_id`)
+    REFERENCES `swp391`.`setting` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`class_assignment`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`milestone` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
+                                                    `id` INT NOT NULL AUTO_INCREMENT,
+                                                    `title` VARCHAR(45) NULL,
+    `description` VARCHAR(245) NULL,
+    `class_id` INT NULL,
+    `project_id` INT NULL,
+    `start_date` DATETIME NULL,
+    `end_date` DATETIME NULL,
+    `status` BIT(1) NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    INDEX `a_idx` (`class_id` ASC) VISIBLE,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`),
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION
+    )
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `swp391`.`project`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`project` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`project` (
+                                                  `id` INT NOT NULL AUTO_INCREMENT,
+                                                  `class_id` INT NULL,
+                                                  `project_mentor_id` INT NULL,
+                                                  `team_leader_id` INT NULL,
+                                                  `title` VARCHAR(45) NULL,
+    `status` BIT(1) NULL,
+    `group_name` VARCHAR(45) NULL,
+    `description` VARCHAR(200) NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    INDEX `a_idx` (`class_id` ASC) VISIBLE,
+    INDEX `a_idx1` (`project_mentor_id` ASC) VISIBLE,
+    INDEX `a_idx2` (`team_leader_id` ASC) VISIBLE,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_mentor_id`)
+    REFERENCES `swp391`.`user` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`team_leader_id`)
+    REFERENCES `swp391`.`user` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `swp391`.`student`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`student_class` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
+                                                        `id` INT NOT NULL AUTO_INCREMENT,
+                                                        `student_id` INT NOT NULL,
+                                                        `class_id` INT NOT NULL,
+                                                        `project_id` INT NULL,
+                                                        `create_by` INT NULL DEFAULT 0,
+                                                        `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+                                                        `update_by` INT NULL DEFAULT 0,
+                                                        `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+                                                        PRIMARY KEY (`id`, `student_id`, `class_id`),
+    INDEX `b_idx` (`class_id` ASC) VISIBLE,
+    INDEX `a_idx` (`project_id` ASC) VISIBLE,
+    FOREIGN KEY (`student_id`)
+    REFERENCES `swp391`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
 -- -----------------------------------------------------
 -- Table `swp391`.`subject_setting`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `swp391`.`subject_setting` ;
+DROP TABLE IF EXISTS `swp391`.`issue_setting` ;
 
-CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
-                                                          `id` INT NOT NULL AUTO_INCREMENT,
-                                                          `subject_id` INT NULL,
-                                                          `type_id` INT NULL,
-                                                          `setting_title` VARCHAR(45) NULL,
+CREATE TABLE IF NOT EXISTS `swp391`.`issue_setting` (
+                                                        `id` INT NOT NULL AUTO_INCREMENT,
+                                                        `subject_id` INT NULL,
+                                                        `class_id` INT NULL,
+                                                        `project_id` INT NULL,
+                                                        `setting_group` VARCHAR(45) NULL,
+    `setting_title` VARCHAR(45) NULL,
+    `description` VARCHAR(200) NULL,
     `status` BIT(1) NULL DEFAULT 1,
-    `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -112,6 +275,14 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`subject_id`)
     REFERENCES `swp391`.`subject` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`class_id`)
+    REFERENCES `swp391`.`class` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
                                                         ON DELETE NO ACTION
                                                         ON UPDATE NO ACTION)
     ENGINE = InnoDB;
@@ -127,80 +298,215 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- 2 = mail domain
 -- 3 = semester
 
-INSERT INTO setting(type_id,setting_title,display_order)
+INSERT INTO setting(type_id,setting_title,description,display_order)
 VALUES
-    (1, "Student",4),
-    (1, "Admin",1),
-    (1, "Subject manager",2),
-    (1, "Teacher",3),
-    (2, "gmail.com",1),
-    (2, "fpt.edu.vn",2),
-    (3, "SUMMER 23",1),
-    (3, "FALL 23",2);
+    (1, "Student","Learner in an educational institution",4),
+    (1, "Admin","A person who manages and oversees administrative tasks to keep things running smoothly in an organization or system",1),
+    (1, "Subject manager","An individual who manages the curriculum and resources related to specific academic subjects",2),
+    (1, "Teacher","a=An educator who imparts knowledge, skills, and guidance to students in a classroom or educational setting",3),
+    (2, "gmail.com","Normal gmail",1),
+    (2, "fpt.edu.vn","Gmail of FPT University",2),
+    (3, "SUMMER 23","Semester start from May to October in 2023",1),
+    (3, "FALL 23","Semester start from September to December in 2023",2);
 
 -- admin
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`role_id`, `active`, `avatar_url`)
 VALUES
-    ("admin@gmail.com","0999999999","admin","Admin",2,1,"/images/user_icon.png");
-
--- subject manager
-INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
-VALUES
-    ("gillianmorris@gmail.com","0224667148","123456","Gillian Morris","/images/user_icon.png",3,1),
-    ("germanebaird3434@gmail.com","0820671142","123456","Germane Baird","/images/user_icon.png",3,0),
-    ("kareemmacdonald4709@gmail.com","0318444787","123456","Kareem Macdonald","/images/user_icon.png",3,1),
-    ("annedonovan3197@gmail.com","0137041646","123456","Anne Donovan","/images/user_icon.png",3,1),
-    ("echonash7303@gmail.com","0534896566","123456","Echo Nash","/images/user_icon.png",3,1);
+    ("admin@gmail.com","0999999999","21232f297a57a5a743894a0e4a801fc3","Admin",2,1,"/images/user_icon.png"),
+    ("subject@gmail.com","0999999998","c4ca4238a0b923820dcc509a6f75849b","Subject manager",3,1,"/images/user_icon.png"),
+    ("class@gmail.com","0999999997","c4ca4238a0b923820dcc509a6f75849b","Class manager",4,1,"/images/user_icon.png"),
+    ("leader@gmail.com","0999999997","c4ca4238a0b923820dcc509a6f75849b","Team leader",1,1,"/images/user_icon.png"),
+    ("mentor@gmail.com","0999999997","c4ca4238a0b923820dcc509a6f75849b","Project mentor",4,1,"/images/user_icon.png");
 
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("julianlester@gmail.com","0027829656","123456","Julian Lester","/images/user_icon.png",1,1),
-    ("galvinbass4030@gmail.com","0037963572","123456","Galvin Bass","/images/user_icon.png",1,1),
-    ("brianmassey@gmail.com","0436285872","123456","Brian Massey","/images/user_icon.png",1,1),
-    ("judahcardenas5324@gmail.com","0681589922","123456","Judah Cardenas","/images/user_icon.png",1,1),
-    ("kellyreyes9226@gmail.com","0363517319","123456","Kelly Reyes","/images/user_icon.png",1,1),
-    ("kevinwilliam@gmail.com","0905521148","123456","Kevin William","/images/user_icon.png",1,1),
-    ("lesleycastro@gmail.com","0571427370","123456","Lesley Castro","/images/user_icon.png",1,1),
-    ("danarosario@gmail.com","0272326964","123456","Dana Rosario","/images/user_icon.png",1,1),
-    ("aimeeewing@gmail.com","0636454167","123456","Aimee Ewing","/images/user_icon.png",1,1),
-    ("amywalton@gmail.com","0858486104","123456","Amy Walton","/images/user_icon.png",1,1);
+    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",4,1),
+    ("galvinbass4030@gmail.com","0037963572","c4ca4238a0b923820dcc509a6f75849b","Galvin Bass","/images/user_icon.png",1,1),
+    ("brianmassey@gmail.com","0436285872","c4ca4238a0b923820dcc509a6f75849b","Brian Massey","/images/user_icon.png",1,1),
+    ("judahcardenas5324@gmail.com","0681589922","c4ca4238a0b923820dcc509a6f75849b","Judah Cardenas","/images/user_icon.png",1,1),
+    ("kellyreyes9226@gmail.com","0363517319","c4ca4238a0b923820dcc509a6f75849b","Kelly Reyes","/images/user_icon.png",1,1),
+    ("kevinwilliam@gmail.com","0905521148","c4ca4238a0b923820dcc509a6f75849b","Kevin William","/images/user_icon.png",1,1),
+    ("lesleycastro@gmail.com","0571427370","c4ca4238a0b923820dcc509a6f75849b","Lesley Castro","/images/user_icon.png",1,1),
+    ("danarosario@gmail.com","0272326964","c4ca4238a0b923820dcc509a6f75849b","Dana Rosario","/images/user_icon.png",1,1),
+    ("aimeeewing@gmail.com","0636454167","c4ca4238a0b923820dcc509a6f75849b","Aimee Ewing","/images/user_icon.png",1,1),
+    ("amywalton@gmail.com","0858486104","c4ca4238a0b923820dcc509a6f75849b","Amy Walton","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("rashadrush2211@gmail.com","0860113768","123456","Rashad Rush","/images/user_icon.png",1,1),
-    ("elainelawrence@gmail.com","0721721061","123456","Elaine Lawrence","/images/user_icon.png",1,1),
-    ("larissareese@gmail.com","0279994112","123456","Larissa Reese","/images/user_icon.png",1,1),
-    ("holleemyers@gmail.com","0532678220","123456","Hollee Myers","/images/user_icon.png",1,1),
-    ("xanthusmcfadden3684@gmail.com","0302569530","123456","Xanthus Mcfadden","/images/user_icon.png",1,1),
-    ("mylesdavidson@gmail.com","0583590348","123456","Myles Davidson","/images/user_icon.png",1,1),
-    ("teegansantana@gmail.com","0547146642","123456","Teegan Santana","/images/user_icon.png",1,1),
-    ("elvisratliff@gmail.com","0911884338","123456","Elvis Ratliff","/images/user_icon.png",1,1),
-    ("rowaningram@gmail.com","0734547525","123456","Rowan Ingram","/images/user_icon.png",1,1),
-    ("oraallen@gmail.com","0298393485","123456","Ora Allen","/images/user_icon.png",1,1);
-
+    ("rashadrush2211@gmail.com","0860113768","c4ca4238a0b923820dcc509a6f75849b","Rashad Rush","/images/user_icon.png",1,1),
+    ("elainelawrence@gmail.com","0721721061","c4ca4238a0b923820dcc509a6f75849b","Elaine Lawrence","/images/user_icon.png",1,1),
+    ("larissareese@gmail.com","0279994112","c4ca4238a0b923820dcc509a6f75849b","Larissa Reese","/images/user_icon.png",1,1),
+    ("holleemyers@gmail.com","0532678220","c4ca4238a0b923820dcc509a6f75849b","Hollee Myers","/images/user_icon.png",1,1),
+    ("xanthusmcfadden3684@gmail.com","0302569530","c4ca4238a0b923820dcc509a6f75849b","Xanthus Mcfadden","/images/user_icon.png",1,1),
+    ("mylesdavidson@gmail.com","0583590348","c4ca4238a0b923820dcc509a6f75849b","Myles Davidson","/images/user_icon.png",1,1),
+    ("teegansantana@gmail.com","0547146642","c4ca4238a0b923820dcc509a6f75849b","Teegan Santana","/images/user_icon.png",1,1),
+    ("elvisratliff@gmail.com","0911884338","c4ca4238a0b923820dcc509a6f75849b","Elvis Ratliff","/images/user_icon.png",1,1),
+    ("rowaningram@gmail.com","0734547525","c4ca4238a0b923820dcc509a6f75849b","Rowan Ingram","/images/user_icon.png",1,1),
+    ("oraallen@gmail.com","0298393485","c4ca4238a0b923820dcc509a6f75849b","Ora Allen","/images/user_icon.png",1,1);
+INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
+VALUES
+    ("longpvhe170788@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","a","/images/user_icon.png",1,1),
+    ("tunghe171091@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","b","/images/user_icon.png",1,1),
+    ("ngoche172779@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","c","/images/user_icon.png",1,1),
+    ("ducnmhe13177@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","d","/images/user_icon.png",1,1),
+    ("haihe176453@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","e","/images/user_icon.png",1,1),
+    ("nhathe176486@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","f","/images/user_icon.png",1,1),
+    ("dunghe176572@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","g","/images/user_icon.png",1,1),
+    ("duche176711@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h","/images/user_icon.png",1,1),
+    ("namhe176727@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","i","/images/user_icon.png",1,1),
+    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","k","/images/user_icon.png",1,1);
 
 -- subject
-INSERT INTO `subject` (`subject_manager_id`,`subject_name`,`subject_code`)
+INSERT INTO `subject` (`subject_manager_id`, `subject_name`, `subject_code`, `description`)
 VALUES
-    (2,"Software development project","SWP391"),
-    (2,"Java Web Application Development","PRJ301"),
-    (3,"Software Requirement","SWR302"),
-    (4,"Software Testing","SWT301"),
-    (5,"Basic Cross-Platform Application Programming With .NET","PRN211"),
-    (6,"Front-End web development with React","FER201m");
+    (2, "Software development project", "SWP391", "Description for Software development project"),
+    (2, "Java Web Application Development", "PRJ301", "Description for Java Web Application Development"),
+    (2, "Software Requirement", "SWR302", "Description for Software Requirement"),
+    (4, "Software Testing", "SWT301", "Description for Software Testing"),
+    (4, "Basic Cross-Platform Application Programming With .NET", "PRN211", "Description for Basic Cross-Platform Application Programming With .NET"),
+    (4, "Front-End web development with React", "FER201m", "Description for Front-End web development with React");
 
--- subject_setting
-INSERT INTO subject_setting(subject_id,type_id,setting_title,display_order)
+
+
+
+INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
-    (1 ,1 , "High",1),
-    (1 ,1, "Medium",2),
-    (1 ,1, "Low",3),
-    (1 ,2, "High",1),
-    (1 ,2, "Medium",2),
-    (1 ,2, "Low",3),
-    (2 ,1, "High",1),
-    (2 ,1, "Medium",2),
-    (2 ,2, "High",1),
-    (2 ,2, "Medium",2),
-    (2 ,2, "Low",3);
+    ("SE1720","Study software engineering",1,7,3,3),
+    ("SE1722","Study software engineering",1,7,3,3),
+    ("SE1704","Study software engineering",1,7,3,3),
+    ("SE1707","Study software engineering",1,7,3,3),
+    ("SE1712","Study software engineering",2,7,6,3),
+    ("SE1715","Study software engineering",2,7,6,3),
+    ("SE1709","Study software engineering",2,7,6,3),
+    ("SE1710","Study software engineering",2,7,6,3),
+    ("SE1740","Study software engineering",1,8,6,2),
+    ("SE1741","Study software engineering",1,8,6,2),
+    ("SE1731","Study software engineering",1,8,6,2),
+    ("SE1736","Study software engineering",1,8,6,1),
+    ("SE1740","Study software engineering",2,8,3,1),
+    ("SE1745","Study software engineering",2,8,3,2),
+    ("SE1734","Study software engineering",2,8,3,2),
+    ("SE1736","Study software engineering",2,8,3,0);
 
+INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
+VALUES
+    (1, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
+    (1, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
+
+INSERT INTO student_class (student_id, class_id, project_id)
+VALUES
+    (6, 1, 1),    -- Student 6 in Project 1
+    (7, 1, 1),    -- Student 7 in Project 1
+    (8, 1, 1),    -- Student 8 in Project 1
+    (9, 1, 1),    -- Student 9 in Project 1
+    (10, 1, 1),   -- Student 10 in Project 1
+    (11, 1, 2),   -- Student 11 in Project 2
+    (12, 1, 2),   -- Student 12 in Project 2
+    (13, 1, 2),   -- Student 13 in Project 2
+    (14, 1, 2),   -- Student 14 in Project 2
+    (15, 1, 2),   -- Student 15 in Project 2
+    (16, 1, 3),   -- Student 16 in Project 3
+    (17, 1, 3),   -- Student 17 in Project 3
+    (18, 1, 3),   -- Student 18 in Project 3
+    (19, 1, 3),   -- Student 19 in Project 3
+    (20, 1, 3),   -- Student 20 in Project 3
+    (21, 1, 4),   -- Student 21 in Project 4
+    (22, 1, 4),   -- Student 22 in Project 4
+    (23, 1, 4),   -- Student 23 in Project 4
+    (24, 1, 4),   -- Student 24 in Project 4
+    (25, 1, 4),   -- Student 25 in Project 4
+    (26, 1, 5),   -- Student 26 in Project 5
+    (27, 1, 5),   -- Student 27 in Project 5
+    (28, 1, 5),   -- Student 28 in Project 5
+    (29, 1, 5),   -- Student 29 in Project 5
+    (30, 1, 5),   -- Student 30 in Project 5
+    (4, 1, 6),   -- Student 4 in Project 6
+    (32, 1, 6),   -- Student 32 in Project 6
+    (33, 1, 6),   -- Student 33 in Project 6
+    (34, 1, 6),   -- Student 34 in Project 6
+    (35, 1, 6),   -- Student 35 in Project 6
+    (31, 1, null);
+
+INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
+VALUES
+    (1,'Review Iteration 1','Review docs and code iteration 1 all group',1),
+    (1,'Review Iteration 2','Review docs and code iteration 2 all group',1),
+    (1,'Review Iteration 3','Review docs and code iteration 3 all group',1),
+    (2,'Practice HTML','Do 10 exercise about HTML',1),
+    (2,'Practice CSS','Do 13 exercise about CSS',1),
+    (2,'Practice Javascript','Do 15 exercise about JS',1),
+    (2,'Java Servlet','Intro to JavaServlet + JSP',1),
+    (2,'Connect to Database','Learn JDBC',1),
+    (3,'Requirement','Write requirement for SWP project',1),
+    (3,'Write Document','Write SRS document for SWP project',1),
+    (4,'Testcase design','Design testcase for login page, register page',1),
+    (4,'Test technique','Dymanic test + static test',1),
+    (6,'React App','Make React App to print "Hello React"',1),
+    (6,'JS ES6','Learn new synctax in JS ES6',1);
+
+INSERT INTO milestone (`title`,`description`,`status`,`class_id`,`start_date`, `end_date`)
+VALUES
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,'2023-09-05', '2023-09-26'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,'2023-09-27', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,'2023-10-18', '2023-11-08'),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,2,'2023-09-05', '2023-09-25'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2,'2023-09-26', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,2,'2023-10-18', '2023-11-09'),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,3,'2023-09-05', '2023-09-25'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,3,'2023-09-28', '2023-10-17'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,'2023-10-18', '2023-11-08'),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,5,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,5,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,5,'2023-10-18', '2023-11-08'),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
+    
+-- issue_setting
+INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
+VALUES
+    (1 ,"Process", "Coding","Trong giai đoan code",1),
+    (1 ,"Process", "Design","Trong giai đoan thiet ke",0),
+    (1 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
+    (1 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
+    (1 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
+    (1 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
+    (1 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1),
+    (2 ,"Process", "Coding","Trong giai đoan code",1),
+    (2 ,"Process", "Design","Trong giai đoan thiet ke",1),
+    (2 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
+    (2 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
+    (2 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
+    (2 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
+    (2 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1),
+    (3 ,"Process", "Coding","Trong giai đoan code",1),
+    (3 ,"Process", "Design","Trong giai đoan thiet ke",1),
+    (3 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
+    (3 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
+    (3 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
+    (3 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
+    (3 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1);
+
+INSERT INTO issue_setting(class_id,setting_group,setting_title,description, status)
+VALUES
+    (1 ,"Process", "Req","Trong giai đoan requirement",1),
+    (1 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (1 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (1 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",0),
+    (1 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1),
+    (2 ,"Process", "Req","Trong giai đoan requirement",1),
+    (2 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (2 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (2 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
+    (2 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1),
+    (2 ,"Type","Risks", "Các vấn đề rủi ro theo dõi các rủi ro tiềm ẩn đối với dự án, cùng với các kế hoạch giảm thiểu.",1),
+    (3 ,"Process", "Req","Trong giai đoan requirement",1),
+    (3 ,"Process", "Testing","Trong giai đoan kiem thu",1),
+    (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
+    (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
+    

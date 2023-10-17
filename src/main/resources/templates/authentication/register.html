@@ -36,7 +36,7 @@
 <!-- Loader -->
 
 <div class="back-to-home rounded d-none d-sm-block">
-    <a href="/static" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+    <a href="/" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
 </div>
 
 <!-- Hero Start -->
@@ -54,20 +54,26 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Full name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Full name" name="fullname" required="">
+                                        <input type="text" class="form-control" placeholder="Full name" name="fullname" th:value="${fullname}" required="">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Your Username <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Email address or phone number" name="username" required="">
+                                        <label class="form-label">Email address or phone number<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Your Email address or phone number" name="username" th:value="${username}" required="">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Password <span class="text-danger">*</span></label>
-                                        <p style="font-size: 11px; color:red; padding-left: 4px; margin: 0px">Contain at least 8 characters and have uppercase, lowercase, and number.</p>
+                                        <p style="font-size: 11px; color:#a3a1a1; padding-left: 4px; margin: 0px">Contain at least 8 characters and have uppercase, lowercase, and number.</p>
                                         <input type="password" class="form-control" placeholder="Password" name="password" required="">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" placeholder="Re-Password" name="confirmPassword" required="">
                                     </div>
                                 </div>
                                 <div class="col-md-12">

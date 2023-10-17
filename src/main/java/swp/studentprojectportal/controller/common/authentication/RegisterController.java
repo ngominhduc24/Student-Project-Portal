@@ -12,6 +12,8 @@ import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.Validate;
 
+import java.security.NoSuchAlgorithmException;
+
 @Controller
 public class RegisterController {
     @Autowired
@@ -20,16 +22,25 @@ public class RegisterController {
     UserService userService;
     @Autowired
     SettingService settingService;
+
     @GetMapping("/register")
     public String registerPage(Model model) {
         return "register";
     }
+
     @PostMapping("/register")
-    public String registerAccount(WebRequest request, Model model, HttpSession session) {
-        String fullname = request.getParameter("fullname");
+    public String registerAccount(WebRequest request, Model model, HttpSession session)
+            throws NoSuchAlgorithmException {
+        // get parameter from request
+        String fullname = request.getParameter("fullname").trim();
         String termCheckbox = request.getParameter("termCheckbox");
         String username = request.getParameter("username").replace(" ", "");
         String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
+
+        // set session to save data
+        session.setAttribute("r-fullname", fullname);
+        session.setAttribute("r-username", username);
 
         // create model user
         User user = new User();
@@ -38,48 +49,68 @@ public class RegisterController {
         user.setPassword(password);
         user.setSetting(settingService.findById(userRoleId));
 
-        if(Validate.validEmail(username)) {
+        if (Validate.validEmail(username)) {
             user.setEmail(username);
             session.setAttribute("verifyMail", true);
         }
-        if(Validate.validPhoneNumber(username)) {
+        if (Validate.validPhoneNumber(username)) {
             user.setPhone(username);
             session.setAttribute("verifyMail", false);
         }
 
-        if(termCheckbox == null) {
-            model.addAttribute("errmsg", "You must agree with our term and condition");
-            return "authentication/register";
+        // Validate Full Name
+        if (!Validate.validFullname(fullname)) {
+            return handleError(model, session, "Fullname must contain at least 2 words");
         }
 
-        if(user.getEmail() == null && user.getPhone() == null) {
-            model.addAttribute("errmsg", "Invalid email or phone number");
-            return "authentication/register";
+        // Check Term Checkbox
+        if (termCheckbox == null) {
+            return handleError(model, session, "You must agree with our terms and conditions");
         }
 
-        if(user.getEmail() != null && userService.checkExistMail(user.getEmail())) {
-            model.addAttribute("errmsg", "Email already exist!");
-            return "authentication/register";
+        // Validate Email or Phone
+        if (user.getEmail() == null && user.getPhone() == null) {
+            return handleError(model, session, "Invalid email or phone number");
         }
 
-        if(user.getEmail() != null &&!userService.checkEmailDomain(user.getEmail())) {
-            model.addAttribute("errmsg", "Email domain is not allowed!");
-            return "authentication/register";
+        // Check Email Existence
+        if (user.getEmail() != null) {
+            if (userService.checkExistMail(user.getEmail())) {
+                return handleError(model, session, "Email already exists!");
+            }
+            if (!userService.checkEmailDomain(user.getEmail())) {
+                return handleError(model, session, "Email domain is not allowed!");
+            }
         }
 
+        // Check Phone Number Existence
         if (user.getPhone() != null && userService.checkExistPhoneNumber(user.getPhone())) {
-            model.addAttribute("errmsg", "Phone number already exist!");
-            return "authentication/register";
+            return handleError(model, session, "Phone number already exists!");
         }
 
-        if(Validate.validPassword(password) == false) {
-            model.addAttribute("errmsg", "Password must contain at least 8 characters and have uppercase, lowercase, and number");
-            return "authentication/register";
+        // Validate Password
+        if (!Validate.validPassword(password)) {
+            return handleError(model, session, "Password must contain at least 8 characters and have uppercase, lowercase, and a number");
+        }
+
+
+        if (!password.equals(confirmPassword)) {
+            return handleError(model, session, "Password and confirm password must be the same");
         }
 
         // set session to verify
         session.setAttribute("userauthen", user);
         session.setAttribute("href", "verify");
         return "redirect:/verifypage";
+    }
+
+    // Helper method to handle errors
+    private String handleError(Model model, HttpSession session, String errorMessage) {
+        model.addAttribute("errmsg", errorMessage);
+        model.addAttribute("fullname", session.getAttribute("r-fullname"));
+        model.addAttribute("username", session.getAttribute("r-username"));
+        session.removeAttribute("r-fullname");
+        session.removeAttribute("r-username");
+        return "authentication/register";
     }
 }

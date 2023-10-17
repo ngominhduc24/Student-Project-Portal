@@ -59,28 +59,18 @@
         <div class="row">
           <div class="col-lg-8 mt-4">
             <div class="card border-0 p-4 rounded shadow">
-              <form action="/profile" method="post">
+              <form action="/profile" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <div class="row">
-<!--                  <div class="col-md-12">-->
-<!--                    &lt;!&ndash;                                                        <img src="${user.avatarUrl}" class="avatar avatar-ex-small rounded-circle" alt="">&ndash;&gt;-->
-<!--                    &lt;!&ndash;                                                        <img src="/images/user_icon.png" class="avatar avatar-ex-small rounded-circle" alt="">&ndash;&gt;-->
-<!--                    <img th:src="@{${user.avatarUrl}}" class="avatar avatar-ex-small rounded-circle" alt="">-->
-<!--                    &lt;!&ndash;                                                        <form id="uploadAvatarForm" action="/updateProfile" enctype="multipart/form-data">&ndash;&gt;-->
-<!--                    &lt;!&ndash;                                                            <button type="submit" class="btn btn-link" id="editAvatarButton">Edit Avatar</button>&ndash;&gt;-->
-<!--                    &lt;!&ndash;                                                            <input type="file" id="avatarInput" name="avatar" accept="image/*">&ndash;&gt;-->
-<!--                    &lt;!&ndash;                                                            <input type="hidden" id="avatarPathInput" name="avatarPath" value="">&ndash;&gt;-->
-<!--                    &lt;!&ndash;&lt;!&ndash;                                                            <button type="submit" class="btn btn-primary" style="display: none;">Upload</button>&ndash;&gt;&ndash;&gt;-->
-<!--                    &lt;!&ndash;                                                        </form>&ndash;&gt;-->
-<!--                  </div>-->
                   <div class="col-md-12">
-                    <div class="mb-3">
-                      <label class="form-label">Avatarurl</label>
-                      <input name="avatarUrl" type="text" class="form-control"
-                             th:value="${user.avatarUrl}">
-                    </div>
-                  </div><!--end col-->
+                    <img th:src="@{${user.avatarUrl}}" class="avatar avatar-ex-small rounded-circle" alt="">
+                    <input name="image" type="file" class="form-control" accept="image/*">
 
+<!--                          <div class="mb-3">-->
+<!--                              <label class="form-label">Upload image</label>-->
+<!--                              -->
+<!--                          </div>-->
+                  </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Fullname</label>
@@ -119,7 +109,6 @@
 
                     </div>
                   </div><!--end col-->
-
 
                 </div><!--end row-->
                 <div class="row">

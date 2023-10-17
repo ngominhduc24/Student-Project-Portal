@@ -1,6 +1,7 @@
 package swp.studentprojectportal.controller.admin;
 
 import jakarta.servlet.http.HttpSession;
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.service.servicesimpl.EmailService;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.Validate;
 
 import java.util.Optional;
@@ -27,16 +30,15 @@ public class UserController {
     @Autowired
     SettingService settingService;
 
+    @Autowired
+    EmailService emailservice;
+
     @GetMapping("/user")
     public String userList(Model model,
             @RequestParam(defaultValue = "0") int page) {
-//        if (page<0) page = 0;
-//        List<User> UserList = userService.getUser(page, 10);
-
-//        model.addAttribute("userList", UserList);
         model.addAttribute("page", page);
         model.addAttribute("totalPage", userService.getTotalPage(10));
-
+        model.addAttribute("roleList", settingService.getAllRole());
         return "admin/user/userList";
     }
 
@@ -52,18 +54,74 @@ public class UserController {
             @RequestParam String email,
             @RequestParam String phone,
             @RequestParam int roleId,
-            @RequestParam String password,
             Model model) {
 
-        String errorMsg = checkValidate(email, phone);
+        model.addAttribute("roleList", settingService.getAllRole());
+        model.addAttribute("fullName", fullName);
+        model.addAttribute("phone", phone);
+        model.addAttribute("email", email);
+        model.addAttribute("roleId", roleId);
 
-        if(errorMsg!=null) {
-            model.addAttribute("error", errorMsg);
-            model.addAttribute("roleList", settingService.getAllRole());
+        if(!Validate.validFullname(fullName)) {
+            model.addAttribute("error", "Invalid Full Name!");
             return "admin/user/userAdd";
         }
 
-        int newUserId = userService.addUser(fullName, email, phone, password, roleId).getId();
+        if(email.isEmpty() && phone.isEmpty()) {
+            model.addAttribute("error", "Please input email or phone number!");
+            return "admin/user/userAdd";
+        }
+
+        //check email
+        if(!email.isEmpty() && !Validate.validEmail(email)) {
+            model.addAttribute("error", "Email is invalid!");
+            return "admin/user/userAdd";
+        }
+
+        if(!email.isEmpty() && userService.checkExistMail(email)) {
+            model.addAttribute("error", "Email already exist!");
+            return "admin/user/userAdd";
+        }
+
+        if(!email.isEmpty() && !userService.checkEmailDomain(email)) {
+            model.addAttribute("error", "Email domain is not allowed!");
+            return "admin/user/userAdd";
+        }
+
+        //check phone
+        if(!phone.isEmpty() && !Validate.validPhoneNumber(phone)) {
+            model.addAttribute("error", "Phone is invalid!");
+            return "admin/user/userAdd";
+        }
+
+        if(!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) {
+            model.addAttribute("error", "Phone already exist!");
+            return "admin/user/userAdd";
+        }
+
+        User user = new User();
+        user.setActive(false);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setSetting(settingService.findById(roleId));
+
+        int newUserId =  userService.saveUser(user).getId();
+
+        //if add with email -> send mail
+        if(!email.isEmpty()) {
+            String token = RandomString.make(30); // generate token
+
+            // gen token
+            user.setToken(token);
+
+            // send mail
+            String href = "reset-password";
+            String tokenSender = Utility.getSiteURL() + "/" + href + "?key=" + token;
+
+            emailservice.sendEmail(user.getFullName(), user.getEmail(), tokenSender);
+        }
+
         return "redirect:./userDetails?id=" + newUserId;
     }
 
@@ -83,7 +141,7 @@ public class UserController {
         model.addAttribute("roleList", settingService.getAllRole());
 
         //check validate before update
-        String msg = checkValidateUpdate(email, phone, userUpdate);
+        String msg = checkValidateUpdateUser(email, phone, userUpdate);
         if (msg != null) {
             model.addAttribute("errorMsg", msg);
         } else {
@@ -121,20 +179,27 @@ public class UserController {
         return "redirect:/";
     }
 
-    private String checkValidate(String email, String phone) {
+//    private String checkValidateUser(String email, String phone) {
+//        email = email.trim();
+//        phone = phone.trim();
+//
+//        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
+//        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
+//
+//        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
+//        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
+//
+//        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
+//        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
+//
+//        return null;
+//    }
+
+    private String checkValidateUpdateUser(String email, String phone, User user) {
+        email = email.trim();
+        phone = phone.trim();
+
         if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
-        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
-
-        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
-        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
-
-        if (!email.isEmpty() && userService.checkExistMail(email)) return "Email existed!";
-        if (!phone.isEmpty() && userService.checkExistPhoneNumber(phone)) return "Phone number existed!";
-
-        return null;
-    }
-
-    private String checkValidateUpdate(String email, String phone, User user) {
         if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
 
         if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";

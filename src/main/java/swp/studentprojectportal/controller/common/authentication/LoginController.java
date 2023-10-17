@@ -18,7 +18,6 @@ import java.io.IOException;
 
 @Controller
 public class LoginController {
-    private final String afterLoginRoute = "/home";
 
     @Autowired
     UserService userService;
@@ -39,25 +38,38 @@ public class LoginController {
     @PostMapping("/login")
     public String userLogin(@RequestParam String username, @RequestParam String password,
             Model model, HttpSession session, HttpServletResponse response, WebRequest request) {
-        String remember = request.getParameter("remember");
-        Cookie cu= new Cookie("cuser", username);
-        Cookie cp= new Cookie("cpass", password);
-        Cookie cr= new Cookie("crem", remember);
-        userService.setCookie(cu,cp,cr,remember);
-        response.addCookie(cu);
-        response.addCookie(cp);
-        response.addCookie(cr);
+        username = username.replace("+84", "0").replace(" ", "");
         model.addAttribute("cuser", username);
         model.addAttribute("cpass", password);
-        model.addAttribute("crem", remember);
-        User user = userService.findUserByUsernameAndPassword(username, password);
+        if(username.length()>35){
+            model.addAttribute("errmsg", "Your username is too long");
+            return "authentication/login";
+        }
+        User user = userService.findUserByUsernameAndPassword(username.trim(), password);
         if(user != null && user.isActive() && user.isStatus()) {
             session.setAttribute("user", user);
-            return "redirect:" + afterLoginRoute;
+            //add to cookie
+            String remember = request.getParameter("remember");
+            Cookie cu= new Cookie("cuser", username);
+            Cookie cp= new Cookie("cpass", password);
+            Cookie cr= new Cookie("crem", remember);
+            userService.setCookie(cu,cp,cr,remember);
+            response.addCookie(cu);
+            response.addCookie(cp);
+            response.addCookie(cr);
+            if(user.getSetting().getId()==2)
+                return "redirect:admin/home" ;
+            if(user.getSetting().getId()==3)
+                return "redirect:subject-manager/home" ;
+            if(user.getSetting().getId()==4)
+                return "redirect:class-manager/home" ;
         } else if (user==null){
             model.addAttribute("errmsg", "Username or password is not correct");
         } else if(!user.isActive()) {
             model.addAttribute("errmsg", "Your account has not been verified");
+            session.setAttribute("userauthen", user);
+            session.setAttribute("href", "verify");
+            return "redirect:/verifypage";
         } else if(!user.isStatus()) {
             model.addAttribute("errmsg", "Your account has been blocked");
         }
@@ -75,20 +87,26 @@ public class LoginController {
                 model.addAttribute("errmsg", "Your account is not allowed to log into the system");
                 return "login";
             }
+            User user = new User();
             if (!userService.checkExistMail(googlePojo.getEmail())) {
-                User user = userService.registerAccountFromGoogle(googlePojo);
+                user = userService.registerAccountFromGoogle(googlePojo);
                 session.setAttribute("user", user);
-                return "redirect:" + afterLoginRoute;
             } else {
-                User user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
+                user = userService.findUserByEmailAndPassword(googlePojo.getEmail(), googlePojo.getId());
                 if (!user.isStatus()) {
                     model.addAttribute("errmsg", "Your account has been blocked");
                     return "login";
                 }
                 session.setAttribute("user", user);
-                return "redirect:" + afterLoginRoute;
             }
-
+            if(user.getSetting().getId()==2)
+                return "redirect:admin/home" ;
+            else if(user.getSetting().getId()==3)
+                return "redirect:subject-manager/home" ;
+            else if (user.getSetting().getId()==4)
+                return "redirect:class-manager/home" ;
+            else
+                return "redirect:admin/home" ;
         }
     }
 

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"/>
+  <title th:text="${@title}"></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+  <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+  <meta name="author" content="Shreethemes"/>
+  <meta name="email" content="support@shreethemes.in"/>
+  <meta name="website" content="../../../index.html"/>
+  <meta name="Version" content="v1.2.0"/>
+  <!-- favicon -->
+  <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+  <!-- Bootstrap -->
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- simplebar -->
+  <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+  <!-- Select2 -->
+  <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+  <!-- Date picker -->
+  <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+  <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- Icons -->
+  <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+  <!-- Css -->
+  <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+  <!-- Datatables -->
+  <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+  <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+</head>
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+  <div id="status">
+    <div class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
+  </div>
+</div>
+<!-- Loader -->
+
+<h6 id="loader">System are loading ... Please wait!</h6>
+
+<div id="root">
+<div class="page-wrapper doctris-theme toggled">
+  <!-- sidebar-wrapper  -->
+  <div th:replace="~{dashboardSidebar}"></div>
+
+  <!-- Start Page Content -->
+  <main class="page-content bg-light">
+    <div th:replace="~{dashboardHeader}"></div>
+    <div class="topnav" style="margin-top: 40px">
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
+      <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
+      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>
+    </div>
+    <form class="card-body rounded-3" action="#" id="form">
+    <div class="container-fluid">
+      <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+        <div class="row px-4">
+          <div class="col-xl-5 col-md-6">
+            <h3 style="margin-top: -14px;margin-bottom: 20px;" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
+            <ol class="breadcrumb mb-2">
+              <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+              <li class="breadcrumb-item">/</li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+              <li class="breadcrumb-item">/</li>
+              <li class="breadcrumb-item active">Student List</li>
+              <li class="breadcrumb-item" name="reloadPage" style="color: red"></li>
+              <div th:if="${numberStudentAdded != null}">
+                <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' student to class'"></li>
+              </div>
+              <li class="breadcrumb-item active"></li>
+            </ol>
+          </div><!--end col-->
+          <div th:text="${classId}" id="classId" hidden="hidden"></div>
+          <div class="col-xl-4 col-md-6"></div>
+
+          <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -4px;">
+            <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #fca310 " >
+              <a style="color: white;" th:href="'/class-manager/class/syncStudent?classId=' + ${classId}"><i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1 1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0 0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
+               Synchronize with FAP</a></button>
+            <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
+              <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+              Add student to class</button>
+            <div style="margin-top: 7px; margin-bottom: 5px">
+              <a th:href="'/api/v1/export/student/'+${classId}" target="_blank" type="button" class="btn" style="width: 113px; background-color: #24915f; color: white">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>
+                Export</a>
+              <button type="button" class="btn" style="width: 113px; background-color: #1c563b; color: white" onclick="showModal(event)">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>
+                Import</button>
+            </div>
+            </div><!--end col-->
+        </div><!--end row-->
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalAddStudent" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="card-body">
+                <div class="d-flex mb-2">
+                  <input class="form-control form-control-sm ml-3 h-75 w-100" style="padding: 10px" type="text" name="search-input" placeholder="Search"
+                         aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
+                </div>
+                <table id="add-student" class="table table-striped" style="text-align: left">
+                  <thead>
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <input type="text" id="countPage" th:value="${totalPage}" hidden="">
+                <nav aria-label="Page navigation example" style="margin-top: 20px;">
+                  <ul class="pagination justify-content-end">
+                    <li class="page-item disabled" >
+                      <a class="page-link" style="user-select: none;">Previous</a>
+                    </li>
+                    <li class="page-item active" ><a class="page-link" style="user-select: none;">1</a></li>
+                    <li class="page-item"><a class="page-link" style="user-select: none;">2</a></li>
+                    <li class="page-item" >
+                      <a class="page-link" style="user-select: none;">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid px-4">
+          <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-table me-1"></i>
+                Student List
+            </div>
+            <div class="card-body">
+              <table id="myTable" class="display">
+                <thead>
+                <tr>
+                  <th>Fullname</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Project team</th>
+                  <th>Status</th>
+                  <th>View Details</th>
+                  <th>Remove to class</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${studentList}">
+                  <td th:text="${user.getStudent().getFullName()}"></td>
+                  <td th:text="${user.getStudent().getEmail() == null ? 'None' : user.getStudent().getEmail()}"></td>
+                  <td th:text="${user.getStudent().getPhone() == null ? 'None' : user.getStudent().getPhone()}"></td>
+                  <td th:text="${user.getProject() == null ? 'No group yet' : user.getProject().getGroupName()}"></td>
+                  <td>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:onclick="'updateStatus(' + ${user.id} + ', this)'">
+                    </div>
+                  </td>
+                  <td><a th:href="@{'/class-manager/class/studentDetails?studentId=' + ${user.getStudent().getId()}}">View Details</a>
+                  </td>
+                  <td>
+                    <div style="">
+                      <a class="btn btn-danger w-75 p-0" th:href="@{'/class-manager/class/removeStudentFromClass?studentId=' + ${user.getStudent().getId()} + '&classId=' + ${classId}}" style="color: white; ">-</a>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!--end container-->
+    </form>
+    <div th:replace="~{footer}"></div>
+
+    <!-- End -->
+  </main>
+  <!--End page-content" -->
+
+  <!--            modal lmao-->
+  <style>
+    .modalBack{
+      position: fixed;
+      top: 0;
+      right: 0;
+
+      width: 100%;
+      height: 100vh;
+
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modalCustom{
+      width: 30%;
+      aspect-ratio: 16/9;
+
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  </style>
+
+  <div class="modalBack">
+    <div class="modalCustom">
+      <h4>Upload Excel file: </h4>
+      <br>
+      <br>
+      <form action="./importStudent" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx, .xls" class="form-control" required>
+        <input type="hidden" name="classId" th:value="${classId}">
+        <br>
+        <div style="display: flex; justify-content: space-around">
+          <input type="submit" value="Upload" class="btn btn-primary">
+          <input type="button" value="Cancel" class="btn btn-secondary" onclick="hideModal()">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let importModal = document.querySelector('.modalBack');
+
+    function hideModal() {
+      importModal.style.display = 'none';
+    }
+
+    function showModal(event) {
+      event.preventDefault();
+      importModal.style.display = 'flex';
+    }
+  </script>
+  <!--            modal lmao-->
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  const syncFapElement = document.getElementById('syncFap');
+  const preloaderElement = document.getElementById('loader');
+  const rootElement = document.getElementById('root');
+  let s = 'a'
+  syncFapElement.addEventListener('click', function () {
+    rootElement.style.display = 'none';
+    // preloaderElement.style.display = 'block';
+  });
+
+
+  $(document).ready(function () {
+    $('#myTable').DataTable({
+      "dom": 'frtipl',
+      "bInfo" : false
+    });
+  });
+</script>
+
+<!-- Status update -->
+<script>
+  function updateStatus(id, checkbox) {
+    let status = checkbox.checked;
+
+    if (confirm('Are you sure?'))
+      fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
+    else checkbox.checked = !status;
+  }
+</script>
+
+<!-- User Note -->
+<script>
+  // Get dialog element
+  function openDialog(element) {
+    // Find the closest dialog element to the clicked anchor tag
+    const dialog = element.closest('tr').querySelector('.userNote');
+
+    // Check if a dialog is found, and then show it
+    if (dialog) {
+      dialog.showModal();
+    }
+
+    // Close dialog when clicking outside of it
+    dialog.addEventListener("click", e => {
+      let dialogDimensions = dialog.getBoundingClientRect()
+      if(e.clientX < dialogDimensions.left ||
+              e.clientX > dialogDimensions.right ||
+              e.clientY < dialogDimensions.top ||
+              e.clientY > dialogDimensions.bottom) {
+        dialog.close();
+      }
+    })
+  }
+
+  // Close dialog when pressing cancel button
+  function closeDialog(element) {
+    const dialog = element.closest('dialog');
+    dialog.close();
+  }
+
+</script>
+
+
+<!-- fetch dataq for add new student to class -->
+<script>
+  let apiUrl = `/api/v1/student?pageNo=1&pageSize=10&search=`; // Your API endpoint
+  let classId = '';
+  try {
+    classId = window.location.href.split("classId=")[1];
+  } catch (e) {
+    console.log(e);
+  }
+
+  // Get references to the pagination elements
+  const pagination = document.querySelector('.pagination');
+  const pageItems = pagination.querySelectorAll('.page-item');
+  const pageLinks = pagination.querySelectorAll('.page-link');
+
+  // Find the maximum page number from the "countPage" div
+  let countPage = parseInt(document.getElementById('countPage').value);
+  let currentPage = 1;
+
+  if(countPage == 1) {
+    pageItems[0].classList.add('disabled');
+    pageItems[3].classList.add('disabled');
+    pageItems[2].remove();
+  }
+
+  // Handle "Previous" button click
+  pageLinks[0].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[0].classList.contains('disabled') === false) {
+      currentPage --;
+      pageItems[3].classList.remove('disabled');
+      if (pageLinks[2].textContent == 2) {
+        // Special case: When currentPage is 2, just change the active state
+        pageItems[1].classList.add('active');
+        pageItems[2].classList.remove('active');
+        pageItems[0].classList.add('disabled');
+      } else {
+        // Otherwise, decrement currentPage
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) - 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) - 1;
+      }
+      populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  // Handle "Next" button click
+  pageLinks[3].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[3].classList.contains('disabled') === false) {
+      currentPage++;
+      pageItems[0].classList.remove('disabled');
+      if(pageLinks[1].textContent == countPage - 1) {
+        // Special case: When currentPage is the second last page, just change the active state
+        pageItems[1].classList.remove('active');
+        pageItems[2].classList.add('active');
+        pageItems[3].classList.add('disabled');
+      } else {
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) + 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) + 1;
+      }
+      populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  // Function to fetch user data and populate the table
+  const  populateUserTable =  (pageNo) => {
+    pageNo = pageNo - 1;
+    // replace the pageNo in the apiUrl
+    apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
+    fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+              // Clear the table first
+              const tableBody = document.querySelector('table#add-student tbody');
+
+              // Clear existing rows
+              tableBody.innerHTML = '';
+              data.forEach(user => {
+                const newRow = document.createElement('tr');
+                fetch('/api/v1/student/checkClass?studentId=' + user.id + '&classId=' + classId)
+                        .then(response => response.json())
+                        .then(inClass => {
+                          if (inClass) {
+                            newRow.innerHTML = `
+                              <td>${user.fullName}</td>
+                              <td>${user.email || ''}</td>
+                              <td>${user.phone || ''}</td>
+                              <td>Student has inside class</td>
+                            `;
+                          } else {
+                            newRow.innerHTML = `
+                              <td>${user.fullName}</td>
+                              <td>${user.email || ''}</td>
+                              <td>${user.phone || ''}</td>
+                              <td>
+                                <button name="addstudent" type="button" class="btn btn-success w-75 p-0" onclick="addStudent(${user.id})">+</button>
+                              </td>
+                            `;
+                          }
+                        })
+                        .catch(error => {
+                          console.error('Error fetching user data:', error);
+                        });
+
+                tableBody.appendChild(newRow);
+              });
+            })
+            .catch(error => {
+              console.error('Error fetching user data:', error);
+              // Handle errors here (e.g., display an error message)
+            });
+  }
+
+  // Hande search input change
+  const searchInput = document.querySelector('input[name="search-input"]');
+  searchInput.addEventListener('input', function (event) {
+    const searchValue = event.target.value;
+    // where start with search=
+    let temp = apiUrl.split('&');
+    apiUrl = '';
+    temp.forEach((item) => {
+      if(item.includes('search=')) {
+        apiUrl += `search=${searchValue}`;
+      } else {
+        apiUrl += item;
+      }
+      apiUrl += '&';
+    });
+    apiUrl = apiUrl.slice(0, -1);
+    // replace the search value in the apiUrl
+    populateUserTable(1);
+  });
+
+  // handel add student to class
+
+  let modalAddStudent = document.getElementById('modalAddStudent');
+  function startInterval() {
+    return window.setInterval(function () {
+      let reload = document.querySelector('li[name="reloadPage"]');
+      if (reload.textContent == 'Student have been added to class, reload page to see changes!' && modalAddStudent.classList.contains('show') == false) {
+        location.reload();
+      }
+      if (reload.textContent != 'Student have been added to class, reload page to see changes!') {
+        clearInterval(intervalId);
+      }
+    }, 3000);
+  }
+  var intervalId = startInterval();
+  function addStudent(studentId) {
+        fetch('/api/v1/student/addStudentToClass?studentId=' + studentId + '&classId=' + classId)
+                .then(response => response.json())
+                .then(data => {
+                if (data) {
+                    console.log('Add student to class successfully');
+                    populateUserTable(currentPage);
+                    let reload = document.querySelector('li[name="reloadPage"]');
+                    reload.textContent = 'Student have been added to class, reload page to see changes!';
+                  intervalId = startInterval();
+                } else {
+                  console.log('Add student to class failed');
+                }
+                })
+                .catch(error => {
+                console.error('Error fetching user data:', error);
+                });
+    }
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    populateUserTable(1);
+  });
+
+</script>
+
+<script>
+  function sortData(sortBy, sortType) {
+    document.getElementById('sortBy').value = sortBy;
+    document.getElementById('sortType').value = sortType;
+    document.getElementById('form').submit();
+  }
+</script>
+</html>

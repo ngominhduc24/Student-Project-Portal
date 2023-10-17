@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+    <style>
+        .breadcrumb .breadcrumb-item:after {
+            content: none !important;
+        }
+        .form-select:disabled {
+            background-color: white !important;
+        }
+    </style>
+
+</head>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+
+        <div class="topnav">
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;"  >Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
+        </div>
+        <!--    Genenal-->
+        <div class="container-fluid px-4">
+            <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+                <div>
+                    <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
+                    <ol class="breadcrumb mb-2">
+                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item"><a href="/class-manager/classList">Class List</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item active">Class Details</li>
+                    </ol>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form action="/class-manager/class/update" method="post">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <input type="hidden" name="id" th:value="${class.id}">
+                                            <label class="form-label">Class Name</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.className}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.subject.subjectCode}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Semester</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.semester.settingTitle}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Class Manager</label>
+                                            <input type="text" class="form-control" disabled th:value="${class.user.fullName}">
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description <span th:if="${class.status!=3}" style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">(You only can change this field)</span></label>
+                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${class.description}"></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="hidden" id="statusCheck" th:value="${class.status}">
+                                            <label class="form-label">Status:
+                                                <span class="text-warning m-0" th:if="${class.getStatus()==0}">Pending</span>
+                                                <span class="text-danger m-0" th:if="${class.getStatus()==1}">Canceled</span>
+                                                <span class="text-success m-0" th:if="${class.getStatus()==2}">Started</span>
+                                                <span class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="mt-2">
+                                            <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+                                            <h6 style="color: green;" th:text="${msg}"></h6>
+                                        </div>
+
+                                    </div><!--end col-->
+                                </div>
+
+
+                                <div class="row justify-content-center">
+                                    <div th:if="${class.status!=3}" class="col-md-12 ps-4">
+                                        <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
+                                    </div>
+                                    <div th:if="${class.status==3}" class="col-md-12 ps-4">
+                                        <h6><span style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">You can't change the details of this class because it has been closed.</span></h6>
+                                        <a onclick="window.location.href='/class-manager/classList'" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;"><i style="margin-right: 8px" class="fa-solid fa-arrow-left"></i>Back</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!--end col-->
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- javascript -->
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        checkAndSetReadonly();
+    });
+    // Hàm kiểm tra và đặt các ô input và textarea thành readonly nếu trạng thái là "closed"
+    function checkAndSetReadonly() {
+        const textAreaElements = document.querySelectorAll("textarea")
+        const status = document.getElementById("statusCheck").value;
+        if (status == 3) {
+            textAreaElements.forEach(textArea => {
+                textArea.disabled = true;
+            });
+        }
+    }
+
+</script>
+
+</body>
+</html>
