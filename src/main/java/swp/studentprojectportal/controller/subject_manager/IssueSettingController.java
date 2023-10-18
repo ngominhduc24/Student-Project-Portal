@@ -14,6 +14,7 @@ import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
+import swp.studentprojectportal.utils.Validate;
 
 import java.util.List;
 @Controller
@@ -47,6 +48,17 @@ public class IssueSettingController {
         return "subject_manager/issue_setting/issueSettingDetail";
     }
 
+    @GetMapping("/class-manager/issue-setting/detail")
+    public String detailClassIssueSetting(@RequestParam("id") Integer id, Model model, HttpSession session){
+        System.out.println("id is "+id);
+        User user = (User) session.getAttribute("user");
+        IssueSetting issueSetting = issueSettingService.findById(id);
+        model.addAttribute("setting", issueSetting);
+        List<Class> classList = classService.findAllByClassManagerId(user.getId());
+        model.addAttribute("classList",classList);
+        return "subject_manager/issue_setting/issueSettingClassDetail";
+    }
+
 
     @PostMapping("/subject-manager/issue-setting/update")
     public String updateSetting(
@@ -66,6 +78,33 @@ public class IssueSettingController {
         issueSettingService.saveSubjectSetting(issueSetting);
         model.addAttribute("setting",issueSetting);
         return "subject_manager/issue_setting/issueSettingDetail";
+    }
+
+    @PostMapping("/class-manager/issue-setting/update")
+    public String updateIssueSetting(
+            @RequestParam Integer id,
+            @RequestParam Integer classId,
+            @RequestParam String settingGroup,
+            @RequestParam String settingTitle,
+            @RequestParam String description,
+            WebRequest request, Model model, HttpSession session) {
+
+        String status = request.getParameter("settingStatus");
+        boolean isStatus = status != null && status.equals("on");
+        IssueSetting issueSetting = issueSettingService.findById(id);
+        issueSetting.setStatus(isStatus);
+        issueSetting.setSettingGroup(settingGroup);
+        issueSetting.setSettingTitle(settingTitle);
+        issueSetting.setDescription(description);
+        issueSetting.setAclass(classService.findById(classId));
+        issueSettingService.saveSubjectSetting(issueSetting);
+        model.addAttribute("setting",issueSetting);
+        String errmsg = "Update successfully!";
+        model.addAttribute("errmsg",errmsg);
+        User user = (User) session.getAttribute("user");
+        List<Class> classList = classService.findAllByClassManagerId(user.getId());
+        model.addAttribute("classList",classList);
+        return "subject_manager/issue_setting/issueSettingClassDetail";
     }
 
     @GetMapping(path = "/subject-manager/issue-setting/add")
@@ -92,8 +131,7 @@ public class IssueSettingController {
 
         User user = (User) session.getAttribute("user");
         List<Class> classList = classService.findAllByClassManagerId(user.getId());
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        model.addAttribute("subjectList",subjectList);
+
         model.addAttribute("classList",classList);
         return  "subject_manager/issue_setting/issueSettingClassAdd";
     }
@@ -121,23 +159,38 @@ public class IssueSettingController {
 
     @PostMapping("/class-manager/issue-setting/add")
     public String addIssueSetting2(
-            @RequestParam Integer subjectId,
+            @RequestParam Integer classId,
             @RequestParam String settingTitle,
             @RequestParam String settingGroup,
-            @RequestParam String settingDescription,
+            @RequestParam String description,
             Model model, HttpSession session) {
         IssueSetting issueSetting = new IssueSetting();
-        issueSetting.setSubject(subjectRepository.getById(subjectId));
+        issueSetting.setAclass(classService.findById(classId));
         issueSetting.setSettingTitle(settingTitle);
         issueSetting.setSettingGroup(settingGroup);
-        issueSetting.setDescription(settingDescription);
-        issueSettingService.saveSubjectSetting(issueSetting);
-        model.addAttribute("setting",issueSetting);
+        issueSetting.setDescription(description);
 
+        if(Validate.validNotempty(settingGroup) == false){
+            String errmsg = "Group can't empty. Add failed!";
+            model.addAttribute("errmsg",errmsg);
+        }
+        else{
+            if(issueSettingService.findByClassAndGroupAndTitle(classId,settingGroup,settingTitle)!=null){
+                String errmsg = "Issue setting existed. Add failed!";
+                model.addAttribute("errmsg",errmsg);
+            }
+            else {
+                issueSettingService.saveSubjectSetting(issueSetting);
+                String msg = "Add successfully!";
+                model.addAttribute("msg", msg);
+            }
+        }
+
+        model.addAttribute("setting",issueSetting);
         User user = (User) session.getAttribute("user");
-        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        model.addAttribute("subjectList",subjectList);
-        return "subject_manager/issue_setting/issueSettingAdd";
+        List<Class> classList = classService.findAllByClassManagerId(user.getId());
+        model.addAttribute("classList",classList);
+        return "subject_manager/issue_setting/issueSettingClassAdd";
     }
 
 }

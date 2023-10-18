@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.IssueSetting;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface IIssueSettingRepository extends JpaRepository<IssueSetting, Integer> {
     @Query(value="SELECT ss.* FROM issue_setting ss join subject s on ss.subject_id = s.id \n" +
@@ -47,4 +49,8 @@ public interface IIssueSettingRepository extends JpaRepository<IssueSetting, Int
 
     @Query(value="SELECT distinct setting_group FROM issue_setting WHERE ((subject_id = ?1 AND status=1 )OR class_id = ?2)", nativeQuery = true)
     List<String> findAllDistinctClassSettingGroup(Integer subjectId, Integer classId);
+
+    @Query(value="SELECT * FROM issue_setting\n" +
+            "WHERE class_id = :classId AND setting_group = :group AND setting_title = :title",nativeQuery = true)
+    Optional<IssueSetting> findIssueSettingByAclassAndSettingGroupAndSettingTitle(@Param("classId") int classId, @Param("group") String settingGroup, @Param("title") String settingTitle);
 }

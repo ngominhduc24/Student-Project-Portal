@@ -63,4 +63,9 @@ public class IssueSettingService implements IIssueSettingService {
     public List<String> findAllDistinctClassSettingGroup(Integer subjectId, Integer classId) {
         return issueSettingRepository.findAllDistinctClassSettingGroup(subjectId, classId);
     }
+
+    @Override
+    public IssueSetting findByClassAndGroupAndTitle(int classId,String settingGroup, String settingTitle){
+        return issueSettingRepository.findIssueSettingByAclassAndSettingGroupAndSettingTitle(classId, settingGroup, settingTitle).orElse(null);
+    }
 }
