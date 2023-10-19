@@ -31,6 +31,12 @@ public class GitlabApiService {
         return labelList;
     }
 
+    public boolean createClassLabel(String projectIdOrPath, String personToken, Label label) throws GitLabApiException {
+        gitLabApi = new GitLabApi("https://gitlab.com", personToken);
+        Label newLabel = gitLabApi.getLabelsApi().createGroupLabel(projectIdOrPath, label);
+        return newLabel != null;
+    }
+
     public List<Milestone> getProjectMilestoneGitlab(String projectIdOrPath, String personToken) throws GitLabApiException {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
         Pager<Milestone> milestones = gitLabApi.getMilestonesApi().getMilestones(projectIdOrPath, 100);
@@ -43,5 +49,11 @@ public class GitlabApiService {
         Pager<Label> labels = gitLabApi.getLabelsApi().getLabels(projectIdOrPath, 100);
         List<Label> labelList = labels.all();
         return labelList;
+    }
+
+    public boolean createProjectLabel(String projectIdOrPath, String personToken, Label label) throws GitLabApiException {
+        gitLabApi = new GitLabApi("https://gitlab.com", personToken);
+        Label newLabel = gitLabApi.getLabelsApi().createProjectLabel(projectIdOrPath, label);
+        return newLabel != null;
     }
 }

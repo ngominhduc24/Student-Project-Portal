@@ -1,6 +1,8 @@
 package swp.studentprojectportal.controller.subject_manager;
 
 import jakarta.servlet.http.HttpSession;
+import org.gitlab4j.api.GitLabApiException;
+import org.gitlab4j.api.models.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
+import swp.studentprojectportal.service.servicesimpl.GitlabApiService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
 import swp.studentprojectportal.utils.Validate;
@@ -27,6 +30,8 @@ public class IssueSettingController {
     IssueSettingService issueSettingService;
     @Autowired
     ISubjectRepository subjectRepository;
+    @Autowired
+    GitlabApiService gitlabApiService;
 
     @GetMapping("/issue-setting/updateStatus")
     public String updateSubjectSettingStatus(
@@ -191,6 +196,69 @@ public class IssueSettingController {
         List<Class> classList = classService.findAllByClassManagerId(user.getId());
         model.addAttribute("classList",classList);
         return "subject_manager/issue_setting/issueSettingClassAdd";
+    }
+
+    @GetMapping("/issue-setting/sync/gitlab")
+    public String synchronizeGitlabIssueSettingClass(
+            @RequestParam(name = "classId", defaultValue = "-1") Integer classId,
+            @RequestParam(name = "group") String groupIdOrPath,
+            @RequestParam(name = "personToken") String personToken
+    ) throws GitLabApiException {
+        List<Label> labelListGitlab =  gitlabApiService.getClassLabelGitlab(groupIdOrPath, personToken);
+        List<IssueSetting> labelListDB = issueSettingService.findAllSettingServiceByClassId(classId);
+
+        // sync to db
+        for (Label label : labelListGitlab) {
+            boolean isExist = false;
+            for (IssueSetting issueSetting : labelListDB) {
+                String titleDB = issueSetting.getSettingTitle();
+                titleDB = issueSetting.getSettingGroup() == null ? titleDB : issueSetting.getSettingGroup() + "::" + titleDB;
+                System.out.println(">>>" + label.getName() + " " + titleDB);
+                if (label.getName().equals(titleDB)) {
+                    isExist = true;
+                    break;
+                }
+            }
+
+            if (!isExist) {
+                IssueSetting issueSetting = new IssueSetting();
+                if (label.getName().split("::").length > 1) {
+                    issueSetting.setSettingGroup(label.getName().split("::")[0]);
+                    issueSetting.setSettingTitle(label.getName().split("::")[1]);
+                } else {
+                    issueSetting.setSettingTitle(label.getName());
+                }
+                issueSetting.setDescription(label.getDescription());
+                issueSetting.setAclass(classService.findById(classId));
+                issueSettingService.saveSubjectSetting(issueSetting);
+            }
+        }
+
+        // sync to gitlab
+        for (IssueSetting issueSetting : labelListDB) {
+            boolean isExist = false;
+            for (Label label : labelListGitlab) {
+                String titleGitlab = label.getName();
+                titleGitlab = label.getName().split("::").length > 1 ? label.getName().split("::")[1] : titleGitlab;
+                System.out.println(">>>" + issueSetting.getSettingTitle() + " " + titleGitlab);
+                if (issueSetting.getSettingTitle().equals(titleGitlab)) {
+                    isExist = true;
+                    break;
+                }
+            }
+
+            if (!isExist) {
+                Label label = new Label();
+                if(issueSetting.getSettingGroup() != null)
+                    label.setName(issueSetting.getSettingGroup() + "::" + issueSetting.getSettingTitle());
+                else
+                    label.setName(issueSetting.getSettingTitle());
+                label.setDescription(issueSetting.getDescription());
+                label.setColor("#9e9e9e");
+                gitlabApiService.createClassLabel(groupIdOrPath, personToken, label);
+            }
+        }
+        return "redirect:/class/issue-setting?id=" + classId;
     }
 
 }
