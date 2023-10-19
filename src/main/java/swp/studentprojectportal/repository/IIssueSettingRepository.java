@@ -13,6 +13,9 @@ import java.util.Optional;
 
 @Repository
 public interface IIssueSettingRepository extends JpaRepository<IssueSetting, Integer> {
+    List<IssueSetting> findAllByAclass_Id(Integer classId);
+    List<IssueSetting> findAllByProjectId(Integer classId);
+
     @Query(value="SELECT ss.* FROM issue_setting ss join subject s on ss.subject_id = s.id \n" +
             "            WHERE s.subject_manager_id=?1", nativeQuery = true)
     List<IssueSetting> findSubjectSettingByManager(int subjectManagerId);

@@ -1,4 +1,4 @@
-package swp.studentprojectportal.utils;
+package swp.studentprojectportal.utils.instance;
 
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

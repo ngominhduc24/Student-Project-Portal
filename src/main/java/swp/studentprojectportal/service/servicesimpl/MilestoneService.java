@@ -39,6 +39,10 @@ public class MilestoneService implements IMilestoneService {
         return milestoneRepository.filterClassBySubjectManager(classId, search, status, PageRequest.of(pageNo, pageSize, sort));
     }
 
+    public List<Milestone> findAllMilestoneByClassId(int classId) {
+        return milestoneRepository.findMilestoneByAclass_Id(classId);
+    }
+
     @Override
     public Milestone findMilestoneById(Integer id){
         return milestoneRepository.findMilestoneById(id);
