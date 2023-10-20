@@ -244,4 +244,5 @@ public class IssueSettingController {
         return "redirect:/class/issue-setting?id=" + classId;
     }
 
+
 }
