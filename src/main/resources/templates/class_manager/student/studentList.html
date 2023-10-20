@@ -424,15 +424,15 @@
                           if (inClass) {
                             newRow.innerHTML = `
                               <td>${user.fullName}</td>
-                              <td>${user.email || ''}</td>
-                              <td>${user.phone || ''}</td>
-                              <td>Student has inside class</td>
+                              <td>${user.email || 'None'}</td>
+                              <td>${user.phone || 'None'}</td>
+                              <td style="text-align: center;"><svg style="margin-right: 17px" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m5 14 4 3 9-11" stroke="#32CD32" stroke-width="2"/></svg></td>
                             `;
                           } else {
                             newRow.innerHTML = `
                               <td>${user.fullName}</td>
-                              <td>${user.email || ''}</td>
-                              <td>${user.phone || ''}</td>
+                              <td>${user.email || 'None'}</td>
+                              <td>${user.phone || 'None'}</td>
                               <td>
                                 <button name="addstudent" type="button" class="btn btn-success w-75 p-0" onclick="addStudent(${user.id})">+</button>
                               </td>
