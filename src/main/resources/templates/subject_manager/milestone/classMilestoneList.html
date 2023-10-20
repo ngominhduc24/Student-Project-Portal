@@ -192,7 +192,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Personal Token<span class="text-danger">*</span></label>
                                         <div class="d-flex">
-                                            <input type="password" name="personalToken" class="form-control" required>
+                                            <input type="password" name="personalToken" class="form-control" th:value="${personalToken}"  required>
                                         </div>
                                     </div>
                                 </div><!--end col-->
@@ -207,7 +207,9 @@
                 <script>
                     const syncGitLab = () => {
                         const classId = document.querySelector('input[name="id"]').value;
-                        const groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
+                        let groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
+                        groupIdOrPath = groupIdOrPath.charAt(groupIdOrPath.length - 1) === '/' ? groupIdOrPath.slice(0, -1) : groupIdOrPath;
+                        groupIdOrPath = groupIdOrPath.split('/').at(-1);
                         const personalToken = document.querySelector('input[name="personalToken"]').value;
                         // hidden body
                         document.querySelector('#main').style.display = 'none';

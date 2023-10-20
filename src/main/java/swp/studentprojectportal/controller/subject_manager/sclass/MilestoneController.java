@@ -17,6 +17,7 @@ import swp.studentprojectportal.service.IMilestoneService;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.GitlabApiService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
+import swp.studentprojectportal.service.servicesimpl.UserService;
 import swp.studentprojectportal.utils.dto.Mapper;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public class MilestoneController {
     SubjectService subjectService;
     @Autowired
     GitlabApiService gitlabApiService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/milestone/add")
     public String AddClassAssignment(Model model){
@@ -54,6 +57,7 @@ public class MilestoneController {
         Class classA = classService.findById(classId);
         User user = (User) session.getAttribute("user");
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
+        model.addAttribute("personalToken", user.getPersonalTokenGitlab());
         model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
@@ -76,7 +80,8 @@ public class MilestoneController {
     public String synchronizeGitlabMilestoneClass(
             @RequestParam(name = "classId", defaultValue = "-1") Integer classId,
             @RequestParam(name = "group") String groupIdOrPath,
-            @RequestParam(name = "personalToken") String personalToken
+            @RequestParam(name = "personalToken") String personalToken,
+            HttpSession session
     ) throws GitLabApiException {
         List<org.gitlab4j.api.models.Milestone> milestoneListGitlab =  gitlabApiService.getClassMilestoneGitlab(groupIdOrPath, personalToken);
         List<swp.studentprojectportal.model.Milestone> milestoneListDB = milestoneService.findMilestoneByClassId(classId);
@@ -111,6 +116,17 @@ public class MilestoneController {
             if (!isExist) {
                 org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
                 gitlabApiService.createGrouptMilestone(groupIdOrPath, personalToken, milestoneGitlab);
+            }
+        }
+
+        // save personal token
+        User user = (User) session.getAttribute("user");
+        if(user != null){
+            // if personal token is change then update
+            if(user.getPersonalTokenGitlab() == null || user.getPersonalTokenGitlab().equals(personalToken)){
+                    user.setPersonalTokenGitlab(personalToken);
+                    session.setAttribute("user", user);
+                    userService.saveUser(user);
             }
         }
         return "redirect:/class/milestone?classId=" + classId;
