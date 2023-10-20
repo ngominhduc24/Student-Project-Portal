@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import swp.studentprojectportal.model.User;
@@ -15,7 +14,7 @@ import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
-import swp.studentprojectportal.utils.InstanceSingleton;
+import swp.studentprojectportal.utils.instance.InstanceSingleton;
 import swp.studentprojectportal.utils.SheetHandle;
 
 import java.util.List;

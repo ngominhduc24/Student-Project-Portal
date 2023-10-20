@@ -3,14 +3,11 @@ package swp.studentprojectportal.service.servicesimpl;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.service.IEmailService;
-import swp.studentprojectportal.utils.InstanceThread;
+import swp.studentprojectportal.utils.instance.InstanceThread;
 
-import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
