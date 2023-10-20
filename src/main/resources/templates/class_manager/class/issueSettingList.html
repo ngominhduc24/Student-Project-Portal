@@ -164,7 +164,12 @@
                                 style="margin-left: 24px">Add New</a>
                         </div>
                         <div th:if="${session.user.setting.id==4}" >
-                            <a href="/class-manager/issue-setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
+                            <form action="/class-manager/issue-setting/add" method="get" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${class.id}">
+                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">
+                            </form>
+
+<!--                            <a href="/class-manager/issue-setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>-->
                             <button type="button" class="btn btn-primary" data-toggle="modal" style="margin-left: 24px; margin-top: 5px" data-target="#exampleModalCenter">
                                 Sync gitlab
                             </button>
