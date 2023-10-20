@@ -56,4 +56,5 @@ public interface IIssueSettingRepository extends JpaRepository<IssueSetting, Int
     @Query(value="SELECT * FROM issue_setting\n" +
             "WHERE class_id = :classId AND setting_group = :group AND setting_title = :title",nativeQuery = true)
     Optional<IssueSetting> findIssueSettingByAclassAndSettingGroupAndSettingTitle(@Param("classId") int classId, @Param("group") String settingGroup, @Param("title") String settingTitle);
+
 }

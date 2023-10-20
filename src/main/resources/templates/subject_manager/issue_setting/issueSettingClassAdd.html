@@ -77,7 +77,10 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="/subject-manager/subject-setting">Issue Setting</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+                        <li class="breadcrumb-item">/</li>
+                        <li class="breadcrumb-item"><a th:href="@{/class/issue-setting(id=${setting.aclass.id})}" >Issue Setting List</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">New Issue Setting</li>
                     </ol>
@@ -89,17 +92,35 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Class Name<span class="text-danger">*</span></label>
+                                            <label class="form-label">Subject Code<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <select name="classId" class="form-select">
-                                                    <option th:each="class : ${classList}"
-                                                            th:value="${class.id}"
-                                                            th:text="${class.className}"
-                                                            th:selected="${class.id == (setting.aclass != null ? setting.aclass.id : null)}"></option>
-                                                </select>
+                                                <input type="text" name="settingSubjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Class Name<span class="text-danger">*</span></label>
+                                            <div class="d-flex">
+                                                <input type="hidden" name="classId" class="form-control" th:value="${setting.aclass.id}">
+                                                <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly>
+                                            </div>
+
+                                        </div>
+                                    </div>
+<!--                                    <div class="col-md-6">-->
+<!--                                        <div class="mb-3">-->
+<!--                                            <label class="form-label">Class Name<span class="text-danger">*</span></label>-->
+<!--                                            <div class="d-flex">-->
+<!--                                                <select name="classId" class="form-select">-->
+<!--                                                    <option th:each="class : ${classList}"-->
+<!--                                                            th:value="${class.id}"-->
+<!--                                                            th:text="${class.className}"-->
+<!--                                                            th:selected="${class.id == (setting.aclass != null ? setting.aclass.id : null)}"></option>-->
+<!--                                                </select>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
