@@ -4254,3 +4254,13 @@ footer .footer-list li:last-child {
 footer .footer-bar, footer.footer-bar {
     border-top: 1px solid #2a3656
 }
+
+.rotate-45 {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+}
+
+.rotate-90 {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
