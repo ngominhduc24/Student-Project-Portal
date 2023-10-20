@@ -158,13 +158,13 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <div th:if="${session.user.setting.id==3}">
-                            <form action="/subject-manager/issue-setting/add" method="get" style="display: inline;">
-                                <input type="hidden" name="id" th:value="${class.id}">
-                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">
-                            </form>
-                        </div>
-                        <div th:if="${session.user.setting.id==4}">
+<!--                        <div th:if="${session.user.setting.id==3}">-->
+<!--                            <form action="/subject-manager/issue-setting/add" method="get" style="display: inline;">-->
+<!--                                <input type="hidden" name="id" th:value="${class.id}">-->
+<!--                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">-->
+<!--                            </form>-->
+<!--                        </div>-->
+                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3} ">
                             <form action="/class-manager/issue-setting/add" method="get" style="display: inline;">
                                 <input type="hidden" name="id" th:value="${class.id}">
                                 <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">
@@ -273,9 +273,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div th:if="${session.user.setting.id==3}" ><a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></div>
-                                        <div th:if="${session.user.setting.id==4}" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i
+<!--                                        <div th:if="${session.user.setting.id==3}" ><a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i-->
+<!--                                                class="fas fa-pen-to-square"></i></a></div>-->
+                                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3 }" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i
                                                 class="fas fa-pen-to-square"></i></a></div>
                                     </td>
                                 </tr>
