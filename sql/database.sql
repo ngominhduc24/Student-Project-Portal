@@ -510,4 +510,3 @@ VALUES
     (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
     (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
     (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
-
