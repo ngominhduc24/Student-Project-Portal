@@ -99,7 +99,7 @@ public class IssueSettingController {
         issueSetting.setAclass(classService.findById(classId));
 
         if(Validate.validNotempty(settingGroup) == false){
-            String errmsg = "Group can't empty. Add failed!";
+            String errmsg = "Group can't empty. Update failed!";
             model.addAttribute("errmsg",errmsg);
         }
         else{
@@ -139,13 +139,15 @@ public class IssueSettingController {
     }
 
     @GetMapping(path = "/class-manager/issue-setting/add")
-    public String addIssueSettingPage2(Model model,HttpSession session){
+    public String addIssueSettingPage2(@RequestParam("id") Integer classId, Model model,HttpSession session){
+        System.out.println("classsID is "+ classId);
         IssueSetting issueSettingg = new IssueSetting();
         issueSettingg.setDescription("");
         issueSettingg.setSettingGroup("");
         issueSettingg.setSettingGroup("");
+        issueSettingg.setAclass(classService.findById(classId));
         model.addAttribute("setting",issueSettingg);
-
+        model.addAttribute("classId",classId);
         User user = (User) session.getAttribute("user");
         List<Class> classList = classService.findAllByClassManagerId(user.getId());
 
@@ -204,9 +206,7 @@ public class IssueSettingController {
         }
 
         model.addAttribute("setting",issueSetting);
-        User user = (User) session.getAttribute("user");
-        List<Class> classList = classService.findAllByClassManagerId(user.getId());
-        model.addAttribute("classList",classList);
+        model.addAttribute("classId",classId);
         return "subject_manager/issue_setting/issueSettingClassAdd";
     }
 

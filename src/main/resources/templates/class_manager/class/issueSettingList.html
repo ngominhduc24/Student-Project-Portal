@@ -158,13 +158,23 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
-                                style="margin-left: 24px">Add New</a></div>
-                        <div th:if="${session.user.setting.id==4}" ><a href="/class-manager/issue-setting/add" class="btn btn-primary"
-                                                                       style="margin-left: 24px">Add New</a></div>
+                        <div th:if="${session.user.setting.id==3}">
+                            <form action="/subject-manager/issue-setting/add" method="get" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${class.id}">
+                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">
+                            </form>
+                        </div>
+                        <div th:if="${session.user.setting.id==4}">
+                            <form action="/class-manager/issue-setting/add" method="get" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${class.id}">
+                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">
+                            </form>
+                        </div>
+
 <!--                        <a href="/issue-setting/add" class="btn btn-primary"-->
 <!--                           style="margin-left: 24px">Add New</a>-->
                     </div><!--end col-->
+
 
                 </div><!--end row-->
                 <div class="container-fluid px-4">
@@ -190,7 +200,7 @@
                                         <div class="mb-3">
                                             <select name="settingGroup" class="form-select"
                                                     onchange="this.form.submit()">
-                                                <option value="" th:selected="${settingGroup.isEmpty()}">All Type</option>
+                                                <option value="" th:selected="${settingGroup.isEmpty()}">All Group</option>
                                                 <option th:each="group : ${settingGroupList}"
                                                         th:value="${group}"
                                                         th:text="${group}" th:selected="${settingGroup.equalsIgnoreCase(group)}"></option>
@@ -235,7 +245,7 @@
                                         <i th:class="${(sortBy eq 'setting_group' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('setting_group',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Name
+                                    <th data-sortable="false">Title
                                         <i th:class="${(sortBy eq 'setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('setting_title',1)"></i>
                                         <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
@@ -289,6 +299,15 @@
                                     </div>
                                 </div>
                             </div>
+
+<!--                            <script>-->
+<!--                                function submitForm(action) {-->
+<!--                                    var form = document.getElementById('addNewForm');-->
+<!--                                    form.action = action;-->
+<!--                                    form.method = get;-->
+<!--                                    form.submit();-->
+<!--                                }-->
+<!--                            </script>-->
 
                             <script>
                                 let id;
