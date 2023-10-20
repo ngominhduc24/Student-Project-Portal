@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
     `token` varchar(255) DEFAULT NULL,
+    `personal_token_gitlab` varchar(255) DEFAULT NULL,
     `active` BIT(1) NULL DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -465,7 +466,7 @@ VALUES
     ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
     ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
     ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
-    
+
 -- issue_setting
 INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
 VALUES
@@ -509,4 +510,4 @@ VALUES
     (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
     (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
     (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
-    
+
