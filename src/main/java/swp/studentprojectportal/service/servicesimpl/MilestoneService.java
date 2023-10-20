@@ -49,6 +49,11 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
+    public List<Milestone> findMilestoneByClassId(Integer classid){
+        return milestoneRepository.findMilestoneByAclass_Id(classid);
+    }
+
+    @Override
     public Milestone save(Milestone milestone) {
         return milestoneRepository.save(milestone);
     }
