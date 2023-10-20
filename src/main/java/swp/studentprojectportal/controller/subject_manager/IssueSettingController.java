@@ -1,6 +1,8 @@
 package swp.studentprojectportal.controller.subject_manager;
 
 import jakarta.servlet.http.HttpSession;
+import org.gitlab4j.api.GitLabApiException;
+import org.gitlab4j.api.models.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +14,11 @@ import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
+import swp.studentprojectportal.service.servicesimpl.GitlabApiService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
 import swp.studentprojectportal.utils.Validate;
+import swp.studentprojectportal.utils.dto.Mapper;
 
 import java.util.List;
 @Controller
@@ -27,6 +31,8 @@ public class IssueSettingController {
     IssueSettingService issueSettingService;
     @Autowired
     ISubjectRepository subjectRepository;
+    @Autowired
+    GitlabApiService gitlabApiService;
 
     @GetMapping("/issue-setting/updateStatus")
     public String updateSubjectSettingStatus(
@@ -209,5 +215,51 @@ public class IssueSettingController {
         model.addAttribute("classId",classId);
         return "subject_manager/issue_setting/issueSettingClassAdd";
     }
+
+    @GetMapping("/issue-setting/sync-gitlab")
+    public String synchronizeGitlabIssueSettingClass(
+            @RequestParam(name = "classId", defaultValue = "-1") Integer classId,
+            @RequestParam(name = "group") String groupIdOrPath,
+            @RequestParam(name = "personalToken") String personalToken
+    ) throws GitLabApiException {
+        List<Label> labelListGitlab =  gitlabApiService.getClassLabelGitlab(groupIdOrPath, personalToken);
+        List<IssueSetting> labelListDB = issueSettingService.findAllSettingServiceByClassId(classId);
+
+        // sync to db
+        for (Label label : labelListGitlab) {
+            boolean isExist = false;
+            for (IssueSetting issueSetting : labelListDB) {
+                if (Mapper.labelEquals(issueSetting, label)) {
+                    isExist = true;
+                    break;
+                }
+            }
+
+            if (!isExist) {
+                System.out.println(Mapper.labelConvert(label));
+                IssueSetting issueSetting = Mapper.labelConvert(label);
+                issueSetting.setAclass(classService.findById(classId));
+                issueSettingService.saveSubjectSetting(issueSetting);
+            }
+        }
+
+        // sync to gitlab
+        for (IssueSetting issueSetting : labelListDB) {
+            boolean isExist = false;
+            for (Label label : labelListGitlab) {
+                if (Mapper.labelEquals(issueSetting, label)) {
+                    isExist = true;
+                    break;
+                }
+            }
+
+            if (!isExist) {
+                Label label = Mapper.labelConvert(issueSetting);
+                gitlabApiService.createClassLabel(groupIdOrPath, personalToken, label);
+            }
+        }
+        return "redirect:/class/issue-setting?id=" + classId;
+    }
+
 
 }

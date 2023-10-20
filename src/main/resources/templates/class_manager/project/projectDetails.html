@@ -59,6 +59,33 @@
                     </ol>
                 </div>
 
+                <style>
+                    /* Custom styling for the focused input and suggestions */
+
+                    .autocomplete-suggestions {
+                        display: none;
+                        position: absolute;
+                        border: 1px solid #ccc;
+                        max-height: 35vh;
+                        width: 100%;
+                        overflow-y: auto;
+
+                        z-index: 1;
+                    }
+
+                    .autocomplete-suggestion {
+                        padding: 8px;
+                        cursor: pointer;
+                        background-color: white;
+
+                        z-index: 1;
+                    }
+
+                    .autocomplete-suggestion:hover {
+                        background-color: #f0f0f0;
+                    }
+                </style>
+
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
@@ -87,8 +114,8 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Project mentor</label>
-                                            <select name="mentorId" class="form-select" required>
-                                                <option selected></option>
+                                            <select name="mentorId" class="form-select" id="select-mentor" required>
+                                                <option selected th:if="${project.projectMentor==null}"></option>
                                                 <option th:each="mentor : ${projectMentorList}"
                                                         th:value="${mentor.id}"
                                                         th:text="${mentor.fullName}"
@@ -98,10 +125,16 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3" style="position: relative">
                                             <label class="form-label">Filter</label>
-                                            <input type="text" class="form-control"
-                                                   placeholder="Filter mentor">
+                                            <input type="text" class="form-control" id="search-mentor"
+                                                   placeholder="Search mentor">
+                                            <div class="autocomplete-suggestions">
+                                                <div class="autocomplete-suggestion"
+                                                     th:each="mentor : ${projectMentorList}"
+                                                     th:text="${mentor.fullName}"
+                                                     th:data-id="${mentor.id}" onclick="selectSuggestion(this)"></div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -149,7 +182,7 @@
                                             <div th:if="${!project.status}">
                                                 <button type="submit" class="btn btn-primary">Update</button>
                                                 <a class="btn btn-secondary" onclick="redirect(this)" style="margin-left: 2%;"
-                                                   th:data-link="'../freeze/' + ${project.id}">Freeze project</a>
+                                                   th:data-link="'/class-manager/project/freeze/' + ${project.id}">Freeze project</a>
 
 <!--                                                <br><br>-->
 <!--                                                <a class="btn btn-danger" onclick="redirect(this)"-->
@@ -164,6 +197,44 @@
 
                                 </div>
                             </form>
+
+                            <script>
+                                const searchInput = document.getElementById("search-mentor");
+                                const suggestionsContainer = document.querySelector(".autocomplete-suggestions");
+                                const selectMentor = document.getElementById('select-mentor');
+                                const suggestions = suggestionsContainer.querySelectorAll(".autocomplete-suggestion");
+
+                                function selectSuggestion(element) {
+                                    searchInput.value = '';
+                                    selectMentor.value = element.dataset.id;
+                                }
+
+                                searchInput.addEventListener("input", function() {
+                                    const query = searchInput.value.toLowerCase();
+                                    renderSuggestion(query);
+                                });
+
+                                function renderSuggestion(query) {
+                                    suggestions.forEach(suggestion => {
+                                        if (suggestion.textContent.toLowerCase().includes(query)) {
+                                            suggestion.style.display = "block";
+                                        } else {
+                                            suggestion.style.display = "none";
+                                        }
+                                    });
+                                }
+
+                                searchInput.addEventListener("focus", function() {
+                                    suggestionsContainer.style.display = 'block';
+                                });
+
+                                searchInput.addEventListener("blur", function() {
+                                    setTimeout( ()=>{
+                                        suggestionsContainer.style.display = 'none';
+                                        renderSuggestion('');
+                                        } , 300);
+                                });
+                            </script>
 
                             <!--            modal lmao-->
                             <style>

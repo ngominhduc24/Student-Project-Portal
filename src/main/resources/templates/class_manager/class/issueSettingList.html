@@ -70,7 +70,7 @@
             height: 33px;
             width: 36px;
             float: right;
-            margin-top: -35px;
+            margin-top: -34px;
             margin-right: 1px;
             cursor: pointer;
             background-color: #ffffff;
@@ -125,7 +125,9 @@
 </div>
 <!-- Loader -->
 
-<div class="page-wrapper doctris-theme toggled">
+<div id="syncText" hidden="hidden">System are sync with Gitlab ....</div>
+
+<div class="page-wrapper doctris-theme toggled" id="main">
     <!-- sidebar-wrapper  -->
     <div th:replace="~{dashboardSidebar}"></div>
     <main class="page-content bg-light">
@@ -158,25 +160,67 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-<!--                        <div th:if="${session.user.setting.id==3}">-->
-<!--                            <form action="/subject-manager/issue-setting/add" method="get" style="display: inline;">-->
-<!--                                <input type="hidden" name="id" th:value="${class.id}">-->
-<!--                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">-->
-<!--                            </form>-->
-<!--                        </div>-->
-                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3} ">
-                            <form action="/class-manager/issue-setting/add" method="get" style="display: inline;">
-                                <input type="hidden" name="id" th:value="${class.id}">
-                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">
-                            </form>
+                        <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
+                                style="margin-left: 24px">Add New</a>
                         </div>
-
-<!--                        <a href="/issue-setting/add" class="btn btn-primary"-->
-<!--                           style="margin-left: 24px">Add New</a>-->
+                        <div th:if="${session.user.setting.id==4}" >
+                            <a href="/class-manager/issue-setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" style="margin-left: 24px; margin-top: 5px" data-target="#exampleModalCenter">
+                                Sync gitlab
+                            </button>
+                        </div>
                     </div><!--end col-->
 
-
                 </div><!--end row-->
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Sync Gitlab</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Group id or Path<span class="text-danger">*</span></label>
+                                        <div class="d-flex">
+                                            <input type="text" name="groupIdOrPath" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Personal Token<span class="text-danger">*</span></label>
+                                        <div class="d-flex">
+                                            <input type="password" name="personalToken" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="syncGitLab()">Sync</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    const syncGitLab = () => {
+                        const classId = document.querySelector('input[name="id"]').value;
+                        const groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
+                        const personalToken = document.querySelector('input[name="personalToken"]').value;
+                        // hidden body
+                        document.querySelector('#main').style.display = 'none';
+                        // show text
+                        document.querySelector('#syncText').removeAttribute('hidden');
+                        // change location
+                        window.location.href = `/issue-setting/sync-gitlab?classId=${classId}&group=${groupIdOrPath}&personalToken=${personalToken}`;
+                    }
+                </script>
+
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <form action="/class/issue-setting" class="card-body rounded-3" id="form">
@@ -200,7 +244,7 @@
                                         <div class="mb-3">
                                             <select name="settingGroup" class="form-select"
                                                     onchange="this.form.submit()">
-                                                <option value="" th:selected="${settingGroup.isEmpty()}">All Group</option>
+                                                <option value="" th:selected="${settingGroup.isEmpty()}">All Type</option>
                                                 <option th:each="group : ${settingGroupList}"
                                                         th:value="${group}"
                                                         th:text="${group}" th:selected="${settingGroup.equalsIgnoreCase(group)}"></option>
@@ -245,7 +289,7 @@
                                         <i th:class="${(sortBy eq 'setting_group' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('setting_group',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Title
+                                    <th data-sortable="false">Name
                                         <i th:class="${(sortBy eq 'setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('setting_title',1)"></i>
                                         <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
@@ -273,9 +317,9 @@
                                         </div>
                                     </td>
                                     <td>
-<!--                                        <div th:if="${session.user.setting.id==3}" ><a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i-->
-<!--                                                class="fas fa-pen-to-square"></i></a></div>-->
-                                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3 }" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i
+                                        <div th:if="${session.user.setting.id==3}" ><a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i
+                                                class="fas fa-pen-to-square"></i></a></div>
+                                        <div th:if="${session.user.setting.id==4}" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i
                                                 class="fas fa-pen-to-square"></i></a></div>
                                     </td>
                                 </tr>
@@ -299,15 +343,6 @@
                                     </div>
                                 </div>
                             </div>
-
-<!--                            <script>-->
-<!--                                function submitForm(action) {-->
-<!--                                    var form = document.getElementById('addNewForm');-->
-<!--                                    form.action = action;-->
-<!--                                    form.method = get;-->
-<!--                                    form.submit();-->
-<!--                                }-->
-<!--                            </script>-->
 
                             <script>
                                 let id;
@@ -412,7 +447,9 @@
 <script th:src="@{/js/feather.min.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
-
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
 </html>

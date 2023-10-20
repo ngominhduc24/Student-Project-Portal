@@ -29,6 +29,8 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -72,7 +74,7 @@
             height: 33px;
             width: 36px;
             float: right;
-            margin-top: -35px;
+            margin-top: -34px;
             margin-right: 1px;
             cursor: pointer;
             background-color: #ffffff;
@@ -160,34 +162,29 @@
                     <div class="col-xl-4 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left: 24px">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-left: 24px">
                             Add New
                         </button>
                     </div><!--end col-->
+                        <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
                       </div><!--end row-->
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <!-- Modal add new-->
+                <div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add new milestone</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row justify-content-center">
                                         <div class="col-md-12 row" style="margin-top: 12px;">
-                                            <div class="mb-3 col-md-6">
+                                            <div class="mb-3 col-md-12">
                                                 <label class="form-label">Title<span class="text-danger">*</span></label>
                                                 <input type="text" name="milestone-title" class="form-control" required>
-                                            </div>
-                                            <div class="mb-3 col-md-6">
-                                                <div class="form-switch">
-                                                    <label class="form-label" style="margin-left: -40px">Status</label><br/>
-                                                    <input class="form-check-input" type="checkbox" style="width: 45px; height: 25px;" checked onclick="return false;">
-                                                </div>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Start date<span class="text-danger">*</span></label>
@@ -295,26 +292,30 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/milestoneDetail?id={id}(id=${milestone.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></td>
+                                        <div th:onclick="'details(' + ${milestone.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                class="fas fa-pen-to-square"></i></div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
 
                             <!-- Modal Dialog -->
-                            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                            <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
+                                <div class="modal-dialog modal-confirm">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                                            <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <div class="modal-header flex-column">
+                                            <div class="icon-box">
+                                                <i  class="material-icons">&#xE876;</i>
+                                            </div>
+                                            <h4 class="modal-title w-100">Are you sure?</h4>
+                                            <button type="button" id="closeButton" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                         </div>
                                         <div class="modal-body">
-                                            Are you sure you want to perform this action?
+                                            <p>Are you sure you want to perform this action?</p>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="cancelButton" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
+                                        <div class="modal-footer justify-content-center">
+                                            <button type="button" class="btn" id="cancelButton" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn" id="confirmButton">Confirm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -372,6 +373,111 @@
                         </form>
                     </div>
                 </div>
+
+
+                <!-- Modal details-->
+                <div class="modal fade" id="detailsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailsModalLongTitle">Milestone details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Title</label>
+                                            <input type="text" id="details-milestone-title" class="form-control" value="1">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <div class="form-switch">
+                                                <label class="form-label" style="margin-left: -40px">Status</label><br/>
+                                                <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 25px;" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Start date</label>
+                                            <input type="datetime-local" id="detail-start-date" name="start" value="">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">End date</label>
+                                            <input type="datetime-local" id="detail-end-date" name="end" value="">
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="detail-description" class="form-control" content="description"></textarea>
+                                        </div>
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal">Close</button>
+                                <button type="button" class="btn btn-primary" id="updateMilestoneButton">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--                milestone details-->
+                <script>
+                    function details(id) {
+                       let endPoint = '/api/v1/milestone?milestoneId=' + id;
+                          fetch(endPoint)
+                            .then(response => {
+                                 if (response.ok) {
+                                      // Handle a successful API response
+                                      response.json().then(data => {
+                                        document.querySelector('input[id="details-milestone-title"]').value = data.title;
+                                        document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                        document.getElementById('detail-start-date').value = data.startDate;
+                                        document.getElementById('detail-end-date').value = data.endDate;
+                                        document.getElementById('detail-status').checked = data.status == 1 ? true : false;
+                                        document.getElementById('updateMilestoneButton').setAttribute('onclick', 'updateMilestone(' + data.id + ')');
+                                      });
+                                 } else {
+                                      // Handle API errors
+                                      console.error('Error getting milestone.');
+                                 }
+                            })
+                            .catch(error => {
+                                 // Handle network errors
+                                 console.error('Network error:', error);
+                            });
+                      document.getElementById('btndetails').click();
+                    }
+                </script>
+<!--                milestone update-->
+                <script>
+                    function updateMilestone(id){
+                        const title = document.querySelector('input[id="details-milestone-title"]').value;
+                        const description = document.querySelector('textarea[name="detail-description"]').value;
+                        const startDate = document.getElementById('detail-start-date').value;
+                        const endDate = document.getElementById('detail-end-date').value;
+                        const status = document.getElementById('detail-status').checked ? 1 : 0;
+                        let endPoint = '/api/v1/updateMilestone?milestoneId=' + id + '&title=' + title + '&description=' + description + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status;
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    // Handle a successful API response
+                                    console.log('Milestone updated successfully.');
+                                    // Close the modal
+                                    document.getElementById('detailcloseModal').click();
+                                    // reload page
+                                    location.reload();
+                                } else {
+                                    // Handle API errors
+                                    console.error('Error updating milestone.');
+                                }
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                        location.reload();
+                    }
+                </script>
 
                 <script>
                     // Get a reference to the button

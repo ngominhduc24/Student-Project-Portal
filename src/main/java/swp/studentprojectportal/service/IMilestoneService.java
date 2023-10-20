@@ -15,6 +15,8 @@ public interface IMilestoneService {
 
     Milestone findMilestoneById(Integer id);
 
+    List<Milestone> findMilestoneByClassId(Integer classid);
+
     Milestone save(Milestone milestone);
 
     void addClassAssignment(Class classA);

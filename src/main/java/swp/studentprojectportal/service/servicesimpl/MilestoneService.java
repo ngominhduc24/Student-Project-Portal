@@ -39,9 +39,18 @@ public class MilestoneService implements IMilestoneService {
         return milestoneRepository.filterClassBySubjectManager(classId, search, status, PageRequest.of(pageNo, pageSize, sort));
     }
 
+    public List<Milestone> findAllMilestoneByClassId(int classId) {
+        return milestoneRepository.findMilestoneByAclass_Id(classId);
+    }
+
     @Override
     public Milestone findMilestoneById(Integer id){
         return milestoneRepository.findMilestoneById(id);
+    }
+
+    @Override
+    public List<Milestone> findMilestoneByClassId(Integer classid){
+        return milestoneRepository.findMilestoneByAclass_Id(classid);
     }
 
     @Override
@@ -84,4 +93,18 @@ public class MilestoneService implements IMilestoneService {
             return false;
     }
 
+    public boolean updateMilestone(Integer milestoneId,String title,String description,LocalDateTime startDate,LocalDateTime endDate,int status) {
+        Milestone milestone = milestoneRepository.findMilestoneById(milestoneId);
+        if(milestone == null)
+            return false;
+        milestone.setTitle(title);
+        milestone.setDescription(description);
+        milestone.setStartDate(java.sql.Timestamp.valueOf(startDate));
+        milestone.setEndDate(java.sql.Timestamp.valueOf(endDate));
+        milestone.setStatus(status == 1 ? true : false);
+        if(milestoneRepository.save(milestone) != null)
+            return true;
+        else
+            return false;
+    }
 }

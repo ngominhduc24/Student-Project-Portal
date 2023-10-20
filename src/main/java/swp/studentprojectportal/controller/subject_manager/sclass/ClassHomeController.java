@@ -38,6 +38,11 @@ public class ClassHomeController {
             @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
                             Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
+        Class classA = new Class();
+        classA.setSubject(new Subject());
+        classA.setSemester(new Setting());
+        classA.setUser(new User());
+        classA.setDescription("");
         Page<Class> classList = classService.findAllBySubjectManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, teacherId, status);
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         List<User> teacherList = userService.findTeacherBySubjectManagerId(user.getId());
@@ -57,6 +62,72 @@ public class ClassHomeController {
         model.addAttribute("subjectList",subjectList);
         model.addAttribute("teacherList",teacherList);
         model.addAttribute("semesterList",semesterList);
+        model.addAttribute("class", classA);
+
+        List<Subject> subjectListAdd = subjectService.findAllSubjectByUserAndStatus(user, true);
+        List<Setting> semesterListAdd = settingService.findSemesterByStatus(3, true);
+        List<User> teacherListAdd = userService.findTeacherByRoleIdAndStatus(4, true);
+        model.addAttribute("subjectListAdd",subjectListAdd);
+        model.addAttribute("teacherListAdd",teacherListAdd);
+        model.addAttribute("semesterListAdd",semesterListAdd);
+        return "subject_manager/class/classList";
+    }
+
+    @PostMapping("/subject-manager/class")
+    public String classAddPage(@RequestParam(defaultValue = "0") Integer pageNo,
+                            @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                            @RequestParam(defaultValue = "-1") Integer subjectId, @RequestParam(defaultValue = "-1") Integer semesterId,
+                            @RequestParam(defaultValue = "-1") Integer teacherId, @RequestParam(defaultValue = "-1") Integer status,
+                            @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
+                               @RequestParam(defaultValue = "") String description,
+                               @RequestParam String newClassName, @RequestParam Integer newSubjectId,
+                               @RequestParam Integer newSemesterId, @RequestParam Integer newClassManagerId,
+                               WebRequest request, Model model, HttpSession session, RedirectAttributes attributes) {
+        User user = (User) session.getAttribute("user");
+        Class classA = new Class();
+        classA.setClassName(newClassName);
+        classA.setDescription(description);
+        classA.setSubject(subjectService.getSubjectById(newSubjectId));
+        classA.setSemester(settingService.getSettingByID(newSemesterId));
+        classA.setUser(userService.getUserById(newClassManagerId));
+
+        if(classService.checkExistedClassName(newClassName, newSubjectId, null))
+            model.addAttribute("errmsg", "This class name has already existed in this subject!");
+        else {
+            classA = classService.saveClass(classA);
+            milestoneService.addClassAssignment(classA);
+            attributes.addFlashAttribute("toastMessage", "Add new class successfully");
+            model.addAttribute("toastMessage", "Add new class successfully");
+            return "redirect:/subject-manager/class";
+        }
+
+        Page<Class> classList = classService.findAllBySubjectManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, teacherId, status);
+        List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
+        List<User> teacherList = userService.findTeacherBySubjectManagerId(user.getId());
+        List<Setting> semesterList = settingService.findSemesterBySubjectManagerId(user.getId());
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
+        model.addAttribute("classList", classList);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("subjectId", subjectId);
+        model.addAttribute("semesterId", semesterId);
+        model.addAttribute("teacherId", teacherId);
+        model.addAttribute("status", status);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("totalPage", classList.getTotalPages());
+        model.addAttribute("subjectList",subjectList);
+        model.addAttribute("teacherList",teacherList);
+        model.addAttribute("semesterList",semesterList);
+        model.addAttribute("class", classA);
+
+        List<Subject> subjectListAdd = subjectService.findAllSubjectByUserAndStatus(user, true);
+        List<Setting> semesterListAdd = settingService.findSemesterByStatus(3, true);
+        List<User> teacherListAdd = userService.findTeacherByRoleIdAndStatus(4, true);
+        model.addAttribute("subjectListAdd",subjectListAdd);
+        model.addAttribute("teacherListAdd",teacherListAdd);
+        model.addAttribute("semesterListAdd",semesterListAdd);
         return "subject_manager/class/classList";
     }
 
