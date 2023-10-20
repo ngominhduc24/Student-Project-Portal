@@ -28,6 +28,8 @@
   <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
   <!-- Css -->
   <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+  <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <!-- Datatables -->
   <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
   <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
@@ -165,7 +167,7 @@
                   <th>Project team</th>
                   <th>Status</th>
                   <th>View Details</th>
-                  <th>Remove to class</th>
+                  <th>Remove</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -176,7 +178,7 @@
                   <td th:text="${user.getProject() == null ? 'No group yet' : user.getProject().getGroupName()}"></td>
                   <td>
                     <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:onclick="'updateStatus(' + ${user.id} + ', this)'">
+                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:attr="update-id=${user.id}" onchange="showConfirmationDialog(this)">
                     </div>
                   </td>
                   <td><a th:href="@{'/class-manager/class/studentDetails?studentId=' + ${user.getStudent().getId()}}">View Details</a>
@@ -189,6 +191,54 @@
                 </tr>
                 </tbody>
               </table>
+
+              <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box">
+                        <i  class="material-icons">&#xE876;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" id="closeButton" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure you want to perform this action?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn" id="cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn" id="confirmButton">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <script>
+                let id;
+                let status;
+                let initialStatus;
+
+                function showConfirmationDialog(checkbox) {
+                  id = checkbox.getAttribute("update-id");
+                  status = checkbox.checked;
+                  initialStatus = !status;
+                  $('#confirmationModal').modal('show');
+                }
+
+                function handleCancelClick() {
+                  let checkbox = document.querySelector('input[update-id="' + id + '"]');
+                  checkbox.checked = initialStatus;
+                  $('#confirmationModal').modal('hide');
+                }
+
+                $("#confirmButton").click(function () {
+                  fetch(`/admin/updateUserStatus?id=${id}&status=${status}`);
+                  $('#confirmationModal').modal('hide');
+                });
+
+                $("#cancelButton, #closeButton").click(handleCancelClick);
+
+              </script>
             </div>
           </div>
         </div>
@@ -291,17 +341,6 @@
       "bInfo" : false
     });
   });
-</script>
-
-<!-- Status update -->
-<script>
-  function updateStatus(id, checkbox) {
-    let status = checkbox.checked;
-
-    if (confirm('Are you sure?'))
-      fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
-    else checkbox.checked = !status;
-  }
 </script>
 
 <!-- User Note -->
