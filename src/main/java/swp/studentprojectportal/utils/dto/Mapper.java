@@ -3,7 +3,7 @@ package swp.studentprojectportal.utils.dto;
 import org.gitlab4j.api.models.Label;
 import swp.studentprojectportal.model.IssueSetting;
 
-import java.util.Date;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -48,8 +48,8 @@ public class Mapper {
         org.gitlab4j.api.models.Milestone milestoneGitlab = new org.gitlab4j.api.models.Milestone();
         milestoneGitlab.setTitle(milestone.getTitle());
         milestoneGitlab.setDescription(milestone.getDescription());
-        milestoneGitlab.setStartDate(Date.from(milestone.getStartDate().toLocalDateTime().atZone(java.time.ZoneId.systemDefault()).toInstant()));
-        milestoneGitlab.setDueDate(Date.from(milestone.getEndDate().toLocalDateTime().atZone(java.time.ZoneId.systemDefault()).toInstant()));
+        milestoneGitlab.setStartDate(milestone.getStartDate());
+        milestoneGitlab.setDueDate(milestone.getEndDate());
         return milestoneGitlab;
     }
 
@@ -57,10 +57,9 @@ public class Mapper {
         swp.studentprojectportal.model.Milestone milestone = new swp.studentprojectportal.model.Milestone();
         milestone.setTitle(milestoneGitlab.getTitle());
         milestone.setDescription(milestoneGitlab.getDescription());
-        Timestamp timestamp = new Timestamp(milestoneGitlab.getStartDate().getTime());
-        milestone.setStartDate(timestamp);
-        timestamp = new Timestamp(milestoneGitlab.getDueDate().getTime());
-        milestone.setEndDate(timestamp);
+        java.util.Date utilDate = milestoneGitlab.getStartDate();
+        milestone.setStartDate((Date)milestoneGitlab.getStartDate());
+        milestone.setEndDate((Date)milestoneGitlab.getDueDate());
         return milestone;
     }
 

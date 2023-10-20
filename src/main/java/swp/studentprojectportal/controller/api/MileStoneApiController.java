@@ -14,6 +14,8 @@ import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.MilestoneService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +34,8 @@ public class MileStoneApiController {
                 @RequestParam(name = "classId") Integer classId,
                 @RequestParam(name = "title") String title,
                 @RequestParam(name = "description") String description,
-                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
+                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate,
                 @RequestParam(name = "status", defaultValue = "1") Integer status) {
             boolean result =  milestoneService.addNewMilestone(classId, title, description, startDate, endDate, status);
             if(result)
@@ -68,8 +70,8 @@ public class MileStoneApiController {
             @RequestParam(name = "milestoneId") Integer milestoneId,
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate,
             @RequestParam(name = "status", defaultValue = "1") Integer status) {
         boolean result =  milestoneService.updateMilestone(milestoneId, title, description, startDate, endDate, status);
         if(result)
