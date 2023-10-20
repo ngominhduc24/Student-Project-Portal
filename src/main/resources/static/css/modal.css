@@ -70,7 +70,7 @@
     border-radius: 3px;
     margin: 0 5px;
 }
-#cancelButton {
+#cancelButton, #cancelButton1 {
     background: #c1c1c1;
 }
 #cancelButton:hover, #cancelButton:focus {
