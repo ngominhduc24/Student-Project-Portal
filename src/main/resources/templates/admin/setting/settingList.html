@@ -272,27 +272,37 @@
                                 let id;
                                 let status;
                                 let initialStatus;
+
                                 function showConfirmationDialog(checkbox) {
                                     id = checkbox.getAttribute("update-id");
                                     status = checkbox.checked;
                                     initialStatus = !status;
                                     $('#confirmationModal').modal('show');
                                 }
+
+                                function handleCancelClick() {
+                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
+                                    checkbox.checked = initialStatus;
+                                    $('#confirmationModal').modal('hide');
+                                }
+
                                 $("#confirmButton").click(function () {
                                     fetch(`/admin/setting/updateStatus?id=${id}&status=${status}`);
                                     $('#confirmationModal').modal('hide');
                                 });
-                                $("#cancelButton").click(function () {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
+
+                                $("#cancelButton, #closeButton").click(handleCancelClick);
+
+                                // Thêm sự kiện click cho toàn bộ tài liệu
+                                $(document).click(function (e) {
+                                    if (!$(e.target).closest('#confirmationModal').length) {
+                                        handleCancelClick();
+                                    }
                                 });
-                                $("#closeButton").click(function () {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
+
+
                             </script>
+
 
 
                             <script>
