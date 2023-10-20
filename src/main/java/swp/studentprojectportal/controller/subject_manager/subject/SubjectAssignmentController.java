@@ -15,6 +15,8 @@ import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.IAssignmentService;
 import swp.studentprojectportal.service.ISubjectService;
+import swp.studentprojectportal.utils.Validate;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -47,15 +49,15 @@ public class SubjectAssignmentController {
 
     @PostMapping("/subject-manager/addAssignment")
     public String createAssignment(Model model, WebRequest request){
+        int subjectId = Integer.parseInt(request.getParameter("subject"));
         String title = Objects.requireNonNull(request.getParameter("title")).trim();
         String description = Objects.requireNonNull(request.getParameter("description")).trim();
         String errorMessage = checkValidateAssignment(title, description);
-        int subjectId = Integer.parseInt(request.getParameter("subject"));
         if(errorMessage != null) {
             model.addAttribute("errorMsg", errorMessage);
             model.addAttribute("title", title);
             model.addAttribute("description", description);
-            model.addAttribute("subject", subjectId);
+            model.addAttribute("subject", subjectService.getSubjectById(subjectId));
             return "subject_manager/subject_assignment/subjectAssignmentAdd";
         }
 
@@ -78,12 +80,13 @@ public class SubjectAssignmentController {
         int id = Integer.parseInt(Objects.requireNonNull(request.getParameter("id")));
         String title = Objects.requireNonNull(request.getParameter("title")).trim();
         String description = Objects.requireNonNull(request.getParameter("description")).trim();
-        int subjectId = Integer.parseInt(request.getParameter("subject"));
+        int subjectId = Integer.parseInt(Objects.requireNonNull(request.getParameter("subject")));
         boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
-        String errMessage = checkValidateAssignment(title, description);
-        if (errMessage != null) {
-            model.addAttribute("errorMsg", errMessage);
+        String errorMessage = checkValidateAssignment(title, description);
+        if (errorMessage != null) {
+            model.addAttribute("errorMsg", errorMessage);
+            model.addAttribute("subject", subjectService.getSubjectById(subjectId));
         } else {
             boolean ans = assignmentService.updateAssignment(id, title, description, subjectId, status);
             if (ans) model.addAttribute("successMsg", "Update success");
@@ -98,6 +101,7 @@ public class SubjectAssignmentController {
     private String checkValidateAssignment(String title, String description) {
         if(title.isEmpty()) return "Please input subject assignment title";
         if(description.isEmpty()) return "Please input subject assignment description";
+        if(!Validate.validTilteDescription(title, description)) return "Please dont input special characters";
         return null;
     }
 

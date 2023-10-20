@@ -69,4 +69,12 @@ public class Validate {
         }
         return  true;
     }
+
+    public static  boolean validTilteDescription(String title, String description){
+
+        if(title.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~-].*")) return false;
+        if(description.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~-].*")) return false;
+
+        return true;
+    }
 }
