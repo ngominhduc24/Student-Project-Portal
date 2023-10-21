@@ -256,11 +256,14 @@
                     <div class="col-xl-4 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a th:href="@{/subject-manager/addSubjectAssignment?subjectId={id}(id=${subject.id})}" href="" class="btn btn-primary"
-                           style="margin-left: 24px">Add New</a>
-                    </div><!--end col-->
+<!--                        <a th:href="@{/subject-manager/addSubjectAssignment?subjectId={id}(id=${subject.id})}" href="" class="btn btn-primary"-->
+<!--                           style="margin-left: 24px">Add New</a>-->
+                        <button type="button" class="btn btn-primary"  onclick="showCreateForm()">
+                            Add Assignment
+                        </button>
+                    </div>
+                </div>
 
-                </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-body rounded-3" >
@@ -414,6 +417,45 @@
                                 </ul>
                             </nav>
                         </div>
+                    </div>
+                </div>
+
+                <!--Modal Create Assignment-->
+                <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form action="/subject-manager/subject" method="post">
+                            <input type="hidden" name="subject" th:value="${subject.id}">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createClassModalLabel">New Assignment</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+                                            <div class="mb-3 col-md-12">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" name="title" class="form-control" required th:value="${assignment.title}">
+                                            </div>
+
+                                            <div class="mb-3 col-md-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <h6 style="color: indianred;" id="error" th:text="${errmsg}"></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit"  class="btn btn-primary">Add Class</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -707,9 +749,7 @@
             showDiv(lastDisplayedDiv);
         }
     });
-</script>
 
-<script>
     var toastMessage = document.getElementById('toastMessage').textContent.trim();
     if (toastMessage) {
         var customToast = new bootstrap.Toast(document.getElementById('customToast'));
@@ -717,6 +757,10 @@
         setTimeout(function () {
             customToast.hide();
         }, 5000);
+    }
+
+    function showCreateForm() {
+        $('#createClassModal').modal('show');
     }
 </script>
 

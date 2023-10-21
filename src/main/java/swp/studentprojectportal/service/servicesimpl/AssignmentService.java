@@ -68,7 +68,7 @@ public class AssignmentService implements IAssignmentService {
     }
     @Override
     public Assignment saveAssignment(Assignment assignment){
-        return  assignmentRepository.save(assignment);
+        return assignmentRepository.save(assignment);
     }
     @Override
     public boolean updateAssignment(int id, String title, String description, int subject, boolean status){

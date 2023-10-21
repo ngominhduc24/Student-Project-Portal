@@ -38,11 +38,13 @@ public class ClassHomeController {
             @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
                             Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
+
         Class classA = new Class();
         classA.setSubject(new Subject());
         classA.setSemester(new Setting());
         classA.setUser(new User());
         classA.setDescription("");
+
         Page<Class> classList = classService.findAllBySubjectManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, teacherId, status);
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
         List<User> teacherList = userService.findTeacherBySubjectManagerId(user.getId());
