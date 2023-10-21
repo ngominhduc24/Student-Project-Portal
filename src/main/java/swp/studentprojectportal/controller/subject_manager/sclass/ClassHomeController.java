@@ -74,15 +74,15 @@ public class ClassHomeController {
     }
 
     @PostMapping("/subject-manager/class")
-    public String classAddPage(@RequestParam(defaultValue = "0") Integer pageNo,
-                            @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
-                            @RequestParam(defaultValue = "-1") Integer subjectId, @RequestParam(defaultValue = "-1") Integer semesterId,
-                            @RequestParam(defaultValue = "-1") Integer teacherId, @RequestParam(defaultValue = "-1") Integer status,
-                            @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType,
-                               @RequestParam(defaultValue = "") String description,
+    public String classAddPage(@RequestParam Integer pageNo,
+                            @RequestParam Integer pageSize, @RequestParam String search,
+                            @RequestParam Integer subjectId, @RequestParam Integer semesterId,
+                            @RequestParam Integer teacherId, @RequestParam Integer status,
+                            @RequestParam String sortBy, @RequestParam Integer sortType,
+                               @RequestParam String description,
                                @RequestParam String newClassName, @RequestParam Integer newSubjectId,
                                @RequestParam Integer newSemesterId, @RequestParam Integer newClassManagerId,
-                               WebRequest request, Model model, HttpSession session, RedirectAttributes attributes) {
+                               WebRequest request, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Class classA = new Class();
         classA.setClassName(newClassName);
@@ -90,16 +90,21 @@ public class ClassHomeController {
         classA.setSubject(subjectService.getSubjectById(newSubjectId));
         classA.setSemester(settingService.getSettingByID(newSemesterId));
         classA.setUser(userService.getUserById(newClassManagerId));
-
-        if(classService.checkExistedClassName(newClassName, newSubjectId, null))
-            model.addAttribute("errmsg", "This class name has already existed in this subject!");
-        else {
-            classA = classService.saveClass(classA);
-            milestoneService.addClassAssignment(classA);
-            attributes.addFlashAttribute("toastMessage", "Add new class successfully");
-            model.addAttribute("toastMessage", "Add new class successfully");
-            return "redirect:/subject-manager/class";
+        if (!newClassName.isEmpty()) {
+            if (classService.checkExistedClassName(newClassName, newSubjectId, null))
+                model.addAttribute("errmsg", "This class name has already existed in this subject!");
+            else {
+                classA = classService.saveClass(classA);
+                milestoneService.addClassAssignment(classA);
+                classA= new Class();
+                classA.setSubject(new Subject());
+                classA.setSemester(new Setting());
+                classA.setUser(new User());
+                classA.setDescription("");
+                model.addAttribute("toastMessage", "Add new class successfully");
+            }
         }
+        if(subjectId!=-1 || semesterId !=-1 || teacherId!=-1 || status!=-1 || !search.isEmpty()) pageNo=0;
 
         Page<Class> classList = classService.findAllBySubjectManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, teacherId, status);
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
