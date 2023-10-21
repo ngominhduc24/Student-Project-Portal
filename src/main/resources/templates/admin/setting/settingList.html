@@ -314,7 +314,6 @@
                                         $('#confirmationModalRed').modal('show');
                                     }
                                 }
-
                                 function handleCancelClick() {
                                     let checkbox = document.querySelector('input[update-id="' + id + '"]');
                                     checkbox.checked = initialStatus;
@@ -322,7 +321,6 @@
                                     $('#confirmationModal').modal('hide');
                                     $('#confirmationModalRed').modal('hide');
                                 }
-
                                 $(".confirmButton").click(function () {
                                     fetch(`/admin/setting/updateStatus?id=${id}&status=${status}`)
                                         .then(() => {
@@ -331,11 +329,9 @@
                                             $('#confirmationModalRed').modal('hide');
                                         });
                                 });
-
                                 $(".cancelButton, .closeButton").click(function () {
                                     handleCancelClick();
                                 });
-
                                 $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
                                     if (event.target === this && !confirmClicked) {
                                         handleCancelClick();
