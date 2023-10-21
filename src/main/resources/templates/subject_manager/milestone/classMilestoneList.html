@@ -128,13 +128,14 @@
     </div>
 </div>
 <!-- Loader -->
+<div id="syncText" hidden="hidden">System are sync with Gitlab ....</div>
 
-<div class="page-wrapper doctris-theme toggled">
+<div class="page-wrapper doctris-theme toggled" id="main">
     <!-- sidebar-wrapper  -->
     <div th:replace="~{dashboardSidebar}"></div>
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
-
+        <input type="hidden" name="id" th:value="${class.id}">
         <div class="topnav">
             <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
             <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
@@ -165,9 +166,61 @@
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-left: 24px">
                             Add New
                         </button>
+                        <button type="button" class="btn" data-toggle="modal" style="margin-left: 24px; background-color: #298d5e; width: 140px; color: white; margin-top: 5px" data-target="#syncModalCenter">
+                            Sync gitlab
+                        </button>
                     </div><!--end col-->
                         <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
                       </div><!--end row-->
+
+                <!-- Modal sync -->
+                <div class="modal fade" id="syncModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="syncModalLongTitle">Sync Gitlab</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Group id or Path<span class="text-danger">*</span></label>
+                                        <div class="d-flex">
+                                            <input type="text" name="groupIdOrPath" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Personal Token<span class="text-danger">*</span></label>
+                                        <div class="d-flex">
+                                            <input type="password" name="personalToken" class="form-control" th:value="${personalToken}"  required>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="syncGitLab()">Sync</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    const syncGitLab = () => {
+                        const classId = document.querySelector('input[name="id"]').value;
+                        let groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
+                        groupIdOrPath = groupIdOrPath.charAt(groupIdOrPath.length - 1) === '/' ? groupIdOrPath.slice(0, -1) : groupIdOrPath;
+                        groupIdOrPath = groupIdOrPath.split('/').at(-1);
+                        const personalToken = document.querySelector('input[name="personalToken"]').value;
+                        // hidden body
+                        document.querySelector('#main').style.display = 'none';
+                        // show text
+                        document.querySelector('#syncText').removeAttribute('hidden');
+                        // change location
+                        window.location.href = `/milestone/sync-gitlab?classId=${classId}&group=${groupIdOrPath}&personalToken=${personalToken}`;
+                    }
+                </script>
 
                 <!-- Modal add new-->
                 <div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -188,11 +241,11 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Start date<span class="text-danger">*</span></label>
-                                                <input type="datetime-local" id="start-date" name="start" required>
+                                                <input type="date" id="start-date" name="start" required>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">End date<span class="text-danger">*</span></label>
-                                                <input type="datetime-local" id="end-date" name="end" required>
+                                                <input type="date" id="end-date" name="end" required>
                                             </div>
                                             <div class="mb-3 col-md-12">
                                                 <label class="form-label">Description</label>
@@ -400,11 +453,11 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Start date</label>
-                                            <input type="datetime-local" id="detail-start-date" name="start" value="">
+                                            <input type="date" id="detail-start-date" name="start" value="">
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">End date</label>
-                                            <input type="datetime-local" id="detail-end-date" name="end" value="">
+                                            <label class="form-label">End date</label> <br/>
+                                            <input type="date" id="detail-end-date" name="end" value="">
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description</label>

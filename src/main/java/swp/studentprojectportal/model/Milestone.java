@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -25,10 +26,10 @@ public class Milestone {
     private String description;
 
     @Column(name = "start_date")
-    private Timestamp startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private Timestamp endDate;
+    private Date endDate;
 
     @Column(name = "status")
     private boolean status = true;

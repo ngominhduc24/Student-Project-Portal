@@ -178,6 +178,7 @@ public class ClassHomeController {
 
         User user = (User) session.getAttribute("user");
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
+        model.addAttribute("personalToken", user.getPersonalTokenGitlab());
         model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
