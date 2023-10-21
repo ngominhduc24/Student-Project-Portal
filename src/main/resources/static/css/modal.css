@@ -70,16 +70,16 @@
     border-radius: 3px;
     margin: 0 5px;
 }
-#cancelButton, #cancelButton1 {
-    background: #c1c1c1;
+.cancelButton {
+    background: #c1c1c1 !important;
 }
-#cancelButton:hover, #cancelButton:focus {
+.cancelButton:hover, .cancelButton:focus {
     background: #a8a8a8;
 }
-#confirmButton {
+.confirmButton {
     background: #47c9a2;
 }
-#confirmButton:hover, #confirmButton:focus {
+.confirmButton:hover, .confirmButton:focus {
     background: #47c9a2;
 }
 .trigger-btn {

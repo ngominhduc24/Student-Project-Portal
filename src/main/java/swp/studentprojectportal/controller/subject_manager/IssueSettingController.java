@@ -13,10 +13,7 @@ import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
-import swp.studentprojectportal.service.servicesimpl.ClassService;
-import swp.studentprojectportal.service.servicesimpl.GitlabApiService;
-import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
-import swp.studentprojectportal.service.servicesimpl.SubjectService;
+import swp.studentprojectportal.service.servicesimpl.*;
 import swp.studentprojectportal.utils.Validate;
 import swp.studentprojectportal.utils.dto.Mapper;
 
@@ -33,6 +30,8 @@ public class IssueSettingController {
     ISubjectRepository subjectRepository;
     @Autowired
     GitlabApiService gitlabApiService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/issue-setting/updateStatus")
     public String updateSubjectSettingStatus(
@@ -220,7 +219,8 @@ public class IssueSettingController {
     public String synchronizeGitlabIssueSettingClass(
             @RequestParam(name = "classId", defaultValue = "-1") Integer classId,
             @RequestParam(name = "group") String groupIdOrPath,
-            @RequestParam(name = "personalToken") String personalToken
+            @RequestParam(name = "personalToken") String personalToken,
+            HttpSession session
     ) throws GitLabApiException {
         List<Label> labelListGitlab =  gitlabApiService.getClassLabelGitlab(groupIdOrPath, personalToken);
         List<IssueSetting> labelListDB = issueSettingService.findAllSettingServiceByClassId(classId);
@@ -256,6 +256,16 @@ public class IssueSettingController {
             if (!isExist) {
                 Label label = Mapper.labelConvert(issueSetting);
                 gitlabApiService.createClassLabel(groupIdOrPath, personalToken, label);
+            }
+        }
+        // save personal token
+        User user = (User) session.getAttribute("user");
+        if(user != null){
+            // if personal token is change then update
+            if(user.getPersonalTokenGitlab() == null || user.getPersonalTokenGitlab().equals(personalToken)){
+                user.setPersonalTokenGitlab(personalToken);
+                session.setAttribute("user", user);
+                userService.saveUser(user);
             }
         }
         return "redirect:/class/issue-setting?id=" + classId;

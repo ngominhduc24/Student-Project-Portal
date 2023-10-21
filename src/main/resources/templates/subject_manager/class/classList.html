@@ -161,7 +161,7 @@
                     <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
 <!--                        <a href="/subject-manager/class/add" class="btn btn-primary"  style="margin-left: 24px">Add New</a>-->
                         <button type="button" class="btn btn-primary"  onclick="showCreateForm()">
-                            Add Class
+                            Add New
                         </button>
                     </div><!--end col-->
 
@@ -230,7 +230,7 @@
                                             <select name="status" class="form-select" onchange="this.form.submit()">
                                                 <option value="-1" th:selected="${status == -1}">All Status</option>
                                                 <option value="0" th:selected="${status == 0}">Pending</option>
-                                                <option value="1" th:selected="${status == 1}">Canceled</option>
+                                                <option value="1" th:selected="${status == 1}">Cancelled</option>
                                                 <option value="2" th:selected="${status == 2}">Started</option>
                                                 <option value="3" th:selected="${status == 3}">Closed</option>
                                             </select>
@@ -280,15 +280,15 @@
                                     <td th:text="${class.user.fullName}"></td>
                                     <td>
                                         <p class="text-warning m-0" th:if="${class.getStatus()==0}">Pending</p>
-                                        <p class="text-danger m-0" th:if="${class.getStatus()==1}">Canceled</p>
+                                        <p class="text-danger m-0" th:if="${class.getStatus()==1}">Cancelled</p>
                                         <p class="text-success m-0" th:if="${class.getStatus()==2}">Started</p>
-                                        <p class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</p>
+                                        <p class="text-secondary m-0" th:if="${class.getStatus()==3}">Closed</p>
                                     </td>
                                     <td>
                                         <a th:href="@{/subject-manager/classDetail(id=${class.id})}"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="fas fa-pen-to-square action"></i></a>
                                         <a th:if="${class.getStatus()==1}" th:onclick="'showDialog(' + ${class.id} + ','+2+')'"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Start" class="fa-regular fa-circle-play text-success action action1"></i></a>
                                         <a th:if="${class.getStatus()==2}" th:onclick="'showDialog(' + ${class.id} + ','+1+')'"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Cancel" class="fa fa-ban text-danger action action2"></i></a>
-                                        <a th:if="${class.getStatus()==2}" th:onclick="'showDialog(' + ${class.id} + ','+3+')'"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Close" class="fa-regular fa-circle-check text-success action action1"></i></a>
+                                        <a th:if="${class.getStatus()==2}" th:onclick="'showDialog(' + ${class.id} + ','+3+')'"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Close" class="fa-regular fa-circle-xmark text-secondary action action1"></i></a>
                                         <a th:if="${class.getStatus()==2}"></a>
                                         <a th:if="${class.getStatus()==0}" th:onclick="'showDialog(' + ${class.id} + ','+-1+')'"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="fa-regular fa-trash-can text-danger action action2"></i></a>
                                         <a th:if="${class.getStatus()==0}"></a>
