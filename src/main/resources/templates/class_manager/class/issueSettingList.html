@@ -400,7 +400,7 @@
                                     $('#confirmationModalRed').modal('hide');
                                 }
                                 $(".confirmButton").click(function () {
-                                    fetch(`/issue-setting/updateStatus?id=${id}&status=${status}`)
+                                    fetch(`/class/issue-setting/updateStatus?id=${id}&status=${status}`)
                                         .then(() => {
                                             confirmClicked = true;
                                             $('#confirmationModal').modal('hide');

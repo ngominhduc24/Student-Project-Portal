@@ -167,36 +167,6 @@ public class ClassHomeController {
         return "subject_manager/class/classDetail";
     }
 
-    @GetMapping("/class/issue-setting")
-    public String issueSettingPage(@RequestParam("id") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
-                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
-                                @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
-                                @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") String settingGroup,
-                                Model model, HttpSession session) {
-        Class classA = classService.findById(classId);
-        Page<IssueSetting> issueSettingList= issueSettingService.filterClassIssueSetting(classA.getSubject().getId(), classId,search, pageNo, pageSize, sortBy, sortType, settingGroup, status);
-        List<String> settingGroupList = issueSettingService.findAllDistinctClassSettingGroup(classA.getSubject().getId(), classId);
-
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
-        model.addAttribute("personalToken", user.getPersonalTokenGitlab());
-        model.addAttribute("class", classA);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("search", search);
-        model.addAttribute("classId", classId);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortType", sortType);
-        model.addAttribute("status", status);
-        model.addAttribute("totalPage", issueSettingList.getTotalPages());
-        model.addAttribute("settingGroup", settingGroup);
-
-        model.addAttribute("issueSettingList", issueSettingList);
-        model.addAttribute("settingGroupList", settingGroupList);
-
-        return "class_manager/class/issueSettingList";
-    }
-
     @PostMapping("/subject-manager/class/update")
     public String updateClass(@RequestParam("id") Integer classId,@RequestParam String description,
             @RequestParam String className, @RequestParam Integer subjectId,

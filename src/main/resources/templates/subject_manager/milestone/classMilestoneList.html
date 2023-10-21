@@ -425,7 +425,7 @@
                                 }
 
                                 $(".confirmButton").click(function () {
-                                    fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`)
+                                    fetch(`/class/milestone/updateStatus?id=${id}&status=${status}`)
                                         .then(() => {
                                             confirmClicked = true;
                                             $('#confirmationModal').modal('hide');

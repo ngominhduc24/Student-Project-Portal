@@ -35,17 +35,6 @@ public class MilestoneController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/milestone/add")
-    public String AddClassAssignment(Model model){
-        return "subject_manager/milestone/milestoneAdd";
-    }
-
-    @GetMapping("/subject-manager/milestoneDetail")
-    public String classAssignmentDetail(Model model, @RequestParam("id") Integer milestoneId){
-        Milestone milestone = milestoneService.findMilestoneById(milestoneId);
-        model.addAttribute("milestone", milestone);
-        return "subject_manager/milestone/milestoneDetails";
-    }
 
     @GetMapping("/class/milestone")
     public String milestonePage(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
@@ -73,6 +62,16 @@ public class MilestoneController {
         Milestone milestone = milestoneService.findMilestoneById(milestoneId);
         model.addAttribute("milestone", milestone);
         return "subject_manager/milestone/classMilestoneList";
+    }
+
+    @GetMapping("/class/milestone/updateStatus")
+    public String updateSubjectSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        Milestone milestone = milestoneService.findMilestoneById(id);
+        milestone.setStatus(status);
+        milestoneService.save(milestone);
+        return "redirect:/";
     }
 
 
