@@ -112,6 +112,14 @@
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
+        .custom-toast {
+            background-color: #20ee68 !important;
+            color: #FFFFFF;
+            position: absolute;
+            top: 88px;
+            right: 0;
+            z-index: 2;
+        }
     </style>
 
 </head>
@@ -158,38 +166,36 @@
                             <li class="breadcrumb-item active">Issue Setting List</li>
                         </ol>
                     </div><!--end col-->
-                    <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                        <div class="toast-header">
-                            <strong class="me-auto">Success</strong>
-                            <small>Now</small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">
-                            <span id="toastMessage" th:text="${toastMessage}"></span>
-                        </div>
-                    </div>
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <button type="button" class="btn btn-primary"  onclick="showCreateForm()">
-                            Pop Up
-                        </button>
                         <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
                                 style="margin-left: 24px">Add New</a>
                         </div>
-                        <div th:if="${session.user.setting.id==4}">
-                            <form action="/class-manager/issue-setting/add" method="get" style="display: inline;">
-                                <input type="hidden" name="id" th:value="${class.id}">
-                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">
-                            </form>
+                        <div th:if="${session.user.setting.id==4}" style="display: inline">
+                            <button type="button" class="btn btn-primary"  onclick="showCreateForm()" style="margin-left: 24px" >
+                                Add new
+                            </button>
+<!--                            <form action="/class-manager/issue-setting/add" method="get" style="display: inline;">-->
+<!--                                <input type="hidden" name="id" th:value="${class.id}">-->
+<!--                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">-->
+<!--                            </form>-->
                             <button type="button" class="btn" data-toggle="modal" style="margin-left: 24px; background-color: #298d5e; width: 140px; color: white; margin-top: 5px" data-target="#exampleModalCenter">
                                 Sync gitlab
                             </button>
                         </div>
                     </div><!--end col-->
-
-
                 </div><!--end row-->
+                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                    <div class="toast-header">
+                        <strong class="me-auto">Success</strong>
+                        <small>Now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <span id="toastMessage" th:text="${toastMessage}"></span>
+                    </div>
+                </div>
 
 
                 <!-- Modal -->
@@ -243,7 +249,7 @@
 
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form action="/class/issue-setting" class="card-body rounded-3" id="form">
+                        <form action="/class/issue-setting" class="card-body rounded-3" id="form" method="post">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <input type="hidden" name="id" th:value="${class.id}">
@@ -347,11 +353,12 @@
                             </table>
 
                             <!-- Add new -->
-                            <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+
+                            <div class="modal fade" id="createIssueSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueSettingModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="createClassModalLabel">New Issue Setting</h5>
+                                            <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -359,7 +366,7 @@
                                                 <div class="col-md-12 row" style="margin-top: 12px;">
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Subject Code<span class="text-danger">*</span></label>
-                                                        <input type="text" name="subectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly>
+                                                        <input type="text" name="subjectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Class Name<span class="text-danger">*</span></label>
@@ -368,13 +375,13 @@
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Group<span class="text-danger">*</span></label>
                                                         <div class="d-flex">
-                                                            <input type="text" name="settingGroup" class="form-control" th:value="${setting.settingGroup}" required>
+                                                            <input type="text" name="newSettingGroup" class="form-control" th:value="${setting.settingGroup}" required>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Title<span class="text-danger">*</span></label>
                                                         <div class="d-flex">
-                                                            <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
+                                                            <input type="text" name="newSettingTitle" class="form-control" th:value="${setting.settingTitle}">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-12">
@@ -561,6 +568,7 @@
 
 <!-- javascript -->
 <script>
+
     var toastMessage = document.getElementById('toastMessage').textContent.trim();
     if (toastMessage) {
         var customToast = new bootstrap.Toast(document.getElementById('customToast'));
@@ -572,13 +580,14 @@
     var errmsg = document.getElementById('error').textContent.trim();
     $(document).ready(function() {
         if (errmsg.trim() !== '') {
-            $('#createClassModal').modal('show');
+            $('#createIssueSettingModal').modal('show');
         }
     });
     function showCreateForm() {
-        $('#createClassModal').modal('show');
+        $('#createIssueSettingModal').modal('show');
     }
 </script>
+
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
