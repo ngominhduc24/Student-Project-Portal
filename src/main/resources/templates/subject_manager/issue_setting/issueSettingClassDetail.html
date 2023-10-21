@@ -31,24 +31,24 @@
     <!-- Datatables -->
     <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
     <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Bắt sự kiện khi form được submit
-            document.querySelector('form').addEventListener('submit', function (event) {
-                // Lấy giá trị của trường settingTitle
-                var settingGroupValue = document.querySelector('input[name="settingGroup"]').value;
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function () {-->
+<!--            // Bắt sự kiện khi form được submit-->
+<!--            document.querySelector('form').addEventListener('submit', function (event) {-->
+<!--                // Lấy giá trị của trường settingTitle-->
+<!--                var settingGroupValue = document.querySelector('input[name="settingGroup"]').value;-->
 
-                // Kiểm tra xem settingGroup có giá trị là null, empty hoặc chỉ chứa dấu cách không
-                if (!settingGroupValue || settingGroupValue.trim() === '') {
-                    // Ngăn chặn việc submit form
-                    event.preventDefault();
+<!--                // Kiểm tra xem settingGroup có giá trị là null, empty hoặc chỉ chứa dấu cách không-->
+<!--                if (!settingGroupValue || settingGroupValue.trim() === '') {-->
+<!--                    // Ngăn chặn việc submit form-->
+<!--                    event.preventDefault();-->
 
-                    // Hiển thị thông báo lỗi
-                    document.querySelector('#errmsg').innerText = 'Group cannot be null, empty, or consist of only spaces.';
-                }
-            });
-        });
-    </script>
+<!--                    // Hiển thị thông báo lỗi-->
+<!--                    document.querySelector('#errmsg').innerText = 'Group cannot be null, empty, or consist of only spaces.';-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
 </head>
 <body>
 <!-- Loader -->
@@ -76,8 +76,12 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <!--                        <li class="breadcrumb-item"><a href="/subject-manager/issue-setting/">Issue Setting</a></li>-->
-                        <!--                        <li class="breadcrumb-item">/</li>-->
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+                        <li class="breadcrumb-item">/</li>
+<!--                        <li class="breadcrumb-item"><a href="/class/issue-setting">Class List</a></li>-->
+                        <li class="breadcrumb-item"><a th:href="@{/class/issue-setting(id=${setting.aclass.id})}" >Issue Setting List</a></li>
+                        <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Issue Setting Details</li>
                     </ol>
                 </div>
@@ -99,13 +103,16 @@
                                         <div class="mb-3">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <select name="classId" class="form-select">
-                                                    <option th:each="class : ${classList}"
-                                                            th:value="${class.id}"
-                                                            th:text="${class.className}"
-                                                            th:seleted="${class.id == setting.aclass.id}"></option>
-                                                </select>
+<!--                                                <select name="classId" class="form-select">-->
+<!--                                                    <option th:each="class : ${classList}"-->
+<!--                                                            th:value="${class.id}"-->
+<!--                                                            th:text="${class.className}"-->
+<!--                                                            th:seleted="${class.id == setting.aclass.id}"></option>-->
+<!--                                                </select>-->
+                                                <input type="hidden" name="classId" class="form-control" th:value="${setting.aclass.id}">
+                                                <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -151,6 +158,8 @@
                             <!--                            <h6 style="color: red;" th:text="${errmsg}"></h6>-->
                             <div class="mt-2">
                                 <h6 style="color: indianred;" th:text="${errmsg}"></h6>
+<!--                                <div id="errmsg" style="color: red;"></div>-->
+<!--                                <h6 id="errmsg" style="color: red"></h6>-->
                                 <h6 style="color: green;" th:text="${msg}"></h6>
                             </div>
                         </div>
