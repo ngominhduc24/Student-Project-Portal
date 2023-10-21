@@ -163,9 +163,9 @@
                         <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
                                 style="margin-left: 24px">Add New</a>
                         </div>
-                        <div th:if="${session.user.setting.id==4}" >
-                            <a href="/class-manager/issue-setting/add" class="btn btn-primary" style="margin-left: 24px">Add New</a>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" style="margin-left: 24px; margin-top: 5px" data-target="#exampleModalCenter">
+                        <div th:if="${session.user.setting.id==4}">
+                            <a href="/class-manager/issue-setting/add" class="btn btn-primary" style="margin-left: 24px; width: 140px;">Add New</a>
+                            <button type="button" class="btn" data-toggle="modal" style="margin-left: 24px; background-color: #298d5e; width: 140px; color: white; margin-top: 5px" data-target="#exampleModalCenter">
                                 Sync gitlab
                             </button>
                         </div>
@@ -195,7 +195,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Personal Token<span class="text-danger">*</span></label>
                                         <div class="d-flex">
-                                            <input type="password" name="personalToken" class="form-control" required>
+                                            <input type="password" name="personalToken" class="form-control" th:value="${personalToken}" required>
                                         </div>
                                     </div>
                                 </div><!--end col-->
@@ -210,7 +210,9 @@
                 <script>
                     const syncGitLab = () => {
                         const classId = document.querySelector('input[name="id"]').value;
-                        const groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
+                        let groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
+                        groupIdOrPath = groupIdOrPath.charAt(groupIdOrPath.length - 1) === '/' ? groupIdOrPath.slice(0, -1) : groupIdOrPath;
+                        groupIdOrPath = groupIdOrPath.split('/').at(-1);
                         const personalToken = document.querySelector('input[name="personalToken"]').value;
                         // hidden body
                         document.querySelector('#main').style.display = 'none';

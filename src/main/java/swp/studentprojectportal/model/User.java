@@ -47,6 +47,9 @@ public class User {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "personal_token_gitlab")
+    private String personalTokenGitlab;
+
     @Column(name = "active")
     private boolean active = false;
 
