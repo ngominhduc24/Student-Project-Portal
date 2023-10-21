@@ -16,6 +16,7 @@ public interface IIssueSettingService {
     IssueSetting findById(int id);
 
     IssueSetting findByClassAndGroupAndTitle(int classId,String settingGroup, String settingTitle);
+
     List<String> findAllDistinctSettingGroup(Integer subjectId);
     List<String> findAllDistinctClassSettingGroup(Integer subjectId, Integer classId);
 }

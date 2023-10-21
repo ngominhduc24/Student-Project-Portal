@@ -160,14 +160,15 @@
                         </ol>
                     </div><!--end col-->
 
-                    <div class="col-xl-4 col-md-6"></div>
+                    <div class="col-xl-2 col-md-6"></div>
 
-                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
+                    <div class="col-xl-4 col-md-6 d-flex align-items-center justify-content-end mb-2">
+                        <button type="button" class="btn" data-toggle="modal" style="background-color: #298d5e; color: white" data-target="#syncModalCenter">
+                            <i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1 1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0 0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
+                            Sync gitlab
+                        </button>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-left: 24px">
                             Add New
-                        </button>
-                        <button type="button" class="btn" data-toggle="modal" style="margin-left: 24px; background-color: #298d5e; width: 140px; color: white; margin-top: 5px" data-target="#syncModalCenter">
-                            Sync gitlab
                         </button>
                     </div><!--end col-->
                         <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
@@ -341,7 +342,7 @@
                                     <td th:text="${milestone.endDate}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${milestone.status}" th:attr="update-id=${milestone.id}" onchange="showConfirmationDialog(this)">
+                                            <input class="form-check-input" type="checkbox" th:checked="${milestone.status}" th:attr="update-id=${milestone.id},data-title=${milestone.title}" onchange="showConfirmationDialog(this)">
                                         </div>
                                     </td>
                                     <td>
@@ -361,42 +362,85 @@
                                                 <i  class="material-icons">&#xE876;</i>
                                             </div>
                                             <h4 class="modal-title w-100">Are you sure?</h4>
-                                            <button type="button" id="closeButton" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Are you sure you want to perform this action?</p>
+                                            <p></p>
                                         </div>
                                         <div class="modal-footer justify-content-center">
-                                            <button type="button" class="btn" id="cancelButton" data-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn" id="confirmButton">Confirm</button>
+                                            <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn confirmButton" >Confirm</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+                                <div class="modal-dialog modal-confirm">
+                                    <div class="modal-content">
+                                        <div class="modal-header flex-column">
+                                            <div class="icon-box" style="border-color: #f15e5e">
+                                                <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                                            </div>
+                                            <h4 class="modal-title w-100">Are you sure?</h4>
+                                            <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p></p>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <script>
                                 let id;
                                 let status;
                                 let initialStatus;
+                                let confirmClicked = false;
+
                                 function showConfirmationDialog(checkbox) {
                                     id = checkbox.getAttribute("update-id");
+                                    var title = checkbox.getAttribute('data-title');
                                     status = checkbox.checked;
                                     initialStatus = !status;
-                                    $('#confirmationModal').modal('show');
+                                    confirmClicked = false;
+                                    if (status) {
+                                        $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${title}?`);
+                                        $('#confirmationModal').modal('show');
+                                    } else {
+                                        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${title}?`);
+                                        $('#confirmationModalRed').modal('show');
+                                    }
                                 }
-                                $("#confirmButton").click(function () {
-                                    fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`);
-                                    $('#confirmationModal').modal('hide');
-                                });
-                                $("#cancelButton").click(function () {
+
+                                function handleCancelClick() {
                                     let checkbox = document.querySelector('input[update-id="' + id + '"]');
                                     checkbox.checked = initialStatus;
+                                    confirmClicked = false;
                                     $('#confirmationModal').modal('hide');
+                                    $('#confirmationModalRed').modal('hide');
+                                }
+
+                                $(".confirmButton").click(function () {
+                                    fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`)
+                                        .then(() => {
+                                            confirmClicked = true;
+                                            $('#confirmationModal').modal('hide');
+                                            $('#confirmationModalRed').modal('hide');
+                                        });
                                 });
-                                $("#closeButton").click(function () {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
+
+                                $(".cancelButton, .closeButton").click(function () {
+                                    handleCancelClick();
+                                });
+
+                                $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
+                                    if (event.target === this && !confirmClicked) {
+                                        handleCancelClick();
+                                    }
                                 });
                             </script>
 
