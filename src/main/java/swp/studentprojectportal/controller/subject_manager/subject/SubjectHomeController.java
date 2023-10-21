@@ -70,7 +70,7 @@ public class SubjectHomeController {
     public String subject(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
                           @RequestParam String search,
                           @RequestParam Integer subjectId, @RequestParam Integer status,
-                          @RequestParam String newTitle, @RequestParam String newDescription,
+                          @RequestParam String newTitle, @RequestParam(defaultValue = "") String newDescription,
                           @RequestParam String sortBy, @RequestParam Integer sortType,
                           @RequestParam Integer pageNoS, @RequestParam Integer pageSizeS,
                           @RequestParam String searchS,
