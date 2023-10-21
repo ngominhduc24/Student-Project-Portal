@@ -158,10 +158,22 @@
                             <li class="breadcrumb-item active">Issue Setting List</li>
                         </ol>
                     </div><!--end col-->
-
+                    <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                        <div class="toast-header">
+                            <strong class="me-auto">Success</strong>
+                            <small>Now</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            <span id="toastMessage" th:text="${toastMessage}"></span>
+                        </div>
+                    </div>
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
+                        <button type="button" class="btn btn-primary"  onclick="showCreateForm()">
+                            Pop Up
+                        </button>
                         <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
                                 style="margin-left: 24px">Add New</a>
                         </div>
@@ -333,6 +345,59 @@
                                 </tr>
                                 </tbody>
                             </table>
+
+                            <!-- Add new -->
+                            <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="createClassModalLabel">New Issue Setting</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-12 row" style="margin-top: 12px;">
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Subject Code<span class="text-danger">*</span></label>
+                                                        <input type="text" name="subectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly>
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Class Name<span class="text-danger">*</span></label>
+                                                        <input type="text" name="className" class="form-control" required th:value="${setting.aclass.className}" readonly>
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Group<span class="text-danger">*</span></label>
+                                                        <div class="d-flex">
+                                                            <input type="text" name="settingGroup" class="form-control" th:value="${setting.settingGroup}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                        <div class="d-flex">
+                                                            <input type="text" name="settingTitle" class="form-control" th:value="${setting.settingTitle}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 col-md-12">
+                                                        <label class="form-label">Description</label>
+                                                        <div class="d-flex">
+                                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${setting.description}"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        <h6 style="color: indianred;" id="error" th:text="${errmsg}"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit"  class="btn btn-primary">Add Class</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Modal Dialog -->
                             <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
                                 <div class="modal-dialog modal-confirm">
@@ -355,17 +420,6 @@
                                 </div>
                             </div>
 
-<<<<<<<<< Temporary merge branch 1
-<!--                            <script>-->
-<!--                                function submitForm(action) {-->
-<!--                                    var form = document.getElementById('addNewForm');-->
-<!--                                    form.action = action;-->
-<!--                                    form.method = get;-->
-<!--                                    form.submit();-->
-<!--                                }-->
-<!--                            </script>-->
-
-=========
                             <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
                                 <div class="modal-dialog modal-confirm">
                                     <div class="modal-content">
@@ -386,7 +440,6 @@
                                     </div>
                                 </div>
                             </div>
->>>>>>>>> Temporary merge branch 2
                             <script>
                                 let id;
                                 let status;
@@ -507,6 +560,25 @@
 </div>
 
 <!-- javascript -->
+<script>
+    var toastMessage = document.getElementById('toastMessage').textContent.trim();
+    if (toastMessage) {
+        var customToast = new bootstrap.Toast(document.getElementById('customToast'));
+        customToast.show();
+        setTimeout(function () {
+            customToast.hide();
+        }, 5000);
+    }
+    var errmsg = document.getElementById('error').textContent.trim();
+    $(document).ready(function() {
+        if (errmsg.trim() !== '') {
+            $('#createClassModal').modal('show');
+        }
+    });
+    function showCreateForm() {
+        $('#createClassModal').modal('show');
+    }
+</script>
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
