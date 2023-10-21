@@ -424,7 +424,7 @@
                 <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <form action="/subject-manager/subject" method="post">
-                            <input type="hidden" name="subject" th:value="${subject.id}">
+                            <input type="hidden" name="newSubjectId" th:value="${subject.id}">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="createClassModalLabel">New Assignment</h5>
@@ -435,7 +435,7 @@
                                         <div class="col-md-12 row" style="margin-top: 12px;">
                                             <div class="mb-3 col-md-12">
                                                 <label class="form-label">Title<span class="text-danger">*</span></label>
-                                                <input type="text" name="title" class="form-control" required th:value="${assignment.title}">
+                                                <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
                                             </div>
 
                                             <div class="mb-3 col-md-12">
