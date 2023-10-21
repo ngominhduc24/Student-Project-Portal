@@ -111,7 +111,7 @@
             margin-bottom: 36px;
         }
         .custom-toast {
-            background-color: #20ee68 !important;
+            background-color: #16ce7e !important;
             color: #FFFFFF;
             position: absolute;
             top: 88px;
@@ -443,8 +443,7 @@
                                     }
                                 }
                                 $(".confirmButton").click(function () {
-                                    fetch(`/subject-manager/class/updateStatus?id=${id}&status=${status}`);
-                                    document.getElementById("form").submit();
+                                    window.location.href=`/subject-manager/class/updateStatus?id=${id}&status=${status}`;
                                 });
                                 $(".cancelButton, .closeButton").click(function () {
                                     $('#confirmationModal').modal('hide');
