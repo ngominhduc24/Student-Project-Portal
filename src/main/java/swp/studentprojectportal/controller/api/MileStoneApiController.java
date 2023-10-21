@@ -15,8 +15,7 @@ import swp.studentprojectportal.service.servicesimpl.MilestoneService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,22 +28,31 @@ public class MileStoneApiController {
         @Autowired
         ObjectMapper objectMapper;
 
-        @GetMapping("/newMilestone")
-        public ResponseEntity addNewMilestone(
-                @RequestParam(name = "classId") Integer classId,
-                @RequestParam(name = "title") String title,
-                @RequestParam(name = "description") String description,
-                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
-                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate,
-                @RequestParam(name = "status", defaultValue = "1") Integer status) {
-            boolean result =  milestoneService.addNewMilestone(classId, title, description, startDate, endDate, status);
-            if(result)
-                return ResponseEntity.ok().body("Add new milestone successfully");
-            else
-                return ResponseEntity.badRequest().body("Add new milestone failed");
+    @GetMapping("/newMilestone")
+    public ResponseEntity addNewMilestone(
+            @RequestParam(name = "classId") Integer classId,
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+            @RequestParam(name = "status", defaultValue = "1") Integer status) {
+        boolean result = milestoneService.addNewMilestone(
+                classId,
+                title,
+                description,
+                new java.sql.Date(startDate.getTime()),  // Convert util.Date to sql.Date
+                new java.sql.Date(endDate.getTime()),    // Convert util.Date to sql.Date
+                status
+        );
+        if (result) {
+            return ResponseEntity.ok().body("Add new milestone successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Add new milestone failed");
         }
+    }
 
-        @GetMapping("/milestone")
+
+    @GetMapping("/milestone")
         public ResponseEntity getMilestoneByClassId(@RequestParam(name = "milestoneId") Integer milestoneId) {
             Milestone milestone = milestoneService.findMilestoneById(milestoneId);
             // create response entity with milestone object
@@ -71,12 +79,20 @@ public class MileStoneApiController {
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
             @RequestParam(name = "status", defaultValue = "1") Integer status) {
-        boolean result =  milestoneService.updateMilestone(milestoneId, title, description, startDate, endDate, status);
-        if(result)
+        boolean result = milestoneService.updateMilestone(
+                milestoneId,
+                title,
+                description,
+                new java.sql.Date(startDate.getTime()),  // Convert util.Date to sql.Date
+                new java.sql.Date(endDate.getTime()),    // Convert util.Date to sql.Date
+                status
+        );
+        if (result) {
             return ResponseEntity.ok().body("Update milestone successfully");
-        else
+        } else {
             return ResponseEntity.badRequest().body("Update milestone failed");
+        }
     }
 }
