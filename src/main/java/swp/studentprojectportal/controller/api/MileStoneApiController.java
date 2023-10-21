@@ -36,6 +36,18 @@ public class MileStoneApiController {
             @RequestParam(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
             @RequestParam(name = "status", defaultValue = "1") Integer status) {
+
+        // Check if start date is after end date
+        if (startDate.after(endDate)) {
+            return ResponseEntity.badRequest().body("Start date must be before the end date.");
+        }
+
+        // Check if end date is in the future
+        Date currentDate = new Date();
+        if (endDate.before(currentDate)) {
+            return ResponseEntity.badRequest().body("End date must be in the future.");
+        }
+
         boolean result = milestoneService.addNewMilestone(
                 classId,
                 title,
@@ -44,12 +56,14 @@ public class MileStoneApiController {
                 new java.sql.Date(endDate.getTime()),    // Convert util.Date to sql.Date
                 status
         );
+
         if (result) {
             return ResponseEntity.ok().body("Add new milestone successfully");
         } else {
             return ResponseEntity.badRequest().body("Add new milestone failed");
         }
     }
+
 
 
     @GetMapping("/milestone")
@@ -81,6 +95,18 @@ public class MileStoneApiController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
             @RequestParam(name = "status", defaultValue = "1") Integer status) {
+
+        // Check if start date is after end date
+        if (startDate.after(endDate)) {
+            return ResponseEntity.badRequest().body("Start date must be before the end date.");
+        }
+
+        // Check if end date is in the future
+        Date currentDate = new Date();
+        if (endDate.before(currentDate)) {
+            return ResponseEntity.badRequest().body("End date must be in the future.");
+        }
+
         boolean result = milestoneService.updateMilestone(
                 milestoneId,
                 title,
@@ -89,10 +115,12 @@ public class MileStoneApiController {
                 new java.sql.Date(endDate.getTime()),    // Convert util.Date to sql.Date
                 status
         );
+
         if (result) {
             return ResponseEntity.ok().body("Update milestone successfully");
         } else {
             return ResponseEntity.badRequest().body("Update milestone failed");
         }
     }
+
 }
