@@ -38,7 +38,7 @@ public class StudentController {
                               @RequestParam(defaultValue = "-1") int classId,
                               @RequestParam(defaultValue = "-1", required = false) int id) {
         Optional<User> user = userService.findUserById(id);
-        model.addAttribute("user", user.orElseGet(() -> userService.findUserById(1).get()));
+        model.addAttribute("user", user.isPresent() ? user.get() : userService.findUserById(1).get());
 
         final int roleId = 1;
         Class c = classService.getClass(classId);
