@@ -2,6 +2,7 @@ package swp.studentprojectportal.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,25 @@ public class IssueSettingApiController {
         }
         else
             return ResponseEntity.badRequest().body("Issue Setting not found");
+
+    }
+    @GetMapping("/update/issue-setting")
+    public ResponseEntity updateIssueSetting(
+            @RequestParam(name = "issueSettingId") Integer issueSettingId,
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "group") String group,
+            @RequestParam(name = "status") Integer status) {
+
+        IssueSetting issueSetting = issueSettingService.findById(issueSettingId);
+        issueSetting.setDescription(description);
+        issueSetting.setSettingTitle(title);
+        issueSetting.setSettingGroup(group);
+        issueSetting.setStatus(status == 1 ? true : false);
+
+        issueSettingService.saveSubjectSetting(issueSetting);
+
+        return ResponseEntity.ok().body("Update milestone successfully");
 
     }
 }

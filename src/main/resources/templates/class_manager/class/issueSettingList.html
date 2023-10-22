@@ -343,7 +343,7 @@
                                     <td th:text="${setting.description}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input th:if="${setting.aclass!=null}" class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingTitle}" onchange="showConfirmationDialog(this)">
+                                            <input th:if="${setting.aclass!=null}" class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingGroup}" onchange="showConfirmationDialog(this)">
                                         </div>
                                     </td>
                                     <td>
@@ -461,15 +461,15 @@
 
                                 function showConfirmationDialog(checkbox) {
                                     id = checkbox.getAttribute("update-id");
-                                    var settingTitle = checkbox.getAttribute('data-title');
+                                    var settingGroup = checkbox.getAttribute('data-title');
                                     status = checkbox.checked;
                                     initialStatus = !status;
                                     confirmClicked = false;
                                     if (status) {
-                                        $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${settingTitle}?`);
+                                        $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${settingGroup}?`);
                                         $('#confirmationModal').modal('show');
                                     } else {
-                                        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${settingTitle}?`);
+                                        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${settingGroup}?`);
                                         $('#confirmationModalRed').modal('show');
                                     }
                                 }
@@ -528,7 +528,7 @@
                         </form>
                     </div>
                 </div>
-                <!--Detail Modal-->
+<!--                Detail Modal-->
                 <div class="modal fade" id="detailsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -597,6 +597,40 @@
                     }
                 </script>
 
+<!--        Update Issue-->
+        <script>
+            function updateIssueSetting(id){
+                const group = document.querySelector('input[id="details-issue-setting-group"]').value;
+                const title = document.querySelector('input[id="details-issue-setting-title"]').value;
+                const description = document.querySelector('textarea[name="detail-description"]').value;
+                const status = document.getElementById('detail-status').checked ? 1 : 0;
+                let endPoint = '/api/v1/update/issue-setting?issueSettingId=' + id + '&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
+                fetch(endPoint)
+                    .then(response => {
+                        if (response.ok) {
+                            // Handle a successful API response
+                            console.log('Issue setting updated successfully.');
+                            // Close the modal
+                            document.getElementById('detailcloseModal').click();
+                            // reload page
+                            location.reload();
+                            // window.location = th:href="@{/class/issue-setting(id=${class.id})}
+                        } else {
+                            // Handle API errors
+                            console.error('Error updating milestone.');
+                        }
+                    })
+                    .catch(error => {
+                        // Handle network errors
+                        console.error('Network error:', error);
+                    });
+                location.reload();
+            }
+        </script>
+
+
+
+
 
 
                 <script>
@@ -643,6 +677,65 @@
 </div>
 
 <!-- javascript -->
+<script>
+    function details(id) {
+        let endPoint = '/api/v1/issue-setting?issueSettingId=' + id;
+        fetch(endPoint)
+            .then(response => {
+                if (response.ok) {
+                    // Handle a successful API response
+                    response.json().then(data => {
+                        document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
+                        document.querySelector('input[id="details-issue-setting-title"]').value = data.title;
+                        document.querySelector('textarea[name="detail-description"]').value = data.description;
+                        document.getElementById('detail-status').checked = data.status == 1 ? true : false;
+                        document.getElementById('updateIssueSettingButton').setAttribute('onclick', 'updateIssueSetting(' + data.id + ')');
+                    });
+                } else {
+                    // Handle API errors
+                    console.error('Error getting issue setting.');
+                }
+            })
+            .catch(error => {
+                // Handle network errors
+                console.error('Network error:', error);
+            });
+        document.getElementById('btndetails').click();
+    }
+</script>
+
+<!--        Update Issue-->
+<script>
+    function updateIssueSetting(id){
+        const classId = document.querySelector('input[name="id"]').value;
+        const group = document.querySelector('input[id="details-issue-setting-group"]').value;
+        const title = document.querySelector('input[id="details-issue-setting-title"]').value;
+        const description = document.querySelector('textarea[name="detail-description"]').value;
+        const status = document.getElementById('detail-status').checked ? 1 : 0;
+        let endPoint = '/api/v1/update/issue-setting?issueSettingId=' + id + '&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
+        fetch(endPoint)
+            .then(response => {
+                if (response.ok) {
+                    // Handle a successful API response
+                    console.log('Issue setting updated successfully.');
+                    // Close the modal
+                    document.getElementById('detailcloseModal').click();
+                    // reload page
+                    //location.reload();
+                    window.location.href = `/class/issue-setting?id=${classId}`;
+                } else {
+                    // Handle API errors
+                    console.error('Error updating milestone.');
+                }
+            })
+            .catch(error => {
+                // Handle network errors
+                console.error('Network error:', error);
+            });
+        location.reload();
+    }
+</script>
+
 <script>
 
     var toastMessage = document.getElementById('toastMessage').textContent.trim();
