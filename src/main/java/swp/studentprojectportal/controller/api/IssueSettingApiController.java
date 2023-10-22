@@ -24,7 +24,7 @@ public class IssueSettingApiController {
     @Autowired
     ObjectMapper objectMapper;
     @GetMapping("/issue-setting")
-    public ResponseEntity getMilestoneByClassId(@RequestParam(name = "issueSettingId") Integer issueSettingId) {
+    public ResponseEntity getIssueSettingById(@RequestParam(name = "issueSettingId") Integer issueSettingId) {
         IssueSetting issueSetting = issueSettingService.findById(issueSettingId);
         // create response entity with milestone object
         if(issueSetting != null){
