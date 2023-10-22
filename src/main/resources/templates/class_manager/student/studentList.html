@@ -178,7 +178,7 @@
                   <td th:text="${user.getProject() == null ? 'No group yet' : user.getProject().getGroupName()}"></td>
                   <td>
                     <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:attr="update-id=${user.id},data-title=${user.getStudent().fullName}" onchange="showConfirmationDialog(this)">
+                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:attr="update-id=${user.getStudent().getId()},data-title=${user.getStudent().fullName}" onchange="showConfirmationDialog(this)">
                     </div>
                   </td>
                   <td><a th:href="@{'/class-manager/class/studentDetails?studentId=' + ${user.getStudent().getId()}}">View Details</a>
@@ -262,7 +262,7 @@
                   $('#confirmationModalRed').modal('hide');
                 }
                 $(".confirmButton").click(function () {
-                  fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
+                  fetch(`/class/student/updateStatus?id=${id}&status=${status}`)
                           .then(() => {
                             confirmClicked = true;
                             $('#confirmationModal').modal('hide');
