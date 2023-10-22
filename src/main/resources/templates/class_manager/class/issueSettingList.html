@@ -345,8 +345,11 @@
                                     <td>
 <!--                                        <div th:if="${session.user.setting.id==3}" ><a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i-->
 <!--                                                class="fas fa-pen-to-square"></i></a></div>-->
-                                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3 }" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></div>
+<!--                                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3 }" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i-->
+<!--                                                class="fas fa-pen-to-square"></i></a></div>-->
+                                        <a th:if="${setting.aclass!=null}" href="#" onclick="openIssueSettingDetailModal('${setting.id}')">
+                                            <i class="fas fa-pen-to-square"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -585,6 +588,20 @@
     });
     function showCreateForm() {
         $('#createIssueSettingModal').modal('show');
+    }
+</script>
+
+<script>
+    function openIssueSettingDetailModal(issueSettingId) {
+        console.log(`Opening modal for issueSettingId: ${issueSettingId}`);
+
+        // Thực hiện AJAX request để lấy nội dung chi tiết từ server
+        $.get('/class-manager/issue-setting/detail?id=' + issueSettingId, function (data) {
+            // Đặt nội dung nhận được từ server vào modal và hiển thị modal
+            console.log('Received data from server:', data);
+            $('#issueSettingDetailModal .modal-content').html(data);
+            $('#issueSettingDetailModal').modal('show');
+        });
     }
 </script>
 
