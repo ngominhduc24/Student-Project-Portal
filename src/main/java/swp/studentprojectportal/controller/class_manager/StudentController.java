@@ -14,6 +14,7 @@ import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Validate;
 import swp.studentprojectportal.utils.instance.InstanceSingleton;
 import swp.studentprojectportal.utils.SheetHandle;
 
@@ -33,14 +34,18 @@ public class StudentController {
 
     @GetMapping("class/student")
     public String studentList(Model model,
-                           HttpSession session,
-                           @RequestParam(defaultValue = "-1") int classId) {
+                              HttpSession session,
+                              @RequestParam(defaultValue = "-1") int classId,
+                              @RequestParam(defaultValue = "-1", required = false) int id) {
+        Optional<User> user = userService.findUserById(id);
+        model.addAttribute("user", user.orElseGet(() -> userService.findUserById(1).get()));
+
         final int roleId = 1;
         Class c = classService.getClass(classId);
-        if(c == null) {
+        if (c == null) {
             return "redirect:class/student";
         }
-        if(session.getAttribute("numberStudentAdded") != null) {
+        if (session.getAttribute("numberStudentAdded") != null) {
             model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
             session.removeAttribute("numberStudentAdded");
         }
@@ -50,12 +55,42 @@ public class StudentController {
         model.addAttribute("semester", c.getSemester().getSettingTitle());
         model.addAttribute("totalPage", userService.getTotalPage(10, roleId));
         model.addAttribute("studentList", classService.getAllStudent(classId));
+
+        return "class_manager/student/studentList";
+    }
+
+    @PostMapping("class/updateStudent")
+    public String updateUser(
+            @RequestParam(name = "studentId", required = false) int id,
+            @RequestParam String fullName,
+            @RequestParam String email,
+            @RequestParam String phone,
+            @RequestParam int roleId,
+            @RequestParam String note,
+            @RequestParam boolean status,
+            Model model) {
+        User userUpdate = userService.findUserById(id).get();
+        model.addAttribute("user", userUpdate);
+        model.addAttribute("roleList", settingService.getAllRole());
+
+        //check validate before update
+        String msg = checkValidateUpdateUser(email, phone, userUpdate);
+        if (msg != null) {
+            model.addAttribute("errorMsg", msg);
+        } else {
+            //update
+            boolean ans = userService.updateUser(id, fullName, email, phone, roleId, status, note);
+
+            if (ans) model.addAttribute("msg", "Update success");
+            else model.addAttribute("errorMsg", "Update failed");
+        }
+
         return "class_manager/student/studentList";
     }
 
     @GetMapping("/class-manager/class/studentDetails")
     public String studentDetails(Model model,
-                           @RequestParam(defaultValue = "-1") int studentId) {
+                                 @RequestParam(defaultValue = "-1") int studentId) {
         Optional<User> user = userService.findUserById(studentId);
         model.addAttribute("user", user.isPresent() ? user.get() : null);
         model.addAttribute("roleList", settingService.getAllRole());
@@ -66,7 +101,7 @@ public class StudentController {
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId,
             @RequestParam(name = "studentId") Integer studentId) {
-        boolean result =  studentClassService.removeStudentFromClass(classId, studentId);
+        boolean result = studentClassService.removeStudentFromClass(classId, studentId);
         return "redirect:/class/student?classId=" + classId;
     }
 
@@ -80,11 +115,11 @@ public class StudentController {
         int numberStudentAdded = 0;
 
         String responseBody = InstanceSingleton.getInstance().callApiFap(apiEndpoint);
-        if(responseBody != null) {
+        if (responseBody != null) {
             studentIdList = responseBody.split(",");
 
             for (String studentId : studentIdList) {
-                if(studentClassService.addNewStudentToClass(classId, studentId)) {
+                if (studentClassService.addNewStudentToClass(classId, studentId)) {
                     numberStudentAdded++;
                 }
             }
@@ -101,21 +136,21 @@ public class StudentController {
         //read sheet data
         List<User> userList = new SheetHandle().importSheetUser(file);
 
-        if(userList == null) return "redirect:./student?classId=" + classId;
+        if (userList == null) return "redirect:./student?classId=" + classId;
 
         //remove all student in current class
         studentClassService.removeAllStudentFromClass(classId);
 
-        for(User userData : userList) {
+        for (User userData : userList) {
             try {
                 //find by email
                 User user = userService.findByEmail(userData.getEmail());
 
                 //find by phone
-                if (user==null) {
+                if (user == null) {
                     user = userService.findByPhone(user.getPhone());
 
-                    if (user==null) continue;
+                    if (user == null) continue;
                 }
 
                 //add student to class
@@ -127,5 +162,23 @@ public class StudentController {
         }
 
         return "redirect:./student?classId=" + classId;
+    }
+
+    private String checkValidateUpdateUser(String email, String phone, User user) {
+        email = email.trim();
+        phone = phone.trim();
+
+        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
+        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
+
+        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
+        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
+
+        if (!email.equals(user.getEmail()) && !email.isEmpty() && userService.checkExistMail(email))
+            return "Email existed!";
+        if (!phone.equals(user.getPhone()) && !phone.isEmpty() && userService.checkExistPhoneNumber(phone))
+            return "Phone number existed!";
+
+        return null;
     }
 }
