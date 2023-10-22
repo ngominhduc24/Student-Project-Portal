@@ -39,6 +39,7 @@ public class SubjectHomeController {
         User user = (User) session.getAttribute("user");
 
         Assignment assignment = new Assignment();
+        assignment.setId(-1);
         assignment.setDescription("");
 
         Page<IssueSetting> issueSettingList = issueSettingService.filter(subjectId, "", 0, 10, "id", 1, "", -1);
@@ -67,12 +68,12 @@ public class SubjectHomeController {
 
     @PostMapping("/subject-manager/subject")
     public String subject(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
-                          @RequestParam String search,
+                          @RequestParam String search, @RequestParam(defaultValue = "true") Boolean newStatus,
                           @RequestParam Integer subjectId, @RequestParam Integer status,
                           @RequestParam String newTitle, @RequestParam(defaultValue = "") String description,
                           @RequestParam String sortBy, @RequestParam Integer sortType,
                           @RequestParam Integer pageNoS, @RequestParam Integer pageSizeS,
-                          @RequestParam String searchS, @RequestParam(defaultValue = "-1") Integer assignmentId,
+                          @RequestParam String searchS, @RequestParam Integer assignmentId,
                           @RequestParam Integer statusS, @RequestParam String settingGroupS,
                           @RequestParam String sortByS, @RequestParam Integer sortTypeS,
                           Model model, HttpSession session) {
@@ -81,10 +82,10 @@ public class SubjectHomeController {
         User user = (User) session.getAttribute("user");
 
         Assignment assignment = assignmentService.getAssignmentById(assignmentId);
-        if (assignmentId==-1) {
-            assignment.setTitle(newTitle);
-            assignment.setDescription(description);
-            assignment.setSubject(subject);
+        if (assignment==null) {
+            assignment = new Assignment();
+            assignment.setId(-1);
+            assignment.setDescription("");
         }
 
         if (!newTitle.isEmpty()) {
@@ -92,10 +93,16 @@ public class SubjectHomeController {
                 model.addAttribute("toastMessage", "Add new assignment successfully");
             else
                 model.addAttribute("toastMessage", "Update assignment details successfully");
+            assignment.setTitle(newTitle);
+            assignment.setDescription(description);
+            assignment.setStatus(newStatus);
+            assignment.setSubject(subject);
             assignmentService.saveAssignment(assignment);
             assignment = new Assignment();
+            assignment.setId(-1);
             assignment.setDescription("");
         }
+
         model.addAttribute("assignment", assignment);
 
         Page<IssueSetting> issueSettingList = issueSettingService.filter(subjectId, searchS, pageNoS, pageSizeS, sortByS, sortTypeS, settingGroupS, statusS);
