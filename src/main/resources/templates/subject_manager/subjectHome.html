@@ -381,8 +381,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/subjectAssignmentDetail(id=${assignment.id}, subjectId=${subject.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></td>
+                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -418,6 +418,7 @@
                 <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                             <input type="hidden" name="newSubjectId" th:value="${subject.id}">
+                            <input type="hidden" name="assignmentId" id="assignmentId" th:value="${assignment.id}">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="createClassModalLabel">New Assignment</h5>
@@ -428,7 +429,7 @@
                                         <div class="col-md-12 row" style="margin-top: 12px;">
                                             <div class="mb-3 col-md-12">
                                                 <label class="form-label">Title<span class="text-danger">*</span></label>
-                                                <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
+                                                <input type="text" id="newTitle" name="newTitle" class="form-control" required th:value="${assignment.title}">
                                             </div>
 
                                             <div class="mb-3 col-md-12">
@@ -766,6 +767,7 @@
         customToast.show();
         setTimeout(function () {
             customToast.hide();
+            document.getElementById('toastMessage').textContent = "";
         }, 5000);
     }
     var errmsg = document.getElementById('error').textContent.trim();
@@ -774,9 +776,19 @@
             $('#createClassModal').modal('show');
         }
     });
+    var assignmentId = document.getElementById('assignmentId').value.trim();
+    $(document).ready(function() {
+        if (assignmentId.trim() > 0) {
+            $('#createClassModal').modal('show');
+        }
+    });
 
     function showCreateForm() {
         $('#createClassModal').modal('show');
+    }
+    function assignmentDetail(assignmentId) {
+        document.getElementById('assignmentId').value = assignmentId;
+        document.getElementById('form').submit();
     }
 </script>
 

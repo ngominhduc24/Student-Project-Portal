@@ -524,7 +524,9 @@
         customToast.show();
         setTimeout(function () {
             customToast.hide();
+            document.getElementById('toastMessage').textContent = "";
         }, 5000);
+
     }
     var errmsg = document.getElementById('error').textContent.trim();
     $(document).ready(function() {

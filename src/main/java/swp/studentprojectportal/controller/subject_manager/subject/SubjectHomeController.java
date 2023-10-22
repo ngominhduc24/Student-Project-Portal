@@ -72,27 +72,29 @@ public class SubjectHomeController {
                           @RequestParam String newTitle, @RequestParam(defaultValue = "") String description,
                           @RequestParam String sortBy, @RequestParam Integer sortType,
                           @RequestParam Integer pageNoS, @RequestParam Integer pageSizeS,
-                          @RequestParam String searchS,
+                          @RequestParam String searchS, @RequestParam(defaultValue = "-1") Integer assignmentId,
                           @RequestParam Integer statusS, @RequestParam String settingGroupS,
                           @RequestParam String sortByS, @RequestParam Integer sortTypeS,
-                          Model model, HttpSession session, RedirectAttributes attributes) {
+                          Model model, HttpSession session) {
         Subject subject = subjectService.getSubjectById(subjectId);
         model.addAttribute("subject", subject);
         User user = (User) session.getAttribute("user");
 
-        Assignment assignment = new Assignment();
-        assignment.setTitle(newTitle);
-        assignment.setDescription(description);
-        assignment.setSubject(subject);
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignmentId==-1) {
+            assignment.setTitle(newTitle);
+            assignment.setDescription(description);
+            assignment.setSubject(subject);
+        }
 
-        String errorMessage = checkValidateAssignment(newTitle, description);
-        if (errorMessage != null) {
-            model.addAttribute("errorMessage", errorMessage);
-        } else {
+        if (!newTitle.isEmpty()) {
+            if (assignmentId == -1)
+                model.addAttribute("toastMessage", "Add new assignment successfully");
+            else
+                model.addAttribute("toastMessage", "Update assignment details successfully");
             assignmentService.saveAssignment(assignment);
             assignment = new Assignment();
             assignment.setDescription("");
-            model.addAttribute("toastMessage", "Add new assignment successfully");
         }
         model.addAttribute("assignment", assignment);
 
