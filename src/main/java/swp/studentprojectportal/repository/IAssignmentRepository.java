@@ -33,4 +33,6 @@ public interface IAssignmentRepository extends JpaRepository<Assignment, Integer
             @Param("search") String search,
             @Param("subjectId") Integer subjectId,
             @Param("status") Integer status, Pageable pageable);
+
+    Assignment findByTitleAndSubjectId(String title, Integer subjectId);
 }

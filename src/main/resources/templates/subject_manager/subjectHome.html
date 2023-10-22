@@ -431,9 +431,15 @@
                                                 <label class="form-label">Title<span class="text-danger">*</span></label>
                                                 <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
                                             </div>
-                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-12">
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-8">
                                                 <label class="form-label">Title<span class="text-danger">*</span></label>
                                                 <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
+                                            </div>
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-4" style="padding-left: 10%;">
+                                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                                <div class="form-check form-switch" style="font-size: 24px">
+                                                    <input style="margin-left: -62px" class="form-check-input" value="on" name="newStatus" type="checkbox" th:checked="${assignment.isStatus()}" >
+                                                </div>
                                             </div>
 
                                             <div class="mb-3 col-md-12">
