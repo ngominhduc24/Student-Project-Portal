@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI/t1pO5BKe3uZExmv1cSJf4/9Utktx/NlA7p9uE=" crossorigin="anonymous"></script>-->
 
     <style>
         .datatable-table {
@@ -151,7 +152,7 @@
             <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
         </div>
 
-        <!--    Assignment-->
+        <!--    Settings -->
         <div id="settings" class="container-fluid">
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4">
@@ -184,6 +185,9 @@
                                 Sync gitlab
                             </button>
                         </div>
+                    </div><!--end col-->
+                    <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
+                    </div>
                     </div><!--end col-->
                 </div><!--end row-->
                 <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
@@ -347,9 +351,8 @@
 <!--                                                class="fas fa-pen-to-square"></i></a></div>-->
 <!--                                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3 }" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i-->
 <!--                                                class="fas fa-pen-to-square"></i></a></div>-->
-                                        <a th:if="${setting.aclass!=null}" href="#" onclick="openIssueSettingDetailModal('${setting.id}')">
-                                            <i class="fas fa-pen-to-square"></i>
-                                        </a>
+                                        <div th:onclick="'details(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                class="fas fa-pen-to-square"></i></div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -525,6 +528,76 @@
                         </form>
                     </div>
                 </div>
+                <!--Detail Modal-->
+                <div class="modal fade" id="detailsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailsModalLongTitle">Issue Setting details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Group</label>
+                                            <input type="text" id="details-issue-setting-group" class="form-control" value="1">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Title</label>
+                                            <input type="text" id="details-issue-setting-title" class="form-control" value="1">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <div class="form-switch">
+                                                <label class="form-label" style="margin-left: -40px">Status</label><br/>
+                                                <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 25px;" checked>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="detail-description" class="form-control" content="description"></textarea>
+                                        </div>
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal">Close</button>
+                                <button type="button" class="btn btn-primary" id="updateIssueSettingButton">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function details(id) {
+                        let endPoint = '/api/v1/issue-setting?issueSettingId=' + id;
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    // Handle a successful API response
+                                    response.json().then(data => {
+                                        document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
+                                        document.querySelector('input[id="details-issue-setting-title"]').value = data.title;
+                                        document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                        document.getElementById('detail-status').checked = data.status == 1 ? true : false;
+                                        document.getElementById('updateIssueSettingButton').setAttribute('onclick', 'updateIssueSetting(' + data.id + ')');
+                                    });
+                                } else {
+                                    // Handle API errors
+                                    console.error('Error getting issue setting.');
+                                }
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                        document.getElementById('btndetails').click();
+                    }
+                </script>
+
+
 
                 <script>
                     function goToPage(i) {
@@ -591,19 +664,7 @@
     }
 </script>
 
-<script>
-    function openIssueSettingDetailModal(issueSettingId) {
-        console.log(`Opening modal for issueSettingId: ${issueSettingId}`);
 
-        // Thực hiện AJAX request để lấy nội dung chi tiết từ server
-        $.get('/class-manager/issue-setting/detail?id=' + issueSettingId, function (data) {
-            // Đặt nội dung nhận được từ server vào modal và hiển thị modal
-            console.log('Received data from server:', data);
-            $('#issueSettingDetailModal .modal-content').html(data);
-            $('#issueSettingDetailModal').modal('show');
-        });
-    }
-</script>
 
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
@@ -611,7 +672,7 @@
 <script th:src="@{/js/feather.min.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
