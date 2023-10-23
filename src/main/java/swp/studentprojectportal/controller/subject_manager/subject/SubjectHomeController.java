@@ -39,7 +39,7 @@ public class SubjectHomeController {
         User user = (User) session.getAttribute("user");
 
         Assignment assignment = new Assignment();
-        assignment.setTitle("");
+        assignment.setId(-1);
         assignment.setDescription("");
 
         Page<IssueSetting> issueSettingList = issueSettingService.filter(subjectId, "", 0, 10, "id", 1, "", -1);
@@ -69,39 +69,46 @@ public class SubjectHomeController {
     @PostMapping("/subject-manager/subject")
     public String subject(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
                           @RequestParam String search,
-                          @RequestParam(name = "subjectId", required = false) Integer subjectId, @RequestParam Integer status,
+                          @RequestParam Integer subjectId, @RequestParam Integer status,
+                          @RequestParam String newTitle, @RequestParam(defaultValue = "") String description,
                           @RequestParam String sortBy, @RequestParam Integer sortType,
                           @RequestParam Integer pageNoS, @RequestParam Integer pageSizeS,
-                          @RequestParam String searchS,
+                          @RequestParam String searchS, @RequestParam Integer assignmentId,
                           @RequestParam Integer statusS, @RequestParam String settingGroupS,
                           @RequestParam String sortByS, @RequestParam Integer sortTypeS,
-                          @RequestParam(name = "newTitle", required = false) String newTitle, @RequestParam(name = "description", required = false) String description,
-                          Model model, HttpSession session, RedirectAttributes attributes) {
+                          Model model, HttpSession session, WebRequest request) {
+        String newStatus = request.getParameter("newStatus");
         Subject subject = subjectService.getSubjectById(subjectId);
         model.addAttribute("subject", subject);
         User user = (User) session.getAttribute("user");
 
-        Assignment assignment = new Assignment();
-        model.addAttribute("assignment", assignment);
-        assignment.setId(subjectId);
-        assignment.setTitle(newTitle);
-        assignment.setDescription(description);
-        assignment.setSubject(subject);
-        assignment.setStatus(true);
-        assignment.setSubjectAssignment(true);
-
-        String errorMessage = checkValidateAssignment(newTitle, description);
-        if (errorMessage != null) {
-            model.addAttribute("errorMsg", errorMessage);
-            model.addAttribute("newTitle", newTitle);
-            model.addAttribute("description", description);
-            model.addAttribute("subjectId", subject);
-        } else {
-            assignmentService.saveAssignment(assignment);
-            attributes.addFlashAttribute("toastMessage", "Add new assignment successfully");
-            model.addAttribute("toastMessage", "Add new assignment successfully");
-            return "redirect:/subject-manager/subject";
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignment==null) {
+            assignment = new Assignment();
+            assignment.setId(-1);
+            assignment.setDescription("");
         }
+
+        if (!newTitle.isEmpty()) {
+            assignment.setTitle(newTitle);
+            assignment.setDescription(description);
+            if(assignmentId!=-1)  assignment.setStatus(newStatus!=null);
+            assignment.setSubject(subject);
+            if (assignmentService.checkExistedAssignment(newTitle, subjectId, assignmentId)) {
+                model.addAttribute("errorMessage", "This assignemnt name has already existed in this subject!");
+            } else {
+                if (assignmentId == -1)
+                    model.addAttribute("toastMessage", "Add new assignment successfully");
+                else
+                    model.addAttribute("toastMessage", "Update assignment details successfully");
+                assignmentService.saveAssignment(assignment);
+                assignment = new Assignment();
+                assignment.setId(-1);
+                assignment.setDescription("");
+            }
+        }
+
+        model.addAttribute("assignment", assignment);
 
         Page<IssueSetting> issueSettingList = issueSettingService.filter(subjectId, searchS, pageNoS, pageSizeS, sortByS, sortTypeS, settingGroupS, statusS);
         Page<Assignment> assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
