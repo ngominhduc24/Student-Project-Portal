@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.model.Class;
@@ -53,6 +54,17 @@ public class StudentController {
         model.addAttribute("studentList", classService.getAllStudent(classId));
         return "class_manager/student/studentList";
     }
+
+    @GetMapping("/class/student/updateStatus")
+    public String updateSubjectSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        User student = userService.getUserById(id);
+        student.setStatus(status);
+        userService.saveUser(student);
+        return "redirect:/";
+    }
+
 
     @GetMapping("/class-manager/class/studentDetails")
     public String studentDetails(Model model,

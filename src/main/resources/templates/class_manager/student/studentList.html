@@ -183,7 +183,7 @@
                   <td th:text="${user.getProject() == null ? 'No group yet' : user.getProject().getGroupName()}"></td>
                   <td>
                     <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:attr="update-id=${user.id}" onchange="showConfirmationDialog(this)">
+                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:attr="update-id=${user.getStudent().getId()},data-title=${user.getStudent().fullName}" onchange="showConfirmationDialog(this)">
                     </div>
                   </td>
                   <td><a th:href="@{'/class-manager/class/studentDetails?studentId=' + ${user.getStudent().getId()}}">View Details</a>
@@ -197,6 +197,7 @@
                 </tbody>
               </table>
 
+              <!-- Modal Dialog -->
               <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
@@ -205,45 +206,84 @@
                         <i  class="material-icons">&#xE876;</i>
                       </div>
                       <h4 class="modal-title w-100">Are you sure?</h4>
-                      <button type="button" id="closeButton" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                      <p>Are you sure you want to perform this action?</p>
+                      <p></p>
                     </div>
                     <div class="modal-footer justify-content-center">
-                      <button type="button" class="btn" id="cancelButton" data-dismiss="modal">Cancel</button>
-                      <button type="button" class="btn" id="confirmButton">Confirm</button>
+                      <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn confirmButton" >Confirm</button>
                     </div>
                   </div>
                 </div>
               </div>
 
+              <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box" style="border-color: #f15e5e">
+                        <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <script>
                 let id;
                 let status;
                 let initialStatus;
+                let confirmClicked = false;
 
                 function showConfirmationDialog(checkbox) {
                   id = checkbox.getAttribute("update-id");
+                  var title = checkbox.getAttribute('data-title');
                   status = checkbox.checked;
                   initialStatus = !status;
-                  $('#confirmationModal').modal('show');
+                  confirmClicked = false;
+                  if (status) {
+                    $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${title}?`);
+                    $('#confirmationModal').modal('show');
+                  } else {
+                    $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${title}?`);
+                    $('#confirmationModalRed').modal('show');
+                  }
                 }
-
                 function handleCancelClick() {
                   let checkbox = document.querySelector('input[update-id="' + id + '"]');
                   checkbox.checked = initialStatus;
+                  confirmClicked = false;
                   $('#confirmationModal').modal('hide');
+                  $('#confirmationModalRed').modal('hide');
                 }
-
-                $("#confirmButton").click(function () {
-                  fetch(`/admin/updateUserStatus?id=${id}&status=${status}`);
-                  $('#confirmationModal').modal('hide');
+                $(".confirmButton").click(function () {
+                  fetch(`/class/student/updateStatus?id=${id}&status=${status}`)
+                          .then(() => {
+                            confirmClicked = true;
+                            $('#confirmationModal').modal('hide');
+                            $('#confirmationModalRed').modal('hide');
+                          });
                 });
-
-                $("#cancelButton, #closeButton").click(handleCancelClick);
-
+                $(".cancelButton, .closeButton").click(function () {
+                  handleCancelClick();
+                });
+                $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
+                  if (event.target === this && !confirmClicked) {
+                    handleCancelClick();
+                  }
+                });
               </script>
+
             </div>
           </div>
         </div>

@@ -80,21 +80,21 @@
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
-            <div class="layout-specing">
+            <div class="layout-specing" style="padding-top: 84px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1>User List</h1>
-                        <ol class="breadcrumb mb-4">
+                        <h1 style="margin: 0">User List</h1>
+                        <ol class="breadcrumb mb-1 ms-1">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">User List</li>
                         </ol>
                     </div><!--end col-->
 
-                    <div class="col-xl-4 col-md-6"></div>
+                    <div class="col-xl-5 col-md-6"></div>
 
-                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New User</a>
+                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
+                        <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
                 </div><!--end row-->
 
