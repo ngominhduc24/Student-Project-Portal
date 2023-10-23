@@ -218,7 +218,7 @@
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description<span style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">(You only can change this field)</span></label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${subject.description}"></textarea>
+                                            <textarea type="text" rows="3" name="subjectDescription" class="form-control" required th:field="${subject.description}"></textarea>
                                         </div>
                                         <div class="mt-2">
                                             <h6 style="color: indianred;" th:text="${errmsg}"></h6>
@@ -258,7 +258,7 @@
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
 <!--                        <a th:href="@{/subject-manager/addSubjectAssignment?subjectId={id}(id=${subject.id})}" href="" class="btn btn-primary"-->
 <!--                           style="margin-left: 24px">Add New</a>-->
-                        <button type="button" class="btn btn-primary"  onclick="showCreateForm()">
+                        <button type="button" class="btn btn-primary" onclick="showCreateForm()">
                             Add Assignment
                         </button>
                     </div>
@@ -423,8 +423,6 @@
                 <!--Modal Create Assignment-->
                 <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
-
-                            <input type="hidden" name="newSubjectId" th:value="${subject.id}">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="createClassModalLabel">New Assignment</h5>
@@ -440,7 +438,7 @@
 
                                             <div class="mb-3 col-md-12">
                                                 <label class="form-label">Description</label>
-                                                <textarea type="text" rows="3" name="newDescription" class="form-control" th:field="${assignment.description}"></textarea>
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
                                             </div>
 
                                             <div class="mt-2">

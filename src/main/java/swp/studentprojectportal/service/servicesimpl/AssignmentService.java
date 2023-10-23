@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Assignment;
+import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.repository.IAssignmentRepository;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.IAssignmentService;
@@ -84,5 +85,15 @@ public class AssignmentService implements IAssignmentService {
         assignmentRepository.save(assignmentData);
 
         return true;
+    }
+
+    @Override
+    public boolean checkExistedAssignment(String title, Integer subjectId, Integer id) {
+        Assignment assignment = assignmentRepository.findByTitleAndSubjectId(title, subjectId);
+        if(assignment !=null)  {
+            if(id==-1) return true;
+            if(assignment.getId()!=id)  return true;
+        }
+        return false;
     }
 }

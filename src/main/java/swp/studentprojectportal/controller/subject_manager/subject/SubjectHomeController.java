@@ -69,13 +69,13 @@ public class SubjectHomeController {
     @PostMapping("/subject-manager/subject")
     public String subject(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
                           @RequestParam String search,
-                          @RequestParam Integer subjectId, @RequestParam Integer status,
-                          @RequestParam String newTitle, @RequestParam(defaultValue = "") String newDescription,
+                          @RequestParam(name = "subjectId", required = false) Integer subjectId, @RequestParam Integer status,
                           @RequestParam String sortBy, @RequestParam Integer sortType,
                           @RequestParam Integer pageNoS, @RequestParam Integer pageSizeS,
                           @RequestParam String searchS,
                           @RequestParam Integer statusS, @RequestParam String settingGroupS,
                           @RequestParam String sortByS, @RequestParam Integer sortTypeS,
+                          @RequestParam(name = "newTitle", required = false) String newTitle, @RequestParam(name = "description", required = false) String description,
                           Model model, HttpSession session, RedirectAttributes attributes) {
         Subject subject = subjectService.getSubjectById(subjectId);
         model.addAttribute("subject", subject);
@@ -83,18 +83,19 @@ public class SubjectHomeController {
 
         Assignment assignment = new Assignment();
         model.addAttribute("assignment", assignment);
+        assignment.setId(subjectId);
         assignment.setTitle(newTitle);
-        assignment.setDescription(newDescription);
+        assignment.setDescription(description);
         assignment.setSubject(subject);
         assignment.setStatus(true);
         assignment.setSubjectAssignment(true);
 
-        String errorMessage = checkValidateAssignment(newTitle, newDescription);
+        String errorMessage = checkValidateAssignment(newTitle, description);
         if (errorMessage != null) {
             model.addAttribute("errorMsg", errorMessage);
             model.addAttribute("newTitle", newTitle);
-            model.addAttribute("newDescription", newDescription);
-            model.addAttribute("newSubjectId", subject);
+            model.addAttribute("description", description);
+            model.addAttribute("subjectId", subject);
         } else {
             assignmentService.saveAssignment(assignment);
             attributes.addFlashAttribute("toastMessage", "Add new assignment successfully");
