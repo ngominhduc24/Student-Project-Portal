@@ -76,12 +76,11 @@
 
                 <div class="row px-4">
                     <div class="col-md-6">
-                        <select class="form-select" style="width: 30%" onchange="changeClass(this.value)">
+                        <select class="form-select" style="width: 50%" onchange="changeClass(this.value)">
                             <option th:each="item : ${classList}"
                                     th:value="${item.id}"
-                                    th:text="${item.className}"
-                                    th:selected="${item.id == class.id}"
-                                    th:if="${item.status!=3}"></option>
+                                    th:text="${item.className} + ' - ' + ${item.subject.subjectCode}"
+                                    th:selected="${item.id == class.id}"></option>
                         </select>
                     </div>
 
