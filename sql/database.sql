@@ -392,12 +392,12 @@ VALUES
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (1, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
+    (9, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (9, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
+    (9, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
+    (9, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
+    (9, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
+    (9, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
