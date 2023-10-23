@@ -21,6 +21,5 @@ public interface IAssignmentService {
     List<Assignment> getAssignmentBySubjectId(int subjectId);
 
     boolean updateAssignment(int id, String title, String description, int subject, boolean status);
-
     boolean checkExistedAssignment(String title, Integer subjectId, Integer id);
 }

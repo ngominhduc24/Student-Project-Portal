@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Assignment;
-import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.repository.IAssignmentRepository;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.IAssignmentService;
@@ -96,4 +95,5 @@ public class AssignmentService implements IAssignmentService {
         }
         return false;
     }
+
 }
