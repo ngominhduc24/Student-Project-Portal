@@ -39,6 +39,7 @@ public class StudentController {
                               @RequestParam(defaultValue = "-1", required = false) int id) {
         Optional<User> user = userService.findUserById(id);
         model.addAttribute("user", user.isPresent() ? user.get() : userService.findUserById(1).get());
+        model.addAttribute("roleList", settingService.getAllRole());
 
         final int roleId = 1;
         Class c = classService.getClass(classId);
@@ -61,29 +62,34 @@ public class StudentController {
 
     @PostMapping("class/updateStudent")
     public String updateUser(
-            @RequestParam(name = "studentId", required = false) int id,
-            @RequestParam String fullName,
-            @RequestParam String email,
-            @RequestParam String phone,
-            @RequestParam int roleId,
-            @RequestParam String note,
+            @RequestParam(defaultValue = "1") int classId,
+            @RequestParam int id,
+            @RequestParam(defaultValue = "") String note,
             @RequestParam boolean status,
             Model model) {
         User userUpdate = userService.findUserById(id).get();
         model.addAttribute("user", userUpdate);
         model.addAttribute("roleList", settingService.getAllRole());
 
-        //check validate before update
-        String msg = checkValidateUpdateUser(email, phone, userUpdate);
-        if (msg != null) {
-            model.addAttribute("errorMsg", msg);
-        } else {
-            //update
-            boolean ans = userService.updateUser(id, fullName, email, phone, roleId, status, note);
+        //update
+        boolean ans = userService.updateStudent(id, status, note);
 
-            if (ans) model.addAttribute("msg", "Update success");
-            else model.addAttribute("errorMsg", "Update failed");
+        if (ans) model.addAttribute("msg", "Update success");
+        else model.addAttribute("errorMsg", "Update failed");
+
+        final int roleId = 1;
+        Class c = classService.getClass(classId);
+
+        if (c == null) {
+            return "redirect:class/student";
         }
+
+        model.addAttribute("classId", classId);
+        model.addAttribute("className", c.getClassName());
+        model.addAttribute("class", c);
+        model.addAttribute("semester", c.getSemester().getSettingTitle());
+        model.addAttribute("totalPage", userService.getTotalPage(10, roleId));
+        model.addAttribute("studentList", classService.getAllStudent(classId));
 
         return "class_manager/student/studentList";
     }
@@ -162,23 +168,5 @@ public class StudentController {
         }
 
         return "redirect:./student?classId=" + classId;
-    }
-
-    private String checkValidateUpdateUser(String email, String phone, User user) {
-        email = email.trim();
-        phone = phone.trim();
-
-        if (email.isEmpty() && phone.isEmpty()) return "Please input email or phone number";
-        if (!email.isEmpty() && !userService.checkEmailDomain(email)) return "Invalid email domain";
-
-        if (!email.isEmpty() && !Validate.validEmail(email)) return "Invalid email";
-        if (!phone.isEmpty() && !Validate.validPhoneNumber(phone)) return "Invalid phone number";
-
-        if (!email.equals(user.getEmail()) && !email.isEmpty() && userService.checkExistMail(email))
-            return "Email existed!";
-        if (!phone.equals(user.getPhone()) && !phone.isEmpty() && userService.checkExistPhoneNumber(phone))
-            return "Phone number existed!";
-
-        return null;
     }
 }

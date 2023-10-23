@@ -72,7 +72,7 @@
       <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
       <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>
     </div>
-    <form class="card-body rounded-3" action="./updateStudent" id="form">
+    <form class="card-body rounded-3" action="./updateStudent" method="post" id="form">
     <div class="container-fluid">
       <div class="layout-specing" style="padding: 15px 14px 24px !important;">
         <div class="row px-4">
@@ -163,7 +163,7 @@
                         <div class="mb-3">
                           <label class="form-label">Fullname</label>
                           <input name="fullName" type="text" class="form-control"
-                                 th:value="${user.fullName}" required>
+                                 th:value="${user.fullName}" disabled>
                         </div>
                       </div><!--end col-->
 
@@ -171,7 +171,7 @@
                         <div class="mb-3">
                           <label class="form-label">Email</label>
                           <input name="email" type="text" class="form-control"
-                                 th:value="${user.email}">
+                                 th:value="${user.email}" disabled>
                         </div>
                       </div><!--end col-->
 
@@ -179,7 +179,7 @@
                         <div class="mb-3">
                           <label class="form-label">Phone</label>
                           <input name="phone" type="text" class="form-control"
-                                 th:value="${user.phone}">
+                                 th:value="${user.phone}" disabled>
                         </div>
                       </div><!--end col-->
 
@@ -190,7 +190,7 @@
                             <option th:each="role : ${roleList}"
                                     th:value="${role.id}"
                                     th:text="${role.settingTitle}"
-                                    th:selected="${role.id == user.setting.id}"></option>
+                                    th:selected="${role.id == user.setting.id}" disabled></option>
                           </select>
                         </div>
                       </div><!--end col-->
