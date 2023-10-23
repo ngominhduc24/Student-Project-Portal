@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
@@ -63,11 +64,11 @@ public class StudentController {
 
     @PostMapping("class/updateStudent")
     public String updateUser(
-            @RequestParam(defaultValue = "1") int classId,
+            @RequestParam(defaultValue = "-1") int classId,
             @RequestParam int id,
             @RequestParam(defaultValue = "") String note,
             @RequestParam boolean status,
-            Model model) {
+            Model model, RedirectAttributes attributes) {
         User userUpdate = userService.findUserById(id).get();
         model.addAttribute("user", userUpdate);
         model.addAttribute("roleList", settingService.getAllRole());
@@ -82,9 +83,9 @@ public class StudentController {
         Class c = classService.getClass(classId);
 
         if (c == null) {
-            return "redirect:class/student";
+            return "redirect:/class/student?classId=" + classId;
         }
-
+        System.out.println("111");
         model.addAttribute("classId", classId);
         model.addAttribute("className", c.getClassName());
         model.addAttribute("class", c);
@@ -92,7 +93,9 @@ public class StudentController {
         model.addAttribute("totalPage", userService.getTotalPage(10, roleId));
         model.addAttribute("studentList", classService.getAllStudent(classId));
 
-        return "class_manager/student/studentList";
+        attributes.addFlashAttribute("toastMessage", "Update student successfully");
+
+        return "redirect:/class/student?classId=" + classId;
     }
 
     @GetMapping("/class/student/updateStatus")

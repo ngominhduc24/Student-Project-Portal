@@ -97,7 +97,7 @@
               <li class="breadcrumb-item active"></li>
             </ol>
           </div><!--end col-->
-          <div th:text="${classId}" id="classId" hidden="hidden"></div>
+          <input th:value="${classId}" name="classId" hidden="hidden">
           <div class="col-xl-4 col-md-6"></div>
 
           <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -4px;">
@@ -233,7 +233,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" onclick="notify('success', 'Success Message', 'Update completed');">Update User</button>
+                <button type="submit" class="btn btn-primary">Update User</button>
               </div>
             </div>
           </div>
@@ -527,6 +527,15 @@
 
 </script>
 
+  <script th:inline="javascript">
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+      const toastMessage = [[${toastMessage}]];
+      if (toastMessage != null) {
+        notify('success', 'Successfully!', toastMessage );
+      }
+    });
+  </script>
 
 <!-- fetch dataq for add new student to class -->
 <script>
