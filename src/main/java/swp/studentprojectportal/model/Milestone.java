@@ -34,6 +34,9 @@ public class Milestone {
     @Column(name = "status")
     private boolean status = true;
 
+    @Column(name = "is_subject_assignment")
+    private boolean isSubjectAssignment = false;
+
     @ManyToOne
     @JoinColumn(name = "class_id")
     private Class aclass;

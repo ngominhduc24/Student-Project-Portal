@@ -33,7 +33,12 @@
   <!-- Datatables -->
   <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
   <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+  <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{/js/notify.js}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 </head>
+  <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -96,7 +101,7 @@
           <div class="col-xl-4 col-md-6"></div>
 
           <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -4px;">
-            <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #fca310 " >
+            <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #ffb134 " >
               <a style="color: white;" th:href="'/class-manager/class/syncStudent?classId=' + ${classId}"><i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1 1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0 0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
                Synchronize with FAP</a></button>
             <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -673,8 +678,8 @@
                 .then(response => response.json())
                 .then(data => {
                 if (data) {
-                    console.log('Add student to class successfully');
-                    populateUserTable(currentPage);
+                  notify('success', 'Successfully!', 'Add student to class success');
+                  populateUserTable(currentPage);
                     let reload = document.querySelector('li[name="reloadPage"]');
                     reload.textContent = 'Student have been added to class, reload page to see changes!';
                   intervalId = startInterval();
@@ -694,11 +699,21 @@
 
 </script>
 
-<script>
+<script th:inline="javascript">
   function sortData(sortBy, sortType) {
     document.getElementById('sortBy').value = sortBy;
     document.getElementById('sortType').value = sortType;
     document.getElementById('form').submit();
   }
+  document.addEventListener("DOMContentLoaded", function(event) {
+    const smessage = [[${smessage}]];
+    if (smessage != null) {
+      notify('success', 'Successfully!', smessage);
+    }
+    const emessage = [[${emessage}]];
+    if (emessage != null) {
+      notify('error', 'Error!', emessage);
+    }
+  });
 </script>
 </html>
