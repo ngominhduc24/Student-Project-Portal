@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Project;
+import swp.studentprojectportal.model.StudentClass;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
@@ -203,18 +204,38 @@ public class ProjectController {
     @PostMapping("/importStudent")
     public String importStudent(@RequestParam MultipartFile file,
                                 @RequestParam int classId) {
+        Class aclass = classService.findById(classId);
         List<Project> projectList = projectService.findAllByClassId(classId);
         Map<String, Project> projectMap = projectMapping(projectList);
 
         List<List<String>> data = new SheetHandle().importSheet(file);
         for(List<String> row : data) {
             try {
-                int studentId = Integer.parseInt(row.get(0));
-                int projectId = projectMap.get(row.get(2)).getId();
+                //find by email
+                User user = userService.findByEmail(row.get(0));
 
-                studentClassService.updateProjectId(studentId, projectId);
+                //find by phone
+                if (user == null) {
+                    user = userService.findByPhone(row.get(1));
+
+                    if (user == null) continue;
+                }
+
+                int projectId = -1;
+                //check existed group name
+                if(projectMap.containsKey(row.get(2)))
+                    projectId = projectMap.get(row.get(2)).getId();
+                else {
+                    //add new project
+                    projectId = projectService.addNewProject(null, row.get(2),
+                            null, classId, aclass.getUser().getId()).getId();
+                    projectMap.put(row.get(2), projectService.findById(projectId));
+                }
+
+                StudentClass studentClass = studentClassService.findByStudentIdAndAclassId(user.getId(), classId);
+                studentClassService.updateProjectId(studentClass.getId(), projectId);
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println("Import Student project: " + e);
             }
 
         }

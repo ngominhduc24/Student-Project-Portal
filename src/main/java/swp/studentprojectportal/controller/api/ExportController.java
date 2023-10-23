@@ -77,7 +77,7 @@ public class ExportController {
 
         // Write workbook to response
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=student_project.xlsx");
         workbook.write(response.getOutputStream());
         workbook.close();
     }
