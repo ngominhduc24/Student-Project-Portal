@@ -62,6 +62,7 @@
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
                             <form action="./addAssignment" method="post" class="mt-4">
+                                <input type="hidden" name="subject" th:value="${subject.id}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -70,20 +71,6 @@
                                                    name="title"
                                                    th:value="${title}"
                                                    placeholder="Title :">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subject" class="form-control">
-                                                <option th:each="subject : ${subjectList}"
-                                                        th:value="${subject.id}"
-                                                        th:text="${subject.subjectName}"
-                                                        th:selected="${subject.id == subject.user.id}"
-                                                        class="managerOption"
-                                                        disabled></option>
-                                            </select>
                                         </div>
                                     </div><!--end col-->
 

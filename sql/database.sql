@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
     `token` varchar(255) DEFAULT NULL,
+    `personal_token_gitlab` varchar(255) DEFAULT NULL,
     `active` BIT(1) NULL DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -168,9 +169,10 @@ CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
     `description` VARCHAR(245) NULL,
     `class_id` INT NULL,
     `project_id` INT NULL,
-    `start_date` DATETIME NULL,
-    `end_date` DATETIME NULL,
+    `start_date` DATE NULL,
+    `end_date` DATE NULL,
     `status` BIT(1) NULL,
+    `is_subject_assignment` BIT(1) DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -345,16 +347,16 @@ VALUES
     ("oraallen@gmail.com","0298393485","c4ca4238a0b923820dcc509a6f75849b","Ora Allen","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("longpvhe170788@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","a","/images/user_icon.png",1,1),
-    ("tunghe171091@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","b","/images/user_icon.png",1,1),
-    ("ngoche172779@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","c","/images/user_icon.png",1,1),
-    ("ducnmhe13177@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","d","/images/user_icon.png",1,1),
-    ("haihe176453@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","e","/images/user_icon.png",1,1),
-    ("nhathe176486@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","f","/images/user_icon.png",1,1),
-    ("dunghe176572@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","g","/images/user_icon.png",1,1),
-    ("duche176711@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h","/images/user_icon.png",1,1),
-    ("namhe176727@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","i","/images/user_icon.png",1,1),
-    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","k","/images/user_icon.png",1,1);
+    ("longpvhe170788@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","viet long","/images/user_icon.png",1,1),
+    ("tunghe171091@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","tung","/images/user_icon.png",1,1),
+    ("ngoche172779@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","ngoc","/images/user_icon.png",1,1),
+    ("ducnmhe13177@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","minh duc","/images/user_icon.png",1,1),
+    ("haihe176453@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","hai","/images/user_icon.png",1,1),
+    ("nhathe176486@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","nhat","/images/user_icon.png",1,1),
+    ("dunghe176572@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","dung","/images/user_icon.png",1,1),
+    ("duche176711@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","duc","/images/user_icon.png",1,1),
+    ("namhe176727@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","nam","/images/user_icon.png",1,1),
+    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h ngoc","/images/user_icon.png",1,1);
 
 -- subject
 INSERT INTO `subject` (`subject_manager_id`, `subject_name`, `subject_code`, `description`)
@@ -372,7 +374,7 @@ VALUES
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
     ("SE1720","Study software engineering",1,7,3,3),
-    ("SE1722","Study software engineering",1,7,3,3),
+    ("SE1741","Study software engineering",1,7,3,3),
     ("SE1704","Study software engineering",1,7,3,3),
     ("SE1707","Study software engineering",1,7,3,3),
     ("SE1712","Study software engineering",2,7,6,3),
@@ -465,7 +467,7 @@ VALUES
     ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
     ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
     ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
-    
+
 -- issue_setting
 INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
 VALUES
@@ -509,4 +511,4 @@ VALUES
     (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
     (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
     (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
-    
+

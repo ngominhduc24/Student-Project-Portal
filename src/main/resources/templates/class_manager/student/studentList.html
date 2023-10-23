@@ -28,10 +28,17 @@
   <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
   <!-- Css -->
   <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+  <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <!-- Datatables -->
   <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
   <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+  <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{/js/notify.js}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 </head>
+  <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -70,7 +77,7 @@
       <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
       <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>
     </div>
-    <form class="card-body rounded-3" action="#" id="form">
+    <form class="card-body rounded-3" action="./updateStudent" method="post" id="form">
     <div class="container-fluid">
       <div class="layout-specing" style="padding: 15px 14px 24px !important;">
         <div class="row px-4">
@@ -94,7 +101,7 @@
           <div class="col-xl-4 col-md-6"></div>
 
           <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -4px;">
-            <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #fca310 " >
+            <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #ffb134 " >
               <a style="color: white;" th:href="'/class-manager/class/syncStudent?classId=' + ${classId}"><i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1 1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0 0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
                Synchronize with FAP</a></button>
             <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -103,6 +110,8 @@
 
             </div><!--end col-->
         </div><!--end row-->
+
+        <!--modal add student-->
         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalAddStudent" aria-labelledby="myLargeModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -141,6 +150,95 @@
           </div>
         </div>
 
+        <!--modal student detail-->
+        <div class="modal fade" id="detailStudentModal" style="padding-top:70px" tabindex="-1"
+             aria-labelledby="createClassModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="detailStudentModalLabel">Student's Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row justify-content-center">
+                  <div class="col-md-12 row" style="margin-top: 12px;">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Fullname</label>
+                          <input name="fullName" type="text" class="form-control"
+                                 th:value="${user.fullName}" disabled>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Email</label>
+                          <input name="email" type="text" class="form-control"
+                                 th:value="${user.email}" disabled>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Phone</label>
+                          <input name="phone" type="text" class="form-control"
+                                 th:value="${user.phone}" disabled>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Role</label>
+                          <select name="roleId" class="form-select">
+                            <option th:each="role : ${roleList}"
+                                    th:value="${role.id}"
+                                    th:text="${role.settingTitle}"
+                                    th:selected="${role.id == user.setting.id}" disabled></option>
+                          </select>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3" th:if="${user.id != session.user.id}">
+                          <label class="form-label">Status</label>
+                          <select name="status" class="form-select">
+                            <option value="true" th:selected="${true == user.status}">Active</option>
+                            <option value="false" th:selected="${false == user.status}">Inactive
+                            </option>
+                          </select>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3" th:if="${user.id != session.user.id}">
+                          <label class="form-label">Note</label>
+                          <input name="note" type="text" class="form-control"
+                                 th:value="${user.note}">
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <h6 style="color: green" th:text="${msg}">a</h6>
+                          <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
+                        </div>
+                      </div><!--end col-->
+
+                    </div><!--end row-->
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update User</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="container-fluid px-4">
           <div class="card mb-4">
             <div class="card-header">
@@ -165,7 +263,7 @@
                   <th>Project team</th>
                   <th>Status</th>
                   <th>View Details</th>
-                  <th>Remove to class</th>
+                  <th>Remove</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -176,10 +274,21 @@
                   <td th:text="${user.getProject() == null ? 'No group yet' : user.getProject().getGroupName()}"></td>
                   <td>
                     <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:onclick="'updateStatus(' + ${user.id} + ', this)'">
+                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:attr="update-id=${user.getStudent().getId()},data-title=${user.getStudent().fullName}" onchange="showConfirmationDialog(this)">
                     </div>
                   </td>
-                  <td><a th:href="@{'/class-manager/class/studentDetails?studentId=' + ${user.getStudent().getId()}}">View Details</a>
+                  <td>
+                    <a th:href="@{'/class/student?classId=' + ${classId} + '&id=' + ${user.getStudent().getId()} + '&showModal=true'}">View Details</a>
+                    <script>
+                      // Check if the URL contains the "showModal" parameter
+                      const urlParams = new URLSearchParams(window.location.search);
+                      if (urlParams.has('showModal')) {
+                        // The "showModal" parameter is present, open the modal
+                        $(document).ready(function() {
+                          $('#detailStudentModal').modal('show');
+                        });
+                      }
+                    </script>
                   </td>
                   <td>
                     <div style="">
@@ -189,6 +298,94 @@
                 </tr>
                 </tbody>
               </table>
+
+              <!-- Modal Dialog -->
+              <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box">
+                        <i  class="material-icons">&#xE876;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn confirmButton" >Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box" style="border-color: #f15e5e">
+                        <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <script>
+                let id;
+                let status;
+                let initialStatus;
+                let confirmClicked = false;
+
+                function showConfirmationDialog(checkbox) {
+                  id = checkbox.getAttribute("update-id");
+                  var title = checkbox.getAttribute('data-title');
+                  status = checkbox.checked;
+                  initialStatus = !status;
+                  confirmClicked = false;
+                  if (status) {
+                    $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${title}?`);
+                    $('#confirmationModal').modal('show');
+                  } else {
+                    $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${title}?`);
+                    $('#confirmationModalRed').modal('show');
+                  }
+                }
+                function handleCancelClick() {
+                  let checkbox = document.querySelector('input[update-id="' + id + '"]');
+                  checkbox.checked = initialStatus;
+                  confirmClicked = false;
+                  $('#confirmationModal').modal('hide');
+                  $('#confirmationModalRed').modal('hide');
+                }
+                $(".confirmButton").click(function () {
+                  fetch(`/class/student/updateStatus?id=${id}&status=${status}`)
+                          .then(() => {
+                            confirmClicked = true;
+                            $('#confirmationModal').modal('hide');
+                            $('#confirmationModalRed').modal('hide');
+                          });
+                });
+                $(".cancelButton, .closeButton").click(function () {
+                  handleCancelClick();
+                });
+                $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
+                  if (event.target === this && !confirmClicked) {
+                    handleCancelClick();
+                  }
+                });
+              </script>
+
             </div>
           </div>
         </div>
@@ -291,17 +488,6 @@
       "bInfo" : false
     });
   });
-</script>
-
-<!-- Status update -->
-<script>
-  function updateStatus(id, checkbox) {
-    let status = checkbox.checked;
-
-    if (confirm('Are you sure?'))
-      fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
-    else checkbox.checked = !status;
-  }
 </script>
 
 <!-- User Note -->
@@ -424,15 +610,15 @@
                           if (inClass) {
                             newRow.innerHTML = `
                               <td>${user.fullName}</td>
-                              <td>${user.email || ''}</td>
-                              <td>${user.phone || ''}</td>
-                              <td>Student has inside class</td>
+                              <td>${user.email || 'None'}</td>
+                              <td>${user.phone || 'None'}</td>
+                              <td style="text-align: center;"><svg style="margin-right: 17px" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m5 14 4 3 9-11" stroke="#32CD32" stroke-width="2"/></svg></td>
                             `;
                           } else {
                             newRow.innerHTML = `
                               <td>${user.fullName}</td>
-                              <td>${user.email || ''}</td>
-                              <td>${user.phone || ''}</td>
+                              <td>${user.email || 'None'}</td>
+                              <td>${user.phone || 'None'}</td>
                               <td>
                                 <button name="addstudent" type="button" class="btn btn-success w-75 p-0" onclick="addStudent(${user.id})">+</button>
                               </td>
@@ -492,8 +678,8 @@
                 .then(response => response.json())
                 .then(data => {
                 if (data) {
-                    console.log('Add student to class successfully');
-                    populateUserTable(currentPage);
+                  notify('success', 'Successfully!', 'Add student to class success');
+                  populateUserTable(currentPage);
                     let reload = document.querySelector('li[name="reloadPage"]');
                     reload.textContent = 'Student have been added to class, reload page to see changes!';
                   intervalId = startInterval();
@@ -513,11 +699,21 @@
 
 </script>
 
-<script>
+<script th:inline="javascript">
   function sortData(sortBy, sortType) {
     document.getElementById('sortBy').value = sortBy;
     document.getElementById('sortType').value = sortType;
     document.getElementById('form').submit();
   }
+  document.addEventListener("DOMContentLoaded", function(event) {
+    const smessage = [[${smessage}]];
+    if (smessage != null) {
+      notify('success', 'Successfully!', smessage);
+    }
+    const emessage = [[${emessage}]];
+    if (emessage != null) {
+      notify('error', 'Error!', emessage);
+    }
+  });
 </script>
 </html>

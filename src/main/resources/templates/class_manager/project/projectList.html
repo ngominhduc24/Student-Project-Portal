@@ -86,16 +86,14 @@
                     </div>
 
                     <div class="col-md-6 text-end">
-                        <a th:href="'../arrange/' + ${class.id}"
+                        <a th:href="'../arrange/' + ${class.id}" class="btn btn-primary"
                            style="margin-left: 5%;">Arrange members</a>
-                        <a onclick="showModal(event)" href=""
-                           style="margin-left: 5%;">Import excel</a>
-                        <a th:href="'/api/v1/export/studentClass/' + ${class.id}" target="_blank"
-                           style="margin-left: 5%;">Export excel</a>
+                        <a onclick="showModal(event)" href="" class="btn"
+                           style="margin-left: 5%; background: #0f5132; color: white"><i style="padding-right: 2px"><svg width="18" height="18" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>Import</a>
+                        <a th:href="'/api/v1/export/studentClass/' + ${class.id}" target="_blank" class="btn"
+                           style="margin-left: 5%; background: #0f7d49; color: white"><i class="fa-solid fa-arrow-up-from-bracket" style="padding-right: 5px"></i>Export</a>
                     </div>
                 </div>
-
-                <br><br>
 
                 <style>
                     .project{
@@ -186,51 +184,57 @@
                     }
                 </style>
 
-                <div class="container-fluid px-4" style="display: flex; flex-wrap: wrap; justify-content: space-between">
+                <div class="container-fluid px-4">
+                    <div class="row">
+                        <div class="col-lg-8 mt-4">
+                            <div class="card border-0 p-4 rounded shadow">
+                                <div th:each="project : ${projectList}" th:data-id="${project.id}" th:id="'project'+${project.id}"
+                                     th:data-leader="${project.teamLeader!=null ? 'stu'+project.teamLeader.id : '-1'}" class="project">
 
-                    <div class="mb-3 col-md-5 project" id="noGroup">
-                        <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png" class="drop-arrow">
-                        <div class="project-title" onclick="showDetails(this.parentNode)">Waiting list</div>
-                        <br>
-                        <div class="project-detail">
-                            <div style="border-bottom: solid black 2px;width: 80%;margin: 3vh 0;"></div>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png"
+                                         class="drop-arrow" onclick="showDetails(this.parentNode)">
+                                    <div class="project-title" th:text="${project.groupName} + ${project.status?'🔒':''}"
+                                         onclick="showDetails(this.parentNode)"></div>
+                                    <br>
+                                    <div><a th:href="'../details/' + ${project.id}">View details</a></div>
+                                    <div class="project-detail">
+                                        <div style="border-bottom: solid black 2px;width: 80%;margin: 3vh 0;"></div>
 
-                            <div class="student" th:each="student : ${studentList}"
-                                 th:if="${student.project==null}"
-                                 th:id="'stu' + ${student.id}" th:data-note="${student.student.note!=null?student.student.note:' '}">
-                                <p class="form-control" th:text="${student.student.fullName}"></p>
-                                <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
-                                     onclick="showDialog(this.parentNode)" class="dots">
+                                        <div class="student" th:each="student : ${studentList}"
+                                             th:if="${student.project!=null && student.project.id == project.id}"
+                                             th:id="'stu' + ${student.id}" th:data-note="${student.student.note!=null?student.student.note:' '}">
+                                            <p class="form-control"
+                                               th:text="${student.student.fullName + ((project.teamLeader!=null && student.id==project.teamLeader.id)?' - Leader⭐':'')}">
+                                            </p>
+                                            <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
+                                                 onclick="showDialog(this.parentNode)" class="dots" th:if="${!project.status}">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mt-4">
+                            <div class="card rounded border-0 shadow">
+                                <div class="project" id="noGroup" style="margin-bottom: 3vh; background: white; box-shadow: none; padding-left: 3vh; padding-right: 3vh">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png" class="drop-arrow">
+                                    <div class="project-title" onclick="showDetails(this.parentNode)">Waiting list</div>
+                                    <br>
+                                    <div class="project-detail">
+                                        <div style="border-bottom: solid black 2px;width: 80%;margin: 3vh 0;"></div>
+
+                                        <div class="student" th:each="student : ${studentList}"
+                                             th:if="${student.project==null}"
+                                             th:id="'stu' + ${student.id}" th:data-note="${student.student.note!=null?student.student.note:' '}">
+                                            <p class="form-control" th:text="${student.student.fullName}"></p>
+                                            <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
+                                                 onclick="showDialog(this.parentNode)" class="dots">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div th:each="project : ${projectList}" th:data-id="${project.id}" th:id="'project'+${project.id}"
-                         th:data-leader="${project.teamLeader!=null ? 'stu'+project.teamLeader.id : '-1'}"
-                         class="mb-3 col-md-5 project">
-
-                        <img src="https://cdn-icons-png.flaticon.com/512/566/566091.png"
-                             class="drop-arrow" onclick="showDetails(this.parentNode)">
-                        <div class="project-title" th:text="${project.groupName} + ${project.status?'🔒':''}"
-                             onclick="showDetails(this.parentNode)"></div>
-                        <br>
-                        <div><a th:href="'../details/' + ${project.id}">View details</a></div>
-                        <div class="project-detail">
-                            <div style="border-bottom: solid black 2px;width: 80%;margin: 3vh 0;"></div>
-
-                            <div class="student" th:each="student : ${studentList}"
-                                 th:if="${student.project!=null && student.project.id == project.id}"
-                                 th:id="'stu' + ${student.id}" th:data-note="${student.student.note!=null?student.student.note:' '}">
-                                <p class="form-control"
-                                   th:text="${student.student.fullName + ((project.teamLeader!=null && student.id==project.teamLeader.id)?' - Leader⭐':'')}">
-                                </p>
-                                <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
-                                     onclick="showDialog(this.parentNode)" class="dots" th:if="${!project.status}">
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -318,9 +322,9 @@
                 document.querySelector('.modalAddBack').style.display = state;
             }
         </script>
-        <!--            modal lmao-->
+        <!--modal lmao-->
 
-<!--        modal add back-->
+        <!--modal add back-->
         <div class="modalAddBack">
             <div class="card border-0 p-4 rounded shadow">
                 <i class="fa fa-times fa-2x" style="position: absolute; right: 3%; top: 2vh" onclick="stateAddModal('none')"></i>

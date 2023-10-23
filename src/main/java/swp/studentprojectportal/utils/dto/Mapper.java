@@ -3,6 +3,10 @@ package swp.studentprojectportal.utils.dto;
 import org.gitlab4j.api.models.Label;
 import swp.studentprojectportal.model.IssueSetting;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+
 public class Mapper {
     public static Label labelConvert(IssueSetting issueSetting) {
         Label label = new Label();
@@ -38,5 +42,28 @@ public class Mapper {
         }
         else
             return issueSetting.getSettingTitle().equals(settingGroupAndTitle[0]);
+    }
+
+    public static org.gitlab4j.api.models.Milestone milestoneConvert(swp.studentprojectportal.model.Milestone milestone) {
+        org.gitlab4j.api.models.Milestone milestoneGitlab = new org.gitlab4j.api.models.Milestone();
+        milestoneGitlab.setTitle(milestone.getTitle());
+        milestoneGitlab.setDescription(milestone.getDescription());
+        milestoneGitlab.setStartDate(milestone.getStartDate());
+        milestoneGitlab.setDueDate(milestone.getEndDate());
+        return milestoneGitlab;
+    }
+
+    public static swp.studentprojectportal.model.Milestone milestoneConvert(org.gitlab4j.api.models.Milestone milestoneGitlab) {
+        swp.studentprojectportal.model.Milestone milestone = new swp.studentprojectportal.model.Milestone();
+        milestone.setTitle(milestoneGitlab.getTitle());
+        milestone.setDescription(milestoneGitlab.getDescription());
+        java.util.Date utilDate = milestoneGitlab.getStartDate();
+        milestone.setStartDate((Date)milestoneGitlab.getStartDate());
+        milestone.setEndDate((Date)milestoneGitlab.getDueDate());
+        return milestone;
+    }
+
+    public static boolean milestoneEquals(swp.studentprojectportal.model.Milestone milestone, org.gitlab4j.api.models.Milestone milestoneGitlab) {
+        return milestone.getTitle().equals(milestoneGitlab.getTitle());
     }
 }

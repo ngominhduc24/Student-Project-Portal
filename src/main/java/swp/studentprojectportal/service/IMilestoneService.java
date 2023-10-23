@@ -5,6 +5,7 @@ import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.model.Class;
 
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,10 +16,12 @@ public interface IMilestoneService {
 
     Milestone findMilestoneById(Integer id);
 
+    List<Milestone> findMilestoneByClassId(Integer classid);
+
     Milestone save(Milestone milestone);
 
     void addClassAssignment(Class classA);
 
-    boolean addNewMilestone(Integer classId, String title, String description, LocalDateTime startDate, LocalDateTime endDate, int status);
+    boolean addNewMilestone(Integer classId, String title, String description, Date startDate, Date endDate, int status);
 
 }

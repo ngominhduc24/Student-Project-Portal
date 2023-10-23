@@ -15,6 +15,7 @@ import swp.studentprojectportal.repository.IMilestoneRepository;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.IMilestoneService;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,6 +50,11 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
+    public List<Milestone> findMilestoneByClassId(Integer classid){
+        return milestoneRepository.findMilestoneByAclass_Id(classid);
+    }
+
+    @Override
     public Milestone save(Milestone milestone) {
         return milestoneRepository.save(milestone);
     }
@@ -66,7 +72,7 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
-    public boolean addNewMilestone(Integer classId, String title, String description, LocalDateTime startDate,LocalDateTime endDate,int status) {
+    public boolean addNewMilestone(Integer classId, String title, String description, Date startDate, Date endDate, int status) {
         // get class by classId
         Class _class =  classRepository.findClassById(classId);
         if(_class == null) {
@@ -80,22 +86,22 @@ public class MilestoneService implements IMilestoneService {
         milestone.setStatus(status == 1 ? true : false);
         milestone.setAclass(_class);
         milestone.setProject(null);
-        milestone.setStartDate(java.sql.Timestamp.valueOf(startDate));
-        milestone.setEndDate(java.sql.Timestamp.valueOf(endDate));
+        milestone.setStartDate(startDate);
+        milestone.setEndDate(endDate);
         if(milestoneRepository.save(milestone) != null)
             return true;
         else
             return false;
     }
 
-    public boolean updateMilestone(Integer milestoneId,String title,String description,LocalDateTime startDate,LocalDateTime endDate,int status) {
+    public boolean updateMilestone(Integer milestoneId,String title,String description,Date startDate,Date endDate,int status) {
         Milestone milestone = milestoneRepository.findMilestoneById(milestoneId);
         if(milestone == null)
             return false;
         milestone.setTitle(title);
         milestone.setDescription(description);
-        milestone.setStartDate(java.sql.Timestamp.valueOf(startDate));
-        milestone.setEndDate(java.sql.Timestamp.valueOf(endDate));
+        milestone.setStartDate(startDate);
+        milestone.setEndDate(endDate);
         milestone.setStatus(status == 1 ? true : false);
         if(milestoneRepository.save(milestone) != null)
             return true;
