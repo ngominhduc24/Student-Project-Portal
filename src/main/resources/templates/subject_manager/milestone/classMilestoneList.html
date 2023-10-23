@@ -31,6 +31,10 @@
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
     <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script th:src="@{/js/notify.js}"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -162,12 +166,12 @@
 
                     <div class="col-xl-4 col-md-6"></div>
 
-                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-left: 24px">
+                    <div class="col-xl-2 col-md-6 align-items-center justify-content-center mb-2">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-left: 24px; width: 140px">
                             Add New
                         </button>
                         <button type="button" class="btn" data-toggle="modal" style="margin-left: 24px; background-color: #298d5e; width: 140px; color: white; margin-top: 5px" data-target="#syncModalCenter">
-                            Sync gitlab
+                            Sync Gitlab
                         </button>
                     </div><!--end col-->
                         <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
@@ -559,12 +563,11 @@
                         fetch(endPoint)
                             .then(response => {
                                 if (response.ok) {
-                                    // Handle a successful API response
-                                    console.log('Milestone created successfully.');
-                                    // Close the modal
-                                    // document.getElementById('closeModal').click();
-                                    // reload page
-                                    location.reload();
+                                    notify('success', 'Milestone created successfully.', 'Success');
+                                    // Delay the page reload for a few seconds
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000); // Adjust the delay duration as needed
                                 } else {
                                     // Handle API errors
                                     console.error('Error creating milestone.');

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.model.Class;
@@ -65,8 +66,12 @@ public class StudentController {
     @GetMapping("/class-manager/class/removeStudentFromClass")
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId,
-            @RequestParam(name = "studentId") Integer studentId) {
+            @RequestParam(name = "studentId") Integer studentId,
+            RedirectAttributes attributes) {
         boolean result =  studentClassService.removeStudentFromClass(classId, studentId);
+        if (result) {
+            attributes.addFlashAttribute("smessage", "Remove student successfully");
+        }
         return "redirect:/class/student?classId=" + classId;
     }
 
@@ -96,12 +101,14 @@ public class StudentController {
     }
 
     @PostMapping("/class/importStudent")
-    public String importStudent(@RequestParam MultipartFile file,
-                                @RequestParam int classId) {
+    public String importStudent(@RequestParam MultipartFile file, @RequestParam int classId, RedirectAttributes attributes) {
         //read sheet data
         List<User> userList = new SheetHandle().importSheetUser(file);
 
-        if(userList == null) return "redirect:./student?classId=" + classId;
+        if(userList == null) {
+            attributes.addFlashAttribute("emessage", "Import student failed");
+            return "redirect:./student?classId=" + classId;
+        }
 
         //remove all student in current class
         studentClassService.removeAllStudentFromClass(classId);
@@ -114,13 +121,13 @@ public class StudentController {
                 //find by phone
                 if (user==null) {
                     user = userService.findByPhone(user.getPhone());
-
                     if (user==null) continue;
                 }
 
                 //add student to class
                 studentClassService.addNewStudentToClass(classId, user.getId());
 
+                attributes.addFlashAttribute("smessage", "Import student successfully");
             } catch (Exception e) {
                 System.out.println(e);
             }
