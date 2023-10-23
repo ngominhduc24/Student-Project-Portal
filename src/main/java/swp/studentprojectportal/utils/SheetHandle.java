@@ -45,7 +45,7 @@ public class SheetHandle {
             return data;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Import sheet: " + e);
             return null;
         }
     }
@@ -82,13 +82,15 @@ public class SheetHandle {
             Row headerRow = sheet.createRow(0);
             headerRow.createCell(0).setCellValue("Email");
             headerRow.createCell(1).setCellValue("Phone");
+            headerRow.createCell(2).setCellValue("Full Name");
 
             // Write data
             for (User user : list) {
                 Row row = sheet.createRow(sheet.getLastRowNum()+1);
 
-                row.createCell(row.getLastCellNum()+1).setCellValue(user.getEmail());
-                row.createCell(row.getLastCellNum()).setCellValue(user.getPhone());
+                row.createCell(row.getLastCellNum()+1).setCellValue(writeCell(user.getEmail()));
+                row.createCell(row.getLastCellNum()).setCellValue(writeCell(user.getPhone()));
+                row.createCell(row.getLastCellNum()).setCellValue(writeCell(user.getFullName()));
             }
 
             return workbook;
@@ -121,16 +123,16 @@ public class SheetHandle {
 
             // Write header
             Row headerRow = sheet.createRow(0);
-            headerRow.createCell(0).setCellValue("Id");
-            headerRow.createCell(1).setCellValue("Student name");
+            headerRow.createCell(0).setCellValue("Email");
+            headerRow.createCell(1).setCellValue("Phone");
             headerRow.createCell(2).setCellValue("Group name");
 
             // Write data
             for (StudentClass student : list) {
                 Row row = sheet.createRow(sheet.getLastRowNum()+1);
 
-                row.createCell(row.getLastCellNum()+1).setCellValue(student.getId().toString());
-                row.createCell(row.getLastCellNum()).setCellValue(student.getStudent().getFullName());
+                row.createCell(row.getLastCellNum()+1).setCellValue(writeCell(student.getStudent().getEmail()));
+                row.createCell(row.getLastCellNum()).setCellValue(writeCell(student.getStudent().getPhone()));
 
                 String groupName = student.getProject()==null ? "No group" : student.getProject().getGroupName();
                 row.createCell(row.getLastCellNum()).setCellValue(groupName);
@@ -141,6 +143,10 @@ public class SheetHandle {
             System.out.println(e);
             return null;
         }
+    }
+
+    public String writeCell(String value) {
+        return (value==null || value.isEmpty()) ? "none" : value;
     }
 
 }

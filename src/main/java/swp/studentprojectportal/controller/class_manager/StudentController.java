@@ -166,7 +166,7 @@ public class StudentController {
 
                 //find by phone
                 if (user == null) {
-                    user = userService.findByPhone(user.getPhone());
+                    user = userService.findByPhone(userData.getPhone());
 
                     if (user == null) continue;
                 }

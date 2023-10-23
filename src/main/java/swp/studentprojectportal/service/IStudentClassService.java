@@ -20,4 +20,6 @@ public interface IStudentClassService {
 
     public boolean removeAllStudentFromClass(int classId);
 
+    public StudentClass findByStudentIdAndAclassId(Integer userId, Integer classId);
+
 }
