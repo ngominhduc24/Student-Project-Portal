@@ -174,14 +174,14 @@
                                 style="margin-left: 24px">Add New</a>
                         </div>
                         <div th:if="${session.user.setting.id==4}" style="display: inline">
-                            <button type="button" class="btn btn-primary"  onclick="showCreateForm()" style="margin-left: 24px" >
+                            <button type="button" class="btn btn-primary"  onclick="showCreateForm()" style="margin-bottom: 8px; width: 155px" >
+                                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
                                 Add New
                             </button>
-<!--                            <form action="/class-manager/issue-setting/add" method="get" style="display: inline;">-->
-<!--                                <input type="hidden" name="id" th:value="${class.id}">-->
-<!--                                <input type="submit" class="btn btn-primary" value="Add New" style="margin-left: 24px">-->
-<!--                            </form>-->
-                            <button type="button" class="btn" data-toggle="modal" style="margin-left: 24px; background-color: #298d5e; width: 140px; color: white; margin-top: 5px" data-target="#exampleModalCenter">
+                            <button type="button" class="btn" data-toggle="modal" style="background-color: #298d5e; color: white; width: 155px;" data-target="#exampleModalCenter">
+                                <i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1
+                            1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0
+                            0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
                                 Sync gitlab
                             </button>
                         </div>

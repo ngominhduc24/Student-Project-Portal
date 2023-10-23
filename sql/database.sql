@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
     `start_date` DATE NULL,
     `end_date` DATE NULL,
     `status` BIT(1) NULL,
-    `is_subject_assignment` BIT(1) NULL,
+    `is_subject_assignment` BIT(1) DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
