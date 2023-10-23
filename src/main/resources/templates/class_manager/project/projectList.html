@@ -76,10 +76,10 @@
 
                 <div class="row px-4">
                     <div class="col-md-6">
-                        <select class="form-select" style="width: 30%" onchange="changeClass(this.value)">
+                        <select class="form-select" style="width: 50%" onchange="changeClass(this.value)">
                             <option th:each="item : ${classList}"
                                     th:value="${item.id}"
-                                    th:text="${item.className}"
+                                    th:text="${item.className} + ' - ' + ${item.subject.subjectCode}"
                                     th:selected="${item.id == class.id}"></option>
                         </select>
                     </div>
@@ -296,8 +296,10 @@
                 <br>
                 <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap; width: 80%">
                     <button class="btn btn-secondary mb-2" onclick="moveToGroup(-1)">No group</button>
-                    <button th:each="project : ${projectList}" th:onclick="'moveToGroup(' + ${project.id} + ')'"
-                            th:text="${project.groupName}" class="btn btn-secondary mb-2" ></button>
+                    <button th:each="project : ${projectList}"
+                            th:onclick="'moveToGroup(' + ${project.id} + ')'"
+                            th:text="${project.groupName}"
+                            th:if="${!project.status}" class="btn btn-secondary mb-2" ></button>
                     <button class="btn btn-primary mb-2" onclick="hideMoveModal()">Cancel</button>
                 </div>
             </div>
