@@ -85,4 +85,15 @@ public class AssignmentService implements IAssignmentService {
 
         return true;
     }
+
+    @Override
+    public boolean checkExistedAssignment(String title, Integer subjectId, Integer id) {
+        Assignment assignment = assignmentRepository.findByTitleAndSubjectId(title, subjectId);
+        if(assignment !=null)  {
+            if(id==-1) return true;
+            if(assignment.getId()!=id)  return true;
+        }
+        return false;
+    }
+
 }

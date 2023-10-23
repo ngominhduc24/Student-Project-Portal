@@ -89,6 +89,8 @@ public class SubjectHomeController {
             assignment.setDescription("");
         }
 
+        Page<Assignment> assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
+
         if (!newTitle.isEmpty()) {
             assignment.setTitle(newTitle);
             assignment.setDescription(description);
@@ -102,6 +104,7 @@ public class SubjectHomeController {
                 else
                     model.addAttribute("toastMessage", "Update assignment details successfully");
                 assignmentService.saveAssignment(assignment);
+                assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
                 assignment = new Assignment();
                 assignment.setId(-1);
                 assignment.setDescription("");
@@ -111,7 +114,6 @@ public class SubjectHomeController {
         model.addAttribute("assignment", assignment);
 
         Page<IssueSetting> issueSettingList = issueSettingService.filter(subjectId, searchS, pageNoS, pageSizeS, sortByS, sortTypeS, settingGroupS, statusS);
-        Page<Assignment> assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
         List<String> settingGroupList = issueSettingService.findAllDistinctSettingGroup(subjectId);
 
         model.addAttribute("pageSize", pageSize);
