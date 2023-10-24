@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
+import swp.studentprojectportal.utils.Validate;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class IssueSettingApiController {
     @GetMapping("/update/issue-setting")
     public ResponseEntity updateIssueSetting(
             @RequestParam(name = "issueSettingId") Integer issueSettingId,
+            @RequestParam(name = "classId") int classId,
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
             @RequestParam(name = "group") String group,
@@ -56,10 +58,20 @@ public class IssueSettingApiController {
         issueSetting.setSettingTitle(title);
         issueSetting.setSettingGroup(group);
         issueSetting.setStatus(status == 1 ? true : false);
+        if(Validate.validNotempty(group) == false){
+            return ResponseEntity.ok().body("0");
+        }
+        else{
+            IssueSetting findIssueSetting = issueSettingService.findByClassAndGroupAndTitle(classId,group,title);
+            if(findIssueSetting!=null && findIssueSetting.getId() != issueSettingId){
+                return ResponseEntity.ok().body("-1");
+            }
+            else {
+                issueSettingService.saveSubjectSetting(issueSetting);
+                return ResponseEntity.ok().body("1");
 
-        issueSettingService.saveSubjectSetting(issueSetting);
-
-        return ResponseEntity.ok().body("Update milestone successfully");
+            }
+        }
 
     }
 }

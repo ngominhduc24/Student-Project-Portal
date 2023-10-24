@@ -33,6 +33,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+
+    <script th:src="@{/js/notify.js}"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
 <!--    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI/t1pO5BKe3uZExmv1cSJf4/9Utktx/NlA7p9uE=" crossorigin="anonymous"></script>-->
 
     <style>
@@ -114,12 +123,20 @@
             content: none !important;
         }
         .custom-toast {
+            /*background-color: #20ee68 !important;*/
+            /*color: #FFFFFF;*/
+            /*position: absolute;*/
+            /*top: 88px;*/
+            /*right: 0;*/
+            /*z-index: 2;*/
+
             background-color: #20ee68 !important;
             color: #FFFFFF;
-            position: absolute;
-            top: 88px;
-            right: 0;
-            z-index: 2;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            margin: 15px;
+            z-index: 1000;
         }
     </style>
 
@@ -432,6 +449,7 @@
                                                     </div>
                                                     <div class="mt-2">
                                                         <h6 style="color: indianred;" id="errormsg" th:text="${errmsg}"></h6>
+<!--                                                        <h6 style="color: green;" id="msg" th:text="${errmsg}"></h6>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -451,11 +469,11 @@
                                     customToast.show();
                                     setTimeout(function () {
                                         customToast.hide();
-                                    }, 5000);
+                                    }, 2000);
                                 }
                                 var errmsg = document.getElementById('errormsg').textContent.trim();
                                 $(document).ready(function() {
-                                    if (errmsg.trim() !== '') {
+                                    if (errmsg.trim() !== '' ) {
                                         $('#createIssueSettingModal').modal('show');
                                     }
                                 });
@@ -604,6 +622,7 @@
                 <!-- Detail-->
                 <script>
                     function details(id) {
+                        console.log('show detail'+id)
                         let endPoint = '/api/v1/issue-setting?issueSettingId=' + id;
                         fetch(endPoint)
                             .then(response => {
@@ -637,33 +656,38 @@
                         const title = document.querySelector('input[id="details-issue-setting-title"]').value;
                         const description = document.querySelector('textarea[name="detail-description"]').value;
                         const status = document.getElementById('detail-status').checked ? 1 : 0;
-                        let endPoint = '/api/v1/update/issue-setting?issueSettingId=' + id + '&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
+                        let endPoint = '/api/v1/update/issue-setting?issueSettingId=' + id + '&classId=' + classId +'&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
                         fetch(endPoint)
                             .then(response => {
                                 if (response.ok) {
                                     // Handle a successful API response
                                     console.log('Issue setting updated successfully.');
-                                    // Close the modal
-                                    //document.getElementById('detailcloseModal').click();
-                                    // reload page
-                                    //location.reload();
-                                    // window.location.href = `/class/issue-setting?id=${classId}`;
-                                    // window.location = th:href="@{/class/issue-setting(id=${class.id})}
+                                     // notify('success', 'Issue setting update successfully.', 'Success');
+                                    // Delay the page reload for a few seconds
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000);
+                                    return response.text();
+
                                 } else {
                                     // Handle API errors
-                                    console.error('Error updating milestone.');
+                                    console.log('Update fails')
                                 }
                             })
-                            .then(() =>{
-                                document.getElementById('detailcloseModal').click();
-                                window.location.href = `/class/issue-setting?id=${classId}`;
+                            .then(data => {
+                                // 'data' là nội dung của response
+                                if(data == "1") notify('success','Update issue setting successfully' , 'Success');
+                                else if (data == "0") notify('error' ,'Group can not empty. Update failed!'  ,'Error' );
+                                else notify('error' ,'Issue setting existed. Update failed!'  ,'Error' )
+                                console.log(data); // In ra "Update successfully"
+                                // Thực hiện các thao tác khác tùy thuộc vào nội dung nhận được
                             })
+
                             .catch(error => {
                                 // Handle network errors
                                 console.error('Network error:', error);
                             });
-                        //location.reload();
-                        //document.getElementById('btndetails').click();
+
                     }
                 </script>
             </div>
