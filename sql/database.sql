@@ -135,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
     `subject_id` INT NULL,
     `semester_id` INT NULL,
     `teacher_id` INT NULL,
+    `gitlab_group_id` VARCHAR(245) NULL,
     `status` INT NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -511,4 +512,3 @@ VALUES
     (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
     (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
     (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
-
