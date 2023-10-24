@@ -83,32 +83,59 @@ public class MilestoneController {
             @RequestParam(name = "personalToken") String personalToken,
             HttpSession session
     ) throws GitLabApiException {
-        List<org.gitlab4j.api.models.Milestone> milestoneListGitlab =  gitlabApiService.getClassMilestoneGitlab(groupIdOrPath, personalToken);
+        List<org.gitlab4j.api.models.Milestone> milestoneListGitlab = null;
+        try {
+            milestoneListGitlab =  gitlabApiService.getClassMilestoneGitlab(groupIdOrPath, personalToken);
+        } catch (GitLabApiException e) {
+            System.out.printf(e.getMessage());
+        }
+        if(milestoneListGitlab == null) {
+            return "redirect:/class/milestone?classId=" + classId;
+        }
         List<swp.studentprojectportal.model.Milestone> milestoneListDB = milestoneService.findMilestoneByClassId(classId);
 
         // sync to db
         for (org.gitlab4j.api.models.Milestone milestone : milestoneListGitlab) {
             boolean isExist = false;
+            boolean isUpdate = false;
             for (swp.studentprojectportal.model.Milestone milestoneDB : milestoneListDB) {
                 if (Mapper.milestoneEquals(milestoneDB, milestone)) {
                     isExist = true;
+                    if(milestoneDB.getUpdateAt().before(milestone.getUpdatedAt())){
+                        isUpdate = true;
+                    }
                     break;
                 }
             }
 
-            if (!isExist) {
-                swp.studentprojectportal.model.Milestone milestoneDB = Mapper.milestoneConvert(milestone);
-                milestoneDB.setAclass(classService.findById(classId));
-                milestoneService.save(milestoneDB);
+            try {
+                if (!isExist) {
+                    swp.studentprojectportal.model.Milestone milestoneDB = Mapper.milestoneConvert(milestone);
+                    milestoneDB.setAclass(classService.findById(classId));
+                    milestoneService.save(milestoneDB);
+                } else {
+                    if(isUpdate){
+                        swp.studentprojectportal.model.Milestone milestoneDB = Mapper.milestoneConvert(milestone);
+                        milestoneDB.setId(milestoneService.findMilestoneByTitle(milestone.getTitle()).getId());
+                        milestoneDB.setAclass(classService.findById(classId));
+                        milestoneService.save(milestoneDB);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
 
         // sync to gitlab
         for (swp.studentprojectportal.model.Milestone milestoneDB : milestoneListDB) {
             boolean isExist = false;
+            boolean isUpdate = false;
             for (org.gitlab4j.api.models.Milestone milestone : milestoneListGitlab) {
                 if (Mapper.milestoneEquals(milestoneDB, milestone)) {
                     isExist = true;
+                    if(milestoneDB.getUpdateAt().after(milestone.getUpdatedAt())){
+                        isUpdate = true;
+                    }
                     break;
                 }
             }
@@ -116,6 +143,11 @@ public class MilestoneController {
             if (!isExist) {
                 org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
                 gitlabApiService.createGrouptMilestone(groupIdOrPath, personalToken, milestoneGitlab);
+            } else {
+                if(isUpdate){
+                    org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
+//                    gitlabApiService.updateClassMilestone(groupIdOrPath, personalToken, milestoneGitlab);
+                }
             }
         }
 

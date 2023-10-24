@@ -14,6 +14,7 @@ import java.util.List;
 public class GitlabApiService {
     private GitLabApi gitLabApi;
 
+    // -------------------------- CLASS --------------------------
     public  List<Milestone> getClassMilestoneGitlab(String projectIdOrPath, String personToken) throws GitLabApiException {
         // Get all milestones from Gitlab
         // Get all milestones from database
@@ -24,6 +25,13 @@ public class GitlabApiService {
         return milestoneList;
     }
 
+    // update class milestone
+    public boolean updateClassMilestone(String projectIdOrPath, String personToken, Milestone milestone) throws GitLabApiException {
+        gitLabApi = new GitLabApi("https://gitlab.com", personToken);
+        Milestone newMilestone = gitLabApi.getMilestonesApi().updateGroupMilestone(projectIdOrPath, milestone.getId(), milestone.getTitle(), milestone.getDescription(), milestone.getDueDate(), milestone.getStartDate(), null);
+        return newMilestone != null;
+    }
+
     public List<Label> getClassLabelGitlab(String projectIdOrPath, String personToken) throws GitLabApiException {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
         Pager<Label> labels = gitLabApi.getLabelsApi().getGroupLabels(projectIdOrPath, 100);
@@ -31,12 +39,14 @@ public class GitlabApiService {
         return labelList;
     }
 
+
     public boolean createClassLabel(String projectIdOrPath, String personToken, Label label) throws GitLabApiException {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
         Label newLabel = gitLabApi.getLabelsApi().createGroupLabel(projectIdOrPath, label);
         return newLabel != null;
     }
 
+    // -------------------------- PROJECT --------------------------
     public boolean createGrouptMilestone(String groupIdOrPath, String personToken, Milestone milestone) throws GitLabApiException {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
         Milestone newMilestone = gitLabApi.getMilestonesApi().createGroupMilestone(groupIdOrPath, milestone.getTitle(), milestone.getDescription(), milestone.getDueDate(), milestone.getStartDate());
