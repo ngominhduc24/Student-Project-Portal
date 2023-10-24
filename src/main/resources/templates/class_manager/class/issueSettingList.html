@@ -367,8 +367,12 @@
                                         <!--                                                class="fas fa-pen-to-square"></i></a></div>-->
                                         <!--                                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3 }" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i-->
                                         <!--                                                class="fas fa-pen-to-square"></i></a></div>-->
-                                        <div th:onclick="'details(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
-                                                class="fas fa-pen-to-square"></i></div>
+<!--                                        <div th:onclick="'details(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i-->
+<!--                                                class="fas fa-pen-to-square"></i></div>-->
+                                        <div th:if="${setting.aclass!=null}">
+                                            <div th:onclick="'details(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                    class="fas fa-pen-to-square"></i></div>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -436,7 +440,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                        <label class="form-label">Title</label>
                                                         <div class="d-flex">
                                                             <input type="text" name="newSettingTitle" class="form-control" th:value="${setting.settingTitle}">
                                                         </div>
@@ -591,7 +595,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Group</label>
+                                            <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <input type="text" id="details-issue-setting-group" class="form-control" >
                                         </div>
                                         <div class="mb-3 col-md-6">
@@ -600,8 +604,8 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <div class="form-switch">
-                                                <label class="form-label" style="margin-left: -40px">Status</label><br/>
-                                                <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 25px;">
+                                                <label class="form-label" style="margin-left: -40px">Status</label>
+                                                <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 20px; margin-left: 20px">
                                             </div>
                                         </div>
                                         <div class="mb-3 col-md-12">
