@@ -83,6 +83,7 @@ public class SheetHandle {
             headerRow.createCell(0).setCellValue("Email");
             headerRow.createCell(1).setCellValue("Phone");
             headerRow.createCell(2).setCellValue("Full Name");
+            headerRow.createCell(3).setCellValue("Status");
 
             // Write data
             for (User user : list) {
@@ -91,6 +92,7 @@ public class SheetHandle {
                 row.createCell(row.getLastCellNum()+1).setCellValue(writeCell(user.getEmail()));
                 row.createCell(row.getLastCellNum()).setCellValue(writeCell(user.getPhone()));
                 row.createCell(row.getLastCellNum()).setCellValue(writeCell(user.getFullName()));
+                row.createCell(row.getLastCellNum()).setCellValue(writeCell(user.isStatus()+""));
             }
 
             return workbook;
