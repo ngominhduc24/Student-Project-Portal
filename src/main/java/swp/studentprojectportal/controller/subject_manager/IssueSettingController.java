@@ -369,6 +369,10 @@ public class IssueSettingController {
                 userService.saveUser(user);
             }
         }
+        // save gitlab group id
+        Class classA = classService.findById(classId);
+        classA.setGitlabGroupId(groupIdOrPath);
+        classService.saveClass(classA);
         return "redirect:/class/issue-setting?id=" + classId;
     }
 
