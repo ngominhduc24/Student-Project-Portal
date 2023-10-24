@@ -113,12 +113,9 @@
             <h3 style="margin-top: -14px;margin-bottom: 20px;" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
             <ol class="breadcrumb mb-2">
               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-              <li class="breadcrumb-item">/</li>
               <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
               <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
-              <li class="breadcrumb-item">/</li>
               <li class="breadcrumb-item active">Student List</li>
-              <li class="breadcrumb-item" name="reloadPage" style="color: red"></li>
               <div th:if="${numberStudentAdded != null}">
                 <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' student to class'"></li>
               </div>
