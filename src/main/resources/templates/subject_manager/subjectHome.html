@@ -219,7 +219,7 @@
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description<span style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">(You only can change this field)</span></label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${subject.description}"></textarea>
+                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${subject.description}"></textarea>
                                         </div>
                                         <div class="mt-2">
                                             <h6 style="color: indianred;" th:text="${errmsg}"></h6>
@@ -414,7 +414,7 @@
                     </div>
                 </div>
 
-                <!--Modal Create Assignment-->
+                <!--Modal Assignment-->
                 <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                             <input type="hidden" name="newSubjectId" th:value="${subject.id}">
@@ -427,13 +427,21 @@
                                 <div class="modal-body">
                                     <div class="row justify-content-center">
                                         <div class="col-md-12 row" style="margin-top: 12px;">
+
+                                            <!--create-->
                                             <div th:if="${assignment.id==-1}" class="mb-3 col-md-12">
                                                 <label class="form-label">Title<span class="text-danger">*</span></label>
-                                                <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
+                                                <input type="text" name="newTitle" class="form-control" th:value="${newTitle}">
                                             </div>
+                                            <div th:if="${assignment.id==-1}" class="mb-3 col-md-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
+                                            </div>
+
+                                            <!--update-->
                                             <div th:if="${assignment.id!=-1}" class="mb-3 col-md-8">
                                                 <label class="form-label">Title<span class="text-danger">*</span></label>
-                                                <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
+                                                <input type="text" name="newTitle" class="form-control"  th:value="${assignment.title}">
                                             </div>
                                             <div th:if="${assignment.id!=-1}" class="mb-3 col-md-4" style="padding-left: 10%;">
                                                 <label class="form-label">Status<span class="text-danger">*</span></label>
@@ -441,12 +449,12 @@
                                                     <input style="margin-left: -62px" class="form-check-input" value="on" name="newStatus" type="checkbox" th:checked="${assignment.isStatus()}" >
                                                 </div>
                                             </div>
-
-                                            <div class="mb-3 col-md-12">
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-12">
                                                 <label class="form-label">Description</label>
                                                 <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
                                             </div>
 
+                                            <!--message-->
                                             <div class="mt-2">
                                                 <h6 style="color: indianred;" id="error" th:text="${errorMessage}"></h6>
                                             </div>
