@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Milestone;
@@ -81,7 +82,7 @@ public class MilestoneController {
             @RequestParam(name = "classId", defaultValue = "-1") Integer classId,
             @RequestParam(name = "group") String groupIdOrPath,
             @RequestParam(name = "personalToken") String personalToken,
-            HttpSession session
+            HttpSession session, RedirectAttributes attributes
     ) throws GitLabApiException {
         List<org.gitlab4j.api.models.Milestone> milestoneListGitlab = null;
         try {
@@ -90,6 +91,7 @@ public class MilestoneController {
             System.out.printf(e.getMessage());
         }
         if(milestoneListGitlab == null) {
+            attributes.addFlashAttribute("emessage", "GroupId or Token gitlab not valid!");
             return "redirect:/class/milestone?classId=" + classId;
         }
         List<swp.studentprojectportal.model.Milestone> milestoneListDB = milestoneService.findMilestoneByClassId(classId);
@@ -146,7 +148,11 @@ public class MilestoneController {
             } else {
                 if(isUpdate){
                     org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
-//                    gitlabApiService.updateClassMilestone(groupIdOrPath, personalToken, milestoneGitlab);
+                    int id = milestoneService.findMilestoneByTitle(milestoneDB.getTitle()).getId();
+                    milestoneGitlab.setId(Long.valueOf(id));
+                    if(milestoneGitlab.getId() != null) {
+//                        gitlabApiService.updateClassMilestone(groupIdOrPath, personalToken, milestoneGitlab);
+                    }
                 }
             }
         }
@@ -166,6 +172,7 @@ public class MilestoneController {
         Class classA = classService.findById(classId);
         classA.setGitlabGroupId(groupIdOrPath);
         classService.saveClass(classA);
+        attributes.addFlashAttribute("smessage", "synchronized with Gitlab successful!");
         return "redirect:/class/milestone?classId=" + classId;
     }
 }
