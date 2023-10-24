@@ -47,6 +47,33 @@
   #myTable_filter {
     float: left;
   }
+
+  .topnav {
+    overflow: hidden;
+    border-bottom: 1px solid darkgray;
+    margin-top: 70px;
+    background: white;
+  }
+
+  .topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 26px;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    margin:0
+  }
+
+  .topnav a:hover {
+    border-bottom: 3px solid blue;
+  }
+
+  .topnav a.active {
+    border-bottom: 3px solid blue;
+  }
 </style>
 <body>
 <!-- Loader -->
@@ -70,12 +97,13 @@
   <!-- Start Page Content -->
   <main class="page-content bg-light">
     <div th:replace="~{dashboardHeader}"></div>
-    <div class="topnav" style="margin-top: 40px">
+    <div class="topnav">
       <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
       <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
       <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
       <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
       <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>
+      <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
     </div>
     <form class="card-body rounded-3" action="./updateStudent" method="post" id="form">
     <div class="container-fluid">
