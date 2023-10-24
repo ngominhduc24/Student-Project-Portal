@@ -57,9 +57,20 @@ public class Mapper {
         swp.studentprojectportal.model.Milestone milestone = new swp.studentprojectportal.model.Milestone();
         milestone.setTitle(milestoneGitlab.getTitle());
         milestone.setDescription(milestoneGitlab.getDescription());
-        java.util.Date utilDate = milestoneGitlab.getStartDate();
-        milestone.setStartDate((Date)milestoneGitlab.getStartDate());
-        milestone.setEndDate((Date)milestoneGitlab.getDueDate());
+
+        // Convert start and due dates to java.sql.Date
+        if (milestoneGitlab.getStartDate() != null) {
+            java.util.Date utilStartDate = milestoneGitlab.getStartDate();
+            java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());
+            milestone.setStartDate(sqlStartDate);
+        }
+
+        if (milestoneGitlab.getDueDate() != null) {
+            java.util.Date utilDueDate = milestoneGitlab.getDueDate();
+            java.sql.Date sqlDueDate = new java.sql.Date(utilDueDate.getTime());
+            milestone.setEndDate(sqlDueDate);
+        }
+
         return milestone;
     }
 
