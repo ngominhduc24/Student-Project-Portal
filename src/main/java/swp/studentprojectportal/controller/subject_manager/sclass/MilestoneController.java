@@ -47,6 +47,7 @@ public class MilestoneController {
         User user = (User) session.getAttribute("user");
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("personalToken", user.getPersonalTokenGitlab());
+        model.addAttribute("groupGitlabId", classA.getGitlabGroupId());
         model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
@@ -128,6 +129,11 @@ public class MilestoneController {
                     userService.saveUser(user);
             }
         }
+
+        // save gitlab group id
+        Class classA = classService.findById(classId);
+        classA.setGitlabGroupId(groupIdOrPath);
+        classService.saveClass(classA);
         return "redirect:/class/milestone?classId=" + classId;
     }
 }
