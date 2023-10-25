@@ -132,12 +132,16 @@ public class MilestoneController {
         for (swp.studentprojectportal.model.Milestone milestoneDB : milestoneListDB) {
             boolean isExist = false;
             boolean isUpdate = false;
+            Long milestoneId = null;
+            String milestoneState = null;
             for (org.gitlab4j.api.models.Milestone milestone : milestoneListGitlab) {
                 if (Mapper.milestoneEquals(milestoneDB, milestone)) {
                     isExist = true;
                     if(milestoneDB.getUpdateAt().after(milestone.getUpdatedAt())){
                         isUpdate = true;
                     }
+                    milestoneId = milestone.getId();
+                    milestoneState = milestone.getState();
                     break;
                 }
             }
@@ -148,10 +152,11 @@ public class MilestoneController {
             } else {
                 if(isUpdate){
                     org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
-                    int id = milestoneService.findMilestoneByTitle(milestoneDB.getTitle()).getId();
-                    milestoneGitlab.setId(Long.valueOf(id));
-                    if(milestoneGitlab.getId() != null) {
-//                        gitlabApiService.updateClassMilestone(groupIdOrPath, personalToken, milestoneGitlab);
+                    if(milestoneId != null) {
+                        milestoneGitlab.setId(Long.valueOf(milestoneId));
+                        milestoneGitlab.setState(milestoneState);
+                        System.out.println(milestoneGitlab);
+                        gitlabApiService.updateClassMilestone(groupIdOrPath, personalToken, milestoneGitlab);
                     }
                 }
             }

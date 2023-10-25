@@ -29,7 +29,11 @@ public class GitlabApiService {
     // update class milestone
     public boolean updateClassMilestone(String projectIdOrPath, String personToken, Milestone milestone) throws GitLabApiException {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
-        Milestone newMilestone = gitLabApi.getMilestonesApi().updateGroupMilestone(projectIdOrPath, milestone.getId(), milestone.getTitle(), milestone.getDescription(), milestone.getDueDate(), milestone.getStartDate(), Constants.MilestoneState.ACTIVATE);
+        Milestone newMilestone = gitLabApi.getMilestonesApi().updateGroupMilestone(
+                projectIdOrPath, milestone.getId(),
+                milestone.getTitle(), milestone.getDescription(),
+                milestone.getDueDate(), milestone.getStartDate(),
+                Constants.MilestoneState.ACTIVE);
         return newMilestone != null;
     }
 
