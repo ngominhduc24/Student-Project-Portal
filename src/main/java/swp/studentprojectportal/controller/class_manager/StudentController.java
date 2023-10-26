@@ -49,7 +49,8 @@ public class StudentController {
             return "redirect:class/student";
         }
         if (session.getAttribute("numberStudentAdded") != null) {
-            model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
+            String mess = "Sync FAP successfully! " + session.getAttribute("numberStudentAdded") + " student added";
+            model.addAttribute("smessage", mess);
             session.removeAttribute("numberStudentAdded");
         }
         model.addAttribute("classId", classId);

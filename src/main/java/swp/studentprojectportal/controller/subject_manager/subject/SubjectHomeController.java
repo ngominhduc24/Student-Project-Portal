@@ -86,12 +86,15 @@ public class SubjectHomeController {
         if (assignment==null) {
             assignment = new Assignment();
             assignment.setId(-1);
-            assignment.setDescription("");
         }
 
         Page<Assignment> assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
-
-        if (!newTitle.isEmpty()) {
+        String errorMsg = checkValidateAssignment(newTitle, description);
+        if(errorMsg != null){
+            model.addAttribute("errorMessage", errorMsg);
+            model.addAttribute("newTitle", newTitle);
+            model.addAttribute("description", description);
+        } else {
             assignment.setTitle(newTitle);
             assignment.setDescription(description);
             if(assignmentId!=-1)  assignment.setStatus(newStatus!=null);
@@ -107,7 +110,6 @@ public class SubjectHomeController {
                 assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
                 assignment = new Assignment();
                 assignment.setId(-1);
-                assignment.setDescription("");
             }
         }
 

@@ -40,6 +40,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <style>
         .datatable-table {
             border: 1px solid #dee2e6;
@@ -118,8 +119,33 @@
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
-    </style>
+        .topnav {
+            overflow: hidden;
+            border-bottom: 1px solid darkgray;
+            margin-top: 70px;
+            background: white;
+        }
 
+        .topnav a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 10px 26px;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            margin:0
+        }
+
+        .topnav a:hover {
+            border-bottom: 3px solid blue;
+        }
+
+        .topnav a.active {
+            border-bottom: 3px solid blue;
+        }
+    </style>
 </head>
 <body>
 <!-- Loader -->
@@ -146,6 +172,7 @@
             <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
             <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
             <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
         </div>
 
         <!--    Assignment-->
@@ -196,7 +223,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Group id or Path<span class="text-danger">*</span></label>
                                         <div class="d-flex">
-                                            <input type="text" name="groupIdOrPath" class="form-control" required>
+                                            <input type="text" name="groupIdOrPath" class="form-control" th:value="${groupGitlabId}" required>
                                         </div>
                                     </div>
                                     <div class="mb-3">
@@ -301,10 +328,9 @@
                                 </div>
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text" th:value="${search}"
-                                           name="search" placeholder="Search" style="border-color: #ced4da;"
+                                           name="search" placeholder="Search" style="border-color: #ced4da; height: 36px"
                                            aria-label="Search">
-                                    <button onclick="this.form.submit()" class="search-button"><i class="fas fa-search"
-                                                                                                  aria-hidden="true"></i>
+                                    <button onclick="this.form.submit()" class="search-button"><i class="fas fa-search" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -565,7 +591,11 @@
                             .then(response => {
                                 if (response.ok) {
                                     // Handle a successful API response
-                                    console.log('Milestone updated successfully.');
+                                    notify('success', 'Successfully!', 'Update milestone successful');
+                                    // Delay the page reload for a few seconds
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000); // Adjust the delay duration as needed
                                     // Close the modal
                                     document.getElementById('detailcloseModal').click();
                                     // reload page
@@ -642,11 +672,27 @@
                     }
                 </script>
 
+
+
             </div>
         </div>
     </main>
 </div>
+<!-- notify -->
+<script th:inline="javascript">
 
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const smessage = [[${smessage}]];
+        if (smessage != null) {
+            notify('success', 'Successfully!', smessage);
+        }
+        const emessage = [[${emessage}]];
+
+        if (emessage != null) {
+            notify('error', 'Error!', emessage);
+        }
+    });
+</script>
 <!-- javascript -->
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>

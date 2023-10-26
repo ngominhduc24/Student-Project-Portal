@@ -108,4 +108,9 @@ public class MilestoneService implements IMilestoneService {
         else
             return false;
     }
+
+    public Milestone findMilestoneByTitle(String milestoneTitle){
+        return milestoneRepository.findMilestoneByTitle(milestoneTitle).get(0);
+    }
+
 }

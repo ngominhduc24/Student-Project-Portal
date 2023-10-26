@@ -138,6 +138,32 @@
             margin: 15px;
             z-index: 1000;
         }
+        .topnav {
+            overflow: hidden;
+            border-bottom: 1px solid darkgray;
+            margin-top: 70px;
+            background: white;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 10px 26px;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            margin:0
+        }
+
+        .topnav a:hover {
+            border-bottom: 3px solid blue;
+        }
+
+        .topnav a.active {
+            border-bottom: 3px solid blue;
+        }
     </style>
 
 </head>
@@ -167,6 +193,7 @@
             <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
             <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
             <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
         </div>
 
         <!--    Settings -->
@@ -231,7 +258,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Group id or Path<span class="text-danger">*</span></label>
                                         <div class="d-flex">
-                                            <input type="text" name="groupIdOrPath" class="form-control" required>
+                                            <input type="text" name="groupIdOrPath" class="form-control" th:value="${groupGitlabId}" required>
                                         </div>
                                     </div>
                                     <div class="mb-3">

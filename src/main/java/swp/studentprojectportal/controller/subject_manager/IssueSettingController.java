@@ -43,7 +43,6 @@ public class IssueSettingController {
         Class classA = classService.findById(classId);
         Page<IssueSetting> issueSettingList= issueSettingService.filterClassIssueSetting(classA.getSubject().getId(), classId,search, pageNo, pageSize, sortBy, sortType, settingGroup, status);
         List<String> settingGroupList = issueSettingService.findAllDistinctClassSettingGroup(classA.getSubject().getId(), classId);
-
         IssueSetting setting = new IssueSetting();
         setting.setAclass(classA);
         setting.setSettingGroup("Not Empty");
@@ -54,6 +53,7 @@ public class IssueSettingController {
         User user = (User) session.getAttribute("user");
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("personalToken", user.getPersonalTokenGitlab());
+        model.addAttribute("groupGitlabId", classA.getGitlabGroupId());
         model.addAttribute("class", classA);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNo", pageNo);
@@ -337,7 +337,6 @@ public class IssueSettingController {
             }
 
             if (!isExist) {
-                System.out.println(Mapper.labelConvert(label));
                 IssueSetting issueSetting = Mapper.labelConvert(label);
                 issueSetting.setAclass(classService.findById(classId));
                 issueSettingService.saveSubjectSetting(issueSetting);
@@ -369,8 +368,10 @@ public class IssueSettingController {
                 userService.saveUser(user);
             }
         }
+        // save gitlab group id
+        Class classA = classService.findById(classId);
+        classA.setGitlabGroupId(groupIdOrPath);
+        classService.saveClass(classA);
         return "redirect:/class/issue-setting?id=" + classId;
     }
-
-
 }

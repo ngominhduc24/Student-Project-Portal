@@ -47,6 +47,33 @@
   #myTable_filter {
     float: left;
   }
+
+  .topnav {
+    overflow: hidden;
+    border-bottom: 1px solid darkgray;
+    margin-top: 70px;
+    background: white;
+  }
+
+  .topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 26px;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    margin:0
+  }
+
+  .topnav a:hover {
+    border-bottom: 3px solid blue;
+  }
+
+  .topnav a.active {
+    border-bottom: 3px solid blue;
+  }
 </style>
 <body>
 <!-- Loader -->
@@ -70,12 +97,13 @@
   <!-- Start Page Content -->
   <main class="page-content bg-light">
     <div th:replace="~{dashboardHeader}"></div>
-    <div class="topnav" style="margin-top: 40px">
+    <div class="topnav">
       <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
       <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
       <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
       <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
       <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>
+      <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
     </div>
     <form class="card-body rounded-3" action="./updateStudent" method="post" id="form">
     <div class="container-fluid">
@@ -85,12 +113,9 @@
             <h3 style="margin-top: -14px;margin-bottom: 20px;" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
             <ol class="breadcrumb mb-2">
               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-              <li class="breadcrumb-item">/</li>
               <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
               <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
-              <li class="breadcrumb-item">/</li>
               <li class="breadcrumb-item active">Student List</li>
-              <li class="breadcrumb-item" name="reloadPage" style="color: red"></li>
               <div th:if="${numberStudentAdded != null}">
                 <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' student to class'"></li>
               </div>
@@ -292,14 +317,14 @@
                   </td>
                   <td>
                     <div style="">
-                      <a class="btn btn-danger w-75 p-0" th:href="@{'/class-manager/class/removeStudentFromClass?studentId=' + ${user.getStudent().getId()} + '&classId=' + ${classId}}" style="color: white; ">-</a>
+                      <a class="btn btn-danger w-75 p-0" th:attr="update-id=${user.getStudent().getId()},data-title=${user.getStudent().fullName}" th:onclick="'showDialogRemove(this, ' + ${classId} + ', ' + ${user.getStudent().getId()} + ')'" style="color: white; ">-</a>
                     </div>
                   </td>
                 </tr>
                 </tbody>
               </table>
 
-              <!-- Modal Dialog -->
+              <!-- Modal Dialog status -->
               <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
@@ -316,6 +341,28 @@
                     <div class="modal-footer justify-content-center">
                       <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
                       <button type="button" class="btn confirmButton" >Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal Dialog status -->
+              <div id="r-confirmationModal" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box">
+                        <i  class="material-icons">&#xE876;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" class="close r-closeButton"  data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn r-cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn r-confirmButton" >Confirm</button>
                     </div>
                   </div>
                 </div>
@@ -341,50 +388,6 @@
                   </div>
                 </div>
               </div>
-              <script>
-                let id;
-                let status;
-                let initialStatus;
-                let confirmClicked = false;
-
-                function showConfirmationDialog(checkbox) {
-                  id = checkbox.getAttribute("update-id");
-                  var title = checkbox.getAttribute('data-title');
-                  status = checkbox.checked;
-                  initialStatus = !status;
-                  confirmClicked = false;
-                  if (status) {
-                    $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${title}?`);
-                    $('#confirmationModal').modal('show');
-                  } else {
-                    $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${title}?`);
-                    $('#confirmationModalRed').modal('show');
-                  }
-                }
-                function handleCancelClick() {
-                  let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                  checkbox.checked = initialStatus;
-                  confirmClicked = false;
-                  $('#confirmationModal').modal('hide');
-                  $('#confirmationModalRed').modal('hide');
-                }
-                $(".confirmButton").click(function () {
-                  fetch(`/class/student/updateStatus?id=${id}&status=${status}`)
-                          .then(() => {
-                            confirmClicked = true;
-                            $('#confirmationModal').modal('hide');
-                            $('#confirmationModalRed').modal('hide');
-                          });
-                });
-                $(".cancelButton, .closeButton").click(function () {
-                  handleCancelClick();
-                });
-                $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
-                  if (event.target === this && !confirmClicked) {
-                    handleCancelClick();
-                  }
-                });
-              </script>
 
             </div>
           </div>
@@ -474,6 +477,76 @@
 
   <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
   <script th:src="@{/js/notify.js}"></script>
+
+
+  <!--  copnfirm remove student -->
+  <script>
+    let studentID ;
+    let idRemove;
+    function showDialogRemove(thisRemove, classId, studentId) {
+      idRemove = classId;
+      studentID = studentId;
+      var studentFullname = thisRemove.getAttribute('data-title');
+      $('#r-confirmationModal .modal-body p').html(`Are you sure you want to <strong>remove</strong>  ${studentFullname}?`);
+      $('#r-confirmationModal').modal('show');
+    }
+
+    $(".r-confirmButton").click(function () {
+      window.location.href= `/class-manager/class/removeStudentFromClass?studentId=${studentID}&classId=${idRemove}`;
+    });
+
+    $(".r-cancelButton, .r-closeButton").click(function () {
+      $('.confirmationModal').modal('hide');
+    });
+  </script>
+
+<!-- confirmation status -->
+  <script>
+    let id;
+    let status;
+    let initialStatus;
+    let confirmClicked = false;
+
+    function showConfirmationDialog(checkbox) {
+      id = checkbox.getAttribute("update-id");
+      var title = checkbox.getAttribute('data-title');
+      status = checkbox.checked;
+      initialStatus = !status;
+      confirmClicked = false;
+      if (status) {
+        $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${title}?`);
+        $('#confirmationModal').modal('show');
+      } else {
+        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${title}?`);
+        $('#confirmationModalRed').modal('show');
+      }
+    }
+    function handleCancelClick() {
+      let checkbox = document.querySelector('input[update-id="' + id + '"]');
+      checkbox.checked = initialStatus;
+      confirmClicked = false;
+      $('#confirmationModal').modal('hide');
+      $('#confirmationModalRed').modal('hide');
+    }
+    $(".confirmButton").click(function () {
+      fetch(`/class/student/updateStatus?id=${id}&status=${status}`)
+              .then(() => {
+                confirmClicked = true;
+                $('#confirmationModal').modal('hide');
+                $('#confirmationModalRed').modal('hide');
+              });
+    });
+    $(".cancelButton, .closeButton").click(function () {
+      handleCancelClick();
+    });
+    $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
+      if (event.target === this && !confirmClicked) {
+        handleCancelClick();
+      }
+    });
+  </script>
+
+
 
 
 <script type="text/javascript">
@@ -725,9 +798,12 @@
       notify('success', 'Successfully!', smessage);
     }
     const emessage = [[${emessage}]];
+
     if (emessage != null) {
       notify('error', 'Error!', emessage);
     }
   });
 </script>
+
+
 </html>

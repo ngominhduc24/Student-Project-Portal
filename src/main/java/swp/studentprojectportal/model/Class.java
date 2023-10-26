@@ -25,6 +25,9 @@ public class Class {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "gitlab_group_id")
+    private String gitlabGroupId;
+
     @Column(name = "status")
     private Integer status = 0;
 
