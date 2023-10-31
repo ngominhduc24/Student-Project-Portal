@@ -447,7 +447,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button onclick="resetCreateForm()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="row justify-content-center">
@@ -463,19 +463,19 @@
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Group<span class="text-danger">*</span></label>
                                                         <div class="d-flex">
-                                                            <input type="text" name="newSettingGroup" class="form-control" th:value="${setting.settingGroup}" required>
+                                                            <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control" th:value="${setting.settingGroup}" required>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Title</label>
                                                         <div class="d-flex">
-                                                            <input type="text" name="newSettingTitle" class="form-control" th:value="${setting.settingTitle}">
+                                                            <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" th:value="${setting.settingTitle}">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-12">
                                                         <label class="form-label">Description</label>
                                                         <div class="d-flex">
-                                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${setting.description}"></textarea>
+                                                            <textarea type="text" rows="3" id="newDescription" name="description" class="form-control" th:field="${setting.description}"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="mt-2">
@@ -486,8 +486,11 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit"  class="btn btn-primary">Add</button>
+                                            <button onclick="resetCreateForm()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+<!--                                            <button type="submit"  class="btn btn-primary">Add</button>-->
+                                            <button type="button" class="btn btn-primary"  onclick="addNewIssueSetting()" >
+                                                Add New
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -510,6 +513,16 @@
                                 });
                                 function showCreateForm() {
                                     $('#createIssueSettingModal').modal('show');
+                                }
+
+                                function addNewIssueSetting(){
+                                    $('#form').submit();
+                                }
+
+                                function resetCreateForm(){
+                                    $('#newSettingGroup').value = 'Not Empty';
+                                    $('#newSettingTitle').value = '';
+                                    $('#newDescription').value = '';
                                 }
                             </script>
 
@@ -688,37 +701,28 @@
                         const description = document.querySelector('textarea[name="detail-description"]').value;
                         const status = document.getElementById('detail-status').checked ? 1 : 0;
                         let endPoint = '/api/v1/update/issue-setting?issueSettingId=' + id + '&classId=' + classId +'&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
-                        fetch(endPoint)
+
+                        fetch(endPoint, {
+                            method: 'GET',
+                        })
                             .then(response => {
-                                if (response.ok) {
-                                    // Handle a successful API response
-                                    console.log('Issue setting updated successfully.');
-                                     // notify('success', 'Issue setting update successfully.', 'Success');
-                                    // Delay the page reload for a few seconds
+                                if(response.ok) {
+                                    notify('success','Update issue setting successfully' , 'Success');
                                     setTimeout(() => {
                                         location.reload();
-                                    }, 2000);
+                                    }, 1000);
+                                } else  {
+                                    // notify('error' ,response.text()  ,'Error' );
                                     return response.text();
-
-                                } else {
-                                    // Handle API errors
-                                    console.log('Update fails')
                                 }
                             })
-                            .then(data => {
-                                // 'data' là nội dung của response
-                                if(data == "1") notify('success','Update issue setting successfully' , 'Success');
-                                else if (data == "0") notify('error' ,'Group can not empty. Update failed!'  ,'Error' );
-                                else notify('error' ,'Issue setting existed. Update failed!'  ,'Error' )
-                                console.log(data); // In ra "Update successfully"
-                                // Thực hiện các thao tác khác tùy thuộc vào nội dung nhận được
+                            .then(errorText =>{
+                                if(errorText && !errorText.startsWith('Update'))
+                                    notify('error',errorText,'Error')
                             })
-
                             .catch(error => {
-                                // Handle network errors
-                                console.error('Network error:', error);
+                                alert("Network error " + error);
                             });
-
                     }
                 </script>
             </div>

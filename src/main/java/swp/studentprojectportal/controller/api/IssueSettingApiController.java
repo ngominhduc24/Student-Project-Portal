@@ -59,12 +59,12 @@ public class IssueSettingApiController {
         issueSetting.setSettingGroup(group);
         issueSetting.setStatus(status == 1 ? true : false);
         if(Validate.validNotempty(group) == false){
-            return ResponseEntity.ok().body("0");
+            return ResponseEntity.badRequest().body("Group can not empty. Update failed!");
         }
         else{
             IssueSetting findIssueSetting = issueSettingService.findByClassAndGroupAndTitle(classId,group,title);
             if(findIssueSetting!=null && findIssueSetting.getId() != issueSettingId){
-                return ResponseEntity.ok().body("-1");
+                return ResponseEntity.badRequest().body("Issue setting existed. Update failed!");
             }
             else {
                 issueSettingService.saveSubjectSetting(issueSetting);
