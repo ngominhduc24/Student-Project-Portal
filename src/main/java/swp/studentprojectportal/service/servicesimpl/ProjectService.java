@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IProjectRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
@@ -30,6 +29,10 @@ public class ProjectService implements IProjectService {
         return classId==0 ? projectRepository.findAll() : projectRepository.findAllByAclass_Id(classId);
     }
 
+    @Override
+    public int projectCount() {
+        return projectRepository.findAll().size();
+    }
     @Override
     public Project findById(int projectId) {
         Optional<Project> project = projectRepository.findById(projectId);

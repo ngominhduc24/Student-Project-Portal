@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface IClassService {
     List<StudentClass> getAllStudent(int classId);
+
+    int classCount();
+
     Class getClass(int classId);
 
     List<Class> findAllByClassManagerId(int classManagerId);

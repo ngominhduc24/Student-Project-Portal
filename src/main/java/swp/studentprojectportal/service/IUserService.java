@@ -7,6 +7,11 @@ import java.util.Optional;
 
 public interface IUserService {
     User saveUser(User user);
+
+    int countStudent();
+
+    int countTeacher();
+
     boolean checkEmailDomain(String email);
     boolean checkExistMail(String email);
     boolean checkExistPhoneNumber(String phoneNumber);

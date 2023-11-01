@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.service.IClassService;
@@ -28,7 +27,11 @@ public class ClassService implements IClassService {
         List<StudentClass> data = studentClassRepository.findAllByAclass_Id(classId);
         return data;
     }
-
+    @Override
+    public int classCount() {
+        return classRepository.findAll().size();
+    }
+    @Override
     public Class getClass(int classId) {
         return classRepository.findClassById(classId);
     }

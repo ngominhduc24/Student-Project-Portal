@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Milestone;
-import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.repository.IAssignmentRepository;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IMilestoneRepository;
@@ -16,7 +15,6 @@ import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.IMilestoneService;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,6 +28,10 @@ public class MilestoneService implements IMilestoneService {
     @Autowired
     ISubjectRepository subjectRepository;
 
+    @Override
+    public int milestoneCount(){
+        return milestoneRepository.findAll().size();
+    }
     @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
         Sort sort;

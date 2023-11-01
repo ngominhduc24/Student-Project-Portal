@@ -30,6 +30,11 @@ public class SubjectService implements ISubjectService {
     }
 
     @Override
+    public int subjectCount() {
+        return subjectRepository.findAll().size();
+    }
+
+    @Override
     public List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId, Integer status) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         if(status != -1 && subjectManagerId != -1) {

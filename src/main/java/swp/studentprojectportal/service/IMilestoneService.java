@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface IMilestoneService {
 
+    int milestoneCount();
+
     Page<Milestone> filterMilestone(int classId, String search, Integer pageNo,
                                     Integer pageSize, String sortBy, Integer sortType, Integer status);
 

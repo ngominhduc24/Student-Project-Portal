@@ -58,11 +58,11 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <iconify-icon icon="ph:student-fill" class="h3 mb-0"></iconify-icon>
+                                    <iconify-icon icon="ph:chalkboard-teacher" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">558</h5>
-                                    <p class="text-muted mb-0">Students</p>
+                                    <h5 class="mb-0" th:text="${teacherCount}"></h5>
+                                    <p class="text-muted mb-0">Teachers</p>
                                 </div>
                             </div>
                         </div>
@@ -72,11 +72,11 @@
                         <div class="card features feature-primary rounded border-0 shadow p-4">
                             <div class="d-flex align-items-center">
                                 <div class="icon text-center rounded-md">
-                                    <iconify-icon icon="ph:chalkboard-teacher" class="h3 mb-0"></iconify-icon>
+                                    <iconify-icon icon="ph:student-fill" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">220</h5>
-                                    <p class="text-muted mb-0">Teachers</p>
+                                    <h5 class="mb-0" th:text="${studentCount}"></h5>
+                                    <p class="text-muted mb-0">Students</p>
                                 </div>
                             </div>
                         </div>
@@ -89,8 +89,22 @@
                                     <i class="uil uil-book h3 mb-0"></i>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">5</h5>
+                                    <h5 class="mb-0" th:text="${subjectCount}"></h5>
                                     <p class="text-muted mb-0">Subjects</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
+                        <div class="card features feature-primary rounded border-0 shadow p-4">
+                            <div class="d-flex align-items-center">
+                                <div class="icon text-center rounded-md">
+                                    <iconify-icon icon="fluent:class-24-regular" class="h3 mb-0"></iconify-icon>
+                                </div>
+                                <div class="flex-1 ms-2">
+                                    <h5 class="mb-0" th:text="${classCount}"></h5>
+                                    <p class="text-muted mb-0">Classes</p>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +117,7 @@
                                     <iconify-icon icon="ant-design:project-outlined" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">16</h5>
+                                    <h5 class="mb-0" th:text="${projectCount}"></h5>
                                     <p class="text-muted mb-0">Projects</p>
                                 </div>
                             </div>
@@ -118,22 +132,8 @@
                                     <iconify-icon icon="fluent:class-24-regular" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">10</h5>
-                                    <p class="text-muted mb-0">Classes</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
-                        <div class="card features feature-primary rounded border-0 shadow p-4">
-                            <div class="d-flex align-items-center">
-                                <div class="icon text-center rounded-md">
-                                    <iconify-icon icon="fluent:class-24-regular" class="h3 mb-0"></iconify-icon>
-                                </div>
-                                <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">220</h5>
-                                    <p class="text-muted mb-0">sth idk?</p>
+                                    <h5 class="mb-0" th:text="${milestoneCount}"></h5>
+                                    <p class="text-muted mb-0">Milestone</p>
                                 </div>
                             </div>
                         </div>
