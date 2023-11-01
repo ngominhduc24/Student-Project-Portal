@@ -2,13 +2,32 @@ package swp.studentprojectportal.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JwtTokenProvider {
-    public static String generateToken(Integer id) {
-        String JWT_SECRET = "swp391";
 
+    private static final String JWT_SECRET = "swp391";
+
+    public String encodeData(String data) {
+
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(JWT_SECRET),
+                SignatureAlgorithm.HS256.getJcaName());
+
+        return Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setPayload(data)
+                .signWith(SignatureAlgorithm.HS256, hmacKey)
+                .compact();
+    }
+
+    public String generateToken(Integer id) {
         //Thời gian có hiệu lực của chuỗi jwt
         final  long JWT_EXPIRATION = 604800000L;
         Date now = new Date();
@@ -18,12 +37,11 @@ public class JwtTokenProvider {
                 .setSubject(id.toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS256, JWT_SECRET)
                 .compact();
     }
 
-    public static Long getUserIdFromJWT(String token) {
-        String JWT_SECRET = "swp391";
-
+    public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
                 .parseClaimsJws(token)
