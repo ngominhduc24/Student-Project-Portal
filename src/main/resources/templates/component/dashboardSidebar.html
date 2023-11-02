@@ -99,14 +99,44 @@
         </li>
     </ul>
 </nav>
-
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>
-    const classId = [[${classId}]];
-    const chatBody = document.querySelector('.chat-body');
-    const username = '[[${username}]]';
-    const chatInput = document.getElementById('chatInput');
+    function loadSocketIO() {
+        const script = document.createElement('script');
+        script.src = 'http://localhost:3000/socket.io/socket.io.js';
 
+        const timer = setTimeout(() => {
+            document.body.removeChild(script);
+        }, 500);
+
+        // Add an event listener to execute when the script has finished loading.
+        script.onload = () => {
+            clearTimeout(timer); // Clear the timeout since the script loaded successfully.
+            initializeSocket();
+        };
+
+        // Append the script to the document, which starts loading it.
+        document.body.appendChild(script);
+    }
+
+    async function initializeSocket() {
+        const classId = [[${classId}]];
+        const chatBody = document.querySelector('.chat-body');
+        const username = '[[${username}]]';
+        const chatInput = document.getElementById('chatInput');
+
+        const socket = io('http://localhost:3000');
+
+        //async run
+        await (async () => {
+            //connect
+            socket.emit('listen-class', await getToken());
+
+        })();
+
+        socket.on("receive-message", data => {
+            console.log(data);
+        });
+    }
     async function getToken() {
         let token;
 
@@ -130,21 +160,6 @@
 
         return token;
     }
-
-    const socket = io('http://localhost:3000');
-
-    //async run
-    (async () => {
-
-        //connect
-        socket.emit('listen-class', await getToken());
-
-    })();
-
-    socket.on("receive-message", data => {
-        console.log(data);
-    });
-
 </script>
 
 <!-- javascript -->

@@ -9,13 +9,13 @@ import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 
 @Controller
-public class StudentProjectController {
+public class StudentIssueController {
     @Autowired
     StudentClassService studentClassService;
-    @GetMapping("student/issue/list")
-    public String projectList(Model model, HttpSession session) {
+    @GetMapping("student/project/list")
+    public String IssueList(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         model.addAttribute("studentClassList", studentClassService.findAllByStudentId(user.getId()));
-        return "student/issueList";
+        return "student/projectList";
     }
 }
