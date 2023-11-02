@@ -813,9 +813,9 @@ VALUES
     ("Class Details" ,2, 2, 6, 4, 1, 12),
     ("Milestone List" ,2, 2, 6, 4, 1, 13),
     ("Milestone Details" ,2, 2, 6, 4, 1, 14),
-    ("Assignment List" ,2, 3, 6, 4, 1, 11),
-    ("Assignment Submit" ,2, 3, 6, 4, 1, 14),
-    ("Assignment Evaluation" ,2, 3, 6, 4, 1, 13),
+    ("Assignment List" ,2, 3, 6, 4, 1, 4),
+    ("Assignment Submit" ,2, 3, 6, 4, 1, 4),
+    ("Assignment Evaluation" ,2, 3, 6, 4, 1, 4),
     ("LOC Evaluation" ,2, 3, 6, 4, 1, 12),
     ("Issue" ,2, 3, 6, 4, 1, 11),
     ("Issue Details" ,2, 3, 6, 4, 1, 12);
