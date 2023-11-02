@@ -108,7 +108,6 @@ public class ClassHomeController {
                 model.addAttribute("toastMessage", "Add new class successfully");
             }
         }
-        if(subjectId!=-1 || semesterId !=-1 || teacherId!=-1 || status!=-1 || !search.isEmpty()) pageNo=0;
 
         Page<Class> classList = classService.findAllBySubjectManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, teacherId, status);
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);

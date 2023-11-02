@@ -148,16 +148,6 @@
     </style>
 </head>
 <body>
-<!-- Loader -->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-</div>
-<!-- Loader -->
 <div id="syncText" hidden="hidden">System are sync with Gitlab ....</div>
 
 <div class="page-wrapper doctris-theme toggled" id="main">
@@ -181,7 +171,7 @@
                 <div class="row px-4" style="width: 100%; justify-content: space-between">
                     <div class="col-xl-5 col-md-6">
                         <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
-                        <ol class="breadcrumb mb-2">
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
