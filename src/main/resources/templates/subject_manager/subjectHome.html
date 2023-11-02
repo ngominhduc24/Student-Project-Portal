@@ -211,19 +211,19 @@
                                             <div class="mb-3">
                                                 <input type="hidden" name="id" th:value="${subject.id}">
                                                 <label class="form-label">Subject Name</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.subjectName}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectName}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Subject Code</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.subjectCode}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectCode}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Manager</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.user.fullName}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.user.fullName}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

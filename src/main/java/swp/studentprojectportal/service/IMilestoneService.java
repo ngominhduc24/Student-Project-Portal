@@ -25,4 +25,7 @@ public interface IMilestoneService {
     boolean addNewMilestone(Integer classId, String title, String description, Date startDate, Date endDate, int status);
 
     Milestone findMilestoneByTitle(String milestoneTitle);
+
+    Page<Milestone> filterMilestoneByProject(int classId, int projectId, String search, Integer pageNo,
+                                    Integer pageSize, String sortBy, Integer sortType, Integer status);
 }

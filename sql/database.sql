@@ -600,37 +600,37 @@ VALUES
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
-    (6, 1, 1),    -- Student 6 in Project 1
-    (7, 1, 1),    -- Student 7 in Project 1
-    (8, 1, 1),    -- Student 8 in Project 1
-    (9, 1, 1),    -- Student 9 in Project 1
-    (10, 1, 1),   -- Student 10 in Project 1
-    (11, 1, 2),   -- Student 11 in Project 2
-    (12, 1, 2),   -- Student 12 in Project 2
-    (13, 1, 2),   -- Student 13 in Project 2
-    (14, 1, 2),   -- Student 14 in Project 2
-    (15, 1, 2),   -- Student 15 in Project 2
-    (16, 1, 3),   -- Student 16 in Project 3
-    (17, 1, 3),   -- Student 17 in Project 3
-    (18, 1, 3),   -- Student 18 in Project 3
-    (19, 1, 3),   -- Student 19 in Project 3
-    (20, 1, 3),   -- Student 20 in Project 3
-    (21, 1, 4),   -- Student 21 in Project 4
-    (22, 1, 4),   -- Student 22 in Project 4
-    (23, 1, 4),   -- Student 23 in Project 4
-    (24, 1, 4),   -- Student 24 in Project 4
-    (25, 1, 4),   -- Student 25 in Project 4
-    (26, 1, 5),   -- Student 26 in Project 5
-    (27, 1, 5),   -- Student 27 in Project 5
-    (28, 1, 5),   -- Student 28 in Project 5
-    (29, 1, 5),   -- Student 29 in Project 5
-    (30, 1, 5),   -- Student 30 in Project 5
-    (4, 1, 6),   -- Student 4 in Project 6
-    (32, 1, 6),   -- Student 32 in Project 6
-    (33, 1, 6),   -- Student 33 in Project 6
-    (34, 1, 6),   -- Student 34 in Project 6
-    (35, 1, 6),   -- Student 35 in Project 6
-    (31, 1, null);
+    (6, 13, 1),    -- Student 6 in Project 1
+    (7, 13, 1),    -- Student 7 in Project 1
+    (8, 13, 1),    -- Student 8 in Project 1
+    (9, 13, 1),    -- Student 9 in Project 1
+    (10, 13, 1),   -- Student 10 in Project 1
+    (11, 13, 2),   -- Student 11 in Project 2
+    (12, 13, 2),   -- Student 12 in Project 2
+    (13, 13, 2),   -- Student 13 in Project 2
+    (14, 13, 2),   -- Student 14 in Project 2
+    (15, 13, 2),   -- Student 15 in Project 2
+    (16, 13, 3),   -- Student 16 in Project 3
+    (17, 13, 3),   -- Student 17 in Project 3
+    (18, 13, 3),   -- Student 18 in Project 3
+    (19, 13, 3),   -- Student 19 in Project 3
+    (20, 13, 3),   -- Student 20 in Project 3
+    (21, 13, 4),   -- Student 21 in Project 4
+    (22, 13, 4),   -- Student 22 in Project 4
+    (23, 13, 4),   -- Student 23 in Project 4
+    (24, 13, 4),   -- Student 24 in Project 4
+    (25, 13, 4),   -- Student 25 in Project 4
+    (26, 13, 5),   -- Student 26 in Project 5
+    (27, 13, 5),   -- Student 27 in Project 5
+    (28, 13, 5),   -- Student 28 in Project 5
+    (29, 13, 5),   -- Student 29 in Project 5
+    (30, 13, 5),   -- Student 30 in Project 5
+    (4, 13, 6),   -- Student 4 in Project 6
+    (32, 13, 6),   -- Student 32 in Project 6
+    (33, 13, 6),   -- Student 33 in Project 6
+    (34, 13, 6),   -- Student 34 in Project 6
+    (35, 13, 6),   -- Student 35 in Project 6
+    (31, 13, null);
 
 INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
 VALUES
@@ -665,7 +665,10 @@ VALUES
     ('Project','Pratice to create a website',1,5,'2023-10-18', '2023-11-08'),
     ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
     ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
-    ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
+    ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08'),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,13,'2023-09-05', '2023-09-26'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,13,'2023-09-27', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,13,'2023-10-18', '2023-11-08');
 
 INSERT INTO milestone (`title`,`description`,`status`,`project_id`,`start_date`, `end_date`)
 VALUES

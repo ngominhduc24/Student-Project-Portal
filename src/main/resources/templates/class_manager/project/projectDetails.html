@@ -46,11 +46,20 @@
     <div th:replace="dashboardSidebar"></div>
     <main class="page-content bg-light">
         <div th:replace="dashboardHeader"></div>
+
+        <div class="topnav">
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/{projectId}}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/project/details/{projectId}}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/member(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/milestone(projectId=${project.id})}"><p style="margin:0;"  >Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/issue-setting(id=${project.id})}" ><p style="margin:0;">Settings</p></a>
+        </div>
+
         <div class="container-fluid">
-            <div class="layout-specing">
-                <div>
+            <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+                <div  class="row px-4">
                     <h4 class="mb-0">Project Details</h4>
-                    <ol class="breadcrumb mb-4">
+                    <ol class="breadcrumb mb-2 ms-2">
                         <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a th:href="'/class-manager/project/list/' + ${project.aclass.id}">Project</a></li>
@@ -86,8 +95,8 @@
                     }
                 </style>
 
-                <div class="row">
-                    <div class="col-lg-8 mt-4">
+                <div class="row px-4">
+                    <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
 
                             <form action="../update" method="post">

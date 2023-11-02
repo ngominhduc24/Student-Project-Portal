@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subjectId" class="form-select"  disabled="${class.status==3}">
+                                            <select name="subjectId" class="form-select"  th:disabled="${class.status==3}">
                                                 <option th:each="subject : ${subjectList}"
                                                         th:value="${subject.id}"
                                                         th:text="${subject.subjectCode}"
