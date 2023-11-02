@@ -31,7 +31,7 @@ public class SubjectSetting {
     private String settingValue;
 
     @Column(name = "status")
-    private Boolean status = true;
+    private boolean status = true;
 
     @Column(name = "display_order")
     private Integer displayOrder;
