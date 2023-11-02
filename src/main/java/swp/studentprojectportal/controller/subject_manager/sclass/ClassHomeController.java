@@ -49,7 +49,7 @@ public class ClassHomeController {
 
         Page<Class> classList = classService.findAllBySubjectManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, teacherId, status);
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        List<User> teacherList = userService.findTeacherBySubjectManagerId(user.getId());
+        List<User> teacherList = userService.findAllUserByRoleId(4);
         List<Setting> semesterList = settingService.findSemesterBySubjectManagerId(user.getId());
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("classList", classList);
@@ -111,7 +111,7 @@ public class ClassHomeController {
 
         Page<Class> classList = classService.findAllBySubjectManagerId(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, semesterId, teacherId, status);
         List<Subject> subjectList = subjectService.findAllSubjectByUser(user);
-        List<User> teacherList = userService.findTeacherBySubjectManagerId(user.getId());
+        List<User> teacherList = userService.findAllUserByRoleId(4);
         List<Setting> semesterList = settingService.findSemesterBySubjectManagerId(user.getId());
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("classList", classList);

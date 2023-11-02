@@ -770,8 +770,8 @@
                                         </button>
                                     </div>
                                 </div>
-                                <input type="hidden" name="sortBySe" id="sortBySetting1">
-                                <input type="hidden" name="sortTypeSe" id="sortTypeSetting1">
+                                <input type="hidden" name="sortBySe" id="sortBySetting1" value="{sortBySe}">
+                                <input type="hidden" name="sortTypeSe" id="sortTypeSetting1" value="{sortTypeSe}">
                                 <table id="datatablesSimpleSetting1" class="display">
                                     <thead>
                                     <tr>
@@ -836,6 +836,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                                <input type="hidden" name="pageNoSe" id="pageNoInputSetting1" value="${pageNoSe}">
                                 <nav th:if="${totalPageSe!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                     <ul class="pagination justify-content-end">
                                         <li th:class="${pageNoSe == 0 ? 'page-item disabled' : 'page-item'}">
@@ -844,7 +845,6 @@
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
-                                        <input type="hidden" name="pageNoSe" id="pageNoInputSetting1">
                                         <li th:each="i : ${#numbers.sequence(1, totalPageS)}"
                                             th:class="${pageNoSe == (i - 1) ? 'page-item active' : 'page-item'}">
                                             <a class="page-link" th:text="${i}" style="cursor: pointer"
