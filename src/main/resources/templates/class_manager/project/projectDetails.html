@@ -43,9 +43,9 @@
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
-    <div th:replace="dashboardSidebar"></div>
+    <div th:replace="~{dashboardSidebar}"></div>
     <main class="page-content bg-light">
-        <div th:replace="dashboardHeader"></div>
+        <div th:replace="~{dashboardHeader}"></div>
 
         <div class="topnav">
             <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/{projectId}}" ><p style="margin:0;">General</p></a>

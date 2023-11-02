@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
                                                           `subject_id` INT NULL,
                                                           `type_id` INT NULL,
                                                           `setting_title` VARCHAR(45) NULL,
-    `setting_value` VARCHAR(45) NULL,
+    `setting_value` INT NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `display_order` INT ,
     `create_by` INT NULL DEFAULT 0,
@@ -711,17 +711,17 @@ VALUES
 
 INSERT INTO subject_setting(subject_id,type_id,setting_title,setting_value,display_order)
 VALUES
-    (1 ,1, "High","240",1),
-    (1 ,1, "Medium","120",2),
-    (1 ,1, "Low","60",3),
-    (1 ,2, "High",">=80%",1),
-    (1 ,2, "Medium",">=50%",2),
-    (1 ,2, "Low","<50%",3),
-    (2 ,1, "High","240",1),
-    (2 ,1, "Medium","120",2),
-    (2 ,2, "High",">=80%",1),
-    (2 ,2, "Medium",">=50%",2),
-    (2 ,2, "Low","<50%",3);
+    (1 ,1, "High",240,1),
+    (1 ,1, "Medium",120,2),
+    (1 ,1, "Low",60,3),
+    (1 ,2, "High",100,1),
+    (1 ,2, "Medium","75",2),
+    (1 ,2, "Low","50",3),
+    (2 ,1, "High",240,1),
+    (2 ,1, "Medium",120,2),
+    (2 ,2, "High",100,1),
+    (2 ,2, "Medium",75,2),
+    (2 ,2, "Low",50,3);
 
 INSERT INTO issue_setting(class_id,setting_group,setting_title,description, status)
 VALUES
@@ -746,7 +746,7 @@ INSERT INTO issue_setting(project_id, setting_group, setting_title, description,
 VALUES
     (1 ,"Process", "Design Database","Trong giai đoan thiet ke database",1),
     (1 ,"Status", "Removed", "Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
-    (1 ,"Security", "Removed", "Các công việc liên quan đến bảo mật cho trang web",0);
+    (1 ,"Type", "Security", "Các công việc liên quan đến bảo mật cho trang web",0);
 
 INSERT INTO criteria(name, weight, assignment_id)
 VALUES
