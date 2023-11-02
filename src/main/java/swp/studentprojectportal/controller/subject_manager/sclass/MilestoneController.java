@@ -2,7 +2,6 @@ package swp.studentprojectportal.controller.subject_manager.sclass;
 
 import jakarta.servlet.http.HttpSession;
 import org.gitlab4j.api.GitLabApiException;
-import org.gitlab4j.api.models.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.IMilestoneService;
@@ -63,7 +61,7 @@ public class MilestoneController {
         //milestone detail
         Milestone milestone = milestoneService.findMilestoneById(milestoneId);
         model.addAttribute("milestone", milestone);
-        return "subject_manager/milestone/classMilestoneList";
+        return "subject_manager/class/classMilestoneList";
     }
 
     @GetMapping("/class/milestone/updateStatus")
