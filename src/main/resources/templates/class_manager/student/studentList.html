@@ -76,17 +76,6 @@
   }
 </style>
 <body>
-<!-- Loader -->
-<div id="preloader">
-  <div id="status">
-    <div class="spinner">
-      <div class="double-bounce1"></div>
-      <div class="double-bounce2"></div>
-    </div>
-  </div>
-</div>
-<!-- Loader -->
-
 <h6 id="loader">System are loading ... Please wait!</h6>
 
 <div id="root">
@@ -97,7 +86,7 @@
   <!-- Start Page Content -->
   <main class="page-content bg-light">
     <div th:replace="~{dashboardHeader}"></div>
-    <div class="topnav">
+    <div class="topnav" style="margin-top: 44px">
       <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
       <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
       <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
@@ -111,7 +100,7 @@
         <div class="row px-4">
           <div class="col-xl-5 col-md-6">
             <h3 style="margin-top: -14px;margin-bottom: 20px;" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
-            <ol class="breadcrumb mb-2">
+            <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
               <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
               <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
@@ -125,7 +114,7 @@
           <input th:value="${classId}" name="classId" hidden="hidden">
           <div class="col-xl-4 col-md-6"></div>
 
-          <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -4px;">
+          <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
             <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #ffb134 " >
               <a style="color: white;" th:href="'/class-manager/class/syncStudent?classId=' + ${classId}"><i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1 1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0 0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
                Synchronize with FAP</a></button>
@@ -266,12 +255,8 @@
 
         <div class="container-fluid px-4">
           <div class="card mb-4">
-            <div class="card-header">
-              <i class="fas fa-table me-1"></i>
-                Student List
-            </div>
             <div class="card-body">
-              <div style="top: 50px;right: 20px;position: absolute;z-index:2">
+              <div style="top: 18px;right: 20px;position: absolute;z-index:2">
                 <a th:href="'/api/v1/export/student/'+${classId}" target="_blank" type="button" class="btn" style="width: 113px; background-color: #24915f; color: white">
                   <i class="fa-solid fa-arrow-up-from-bracket"></i>
                   Export</a>

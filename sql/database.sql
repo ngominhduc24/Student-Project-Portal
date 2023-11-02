@@ -258,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `swp391`.`subject_setting`
+-- Table `swp391`.`issue_setting`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `swp391`.`issue_setting` ;
 
@@ -289,6 +289,204 @@ CREATE TABLE IF NOT EXISTS `swp391`.`issue_setting` (
                                                         ON DELETE NO ACTION
                                                         ON UPDATE NO ACTION)
     ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `swp391`.`criteria`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`criteria` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`criteria` (
+                                                   `id` INT NOT NULL AUTO_INCREMENT,
+                                                   `name` VARCHAR(45) NULL,
+    `weight` INT NULL,
+    `assignment_id` INT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`assignment_id`)
+    REFERENCES `swp391`.`assignment` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `swp391`.`subject_setting`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`subject_setting` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
+                                                          `id` INT NOT NULL AUTO_INCREMENT,
+                                                          `subject_id` INT NULL,
+                                                          `type_id` INT NULL,
+                                                          `setting_title` VARCHAR(45) NULL,
+    `setting_value` VARCHAR(45) NULL,
+    `status` BIT(1) NULL DEFAULT 1,
+    `display_order` INT ,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`subject_id`)
+    REFERENCES `swp391`.`subject` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `swp391`.`submission`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`submission` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`submission` (
+                                                     `id` INT NOT NULL AUTO_INCREMENT,
+                                                     `milestone_id` INT NULL,
+                                                     `project_id` INT NULL,
+                                                     `submit_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP NULL,
+                                                     `note` VARCHAR(255) NULL,
+    `file_location` VARCHAR(255) NULL DEFAULT 1,
+    `evaluation` float ,
+    `comment` VARCHAR(255) ,
+    `status` INT NULL default 1,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`milestone_id`)
+    REFERENCES `swp391`.`milestone` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `swp391`.`evaluation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`evaluation` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`evaluation` (
+                                                     `id` INT NOT NULL AUTO_INCREMENT,
+                                                     `submit_id` INT NULL,
+                                                     `student_id` INT NULL,
+                                                     `criteria` VARCHAR(45) NULL,
+    `weight` INT NULL,
+    `grade` float NULL DEFAULT 1,
+    `comment` VARCHAR(255) ,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`submit_id`)
+    REFERENCES `swp391`.`submission` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`student_id`)
+    REFERENCES `swp391`.`user` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `swp391`.`issue`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`issue` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`issue` (
+                                                `id` INT NOT NULL AUTO_INCREMENT,
+                                                `title` VARCHAR(45) NULL,
+    `project_id` INT NULL,
+    `milestone_id` INT NULL,
+    `type_id`INT NULL,
+    `status_id`INT NULL,
+    `process_id`INT NULL,
+    `assignee_id` INT NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`milestone_id`)
+    REFERENCES `swp391`.`milestone` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`project_id`)
+    REFERENCES `swp391`.`project` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`type_id`)
+    REFERENCES `swp391`.`issue_setting` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`status_id`)
+    REFERENCES `swp391`.`issue_setting` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`process_id`)
+    REFERENCES `swp391`.`issue_setting` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`assignee_id`)
+    REFERENCES `swp391`.`user` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `swp391`.`submit_issue`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`submit_issue` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`submit_issue` (
+                                                       `id` INT NOT NULL AUTO_INCREMENT,
+                                                       `issue_id` INT NULL,
+                                                       `submit_id` INT NULL,
+                                                       `is_final`  BIT(1) NULL DEFAULT 1,
+    `quality_id`INT NULL,
+    `complexity_id`INT NULL,
+    `function_loc` INT NULL,
+    `is_rejected`  BIT(1) NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`issue_id`)
+    REFERENCES `swp391`.`issue` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`submit_id`)
+    REFERENCES `swp391`.`submission` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`quality_id`)
+    REFERENCES `swp391`.`subject_setting` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
+    FOREIGN KEY (`complexity_id`)
+    REFERENCES `swp391`.`subject_setting` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `swp391`.`issue_update`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`issue_update` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`issue_update` (
+                                                       `id` INT NOT NULL AUTO_INCREMENT,
+                                                       `issue_id` INT NULL,
+                                                       `description`  VARCHAR(255) NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`issue_id`)
+    REFERENCES `swp391`.`issue` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -402,37 +600,37 @@ VALUES
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
-    (6, 13, 1),    -- Student 6 in Project 1
-    (7, 13, 1),    -- Student 7 in Project 1
-    (8, 13, 1),    -- Student 8 in Project 1
-    (9, 13, 1),    -- Student 9 in Project 1
-    (10, 13, 1),   -- Student 10 in Project 1
-    (11, 13, 2),   -- Student 11 in Project 2
-    (12, 13, 2),   -- Student 12 in Project 2
-    (13, 13, 2),   -- Student 13 in Project 2
-    (14, 13, 2),   -- Student 14 in Project 2
-    (15, 13, 2),   -- Student 15 in Project 2
-    (16, 13, 3),   -- Student 16 in Project 3
-    (17, 13, 3),   -- Student 17 in Project 3
-    (18, 13, 3),   -- Student 18 in Project 3
-    (19, 13, 3),   -- Student 19 in Project 3
-    (20, 13, 3),   -- Student 20 in Project 3
-    (21, 13, 4),   -- Student 21 in Project 4
-    (22, 13, 4),   -- Student 22 in Project 4
-    (23, 13, 4),   -- Student 23 in Project 4
-    (24, 13, 4),   -- Student 24 in Project 4
-    (25, 13, 4),   -- Student 25 in Project 4
-    (26, 13, 5),   -- Student 26 in Project 5
-    (27, 13, 5),   -- Student 27 in Project 5
-    (28, 13, 5),   -- Student 28 in Project 5
-    (29, 13, 5),   -- Student 29 in Project 5
-    (30, 13, 5),   -- Student 30 in Project 5
-    (4, 13, 6),   -- Student 4 in Project 6
-    (32, 13, 6),   -- Student 32 in Project 6
-    (33, 13, 6),   -- Student 33 in Project 6
-    (34, 13, 6),   -- Student 34 in Project 6
-    (35, 13, 6),   -- Student 35 in Project 6
-    (31, 13, null);
+    (6, 1, 1),    -- Student 6 in Project 1
+    (7, 1, 1),    -- Student 7 in Project 1
+    (8, 1, 1),    -- Student 8 in Project 1
+    (9, 1, 1),    -- Student 9 in Project 1
+    (10, 1, 1),   -- Student 10 in Project 1
+    (11, 1, 2),   -- Student 11 in Project 2
+    (12, 1, 2),   -- Student 12 in Project 2
+    (13, 1, 2),   -- Student 13 in Project 2
+    (14, 1, 2),   -- Student 14 in Project 2
+    (15, 1, 2),   -- Student 15 in Project 2
+    (16, 1, 3),   -- Student 16 in Project 3
+    (17, 1, 3),   -- Student 17 in Project 3
+    (18, 1, 3),   -- Student 18 in Project 3
+    (19, 1, 3),   -- Student 19 in Project 3
+    (20, 1, 3),   -- Student 20 in Project 3
+    (21, 1, 4),   -- Student 21 in Project 4
+    (22, 1, 4),   -- Student 22 in Project 4
+    (23, 1, 4),   -- Student 23 in Project 4
+    (24, 1, 4),   -- Student 24 in Project 4
+    (25, 1, 4),   -- Student 25 in Project 4
+    (26, 1, 5),   -- Student 26 in Project 5
+    (27, 1, 5),   -- Student 27 in Project 5
+    (28, 1, 5),   -- Student 28 in Project 5
+    (29, 1, 5),   -- Student 29 in Project 5
+    (30, 1, 5),   -- Student 30 in Project 5
+    (4, 1, 6),   -- Student 4 in Project 6
+    (32, 1, 6),   -- Student 32 in Project 6
+    (33, 1, 6),   -- Student 33 in Project 6
+    (34, 1, 6),   -- Student 34 in Project 6
+    (35, 1, 6),   -- Student 35 in Project 6
+    (31, 1, null);
 
 INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
 VALUES
@@ -469,6 +667,19 @@ VALUES
     ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
     ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
 
+INSERT INTO milestone (`title`,`description`,`status`,`project_id`,`start_date`, `end_date`)
+VALUES
+    ('Requirement for iter 1','Eliciate and analyze requirement for iteration 1', 1, 1,'2023-09-05', '2023-09-09'),
+    ('Database for iter 1','Design database for iteration 1',1,1,'2023-09-09', '2023-09-13'),
+    ('RDS Requirement for iter 1','Write RDS Requirement for iter 1',1,1,'2023-09-13', '2023-09-16'),
+    ('Coding for iter 1','Code for iteration 1',1,1,'2023-09-16', '2023-09-22'),
+    ('Testing for iter 1','Testing for iteration 1',1 , 1,'2023-09-22', '2023-09-25'),
+    ('Requirement for iter 2','Eliciate and analyze requirement for iteration 2', 1, 1,'2023-09-25', '2023-09-30'),
+    ('Database for iter 2','Design database for iteration 2',1,1,'2023-09-30', '2023-10-03'),
+    ('RDS Requirement for iter 2','Write RDS Requirement for iteration 2 1',1,1,'2023-10-03', '2023-10-07'),
+    ('Coding for iter 2','Code for iteration 2',1,1,'2023-10-07', '2023-10-14'),
+    ('Testing for iter 2','Testing for iteration 2',1 , 1,'2023-10-14', '2023-10-17');
+
 -- issue_setting
 INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
 VALUES
@@ -477,6 +688,7 @@ VALUES
     (1 ,"Status", "Doing","Công việc hoặc vấn đề đang được giải quyết",1),
     (1 ,"Status", "Done","Công việc hoặc vấn đề đã được giải quyết, cần kiểm tra lại để đóng (Closed)",1),
     (1 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
+    (1 ,"Type", "Req","Yêu cần cần giải quyết, là một màn hình hoặc một chức năng cụ thể có thể giao cho 1 người phụ trách trọn vẹn",1),
     (1 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
     (1 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1),
     (2 ,"Process", "Coding","Trong giai đoan code",1),
@@ -493,6 +705,20 @@ VALUES
     (3 ,"Status", "To do","Công việc hoặc vấn đề cần giải quyết",1),
     (3 ,"Type", "Defect","Lỗi tài liệu hoặc source codes do đội dự án tự phát hiện được",1),
     (3 ,"Type", "Q&A","Câu hỏi hoặc vấn đề cần làm rõ hoặc cần xác nhận",1);
+
+INSERT INTO subject_setting(subject_id,type_id,setting_title,setting_value,display_order)
+VALUES
+    (1 ,1, "High","240",1),
+    (1 ,1, "Medium","120",2),
+    (1 ,1, "Low","60",3),
+    (1 ,2, "High",">=80%",1),
+    (1 ,2, "Medium",">=50%",2),
+    (1 ,2, "Low","<50%",3),
+    (2 ,1, "High","240",1),
+    (2 ,1, "Medium","120",2),
+    (2 ,2, "High",">=80%",1),
+    (2 ,2, "Medium",">=50%",2),
+    (2 ,2, "Low","<50%",3);
 
 INSERT INTO issue_setting(class_id,setting_group,setting_title,description, status)
 VALUES
@@ -512,3 +738,110 @@ VALUES
     (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
     (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
     (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
+
+INSERT INTO issue_setting(project_id,setting_group,setting_title,description, status)
+VALUES
+    (1 ,"Process", "Design Database","Trong giai đoan thiet ke database",1),
+    (1 ,"Status", "Removed","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (1 ,"Security", "Các công việc liên quan đến bảo mật cho trang web",0);
+
+INSERT INTO criteria(name, weight, assignment_id)
+VALUES
+    ("Code" ,70, 1),
+    ("RDS" ,20, 1),
+    ("Tracking" ,10, 1),
+    ("Code" ,70, 2),
+    ("RDS" ,20, 2),
+    ("Tracking" ,10, 2),
+    ("Code" ,70, 3),
+    ("RDS" ,20, 3),
+    ("Tracking" ,10, 3);
+
+INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status)
+VALUES
+    (1, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 1),
+    (1, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 2),
+    (2, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1),
+    (2, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 2),
+    (3, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1),
+    (3, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 2);
+
+INSERT INTO evaluation(submit_id, student_id, criteria, weight, grade, comment)
+VALUES
+    (1 ,6, "Code", 70, 7, "Missing sort"),
+    (1 ,6, "RDS", 20, 8, "Quite good"),
+    (1 ,6, "Tracking", 10, 7, "The screen name isn't exactly"),
+    (1 ,7, "Code", 70, 6, null),
+    (1 ,7, "RDS", 20, 7, null),
+    (1 ,7, "Tracking", 10, 8, null),
+    (1 ,8, "Code", 70, 8, null),
+    (1 ,8, "RDS", 20, 7, null),
+    (1 ,8, "Tracking", 10, 7, null),
+    (2 ,11, "Code", 70, 6, null),
+    (2 ,11, "RDS", 20, 8, null),
+    (2 ,11, "Tracking", 10, 7, null),
+    (2 ,12, "Code", 70, 7, null),
+    (2 ,12, "RDS", 20, 6, null),
+    (2 ,12, "Tracking", 10, 6, null),
+    (2 ,13, "Code", 70, 5, null),
+    (2 ,13, "RDS", 20, 7, null),
+    (2 ,13, "Tracking", 10, 6, null);
+
+INSERT INTO issue(title, project_id, milestone_id, type_id, status_id, process_id, assignee_id)
+VALUES
+    ("Login" ,1, 1, 6, 4, 1, 6),
+    ("Register" ,1, 1, 6, 4, 1, 6),
+    ("Password Reset" ,1, 1, 6, 4, 1, 7),
+    ("Password Change" ,1, 1, 6, 4, 1, 7),
+    ("User List" ,1, 1, 6, 4, 1, 8),
+    ("Class List" ,1, 2, 6, 4, 1, 6),
+    ("Class Details" ,1, 2, 6, 4, 1, 7),
+    ("Milestone List" ,1, 2, 6, 4, 1, 8),
+    ("Milestone Details" ,1, 2, 6, 4, 1, 9),
+    ("Assignment List" ,1, 3, 6, 4, 1, 10),
+    ("Assignment Submit" ,1, 3, 6, 4, 1, 6),
+    ("Assignment Evaluation" ,1, 3, 6, 4, 1, 6),
+    ("LOC Evaluation" ,1, 3, 6, 4, 1, 7),
+    ("Issue" ,1, 3, 6, 4, 1, 7),
+    ("Issue Details" ,1, 3, 6, 4, 1, 8),
+    ("Login" ,2, 1, 6, 4, 1, 11),
+    ("Register" ,2, 1, 6, 4, 1, 11),
+    ("Password Reset" ,2, 1, 6, 4, 1, 12),
+    ("Password Change" ,2, 1, 6, 4, 1, 13),
+    ("User List" ,2, 1, 6, 4, 1, 13),
+    ("Class List" ,2, 2, 6, 4, 1, 11),
+    ("Class Details" ,2, 2, 6, 4, 1, 12),
+    ("Milestone List" ,2, 2, 6, 4, 1, 13),
+    ("Milestone Details" ,2, 2, 6, 4, 1, 14),
+    ("Assignment List" ,2, 3, 6, 4, 1, 11),
+    ("Assignment Submit" ,2, 3, 6, 4, 1, 14),
+    ("Assignment Evaluation" ,2, 3, 6, 4, 1, 13),
+    ("LOC Evaluation" ,2, 3, 6, 4, 1, 12),
+    ("Issue" ,2, 3, 6, 4, 1, 11),
+    ("Issue Details" ,2, 3, 6, 4, 1, 12);
+
+INSERT INTO submit_issue(issue_id, submit_id, is_final, quality_id, complexity_id, function_loc, is_rejected)
+VALUES
+    (1 ,1, 1, 5, 2, 90, 0),
+    (2 ,1, 1, 5, 2, 90, 0),
+    (3 ,1, 1, 5, 3, 45, 0),
+    (4 ,1, 1, 5, 3, 45, 0),
+    (5 ,1, 1, 5, 3, 45, 0),
+    (6 ,1, 1, 5, 3, 45, 0),
+    (7 ,1, 1, 5, 3, 45, 0),
+    (8 ,1, 1, 5, 3, 45, 0),
+    (9 ,1, 1, 5, 3, 45, 0),
+    (16 ,1, 1, 5, 3, 45, 0),
+    (17 ,1, 1, 5, 3, 45, 0),
+    (18 ,1, 1, 5, 3, 45, 0),
+    (19 ,1, 1, 5, 3, 45, 0),
+    (20 ,1, 1, 5, 3, 45, 0),
+    (21 ,1, 1, 5, 3, 45, 0);
+INSERT INTO issue_update(issue_id, description)
+VALUES
+    (1 ,"Basic login "),
+    (1 ,"Check user blocked"),
+    (1 ,"Check user verified"),
+    (1 ,"Remember with cookie"),
+    (1 ,"Login with gg"),
+    (1 ,"Hash password");

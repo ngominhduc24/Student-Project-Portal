@@ -344,9 +344,11 @@
     window.addEventListener('DOMContentLoaded', event => {
 
     const datatablesSimple = document.getElementById('datatablesSimple');
-    if (datatablesSimple) {
-        new simpleDatatables.DataTable(datatablesSimple);
-    }
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple, {
+                paging: false // Tắt phân trang
+            });
+        }
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
