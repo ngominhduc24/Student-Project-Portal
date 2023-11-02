@@ -739,11 +739,11 @@ VALUES
     (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
     (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
 
-INSERT INTO issue_setting(project_id,setting_group,setting_title,description, status)
+INSERT INTO issue_setting(project_id, setting_group, setting_title, description, status)
 VALUES
     (1 ,"Process", "Design Database","Trong giai đoan thiet ke database",1),
-    (1 ,"Status", "Removed","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
-    (1 ,"Security", "Các công việc liên quan đến bảo mật cho trang web",0);
+    (1 ,"Status", "Removed", "Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
+    (1 ,"Security", "Removed", "Các công việc liên quan đến bảo mật cho trang web",0);
 
 INSERT INTO criteria(name, weight, assignment_id)
 VALUES
