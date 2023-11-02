@@ -11,27 +11,34 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "assignment")
-public class Assignment {
+@Table(name = "submission")
+public class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "status")
-    private boolean status = true;
-
-    @Column(name = "is_subject_assignment")
-    private boolean isSubjectAssignment;
+    @ManyToOne
+    @JoinColumn(name = "milestone_id")
+    private Milestone milestone;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @Column(name = "submit_date")
+    private Timestamp submitDate = Timestamp.valueOf(LocalDateTime.now());
+
+    private String note;
+
+    @Column(name = "file_location")
+    private String fileLocation = "1"; // Default value "1"
+
+    private Float evaluation;
+
+    private String comment;
+
+    @Column(name = "status")
+    private Integer status = 1; // Default value 1
 
     @Column(name = "create_by")
     private Integer createBy = 0;

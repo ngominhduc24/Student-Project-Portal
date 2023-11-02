@@ -11,27 +11,37 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "assignment")
-public class Assignment {
+@Table(name = "issue")
+public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "status")
-    private boolean status = true;
-
-    @Column(name = "is_subject_assignment")
-    private boolean isSubjectAssignment;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "milestone_id")
+    private Milestone milestone;
+
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private IssueSetting type;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private IssueSetting status;
+
+    @ManyToOne
+    @JoinColumn(name = "process_id")
+    private IssueSetting process;
+
+    @ManyToOne
+    @JoinColumn(name = "assignee_id")
+    private User assignee;
 
     @Column(name = "create_by")
     private Integer createBy = 0;
@@ -44,4 +54,10 @@ public class Assignment {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+
+    // Getters and setters for the fields
+
+    // Other methods as needed
+
+    // Constructors as needed
 }

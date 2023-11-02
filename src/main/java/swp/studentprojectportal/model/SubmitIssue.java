@@ -11,27 +11,36 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "assignment")
-public class Assignment {
+@Table(name = "submit_issue")
+public class SubmitIssue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "status")
-    private boolean status = true;
-
-    @Column(name = "is_subject_assignment")
-    private boolean isSubjectAssignment;
+    @ManyToOne
+    @JoinColumn(name = "issue_id")
+    private Issue issue;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "submit_id")
+    private Submission submit;
+
+    @Column(name = "is_final")
+    private Boolean isFinal = true;
+
+    @ManyToOne
+    @JoinColumn(name = "quality_id")
+    private SubjectSetting quality;
+
+    @ManyToOne
+    @JoinColumn(name = "complexity_id")
+    private SubjectSetting complexity;
+
+    @Column(name = "function_loc")
+    private Integer functionLoc;
+
+    @Column(name = "is_rejected")
+    private Boolean isRejected;
 
     @Column(name = "create_by")
     private Integer createBy = 0;

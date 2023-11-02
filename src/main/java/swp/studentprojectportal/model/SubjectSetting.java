@@ -1,13 +1,13 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-@Data
+
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -16,6 +16,10 @@ public class SubjectSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
     @Column(name = "type_id")
     private Integer typeId;
@@ -27,7 +31,7 @@ public class SubjectSetting {
     private String settingValue;
 
     @Column(name = "status")
-    private boolean status = true;
+    private Boolean status = true;
 
     @Column(name = "display_order")
     private Integer displayOrder;
@@ -43,12 +47,4 @@ public class SubjectSetting {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
-
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
 }
