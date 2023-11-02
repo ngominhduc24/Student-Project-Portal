@@ -9,10 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import swp.studentprojectportal.model.Subject;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.IssueSetting;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.service.servicesimpl.*;
 import swp.studentprojectportal.utils.Validate;
@@ -33,6 +31,8 @@ public class IssueSettingController {
     GitlabApiService gitlabApiService;
     @Autowired
     UserService userService;
+    @Autowired
+    ProjectService projectService;
 
     @GetMapping("/class/issue-setting")
     public String issueSettingPage(@RequestParam("id") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
@@ -132,7 +132,7 @@ public class IssueSettingController {
     }
 
 
-    @GetMapping("/class/issue-setting/updateStatus")
+    @GetMapping(value={"/class/issue-setting/updateStatus", "/class-manager/project/issue-setting/updateStatus"})
     public String updateSubjectSettingStatus(
             @RequestParam int id,
             @RequestParam boolean status) {
@@ -200,4 +200,103 @@ public class IssueSettingController {
         classService.saveClass(classA);
         return "redirect:/class/issue-setting?id=" + classId;
     }
+
+    @GetMapping("/class-manager/project/issue-setting")
+    public String projectIssueSettingPage(@RequestParam("id") Integer projectId,@RequestParam(defaultValue = "0") Integer pageNo,
+                                   @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                                   @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                                   @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") String settingGroup,
+                                   Model model, HttpSession session) {
+        Project project = projectService.findById(projectId);
+        Page<IssueSetting> issueSettingList= issueSettingService.filterProjectIssueSetting(project.getAclass().getSubject().getId(), project.getAclass().getId(), projectId, search, pageNo, pageSize, sortBy, sortType, settingGroup, status);
+        List<String> settingGroupList = issueSettingService.findAllDistinctProjectSettingGroup(project.getAclass().getSubject().getId(), projectId, project.getAclass().getId());
+        IssueSetting setting = new IssueSetting();
+        setting.setProject(project);
+        setting.setSettingGroup("Not Empty");
+        setting.setSettingTitle("");
+        setting.setDescription("");
+        model.addAttribute("setting",setting);
+
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
+        model.addAttribute("personalToken", user.getPersonalTokenGitlab());
+//        model.addAttribute("groupGitlabId", classA.getGitlabGroupId());
+        model.addAttribute("project", project);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("status", status);
+        model.addAttribute("totalPage", issueSettingList.getTotalPages());
+        model.addAttribute("settingGroup", settingGroup);
+
+        model.addAttribute("issueSettingList", issueSettingList);
+        model.addAttribute("settingGroupList", settingGroupList);
+
+        return "class_manager/project/projectIssueSettingList";
+    }
+
+    @PostMapping("/class-manager/project/issue-setting")
+    public String projectIssueSettingAdd(@RequestParam("id") Integer projectId,@RequestParam(defaultValue = "0") Integer pageNo,
+                                  @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                                  @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                                  @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") String settingGroup,
+                                  @RequestParam String description,
+                                  @RequestParam("newSettingGroup") String newSettingGroup,
+                                  @RequestParam("newSettingTitle") String newSettingTitle,
+                                  Model model, HttpSession session) {
+        Project project = projectService.findById(projectId);
+        Page<IssueSetting> issueSettingList= issueSettingService.filterProjectIssueSetting(project.getAclass().getSubject().getId(), project.getAclass().getId(), projectId, search, pageNo, pageSize, sortBy, sortType, settingGroup, status);
+        List<String> settingGroupList = issueSettingService.findAllDistinctProjectSettingGroup(project.getAclass().getSubject().getId(), projectId, project.getAclass().getId());
+
+        IssueSetting setting = new IssueSetting();
+        setting.setProject(project);
+        setting.setSettingGroup(newSettingGroup);
+        setting.setSettingTitle(newSettingTitle);
+        setting.setDescription(description);
+        if(newSettingGroup.equals("Not Empty") == false) {
+            if (Validate.validNotempty(newSettingGroup) == false) {
+                String errmsg = "Group can't empty. Add failed!";
+                model.addAttribute("errmsg", errmsg);
+            } else {
+                if (issueSettingService.findByClassAndGroupAndTitle(project.getAclass().getId(), newSettingGroup, newSettingTitle) != null) {
+                    String errmsg = "Issue setting existed. Add failed!";
+                    model.addAttribute("errmsg", errmsg);
+                } else {
+                    issueSettingService.saveSubjectSetting(setting);
+                    setting = new IssueSetting();
+                    setting.setProject(project);
+                    setting.setSettingGroup("Not Empty");
+                    setting.setSettingTitle("");
+                    setting.setDescription("");
+                    model.addAttribute("toastMessage", "Add new issue setting successfully");
+                }
+            }
+        }
+
+        model.addAttribute("setting",setting);
+
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
+        model.addAttribute("personalToken", user.getPersonalTokenGitlab());
+        model.addAttribute("project", project);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("status", status);
+        model.addAttribute("totalPage", issueSettingList.getTotalPages());
+        model.addAttribute("settingGroup", settingGroup);
+
+        model.addAttribute("issueSettingList", issueSettingList);
+        model.addAttribute("settingGroupList", settingGroupList);
+
+        return "class_manager/project/projectIssueSettingList";
+    }
+
+
 }

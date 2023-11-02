@@ -19,4 +19,7 @@ public interface IIssueSettingService {
 
     List<String> findAllDistinctSettingGroup(Integer subjectId);
     List<String> findAllDistinctClassSettingGroup(Integer subjectId, Integer classId);
+    List<String> findAllDistinctProjectSettingGroup(Integer subjectId, Integer classId, Integer projectId);
+    Page<IssueSetting> filterProjectIssueSetting(Integer subjectId, Integer classId, Integer projectId, String search, Integer pageNo, Integer pageSize,
+                                               String sortBy, Integer sortType, String settingGroup, Integer status);
 }
