@@ -537,6 +537,12 @@
     function showCreateForm() {
         $('#createClassModal').modal('show');
     }
+    $(document).ready(function () {
+        $('#createClassModal').on('hidden.bs.modal', function () {
+            $('input[name="newClassName"]').val('');
+            $('#error').text('');
+        });
+    });
 </script>
 
 <!-- javascript -->
