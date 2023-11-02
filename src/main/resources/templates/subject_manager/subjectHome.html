@@ -820,13 +820,13 @@
                                         <td th:text="${setting.subject.subjectCode}"></td>
                                         <td th:text="${setting.typeId==1?'Complexity':'Quality'}"></td>
                                         <td th:text="${setting.settingTitle}"></td>
-                                        <td th:text="${setting.settingValue}"></td>
+                                        <td th:text="${setting.typeId==1?setting.settingTitle:setting.settingTitle+'%'}" ></td>
                                         <td th:text="${setting.displayOrder}"></td>
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
                                                        th:checked="${setting.isStatus()}"
-                                                       th:onclick="'updateStatusSetting(' + ${setting.id} + ', this)'">
+                                                       th:attr="setting-id=${setting.id},data-title=${setting.settingTitle}" onchange="showConfirmationDialog(this, 3)">
                                             </div>
                                         </td>
                                         <td>
@@ -938,8 +938,10 @@
         typeId=type;
         if(typeId==1)
             id = checkbox.getAttribute("assignment-id");
-        else
+        else if(typeId==2)
             id = checkbox.getAttribute("update-id");
+        else
+            id = checkbox.getAttribute("setting-id");
         var settingTitle = checkbox.getAttribute('data-title');
         status = checkbox.checked;
         initialStatus = !status;
@@ -957,8 +959,10 @@
         let checkbox;
         if(typeId==1)
             checkbox = document.querySelector('input[assignment-id="' + id + '"]');
-        else
+        else if (typeId==2)
             checkbox = document.querySelector('input[update-id="' + id + '"]');
+        else
+            checkbox = document.querySelector('input[setting-id="' + id + '"]');
         checkbox.checked = initialStatus;
         confirmClicked = false;
         $('#confirmationModal').modal('hide');
@@ -972,8 +976,15 @@
                     $('#confirmationModal').modal('hide');
                     $('#confirmationModalRed').modal('hide');
                 });
-        else
+        else if (typeId==2)
             fetch(`issue-setting/updateStatus?id=${id}&status=${status}`)
+                .then(() => {
+                    confirmClicked = true;
+                    $('#confirmationModal').modal('hide');
+                    $('#confirmationModalRed').modal('hide');
+                });
+        else
+            fetch(`/subject-manager/subject/subject-setting/updateStatus?id=${id}&status=${status}`)
                 .then(() => {
                     confirmClicked = true;
                     $('#confirmationModal').modal('hide');

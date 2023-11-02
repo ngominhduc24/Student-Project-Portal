@@ -249,4 +249,6 @@ public class ClassHomeController {
         model.addAttribute("semesterList", semesterList);
         return "subject_manager/class/classAdd";
     }
+
+
 }
