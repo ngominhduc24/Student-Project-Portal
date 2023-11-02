@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"/>
+  <title th:text="${@title}"></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+  <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+  <meta name="author" content="Shreethemes"/>
+  <meta name="email" content="support@shreethemes.in"/>
+  <meta name="website" content="../../../index.html"/>
+  <meta name="Version" content="v1.2.0"/>
+  <!-- favicon -->
+  <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+  <!-- Bootstrap -->
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- simplebar -->
+  <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+  <!-- Select2 -->
+  <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+  <!-- Date picker -->
+  <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+  <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- Icons -->
+  <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+  <!-- Css -->
+  <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+  <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <!-- Datatables -->
+  <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+  <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+  <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{/js/notify.js}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+  <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<style>
+  #myTable_filter {
+    float: left;
+  }
+
+  .topnav {
+    overflow: hidden;
+    border-bottom: 1px solid darkgray;
+    margin-top: 70px;
+    background: white;
+  }
+
+  .topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 26px;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    margin:0
+  }
+
+  .topnav a:hover {
+    border-bottom: 3px solid blue;
+  }
+
+  .topnav a.active {
+    border-bottom: 3px solid blue;
+  }
+</style>
+<body>
+<h6 id="loader">System are loading ... Please wait!</h6>
+
+<div id="root">
+<div class="page-wrapper doctris-theme toggled">
+  <!-- sidebar-wrapper  -->
+  <div th:replace="~{dashboardSidebar}"></div>
+
+  <!-- Start Page Content -->
+  <main class="page-content bg-light">
+    <div th:replace="~{dashboardHeader}"></div>
+    <div class="topnav" style="margin-top: 44px">
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>
+      <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>
+      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>
+      <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
+    </div>
+    <form class="card-body rounded-3" action="./updateStudent" method="post" id="form">
+    <div class="container-fluid">
+      <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+        <div class="row px-4">
+          <div class="col-xl-5 col-md-6">
+            <h3 style="margin-top: -14px;margin-bottom: 20px;" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
+            <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
+              <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+              <li class="breadcrumb-item active">Student List</li>
+              <div th:if="${numberStudentAdded != null}">
+                <li class="breadcrumb-item" name="studentAdded" style="color: green" th:text="'Add success ' + ${numberStudentAdded} + ' student to class'"></li>
+              </div>
+              <li class="breadcrumb-item active"></li>
+            </ol>
+          </div><!--end col-->
+          <input th:value="${classId}" name="classId" hidden="hidden">
+          <div class="col-xl-4 col-md-6"></div>
+
+          <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
+            <button type="button" class="btn" id="syncFap" style="width: 226px; margin-bottom: 8px; background-color: #ffb134 " >
+              <a style="color: white;" th:href="'/class-manager/class/syncStudent?classId=' + ${classId}"><i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1 1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0 0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
+               Synchronize with FAP</a></button>
+            <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
+              <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+              Add student to class</button>
+
+            </div><!--end col-->
+        </div><!--end row-->
+
+        <!--modal add student-->
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalAddStudent" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="card-body">
+                <div class="d-flex mb-2">
+                  <input class="form-control form-control-sm ml-3 h-75 w-100" style="padding: 10px" type="text" name="search-input" placeholder="Search"
+                         aria-label="Search"><i style="margin-top: 12px;margin-left: -25px;" class="fas fa-search" aria-hidden="true"></i>
+                </div>
+                <table id="add-student" class="table table-striped" style="text-align: left">
+                  <thead>
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <input type="text" id="countPage" th:value="${totalPage}" hidden="">
+                <nav aria-label="Page navigation example" style="margin-top: 20px;">
+                  <ul class="pagination justify-content-end">
+                    <li class="page-item disabled" >
+                      <a class="page-link" style="user-select: none;">Previous</a>
+                    </li>
+                    <li class="page-item active" ><a class="page-link" style="user-select: none;">1</a></li>
+                    <li class="page-item"><a class="page-link" style="user-select: none;">2</a></li>
+                    <li class="page-item" >
+                      <a class="page-link" style="user-select: none;">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--modal student detail-->
+        <div class="modal fade" id="detailStudentModal" style="padding-top:70px" tabindex="-1"
+             aria-labelledby="createClassModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="detailStudentModalLabel">Student's Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row justify-content-center">
+                  <div class="col-md-12 row" style="margin-top: 12px;">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Fullname</label>
+                          <input name="fullName" type="text" class="form-control"
+                                 th:value="${user.fullName}" disabled>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Email</label>
+                          <input name="email" type="text" class="form-control"
+                                 th:value="${user.email}" disabled>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Phone</label>
+                          <input name="phone" type="text" class="form-control"
+                                 th:value="${user.phone}" disabled>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Role</label>
+                          <select name="roleId" class="form-select">
+                            <option th:each="role : ${roleList}"
+                                    th:value="${role.id}"
+                                    th:text="${role.settingTitle}"
+                                    th:selected="${role.id == user.setting.id}" disabled></option>
+                          </select>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3" th:if="${user.id != session.user.id}">
+                          <label class="form-label">Status</label>
+                          <select name="status" class="form-select">
+                            <option value="true" th:selected="${true == user.status}">Active</option>
+                            <option value="false" th:selected="${false == user.status}">Inactive
+                            </option>
+                          </select>
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3" th:if="${user.id != session.user.id}">
+                          <label class="form-label">Note</label>
+                          <input name="note" type="text" class="form-control"
+                                 th:value="${user.note}">
+                        </div>
+                      </div><!--end col-->
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <h6 style="color: green" th:text="${msg}">a</h6>
+                          <h6 style="color: indianred" th:text="${errorMsg}">a</h6>
+                        </div>
+                      </div><!--end col-->
+
+                    </div><!--end row-->
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update User</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid px-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div style="top: 18px;right: 20px;position: absolute;z-index:2">
+                <a th:href="'/api/v1/export/student/'+${classId}" target="_blank" type="button" class="btn" style="width: 113px; background-color: #24915f; color: white">
+                  <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                  Export</a>
+                <button type="button" class="btn" style="width: 113px; background-color: #1c563b; color: white" onclick="showModal(event)">
+                  <i><svg width="16" height="16" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>
+                  Import</button>
+              </div>
+              <table id="myTable" class="display">
+                <thead>
+                <tr>
+                  <th>Fullname</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Project team</th>
+                  <th>Status</th>
+                  <th>View Details</th>
+                  <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${studentList}">
+                  <td th:text="${user.getStudent().getFullName()}"></td>
+                  <td th:text="${user.getStudent().getEmail() == null ? 'None' : user.getStudent().getEmail()}"></td>
+                  <td th:text="${user.getStudent().getPhone() == null ? 'None' : user.getStudent().getPhone()}"></td>
+                  <td th:text="${user.getProject() == null ? 'No group yet' : user.getProject().getGroupName()}"></td>
+                  <td>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" th:checked="${user.getStudent().status}" th:attr="update-id=${user.getStudent().getId()},data-title=${user.getStudent().fullName}" onchange="showConfirmationDialog(this)">
+                    </div>
+                  </td>
+                  <td>
+                    <a th:href="@{'/class/student?classId=' + ${classId} + '&id=' + ${user.getStudent().getId()} + '&showModal=true'}">View Details</a>
+                    <script>
+                      // Check if the URL contains the "showModal" parameter
+                      const urlParams = new URLSearchParams(window.location.search);
+                      if (urlParams.has('showModal')) {
+                        // The "showModal" parameter is present, open the modal
+                        $(document).ready(function() {
+                          $('#detailStudentModal').modal('show');
+                        });
+                      }
+                    </script>
+                  </td>
+                  <td>
+                    <div style="">
+                      <a class="btn btn-danger w-75 p-0" th:attr="update-id=${user.getStudent().getId()},data-title=${user.getStudent().fullName}" th:onclick="'showDialogRemove(this, ' + ${classId} + ', ' + ${user.getStudent().getId()} + ')'" style="color: white; ">-</a>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+
+              <!-- Modal Dialog status -->
+              <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box">
+                        <i  class="material-icons">&#xE876;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn confirmButton" >Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal Dialog status -->
+              <div id="r-confirmationModal" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box">
+                        <i  class="material-icons">&#xE876;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" class="close r-closeButton"  data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn r-cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn r-confirmButton" >Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <div class="icon-box" style="border-color: #f15e5e">
+                        <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                      </div>
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!--end container-->
+    </form>
+    <div th:replace="~{footer}"></div>
+
+    <!-- End -->
+  </main>
+  <!--End page-content" -->
+
+  <!--            modal lmao-->
+  <style>
+    .modalBack{
+      position: fixed;
+      top: 0;
+      right: 0;
+
+      width: 100%;
+      height: 100vh;
+
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modalCustom{
+      width: 30%;
+      aspect-ratio: 16/9;
+
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  </style>
+
+  <div class="modalBack">
+    <div class="modalCustom">
+      <h4>Upload Excel file: </h4>
+      <br>
+      <br>
+      <form action="./importStudent" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx, .xls" class="form-control" required>
+        <input type="hidden" name="classId" th:value="${classId}">
+        <br>
+        <div style="display: flex; justify-content: space-around">
+          <input type="submit" value="Upload" class="btn btn-primary">
+          <input type="button" value="Cancel" class="btn btn-secondary" onclick="hideModal()">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let importModal = document.querySelector('.modalBack');
+
+    function hideModal() {
+      importModal.style.display = 'none';
+    }
+
+    function showModal(event) {
+      event.preventDefault();
+      importModal.style.display = 'flex';
+    }
+  </script>
+  <!--            modal lmao-->
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+  <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{/js/notify.js}"></script>
+
+
+  <!--  copnfirm remove student -->
+  <script>
+    let studentID ;
+    let idRemove;
+    function showDialogRemove(thisRemove, classId, studentId) {
+      idRemove = classId;
+      studentID = studentId;
+      var studentFullname = thisRemove.getAttribute('data-title');
+      $('#r-confirmationModal .modal-body p').html(`Are you sure you want to <strong>remove</strong>  ${studentFullname}?`);
+      $('#r-confirmationModal').modal('show');
+    }
+
+    $(".r-confirmButton").click(function () {
+      window.location.href= `/class-manager/class/removeStudentFromClass?studentId=${studentID}&classId=${idRemove}`;
+    });
+
+    $(".r-cancelButton, .r-closeButton").click(function () {
+      $('.confirmationModal').modal('hide');
+    });
+  </script>
+
+<!-- confirmation status -->
+  <script>
+    let id;
+    let status;
+    let initialStatus;
+    let confirmClicked = false;
+
+    function showConfirmationDialog(checkbox) {
+      id = checkbox.getAttribute("update-id");
+      var title = checkbox.getAttribute('data-title');
+      status = checkbox.checked;
+      initialStatus = !status;
+      confirmClicked = false;
+      if (status) {
+        $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${title}?`);
+        $('#confirmationModal').modal('show');
+      } else {
+        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${title}?`);
+        $('#confirmationModalRed').modal('show');
+      }
+    }
+    function handleCancelClick() {
+      let checkbox = document.querySelector('input[update-id="' + id + '"]');
+      checkbox.checked = initialStatus;
+      confirmClicked = false;
+      $('#confirmationModal').modal('hide');
+      $('#confirmationModalRed').modal('hide');
+    }
+    $(".confirmButton").click(function () {
+      fetch(`/class/student/updateStatus?id=${id}&status=${status}`)
+              .then(() => {
+                confirmClicked = true;
+                $('#confirmationModal').modal('hide');
+                $('#confirmationModalRed').modal('hide');
+              });
+    });
+    $(".cancelButton, .closeButton").click(function () {
+      handleCancelClick();
+    });
+    $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
+      if (event.target === this && !confirmClicked) {
+        handleCancelClick();
+      }
+    });
+  </script>
+
+
+
+
+<script type="text/javascript">
+  const syncFapElement = document.getElementById('syncFap');
+  const preloaderElement = document.getElementById('loader');
+  const rootElement = document.getElementById('root');
+  let s = 'a'
+  syncFapElement.addEventListener('click', function () {
+    rootElement.style.display = 'none';
+    // preloaderElement.style.display = 'block';
+  });
+
+
+  $(document).ready(function () {
+    $('#myTable').DataTable({
+      "dom": 'frtipl',
+      "bInfo" : false
+    });
+  });
+</script>
+
+<!-- User Note -->
+<script>
+  // Get dialog element
+  function openDialog(element) {
+    // Find the closest dialog element to the clicked anchor tag
+    const dialog = element.closest('tr').querySelector('.userNote');
+
+    // Check if a dialog is found, and then show it
+    if (dialog) {
+      dialog.showModal();
+    }
+
+    // Close dialog when clicking outside of it
+    dialog.addEventListener("click", e => {
+      let dialogDimensions = dialog.getBoundingClientRect()
+      if(e.clientX < dialogDimensions.left ||
+              e.clientX > dialogDimensions.right ||
+              e.clientY < dialogDimensions.top ||
+              e.clientY > dialogDimensions.bottom) {
+        dialog.close();
+      }
+    })
+  }
+
+  // Close dialog when pressing cancel button
+  function closeDialog(element) {
+    const dialog = element.closest('dialog');
+    dialog.close();
+  }
+
+</script>
+
+  <script th:inline="javascript">
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+      const toastMessage = [[${toastMessage}]];
+      if (toastMessage != null) {
+        notify('success', 'Successfully!', toastMessage );
+      }
+    });
+  </script>
+
+<!-- fetch dataq for add new student to class -->
+<script>
+  let apiUrl = `/api/v1/student?pageNo=1&pageSize=10&search=`; // Your API endpoint
+  let classId = '';
+  try {
+    classId = window.location.href.split("classId=")[1];
+  } catch (e) {
+    console.log(e);
+  }
+
+  // Get references to the pagination elements
+  const pagination = document.querySelector('.pagination');
+  const pageItems = pagination.querySelectorAll('.page-item');
+  const pageLinks = pagination.querySelectorAll('.page-link');
+
+  // Find the maximum page number from the "countPage" div
+  let countPage = parseInt(document.getElementById('countPage').value);
+  let currentPage = 1;
+
+  if(countPage == 1) {
+    pageItems[0].classList.add('disabled');
+    pageItems[3].classList.add('disabled');
+    pageItems[2].remove();
+  }
+
+  // Handle "Previous" button click
+  pageLinks[0].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[0].classList.contains('disabled') === false) {
+      currentPage --;
+      pageItems[3].classList.remove('disabled');
+      if (pageLinks[2].textContent == 2) {
+        // Special case: When currentPage is 2, just change the active state
+        pageItems[1].classList.add('active');
+        pageItems[2].classList.remove('active');
+        pageItems[0].classList.add('disabled');
+      } else {
+        // Otherwise, decrement currentPage
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) - 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) - 1;
+      }
+      populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  // Handle "Next" button click
+  pageLinks[3].addEventListener('click', function (event) {
+    event.preventDefault();
+    if (pageItems[3].classList.contains('disabled') === false) {
+      currentPage++;
+      pageItems[0].classList.remove('disabled');
+      if(pageLinks[1].textContent == countPage - 1) {
+        // Special case: When currentPage is the second last page, just change the active state
+        pageItems[1].classList.remove('active');
+        pageItems[2].classList.add('active');
+        pageItems[3].classList.add('disabled');
+      } else {
+        pageLinks[1].textContent = parseInt(pageLinks[1].textContent) + 1;
+        pageLinks[2].textContent = parseInt(pageLinks[2].textContent) + 1;
+      }
+      populateUserTable(currentPage);
+    }
+    return currentPage;
+  });
+
+  // Function to fetch user data and populate the table
+  const  populateUserTable =  (pageNo) => {
+    pageNo = pageNo - 1;
+    // replace the pageNo in the apiUrl
+    apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
+    fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+              // Clear the table first
+              const tableBody = document.querySelector('table#add-student tbody');
+
+              // Clear existing rows
+              tableBody.innerHTML = '';
+              data.forEach(user => {
+                const newRow = document.createElement('tr');
+                fetch('/api/v1/student/checkClass?studentId=' + user.id + '&classId=' + classId)
+                        .then(response => response.json())
+                        .then(inClass => {
+                          if (inClass) {
+                            newRow.innerHTML = `
+                              <td>${user.fullName}</td>
+                              <td>${user.email || 'None'}</td>
+                              <td>${user.phone || 'None'}</td>
+                              <td style="text-align: center;"><svg style="margin-right: 17px" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m5 14 4 3 9-11" stroke="#32CD32" stroke-width="2"/></svg></td>
+                            `;
+                          } else {
+                            newRow.innerHTML = `
+                              <td>${user.fullName}</td>
+                              <td>${user.email || 'None'}</td>
+                              <td>${user.phone || 'None'}</td>
+                              <td>
+                                <button name="addstudent" type="button" class="btn btn-success w-75 p-0" onclick="addStudent(${user.id})">+</button>
+                              </td>
+                            `;
+                          }
+                        })
+                        .catch(error => {
+                          console.error('Error fetching user data:', error);
+                        });
+
+                tableBody.appendChild(newRow);
+              });
+            })
+            .catch(error => {
+              console.error('Error fetching user data:', error);
+              // Handle errors here (e.g., display an error message)
+            });
+  }
+
+  // Hande search input change
+  const searchInput = document.querySelector('input[name="search-input"]');
+  searchInput.addEventListener('input', function (event) {
+    const searchValue = event.target.value;
+    // where start with search=
+    let temp = apiUrl.split('&');
+    apiUrl = '';
+    temp.forEach((item) => {
+      if(item.includes('search=')) {
+        apiUrl += `search=${searchValue}`;
+      } else {
+        apiUrl += item;
+      }
+      apiUrl += '&';
+    });
+    apiUrl = apiUrl.slice(0, -1);
+    // replace the search value in the apiUrl
+    populateUserTable(1);
+  });
+
+  // handel add student to class
+
+  let modalAddStudent = document.getElementById('modalAddStudent');
+  function startInterval() {
+    return window.setInterval(function () {
+      let reload = document.querySelector('li[name="reloadPage"]');
+      if (reload.textContent == 'Student have been added to class, reload page to see changes!' && modalAddStudent.classList.contains('show') == false) {
+        location.reload();
+      }
+      if (reload.textContent != 'Student have been added to class, reload page to see changes!') {
+        clearInterval(intervalId);
+      }
+    }, 3000);
+  }
+  var intervalId = startInterval();
+  function addStudent(studentId) {
+        fetch('/api/v1/student/addStudentToClass?studentId=' + studentId + '&classId=' + classId)
+                .then(response => response.json())
+                .then(data => {
+                if (data) {
+                  notify('success', 'Successfully!', 'Add student to class success');
+                  populateUserTable(currentPage);
+                    let reload = document.querySelector('li[name="reloadPage"]');
+                    reload.textContent = 'Student have been added to class, reload page to see changes!';
+                  intervalId = startInterval();
+                } else {
+                  console.log('Add student to class failed');
+                }
+                })
+                .catch(error => {
+                console.error('Error fetching user data:', error);
+                });
+    }
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    populateUserTable(1);
+  });
+
+</script>
+
+<script th:inline="javascript">
+  function sortData(sortBy, sortType) {
+    document.getElementById('sortBy').value = sortBy;
+    document.getElementById('sortType').value = sortType;
+    document.getElementById('form').submit();
+  }
+  document.addEventListener("DOMContentLoaded", function(event) {
+    const smessage = [[${smessage}]];
+    if (smessage != null) {
+      notify('success', 'Successfully!', smessage);
+    }
+    const emessage = [[${emessage}]];
+
+    if (emessage != null) {
+      notify('error', 'Error!', emessage);
+    }
+  });
+</script>
+
+
+</html>
