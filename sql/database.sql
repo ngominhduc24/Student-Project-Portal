@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
     `avatar_url` TEXT NULL,
     `role_id` INT NULL,
     `token` varchar(255) DEFAULT NULL,
+    `personal_token_gitlab` varchar(255) DEFAULT NULL,
     `active` BIT(1) NULL DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -134,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
     `subject_id` INT NULL,
     `semester_id` INT NULL,
     `teacher_id` INT NULL,
+    `gitlab_group_id` VARCHAR(245) NULL,
     `status` INT NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -168,9 +170,10 @@ CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
     `description` VARCHAR(245) NULL,
     `class_id` INT NULL,
     `project_id` INT NULL,
-    `start_date` DATETIME NULL,
-    `end_date` DATETIME NULL,
+    `start_date` DATE NULL,
+    `end_date` DATE NULL,
     `status` BIT(1) NULL,
+    `is_subject_assignment` BIT(1) DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -345,16 +348,16 @@ VALUES
     ("oraallen@gmail.com","0298393485","c4ca4238a0b923820dcc509a6f75849b","Ora Allen","/images/user_icon.png",1,1);
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("longpvhe170788@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","a","/images/user_icon.png",1,1),
-    ("tunghe171091@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","b","/images/user_icon.png",1,1),
-    ("ngoche172779@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","c","/images/user_icon.png",1,1),
-    ("ducnmhe13177@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","d","/images/user_icon.png",1,1),
-    ("haihe176453@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","e","/images/user_icon.png",1,1),
-    ("nhathe176486@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","f","/images/user_icon.png",1,1),
-    ("dunghe176572@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","g","/images/user_icon.png",1,1),
-    ("duche176711@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h","/images/user_icon.png",1,1),
-    ("namhe176727@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","i","/images/user_icon.png",1,1),
-    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","k","/images/user_icon.png",1,1);
+    ("longpvhe170788@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","viet long","/images/user_icon.png",1,1),
+    ("tunghe171091@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","tung","/images/user_icon.png",1,1),
+    ("ngoche172779@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","ngoc","/images/user_icon.png",1,1),
+    ("ducnmhe13177@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","minh duc","/images/user_icon.png",1,1),
+    ("haihe176453@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","hai","/images/user_icon.png",1,1),
+    ("nhathe176486@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","nhat","/images/user_icon.png",1,1),
+    ("dunghe176572@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","dung","/images/user_icon.png",1,1),
+    ("duche176711@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","duc","/images/user_icon.png",1,1),
+    ("namhe176727@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","nam","/images/user_icon.png",1,1),
+    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h ngoc","/images/user_icon.png",1,1);
 
 -- subject
 INSERT INTO `subject` (`subject_manager_id`, `subject_name`, `subject_code`, `description`)
@@ -372,7 +375,7 @@ VALUES
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
     ("SE1720","Study software engineering",1,7,3,3),
-    ("SE1722","Study software engineering",1,7,3,3),
+    ("SE1741","Study software engineering",1,7,3,3),
     ("SE1704","Study software engineering",1,7,3,3),
     ("SE1707","Study software engineering",1,7,3,3),
     ("SE1712","Study software engineering",2,7,6,3),
@@ -383,53 +386,53 @@ VALUES
     ("SE1741","Study software engineering",1,8,6,2),
     ("SE1731","Study software engineering",1,8,6,2),
     ("SE1736","Study software engineering",1,8,6,1),
-    ("SE1740","Study software engineering",2,8,3,1),
-    ("SE1745","Study software engineering",2,8,3,2),
+    ("SE1740","Study software engineering",2,8,3,2),
+    ("SE1745","Study software engineering",2,8,3,1),
     ("SE1734","Study software engineering",2,8,3,2),
     ("SE1736","Study software engineering",2,8,3,0);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (1, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
-    (1, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
+    (13, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (13, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
+    (13, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
+    (13, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
+    (13, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
+    (13, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
-    (6, 1, 1),    -- Student 6 in Project 1
-    (7, 1, 1),    -- Student 7 in Project 1
-    (8, 1, 1),    -- Student 8 in Project 1
-    (9, 1, 1),    -- Student 9 in Project 1
-    (10, 1, 1),   -- Student 10 in Project 1
-    (11, 1, 2),   -- Student 11 in Project 2
-    (12, 1, 2),   -- Student 12 in Project 2
-    (13, 1, 2),   -- Student 13 in Project 2
-    (14, 1, 2),   -- Student 14 in Project 2
-    (15, 1, 2),   -- Student 15 in Project 2
-    (16, 1, 3),   -- Student 16 in Project 3
-    (17, 1, 3),   -- Student 17 in Project 3
-    (18, 1, 3),   -- Student 18 in Project 3
-    (19, 1, 3),   -- Student 19 in Project 3
-    (20, 1, 3),   -- Student 20 in Project 3
-    (21, 1, 4),   -- Student 21 in Project 4
-    (22, 1, 4),   -- Student 22 in Project 4
-    (23, 1, 4),   -- Student 23 in Project 4
-    (24, 1, 4),   -- Student 24 in Project 4
-    (25, 1, 4),   -- Student 25 in Project 4
-    (26, 1, 5),   -- Student 26 in Project 5
-    (27, 1, 5),   -- Student 27 in Project 5
-    (28, 1, 5),   -- Student 28 in Project 5
-    (29, 1, 5),   -- Student 29 in Project 5
-    (30, 1, 5),   -- Student 30 in Project 5
-    (4, 1, 6),   -- Student 4 in Project 6
-    (32, 1, 6),   -- Student 32 in Project 6
-    (33, 1, 6),   -- Student 33 in Project 6
-    (34, 1, 6),   -- Student 34 in Project 6
-    (35, 1, 6),   -- Student 35 in Project 6
-    (31, 1, null);
+    (6, 13, 1),    -- Student 6 in Project 1
+    (7, 13, 1),    -- Student 7 in Project 1
+    (8, 13, 1),    -- Student 8 in Project 1
+    (9, 13, 1),    -- Student 9 in Project 1
+    (10, 13, 1),   -- Student 10 in Project 1
+    (11, 13, 2),   -- Student 11 in Project 2
+    (12, 13, 2),   -- Student 12 in Project 2
+    (13, 13, 2),   -- Student 13 in Project 2
+    (14, 13, 2),   -- Student 14 in Project 2
+    (15, 13, 2),   -- Student 15 in Project 2
+    (16, 13, 3),   -- Student 16 in Project 3
+    (17, 13, 3),   -- Student 17 in Project 3
+    (18, 13, 3),   -- Student 18 in Project 3
+    (19, 13, 3),   -- Student 19 in Project 3
+    (20, 13, 3),   -- Student 20 in Project 3
+    (21, 13, 4),   -- Student 21 in Project 4
+    (22, 13, 4),   -- Student 22 in Project 4
+    (23, 13, 4),   -- Student 23 in Project 4
+    (24, 13, 4),   -- Student 24 in Project 4
+    (25, 13, 4),   -- Student 25 in Project 4
+    (26, 13, 5),   -- Student 26 in Project 5
+    (27, 13, 5),   -- Student 27 in Project 5
+    (28, 13, 5),   -- Student 28 in Project 5
+    (29, 13, 5),   -- Student 29 in Project 5
+    (30, 13, 5),   -- Student 30 in Project 5
+    (4, 13, 6),   -- Student 4 in Project 6
+    (32, 13, 6),   -- Student 32 in Project 6
+    (33, 13, 6),   -- Student 33 in Project 6
+    (34, 13, 6),   -- Student 34 in Project 6
+    (35, 13, 6),   -- Student 35 in Project 6
+    (31, 13, null);
 
 INSERT INTO assignment (`subject_id`,`title`,`description`,`is_subject_assignment`)
 VALUES
@@ -465,7 +468,7 @@ VALUES
     ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
     ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
     ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
-    
+
 -- issue_setting
 INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
 VALUES
@@ -509,4 +512,3 @@ VALUES
     (3 ,"Status", "Rejected","Công việc đã được xem xét và không được phê duyệt nên không thể tiếp tục",1),
     (3 ,"Type","Enhancement", "Các công việc liên quan đến việc thực hiện cải tiến cho các tính năng hoặc thành phần hiện có.",1),
     (3 ,"Type", "Improvement","Đây là những vấn đề liên quan đến việc cải thiện quy trình, quy trình làm việc hoặc hiệu quả trong một dự án hoặc tổ chức.",1);
-    

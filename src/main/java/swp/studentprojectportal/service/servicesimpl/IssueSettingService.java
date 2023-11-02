@@ -68,4 +68,12 @@ public class IssueSettingService implements IIssueSettingService {
     public IssueSetting findByClassAndGroupAndTitle(int classId,String settingGroup, String settingTitle){
         return issueSettingRepository.findIssueSettingByAclassAndSettingGroupAndSettingTitle(classId, settingGroup, settingTitle).orElse(null);
     }
+
+    public List<IssueSetting> findAllSettingServiceByClassId(int classId){
+        return issueSettingRepository.findAllByAclass_Id(classId);
+    }
+
+    public List<IssueSetting> findAllSettingServiceByProjectId(int projectId){
+        return issueSettingRepository.findAllByProjectId(projectId);
+    }
 }

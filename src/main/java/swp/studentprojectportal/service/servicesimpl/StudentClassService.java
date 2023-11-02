@@ -149,6 +149,11 @@ public class StudentClassService implements IStudentClassService {
         }
     }
 
+    @Override
+    public StudentClass findByStudentIdAndAclassId(Integer userId, Integer classId) {
+        return studentClassRepository.findByStudentIdAndAclassId(userId, classId);
+    }
+
     public boolean removeStudentFromClass(int classId, int studentId) {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
         if (studentClass == null) return false;

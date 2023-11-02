@@ -35,7 +35,12 @@ public class ClassService implements IClassService {
 
     @Override
     public List<Class> findAllByClassManagerId(int classManagerId) {
-        return classRepository.findAllByUserId(classManagerId);
+        List<Class> data = new ArrayList<>();
+
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 0)); //pending
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 2)); //started
+
+        return data;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package swp.studentprojectportal.utils;
+package swp.studentprojectportal.utils.instance;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;

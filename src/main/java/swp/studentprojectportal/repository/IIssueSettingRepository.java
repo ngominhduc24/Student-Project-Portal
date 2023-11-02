@@ -13,6 +13,9 @@ import java.util.Optional;
 
 @Repository
 public interface IIssueSettingRepository extends JpaRepository<IssueSetting, Integer> {
+    List<IssueSetting> findAllByAclass_Id(Integer classId);
+    List<IssueSetting> findAllByProjectId(Integer classId);
+
     @Query(value="SELECT ss.* FROM issue_setting ss join subject s on ss.subject_id = s.id \n" +
             "            WHERE s.subject_manager_id=?1", nativeQuery = true)
     List<IssueSetting> findSubjectSettingByManager(int subjectManagerId);
@@ -53,4 +56,5 @@ public interface IIssueSettingRepository extends JpaRepository<IssueSetting, Int
     @Query(value="SELECT * FROM issue_setting\n" +
             "WHERE class_id = :classId AND setting_group = :group AND setting_title = :title",nativeQuery = true)
     Optional<IssueSetting> findIssueSettingByAclassAndSettingGroupAndSettingTitle(@Param("classId") int classId, @Param("group") String settingGroup, @Param("title") String settingTitle);
+
 }

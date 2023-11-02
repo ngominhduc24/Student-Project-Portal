@@ -9,11 +9,14 @@ import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Milestone;
 
+import java.util.List;
 
 
 @Repository
 public interface IMilestoneRepository extends JpaRepository<Milestone, Integer> {
     Milestone findMilestoneById(Integer id);
+    List<Milestone> findMilestoneByTitle(String title);
+    List<Milestone> findMilestoneByAclass_Id(Integer classId);
     @Query(value="SELECT * FROM  milestone\n" +
             "WHERE class_id= :classId " +
             "and (LOWER(title) LIKE LOWER(CONCAT('%', :search, '%'))  " +

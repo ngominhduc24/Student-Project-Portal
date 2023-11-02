@@ -29,6 +29,8 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
@@ -124,15 +126,41 @@
             margin-bottom: 36px;
         }
         .custom-toast {
-            background-color: #20ee68 !important;
+            background-color: #16ce7e !important;
             color: #FFFFFF;
             position: absolute;
-            top: 88px;
+            top: 124px;
             right: 0;
             z-index: 2;
         }
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
+        }
+        .topnav {
+            overflow: hidden;
+            border-bottom: 1px solid darkgray;
+            margin-top: 70px;
+            background: white;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 10px 26px;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            margin:0
+        }
+
+        .topnav a:hover {
+            border-bottom: 3px solid blue;
+        }
+
+        .topnav a.active {
+            border-bottom: 3px solid blue;
         }
     </style>
 
@@ -160,19 +188,20 @@
             <a onclick="showDiv('settings')" class="settings" style="cursor: pointer"><p style="margin:0; user-select: none;">Settings</p></a>
         </div>
 
+        <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="toast-header">
+                <strong class="me-auto">Success</strong>
+                <small>Now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <span id="toastMessage" th:text="${toastMessage}"></span>
+            </div>
+        </div>
+
 <!--        General-->
         <div id="general" class="container-fluid">
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
-                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                    <div class="toast-header">
-                        <strong class="me-auto">Success</strong>
-                        <small>Now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        <span id="toastMessage" th:text="${toastMessage}"></span>
-                    </div>
-                </div>
                 <div class="row px-4">
                     <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
                     <ol class="breadcrumb mb-2 ms-2">
@@ -216,11 +245,10 @@
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description<span style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">(You only can change this field)</span></label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${subject.description}"></textarea>
+                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${subject.description}"></textarea>
                                         </div>
                                         <div class="mt-2">
                                             <h6 style="color: indianred;" th:text="${errmsg}"></h6>
-                                            <h6 style="color: green;" th:text="${msg}"></h6>
                                         </div>
 
                                     </div><!--end col-->
@@ -233,6 +261,49 @@
                             </form>
                         </div>
                     </div><!--end col-->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Dialog -->
+        <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+                        <div class="icon-box">
+                            <i  class="material-icons">&#xE876;</i>
+                        </div>
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn confirmButton" >Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+                        <div class="icon-box" style="border-color: #f15e5e">
+                            <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                        </div>
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -253,12 +324,13 @@
 
                     <div class="col-xl-4 col-md-6"></div>
 
-                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a th:href="@{/subject-manager/addSubjectAssignment?subjectId={id}(id=${subject.id})}" href="" class="btn btn-primary"
-                           style="margin-left: 24px">Add New</a>
-                    </div><!--end col-->
+                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-end mb-2">
+                        <button type="button" class="btn btn-primary" onclick="assignmentDetail(-1)">
+                            Add New
+                        </button>
+                    </div>
+                </div>
 
-                </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-body rounded-3" >
@@ -331,59 +403,15 @@
 
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${assignment.status}" th:attr="assignment-id=${assignment.id}" onchange="showConfirmationDialog1(this)">
+                                            <input class="form-check-input" type="checkbox" th:checked="${assignment.status}" th:attr="assignment-id=${assignment.id},data-title=${assignment.title}" onchange="showConfirmationDialog(this, 1)">
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/subjectAssignmentDetail?id={id}(id=${assignment.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></td>
+                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
-
-                            <div class="modal fade" id="confirmationModal1" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmationModalLabel1">Confirmation</h5>
-                                            <button type="button" class="btn-close" id="closeButton1" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to perform this action?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="cancelButton1" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary" id="confirmButton1">Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <script>
-                                let id;
-                                let status;
-                                let initialStatus;
-                                function showConfirmationDialog1(checkbox) {
-                                    id = checkbox.getAttribute("assignment-id");
-                                    status = checkbox.checked;
-                                    initialStatus = !status;
-                                    $('#confirmationModal1').modal('show');
-                                }
-                                $("#confirmButton1").click(function () {
-                                    fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`);
-                                    $('#confirmationModal1').modal('hide');
-                                });
-                                $("#cancelButton1").click(function () {
-                                    let checkbox = document.querySelector('input[assignment-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                                $("#closeButton1").click(function () {
-                                    let checkbox = document.querySelector('input[assignment-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                            </script>
 
                             <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
@@ -409,6 +437,63 @@
                                 </ul>
                             </nav>
                         </div>
+                    </div>
+                </div>
+
+                <!--Modal Assignment-->
+                <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                            <input type="hidden" name="newSubjectId" th:value="${subject.id}">
+                            <input type="hidden" name="assignmentId" id="assignmentId" th:value="${assignment.id}">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 th:if="${assignment.id==-1}" class="modal-title">New Assignment</h5>
+                                    <h5 th:if="${assignment.id!=-1}" class="modal-title">Update Assignment</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+
+                                            <!--create-->
+                                            <div th:if="${assignment.id==-1}" class="mb-3 col-md-12">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" name="newTitle" class="form-control" th:value="${newTitle}">
+                                            </div>
+                                            <div th:if="${assignment.id==-1}" class="mb-3 col-md-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
+                                            </div>
+
+                                            <!--update-->
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-8">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" name="newTitle" class="form-control"  th:value="${assignment.title}">
+                                            </div>
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-4" style="padding-left: 10%;">
+                                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                                <div class="form-check form-switch" style="font-size: 24px">
+                                                    <input style="margin-left: -62px" class="form-check-input" value="on" name="newStatus" type="checkbox" th:checked="${assignment.isStatus()}" >
+                                                </div>
+                                            </div>
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
+                                            </div>
+
+                                            <!--message-->
+                                            <div class="mt-2">
+                                                <h6 style="color: indianred;" id="error" th:text="${errorMessage}"></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit"  class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+
                     </div>
                 </div>
 
@@ -542,7 +627,7 @@
                                     <td th:text="${setting.description}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id}" onchange="showConfirmationDialog(this)">
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingTitle}" onchange="showConfirmationDialog(this, 2)">
                                         </div>
                                     </td>
                                     <td>
@@ -551,47 +636,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <!-- Modal Dialog -->
-                            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                                            <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to perform this action?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="cancelButton" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <script>
-                                function showConfirmationDialog(checkbox) {
-                                    id = checkbox.getAttribute("update-id");
-                                    status = checkbox.checked;
-                                    initialStatus = !status;
-                                    $('#confirmationModal').modal('show');
-                                }
-                                $("#confirmButton").click(function () {
-                                    fetch(`issue-setting/updateStatus?id=${id}&status=${status}`);
-                                    $('#confirmationModal').modal('hide');
-                                });
-                                $("#cancelButton").click(function () {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                                $("#closeButton").click(function () {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                            </script>
 
                             <input type="hidden" name="pageNoS" id="pageNoInputSetting" th:value="${pageNoS}">
                             <nav th:if="${totalPageS!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
@@ -674,6 +718,68 @@
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
+<script>
+    let id;
+    let status;
+    let initialStatus;
+    let confirmClicked = false;
+    let typeId;
+
+    function showConfirmationDialog(checkbox, type) {
+        typeId=type;
+        if(typeId==1)
+            id = checkbox.getAttribute("assignment-id");
+        else
+            id = checkbox.getAttribute("update-id");
+        var settingTitle = checkbox.getAttribute('data-title');
+        status = checkbox.checked;
+        initialStatus = !status;
+        confirmClicked = false;
+
+        if (status) {
+            $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${settingTitle}?`);
+            $('#confirmationModal').modal('show');
+        } else {
+            $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${settingTitle}?`);
+            $('#confirmationModalRed').modal('show');
+        }
+    }
+    function handleCancelClick() {
+        let checkbox;
+        if(typeId==1)
+            checkbox = document.querySelector('input[assignment-id="' + id + '"]');
+        else
+            checkbox = document.querySelector('input[update-id="' + id + '"]');
+        checkbox.checked = initialStatus;
+        confirmClicked = false;
+        $('#confirmationModal').modal('hide');
+        $('#confirmationModalRed').modal('hide');
+    }
+    $(".confirmButton").click(function () {
+        if(typeId==1)
+            fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`)
+                .then(() => {
+                    confirmClicked = true;
+                    $('#confirmationModal').modal('hide');
+                    $('#confirmationModalRed').modal('hide');
+                });
+        else
+            fetch(`issue-setting/updateStatus?id=${id}&status=${status}`)
+                .then(() => {
+                    confirmClicked = true;
+                    $('#confirmationModal').modal('hide');
+                    $('#confirmationModalRed').modal('hide');
+                });
+    });
+    $(".cancelButton, .closeButton").click(function () {
+        handleCancelClick();
+    });
+    $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
+        if (event.target === this && !confirmClicked) {
+            handleCancelClick();
+        }
+    });
+</script>
 
 <script>
     function showDiv(divId) {
@@ -699,17 +805,46 @@
             showDiv(lastDisplayedDiv);
         }
     });
-</script>
 
-<script>
     var toastMessage = document.getElementById('toastMessage').textContent.trim();
     if (toastMessage) {
         var customToast = new bootstrap.Toast(document.getElementById('customToast'));
         customToast.show();
         setTimeout(function () {
             customToast.hide();
+            document.getElementById('toastMessage').textContent = "";
         }, 5000);
     }
+    var errmsg = document.getElementById('error').textContent.trim();
+    $(document).ready(function() {
+        if (errmsg.trim() !== '') {
+            $('#createClassModal').modal('show');
+        }
+    });
+    var assignmentId = document.getElementById('assignmentId').value.trim();
+    $(document).ready(function() {
+        if (assignmentId.trim() > 0) {
+            $('#createClassModal').modal('show');
+        }
+    });
+
+    function showCreateForm() {
+        $('#createClassModal').modal('show');
+    }
+    function assignmentDetail(assignmentId) {
+        document.getElementById('assignmentId').value = assignmentId;
+        document.getElementById('form').submit();
+    }
+    $(document).ready(function () {
+        $('#createClassModal').on('hidden.bs.modal', function () {
+            if ($('#assignmentId').val() !== '-1') {
+                $('input[name="newTitle"]').val('');
+                $('textarea[name="description"]').val('');
+                $('#assignmentId').val('-1');
+            }
+        });
+    });
+
 </script>
 
 </body>

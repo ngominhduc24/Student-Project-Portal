@@ -214,7 +214,7 @@ if(document.getElementsByClassName("dd-menu")) {
     }
 }
 
-//ACtive Sidebar
+//Active Sidebar
 (function () {
     var current = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);;
     if (current === "") return;
