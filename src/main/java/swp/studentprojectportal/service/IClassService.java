@@ -11,6 +11,10 @@ public interface IClassService {
 
     int classCount();
 
+    int classCountBySemFall23();
+
+    int classCountBySemSummer23();
+
     Class getClass(int classId);
 
     List<Class> findAllByClassManagerId(int classManagerId);

@@ -31,6 +31,13 @@ public class ClassService implements IClassService {
     public int classCount() {
         return classRepository.findAll().size();
     }
+
+    @Override
+    public int classCountBySemFall23() {return classRepository.findClassBySemesterFall23().size();}
+
+    @Override
+    public int classCountBySemSummer23() {return classRepository.findClassBySemesterSummer23().size();}
+
     @Override
     public Class getClass(int classId) {
         return classRepository.findClassById(classId);

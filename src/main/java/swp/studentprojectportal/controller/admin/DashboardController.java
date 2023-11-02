@@ -31,6 +31,9 @@ public class DashboardController {
         model.addAttribute("classCount", classService.classCount());
         model.addAttribute("projectCount", projectService.projectCount());
         model.addAttribute("milestoneCount", milestoneService.milestoneCount());
+
+        model.addAttribute("classCountByFall23", classService.classCountBySemFall23());
+        model.addAttribute("classCountBySummer23", classService.classCountBySemSummer23());
         return "admin/home";
     }
 
