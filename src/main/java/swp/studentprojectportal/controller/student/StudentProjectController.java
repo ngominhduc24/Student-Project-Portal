@@ -9,14 +9,16 @@ import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 
 @Controller
-public class ProjectController1 {
+public class StudentProjectController {
     @Autowired
     StudentClassService studentClassService;
     @GetMapping("student/project/list")
     public String projectList(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        System.out.println(studentClassService.findAllByStudentId(user.getId()));
-        model.addAttribute("projectList", studentClassService.findAllByStudentId(user.getId()));
+        studentClassService.findAllByStudentId(user.getId()).forEach(studentClass -> {
+                    System.out.println(studentClass.getProject());
+        });
+        model.addAttribute("studentClassList", studentClassService.findAllByStudentId(user.getId()));
         return "student/projectList";
     }
 }
