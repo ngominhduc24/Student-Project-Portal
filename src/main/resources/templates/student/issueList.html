@@ -83,6 +83,10 @@
   .topnav a.active {
     border-bottom: 3px solid blue;
   }
+
+  .dataTables_filter {
+    display: flex;
+  }
 </style>
 
 <body>
@@ -116,7 +120,8 @@
               <li class="breadcrumb-item active"></li>
             </ol>
           </div><!--end col-->
-          <div class="col-xl-4 col-md-6"></div>
+          <div class="col-xl-4 col-md-6">
+          </div>
 
           <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
             <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -124,14 +129,27 @@
               Add student to class</button>
             </div><!--end col-->
         </div><!--end row-->
+      <script>
 
+      </script>
         <div class="container-fluid px-4">
           <div class="card mb-4">
             <div class="card-body">
+              <!-- Filter -->
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="mb-3">
+                    Filter: <input type="text" class="form-control form-control-sm" id="myInput" onkeyup="myFunction()" placeholder="Filter ">
+                  </div>
+                </div>
+              </div>
+
+              <!-- End Filter -->
               <table id="myTable" class="display">
                 <thead>
                 <tr>
                   <th>Requirement</th>
+                  <th>Type</th>
                   <th>Process</th>
                   <th>Status</th>
                   <th>Group</th>
@@ -142,21 +160,23 @@
                 <tbody>
                 <tr th:each="issue : ${issueList}">
                   <td th:text="${issue.title}"></td>
-                  <td>
-                    <div>
-                      <p th:text="${issue.getType().settingTitle}"
-                         style="background-color: #009966; color: white; border-color: #009966; border-style: solid; border-top-left-radius: 17px; border-bottom-left-radius: 17px; border-width: 1px; padding: 4px 6px; font-size: 12px; width: auto; display: inline-block; ">
-                      </p>
-                      <p th:text="${issue.getProcess().settingTitle}"
-                         style="background-color: white; color: black; border-color: #009966; border-style: solid; border-top-right-radius: 17px; border-bottom-right-radius: 17px; border-width: 1px; padding: 4px 6px; font-size: 12px; width: auto; display: inline-block; margin-left: -5px; ">
-                      </p>
-                    </div>
-                  </td>
+<!--                  <td>-->
+<!--                    <div style="margin-top: 10px">-->
+<!--                      <p th:text="${issue.getType().settingTitle}"-->
+<!--                         style="background-color: #009966; color: white; border-color: #009966; border-style: solid; border-top-left-radius: 17px; border-bottom-left-radius: 17px; border-width: 1px; padding: 4px 6px; font-size: 12px; width: auto; display: inline-block; ">-->
+<!--                      </p>-->
+<!--                      <p th:text="${issue.getProcess().settingTitle}"-->
+<!--                         style="background-color: white; color: black; border-color: #009966; border-style: solid; border-top-right-radius: 17px; border-bottom-right-radius: 17px; border-width: 1px; padding: 4px 6px; font-size: 12px; width: auto; display: inline-block; margin-left: -5px; ">-->
+<!--                      </p>-->
+<!--                    </div>-->
+<!--                  </td>-->
+                  <td th:text="${issue.getType().settingTitle}"></td>
+                  <td th:text="${issue.getProcess().settingTitle}"></td>
                   <td th:text="${issue.getStatus().settingTitle}"></td>
                   <td th:text="${issue.getProject().groupName}"></td>
                   <td th:text="${issue.getMilestone().title }"></td>
-                  <td>
-                    <a style=" user-select: none; color: blue;" th:onclick="'viewMemberGroup(' + ')'" data-toggle="modal" data-target="#viewMemberModal">View Member</a>
+                  <td th:text="${issue.getAssignee().getDisplayName() }" >
+<!--                    <a style=" user-select: none; color: blue;" th:onclick="'viewMemberGroup(' + ')'" data-toggle="modal" data-target="#viewMemberModal">View Member</a>-->
                   </td>
                 </tr>
                 </tbody>
@@ -259,13 +279,19 @@
 <script th:src="@{/js/notify.js}"></script>
 
 <script type="text/javascript">
-
   $(document).ready(function () {
     $('#myTable').DataTable({
       "dom": 'frtipl',
       "bInfo" : false
     });
   });
+</script>
+
+<script>
+  const milestone = document.querySelector('[name="milestone"]');
+    const group = document.querySelector('[name="group"]');
+    const assignee = document.querySelector('[name="assignee"]');
+    const table = document.querySelector('#myTable tbody');
 </script>
 
 <script th:inline="javascript">
