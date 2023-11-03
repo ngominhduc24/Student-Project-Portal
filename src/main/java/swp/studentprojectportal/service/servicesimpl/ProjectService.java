@@ -11,6 +11,7 @@ import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IProjectService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,6 +125,22 @@ public class ProjectService implements IProjectService {
     @Override
     public Project checkDuplicateGroupNameInClass(int classId, String groupName) {
         return projectRepository.findByAclass_IdAndGroupName(classId, groupName);
+    }
+
+    @Override
+    public List<Project> findAllByProjectMentorId(Integer projectMentorId) {
+        return projectRepository.findAllByProjectMentorId(projectMentorId);
+    }
+
+    @Override
+    public List<Project> findAllByStudentUserId(Integer studentId) {
+        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(studentId);
+        List<Project> projectList = new ArrayList<>();
+
+        for (StudentClass studentClass : studentClassList)
+            projectList.add(studentClass.getProject());
+
+        return projectList;
     }
 
 }

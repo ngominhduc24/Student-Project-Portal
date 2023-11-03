@@ -345,11 +345,15 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submission` (
     `evaluation` float ,
     `comment` VARCHAR(255) ,
     `status` INT NULL default 1,
-    `create_by` INT NULL DEFAULT 0,
+    `create_by` INT NULL DEFAULT 1,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
     `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
+    FOREIGN KEY (`create_by`)
+    REFERENCES `swp391`.`user` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`milestone_id`)
     REFERENCES `swp391`.`milestone` (`id`)
                                                         ON DELETE NO ACTION
@@ -523,7 +527,7 @@ VALUES
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",4,1),
+    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",1,1),
     ("galvinbass4030@gmail.com","0037963572","c4ca4238a0b923820dcc509a6f75849b","Galvin Bass","/images/user_icon.png",1,1),
     ("brianmassey@gmail.com","0436285872","c4ca4238a0b923820dcc509a6f75849b","Brian Massey","/images/user_icon.png",1,1),
     ("judahcardenas5324@gmail.com","0681589922","c4ca4238a0b923820dcc509a6f75849b","Judah Cardenas","/images/user_icon.png",1,1),
@@ -595,12 +599,12 @@ VALUES
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (13, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
+    (13, 3, 6, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 11, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 16, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 21, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 26, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 4, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
@@ -764,14 +768,14 @@ VALUES
     ("RDS" ,20, 3),
     ("Tracking" ,10, 3);
 
-INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status)
+INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status, create_by)
 VALUES
-    (1, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 1),
-    (1, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 2),
-    (2, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1),
-    (2, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 2),
-    (3, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1),
-    (3, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 2);
+    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
+    (20, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 1, 6),
+    (21, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1, 6),
+    (22, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 1, 6),
+    (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1, 6),
+    (24, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 1, 6);
 
 INSERT INTO evaluation(submit_id, student_id, criteria, weight, grade, comment)
 VALUES
@@ -825,7 +829,14 @@ VALUES
     ("Assignment Evaluation" ,2, 3, 6, 4, 1, 4),
     ("LOC Evaluation" ,2, 3, 6, 4, 1, 12),
     ("Issue" ,2, 3, 6, 4, 1, 11),
-    ("Issue Details" ,2, 3, 6, 4, 1, 12);
+    ("Issue Details" ,2, 3, 6, 4, 1, 12),
+
+    ("Login" ,1, 25, 6, 4, 1, 6),
+    ("Register" ,1, 25, 6, 4, 1, 7),
+    ("Password Reset" ,1, 25, 6, 4, 1, 8),
+    ("Password Change" ,1, 25, 6, 4, 1, 9),
+    ("User List" ,1, 25, 6, 4, 1, 10),
+    ("Class List" ,1, 25, 6, 4, 1, 9);
 
 INSERT INTO submit_issue(issue_id, submit_id, is_final, quality_id, complexity_id, function_loc, is_rejected)
 VALUES

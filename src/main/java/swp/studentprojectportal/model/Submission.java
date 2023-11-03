@@ -40,8 +40,9 @@ public class Submission {
     @Column(name = "status")
     private Integer status = 1; // Default value 1
 
-    @Column(name = "create_by")
-    private Integer createBy = 0;
+    @ManyToOne()
+    @JoinColumn(name = "create_by")
+    private User createBy = project!=null ? project.getTeamLeader() : null;
 
     @Column(name = "create_at")
     private Timestamp createAt = Timestamp.valueOf(LocalDateTime.now());
@@ -51,4 +52,14 @@ public class Submission {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+
+    public String getPathFile() {
+        return "/submission/" + milestone.getId() + "/" + id + "/" + fileLocation;
+    }
+
+    public String getStatusDetails() {
+        if(status == 1) return "Submitted";
+
+        return "Evaluated";
+    }
 }

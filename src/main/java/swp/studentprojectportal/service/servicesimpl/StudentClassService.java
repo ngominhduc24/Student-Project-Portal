@@ -153,15 +153,15 @@ public class StudentClassService implements IStudentClassService {
         return studentClassRepository.findByStudentIdAndAclassId(userId, classId);
     }
 
+    @Override
+    public List<StudentClass> findAllByStudentId(Integer studentId) {
+        return studentClassRepository.findAllByStudentId(studentId);
+    }
+
     public boolean removeStudentFromClass(int classId, int studentId) {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
         if (studentClass == null) return false;
         studentClassRepository.delete(studentClass);
         return true;
-    }
-
-    @Override
-    public List<StudentClass> findAllByStudentId(int studentId) {
-        return studentClassRepository.findAllByStudentId(studentId);
     }
 }
