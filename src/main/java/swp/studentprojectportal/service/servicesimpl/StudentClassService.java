@@ -164,9 +164,4 @@ public class StudentClassService implements IStudentClassService {
         studentClassRepository.delete(studentClass);
         return true;
     }
-
-    @Override
-    public List<StudentClass> findAllByStudentId(int studentId) {
-        return studentClassRepository.findAllByStudentId(studentId);
-    }
 }

@@ -51,4 +51,8 @@ public class Submission {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+
+    public String getPathFile() {
+        return "/submission/" + milestone.getId() + "-" + project.getId() + "/" + fileLocation;
+    }
 }

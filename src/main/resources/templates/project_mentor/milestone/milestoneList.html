@@ -82,14 +82,25 @@
                         <tbody>
                             <tr th:each="milestone : ${milestoneList}">
                                 <td th:text="${milestone.id}"></td>
-                                <td th:text="${milestone.id}"></td>
+
+                                <td th:text="${milestone.project.teamLeader.fullName}"></td>
+
                                 <td th:text="${milestone.project.aclass.className}"></td>
                                 <td th:text="${milestone.project.groupName}"></td>
                                 <td th:text="${milestone.title}"></td>
-                                <td th:text="${milestone.id}"></td>
-                                <td th:text="${milestone.id}"></td>
+
+                                <td th:if="${milestone.submissionList.size()>0}">
+                                    <a th:href="${milestone.submissionList.get(0).pathFile}" target="_blank"
+                                       th:text="${milestone.submissionList.get(0).fileLocation}"></a>
+                                </td>
+                                <td th:unless="${milestone.submissionList.size()>0}"></td>
+
+                                <td th:if="${milestone.submissionList.size()>0}"
+                                    th:text="${milestone.submissionList.get(0).createAt}"></td>
+                                <td th:unless="${milestone.submissionList.size()>0}"></td>
+
                                 <td th:text="${milestone.status}"></td>
-                                <td th:text="${milestone.id}"></td>
+                                <td th:text="${milestoneList.size()}"></td>
                             </tr>
                         </tbody>
                     </table>

@@ -25,20 +25,9 @@ public class MilestoneProjectMentorController {
 
         User user = (User) session.getAttribute("user");
 
-        List<Milestone> milestoneList = new ArrayList<>();
-
-        //student
-        if(user.getSetting().getId() == 1) {
-            model.addAttribute("milestoneList", milestoneService.findAllByStudentId(user.getId()));
-        }
-
-        //project mentor
-        if(user.getSetting().getId() == 4) {
-            milestoneList.addAll(milestoneService.findAllByProjectMentor(user.getId()));
-        }
 
         model.addAttribute("isMentor", user.getSetting().getId() == 4);
-        model.addAttribute("milestoneList", milestoneList);
+        model.addAttribute("milestoneList", milestoneService.findAllByProjectMentor(user.getId()));
         return "project_mentor/milestone/milestoneList";
 
     }
