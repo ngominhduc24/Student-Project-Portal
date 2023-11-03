@@ -1,4 +1,4 @@
-package swp.studentprojectportal.controller.project_mentor;
+package swp.studentprojectportal.controller.student;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,18 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.MilestoneService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
-@RequestMapping("/project-mentor")
-public class MilestoneProjectMentorController {
+@RequestMapping("/student")
+public class MilestoneStudentController {
     @Autowired
     MilestoneService milestoneService;
     @Autowired
@@ -29,19 +25,18 @@ public class MilestoneProjectMentorController {
 
         User user = (User) session.getAttribute("user");
 
-        model.addAttribute("projectList", projectService.findAllByProjectMentorId(user.getId()));
+        model.addAttribute("projectList", projectService.findAllByStudentUserId(user.getId()));
         model.addAttribute("isMentor", user.getSetting().getId() == 4);
-        model.addAttribute("milestoneList", milestoneService.findAllByProjectMentor(user.getId()));
+        model.addAttribute("milestoneList", milestoneService.findAllByStudentId(user.getId()));
         return "project_mentor/milestone/milestoneList";
-
     }
+
     @GetMapping("/milestone/list/{projectId}")
     public String milestoneList(HttpSession session, Model model, @PathVariable Integer projectId) {
 
         User user = (User) session.getAttribute("user");
 
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("projectList", projectService.findAllByProjectMentorId(user.getId()));
+        model.addAttribute("projectList", projectService.findAllByStudentUserId(user.getId()));
         model.addAttribute("isMentor", user.getSetting().getId() == 4);
         model.addAttribute("milestoneList", milestoneService.findAllByProjectId(projectId));
         return "project_mentor/milestone/milestoneList";

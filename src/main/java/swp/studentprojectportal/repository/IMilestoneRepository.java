@@ -42,5 +42,7 @@ public interface IMilestoneRepository extends JpaRepository<Milestone, Integer> 
 
     List<Milestone> findAllByAclass_Id(Integer classId);
 
-    List<Milestone> findAllByProjectInAndProject(List<Project> projectList, Project project);
+    List<Milestone> findAllByProjectIn(List<Project> projectList);
+
+    List<Milestone> findAllByProjectId(Integer projectId);
 }

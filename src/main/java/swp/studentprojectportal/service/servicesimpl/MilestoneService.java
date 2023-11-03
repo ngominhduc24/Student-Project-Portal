@@ -27,6 +27,8 @@ public class MilestoneService implements IMilestoneService {
     ISubjectRepository subjectRepository;
     @Autowired
     IStudentClassRepository studentClassRepository;
+    @Autowired
+    ProjectService projectService;
 
     @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
@@ -123,26 +125,17 @@ public class MilestoneService implements IMilestoneService {
 
     @Override
     public List<Milestone> findAllByProjectMentor(Integer projectMentorId) {
+        return milestoneRepository.findAllByProjectProjectMentorId(projectMentorId);
+    }
 
-        List<Milestone> milestoneList = new ArrayList<>();
-
-
-
-        // find all project milestone
-        milestoneList.addAll(milestoneRepository.findAllByProjectProjectMentorId(projectMentorId));
-
-        return milestoneList;
+    @Override
+    public List<Milestone> findAllByProjectId(Integer projectId) {
+        return milestoneRepository.findAllByProjectId(projectId);
     }
 
     @Override
     public List<Milestone> findAllByStudentId(Integer studentId) {
-        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(studentId);
-        List<Project> projectList = new ArrayList<>();
-
-        for (StudentClass studentClass : studentClassList)
-            projectList.add(studentClass.getProject());
-
-        return milestoneRepository.findAllByProjectInAndProject(projectList, null);
+        return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
     }
 
 }

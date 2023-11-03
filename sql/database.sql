@@ -527,7 +527,7 @@ VALUES
 -- user
 INSERT INTO `user` (`email`,`phone`,`password`,`full_name`,`avatar_url`,`role_id`, `active`)
 VALUES
-    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",4,1),
+    ("julianlester@gmail.com","0027829656","c4ca4238a0b923820dcc509a6f75849b","Julian Lester","/images/user_icon.png",1,1),
     ("galvinbass4030@gmail.com","0037963572","c4ca4238a0b923820dcc509a6f75849b","Galvin Bass","/images/user_icon.png",1,1),
     ("brianmassey@gmail.com","0436285872","c4ca4238a0b923820dcc509a6f75849b","Brian Massey","/images/user_icon.png",1,1),
     ("judahcardenas5324@gmail.com","0681589922","c4ca4238a0b923820dcc509a6f75849b","Judah Cardenas","/images/user_icon.png",1,1),
@@ -768,14 +768,14 @@ VALUES
     ("RDS" ,20, 3),
     ("Tracking" ,10, 3);
 
-INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status)
+INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status, create_by)
 VALUES
-    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 1),
-    (20, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 2),
-    (21, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1),
-    (22, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 2),
-    (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1),
-    (24, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 2);
+    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
+    (20, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 2, 6),
+    (21, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 2, 6),
+    (22, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 2, 6),
+    (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 2, 6),
+    (24, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 2, 6);
 
 INSERT INTO evaluation(submit_id, student_id, criteria, weight, grade, comment)
 VALUES

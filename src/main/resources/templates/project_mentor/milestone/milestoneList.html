@@ -63,45 +63,67 @@
 
                 <div class="row">
 
+                    <div class="col-3">
+                        <select class="form-select" onchange="changeProject(this.value)">
+                            <option value="" selected>All</option>
+                            <option th:each="project : ${projectList}"
+                                    th:value="${project.id}"
+                                    th:text="${project.groupName} + ' - ' + ${project.aclass.className}"
+                                    th:selected="${project.id == projectId}"></option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
                     <table id="example" class="table table-striped table-bordered">
 
                         <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Submitter</th>
-                                <th>Class</th>
-                                <th>Group</th>
-                                <th>Assignment</th>
-                                <th>Submit File</th>
-                                <th>Submit At</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
+                        <tr>
+                            <th>Id</th>
+                            <th>Submitter</th>
+                            <th>Class</th>
+                            <th>Group</th>
+                            <th>Assignment</th>
+                            <th>Submit File</th>
+                            <th>Submit At</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
                         </thead>
 
                         <tbody>
-                            <tr th:each="milestone : ${milestoneList}">
-                                <td th:text="${milestone.id}"></td>
+                        <tr th:each="milestone : ${milestoneList}">
+                            <td th:text="${milestone.id}"></td>
 
-                                <td th:text="${milestone.project.teamLeader.fullName}"></td>
+                            <td th:if="${milestone.submissionList.size()>0}"
+                                th:text="${milestone.submissionList.get(0).createBy.fullName}"></td>
+                            <td th:unless="${milestone.submissionList.size()>0}"></td>
 
-                                <td th:text="${milestone.project.aclass.className}"></td>
-                                <td th:text="${milestone.project.groupName}"></td>
-                                <td th:text="${milestone.title}"></td>
+                            <td th:text="${milestone.project.aclass.className}"></td>
+                            <td th:text="${milestone.project.groupName}"></td>
+                            <td th:text="${milestone.title}"></td>
 
-                                <td th:if="${milestone.submissionList.size()>0}">
-                                    <a th:href="${milestone.submissionList.get(0).pathFile}" target="_blank"
-                                       th:text="${milestone.submissionList.get(0).fileLocation}"></a>
-                                </td>
-                                <td th:unless="${milestone.submissionList.size()>0}"></td>
+                            <td th:if="${milestone.submissionList.size()>0}">
+                                <a th:href="${milestone.submissionList.get(0).pathFile}" target="_blank"
+                                   th:text="${milestone.submissionList.get(0).fileLocation}"></a>
+                            </td>
+                            <td th:unless="${milestone.submissionList.size()>0}"></td>
 
-                                <td th:if="${milestone.submissionList.size()>0}"
-                                    th:text="${milestone.submissionList.get(0).createAt}"></td>
-                                <td th:unless="${milestone.submissionList.size()>0}"></td>
+                            <td th:if="${milestone.submissionList.size()>0}"
+                                th:text="${milestone.submissionList.get(0).createAt}"></td>
+                            <td th:unless="${milestone.submissionList.size()>0}"></td>
 
-                                <td th:text="${milestone.status}"></td>
-                                <td th:text="${milestoneList.size()}"></td>
-                            </tr>
+                            <td th:if="${milestone.submissionList.size()>0}"
+                                th:text="${milestone.submissionList.get(0).statusDetails}"></td>
+                            <td th:unless="${milestone.submissionList.size()>0}">Pending</td>
+
+                            <td>
+                                <a th:if="${!isMentor && milestone.submissionList.size()==0}"
+                                    th:href="'../submit/' + ${milestone.id}">Submit</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
@@ -112,6 +134,12 @@
         </div>
     </main>
 </div>
+
+<script>
+    function changeProject(projectId) {
+        window.location.href = `./${projectId}`;
+    }
+</script>
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
