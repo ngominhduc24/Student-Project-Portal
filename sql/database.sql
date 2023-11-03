@@ -299,6 +299,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`criteria` (
                                                    `name` VARCHAR(45) NULL,
     `weight` INT NULL,
     `assignment_id` INT NULL,
+    `status` BIT(1) NULL DEFAULT 1,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`assignment_id`)
     REFERENCES `swp391`.`assignment` (`id`)
@@ -555,7 +556,10 @@ VALUES
     ("dunghe176572@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","dung","/images/user_icon.png",1,1),
     ("duche176711@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","duc","/images/user_icon.png",1,1),
     ("namhe176727@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","nam","/images/user_icon.png",1,1),
-    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h ngoc","/images/user_icon.png",1,1);
+    ("ngoche176778@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","h ngoc","/images/user_icon.png",1,1),
+    ("teacher1@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","Teacher 1","/images/user_icon.png",4,1),
+    ("teacher2@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","Teacher 2","/images/user_icon.png",4,1),
+    ("teacher3@fpt.edu.vn",NULL,"c4ca4238a0b923820dcc509a6f75849b","Teacher 3","/images/user_icon.png",4,1);
 
 -- subject
 INSERT INTO `subject` (`subject_manager_id`, `subject_name`, `subject_code`, `description`)

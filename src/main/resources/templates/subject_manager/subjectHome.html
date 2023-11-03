@@ -310,7 +310,7 @@
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Subject Assignment List</li>
+                            <li class="breadcrumb-item active">Assignment List</li>
                         </ol>
                     </div><!--end col-->
 
@@ -399,7 +399,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>
+                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>&nbsp
+                                        <a th:href="@{/subject-manager/subject/criteria(id=${assignment.id})}">Criteria</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -832,7 +833,8 @@
                                         </td>
                                         <td>
                                             <a th:href="@{/subject-manager/subject-setting/detail?id={id}(id=${setting.id})}"><i
-                                                    class="fas fa-pen-to-square"></i></a></td>
+                                                    class="fas fa-pen-to-square"></i></a>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>

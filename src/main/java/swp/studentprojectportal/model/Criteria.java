@@ -18,6 +18,8 @@ public class Criteria {
 
     private Integer weight;
 
+    private Boolean status;
+
     @ManyToOne
     @JoinColumn(name = "assignment_id")
     private Assignment assignment;
