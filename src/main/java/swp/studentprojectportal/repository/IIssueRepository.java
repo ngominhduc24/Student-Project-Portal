@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface IIssueRepository extends JpaRepository<Issue, Integer> {
-    List<Issue> findAllByAssigneeId(Integer studentId);
+    List<Issue> findAllByProjectId(Integer studentId);
 }
