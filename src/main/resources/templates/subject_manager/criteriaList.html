@@ -168,6 +168,67 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createClassModalLabel">New Class</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Class Name<span class="text-danger">*</span></label>
+                                            <input type="text" name="newClassName" class="form-control" required th:value="${class.className}">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject<span class="text-danger">*</span></label>
+                                            <select name="newSubjectId" class="form-select">
+                                                <option th:each="subject : ${subjectListAdd}"
+                                                        th:value="${subject.id}"
+                                                        th:text="${subject.subjectCode}"
+                                                        th:selected="${subject.id == class.subject.id}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Semester<span class="text-danger">*</span></label>
+                                            <select name="newSemesterId" class="form-select">
+                                                <option th:each="semester : ${semesterListAdd}"
+                                                        th:value="${semester.id}"
+                                                        th:text="${semester.settingTitle}"
+                                                        th:selected="${semester.id == class.semester.id}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Class Manager<span class="text-danger">*</span></label>
+                                            <select name="newClassManagerId" class="form-select">
+                                                <option th:each="teacher : ${teacherListAdd}"
+                                                        th:value="${teacher.id}"
+                                                        th:text="${teacher.fullName}"
+                                                        th:selected="${teacher.id == class.user.id}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${class.description}"></textarea>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h6 style="color: indianred;" id="error" th:text="${errmsg}"></h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit"  class="btn btn-primary">Add Class</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <form class="card-body rounded-3" action="/subject-manager/subject/criteria" id="form">
@@ -323,9 +384,6 @@
                                     }
                                 });
                             </script>
-
-
-
 
                             <script>
                                 var toastMessage = document.getElementById('toastMessage').textContent.trim();

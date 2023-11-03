@@ -822,7 +822,7 @@
                                         <td th:text="${setting.subject.subjectCode}"></td>
                                         <td th:text="${setting.typeId==1?'Complexity':'Quality'}"></td>
                                         <td th:text="${setting.settingTitle}"></td>
-                                        <td th:text="${setting.typeId==1?setting.settingTitle:setting.settingTitle+'%'}" ></td>
+                                        <td th:text="${setting.typeId==1?setting.settingValue:setting.settingValue+'%'}" ></td>
                                         <td th:text="${setting.displayOrder}"></td>
                                         <td>
                                             <div class="form-check form-switch">
