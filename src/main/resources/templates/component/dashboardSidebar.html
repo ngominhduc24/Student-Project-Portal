@@ -100,52 +100,52 @@
     </ul>
 </nav>
 
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-    const classId = [[${classId}]];
-    const chatBody = document.querySelector('.chat-body');
-    const username = '[[${username}]]';
-    const chatInput = document.getElementById('chatInput');
+<!--<script src="http://localhost:3000/socket.io/socket.io.js"></script>-->
+<!--<script>-->
+<!--    const classId = [[${classId}]];-->
+<!--    const chatBody = document.querySelector('.chat-body');-->
+<!--    const username = '[[${username}]]';-->
+<!--    const chatInput = document.getElementById('chatInput');-->
 
-    async function getToken() {
-        let token;
+<!--    async function getToken() {-->
+<!--        let token;-->
 
-        await fetch('/api/v1/encode/getClassId', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    return token = response.text();
-                } else {
-                    throw new Error('Failed to fetch data');
-                }
-            })
-            .then(data => {})
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+<!--        await fetch('/api/v1/encode/getClassId', {-->
+<!--            method: 'GET',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json'-->
+<!--            }-->
+<!--        })-->
+<!--            .then(response => {-->
+<!--                if (response.ok) {-->
+<!--                    return token = response.text();-->
+<!--                } else {-->
+<!--                    throw new Error('Failed to fetch data');-->
+<!--                }-->
+<!--            })-->
+<!--            .then(data => {})-->
+<!--            .catch((error) => {-->
+<!--                console.error('Error:', error);-->
+<!--            });-->
 
-        return token;
-    }
+<!--        return token;-->
+<!--    }-->
 
-    const socket = io('http://localhost:3000');
+<!--    const socket = io('http://localhost:3000');-->
 
-    //async run
-    (async () => {
+<!--    //async run-->
+<!--    (async () => {-->
 
-        //connect
-        socket.emit('listen-class', await getToken());
+<!--        //connect-->
+<!--        socket.emit('listen-class', await getToken());-->
 
-    })();
+<!--    })();-->
 
-    socket.on("receive-message", data => {
-        console.log(data);
-    });
+<!--    socket.on("receive-message", data => {-->
+<!--        console.log(data);-->
+<!--    });-->
 
-</script>
+<!--</script>-->
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

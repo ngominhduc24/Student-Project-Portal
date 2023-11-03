@@ -572,7 +572,7 @@ VALUES
 
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
-    ("SE1720","Study software engineering",1,7,3,3),
+    ("SE1720","Study software engineering",1,8,3,2),
     ("SE1741","Study software engineering",1,7,3,3),
     ("SE1704","Study software engineering",1,7,3,3),
     ("SE1707","Study software engineering",1,7,3,3),
@@ -587,16 +587,16 @@ VALUES
     ("SE1740","Study software engineering",2,8,3,2),
     ("SE1745","Study software engineering",2,8,3,1),
     ("SE1734","Study software engineering",2,8,3,2),
-    ("SE1736","Study software engineering",2,8,3,0);
+    ("SE1736","Study software engineering",2,8,6,0);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (13, 5, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
-    (13, 5, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
+    (1, 3, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (1, 3, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
+    (1, 3, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
+    (1, 3, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
+    (1, 3, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
+    (1, 3, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES

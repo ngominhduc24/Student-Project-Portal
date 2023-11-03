@@ -5,18 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.model.Assignment;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Milestone;
-import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.repository.IAssignmentRepository;
-import swp.studentprojectportal.repository.IClassRepository;
-import swp.studentprojectportal.repository.IMilestoneRepository;
-import swp.studentprojectportal.repository.ISubjectRepository;
+import swp.studentprojectportal.repository.*;
 import swp.studentprojectportal.service.IMilestoneService;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +25,8 @@ public class MilestoneService implements IMilestoneService {
     IClassRepository classRepository;
     @Autowired
     ISubjectRepository subjectRepository;
+    @Autowired
+    IStudentClassRepository studentClassRepository;
 
     @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
@@ -111,6 +109,30 @@ public class MilestoneService implements IMilestoneService {
 
     public Milestone findMilestoneByTitle(String milestoneTitle){
         return milestoneRepository.findMilestoneByTitle(milestoneTitle).get(0);
+    }
+
+    @Override
+    public List<Milestone> findAllByProjectMentor(Integer projectMentorId) {
+
+        List<Milestone> milestoneList = new ArrayList<>();
+
+
+
+        // find all project milestone
+        milestoneList.addAll(milestoneRepository.findAllByProjectProjectMentorId(projectMentorId));
+
+        return milestoneList;
+    }
+
+    @Override
+    public List<Milestone> findAllByStudentId(Integer studentId) {
+        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(studentId);
+        List<Project> projectList = new ArrayList<>();
+
+        for (StudentClass studentClass : studentClassList)
+            projectList.add(studentClass.getProject());
+
+        return milestoneRepository.findAllByProjectInAndProject(projectList, null);
     }
 
 }

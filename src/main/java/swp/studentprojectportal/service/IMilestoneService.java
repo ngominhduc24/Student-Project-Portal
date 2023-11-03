@@ -25,4 +25,8 @@ public interface IMilestoneService {
     boolean addNewMilestone(Integer classId, String title, String description, Date startDate, Date endDate, int status);
 
     Milestone findMilestoneByTitle(String milestoneTitle);
+
+    List<Milestone> findAllByProjectMentor(Integer projectMentorId);
+
+    List<Milestone> findAllByStudentId(Integer sutdentId);
 }
