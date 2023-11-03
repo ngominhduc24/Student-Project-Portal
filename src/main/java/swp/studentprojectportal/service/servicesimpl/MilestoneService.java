@@ -5,18 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.model.Assignment;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Milestone;
-import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.repository.IAssignmentRepository;
-import swp.studentprojectportal.repository.IClassRepository;
-import swp.studentprojectportal.repository.IMilestoneRepository;
-import swp.studentprojectportal.repository.ISubjectRepository;
+import swp.studentprojectportal.repository.*;
 import swp.studentprojectportal.service.IMilestoneService;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +25,10 @@ public class MilestoneService implements IMilestoneService {
     IClassRepository classRepository;
     @Autowired
     ISubjectRepository subjectRepository;
+    @Autowired
+    IStudentClassRepository studentClassRepository;
+    @Autowired
+    ProjectService projectService;
 
     @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy,
@@ -115,6 +115,31 @@ public class MilestoneService implements IMilestoneService {
 
     public Milestone findMilestoneByTitle(String milestoneTitle) {
         return milestoneRepository.findMilestoneByTitle(milestoneTitle).get(0);
+    }
+
+    @Override
+    public Page<Milestone> filterMilestoneByProject(int classId, int projectId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return milestoneRepository.filterByProject(classId, projectId, search, status, PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
+    public List<Milestone> findAllByProjectMentor(Integer projectMentorId) {
+        return milestoneRepository.findAllByProjectProjectMentorId(projectMentorId);
+    }
+
+    @Override
+    public List<Milestone> findAllByProjectId(Integer projectId) {
+        return milestoneRepository.findAllByProjectId(projectId);
+    }
+
+    @Override
+    public List<Milestone> findAllByStudentId(Integer studentId) {
+        return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
     }
 
 }

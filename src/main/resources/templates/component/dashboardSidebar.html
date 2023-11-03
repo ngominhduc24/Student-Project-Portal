@@ -126,12 +126,7 @@
 
         const socket = io('http://localhost:3000');
 
-        //async run
-        await (async () => {
-            //connect
-            socket.emit('listen-class', await getToken());
-
-        })();
+        socket.emit('listen-class', await getToken());
 
         socket.on("receive-message", data => {
             console.log(data);

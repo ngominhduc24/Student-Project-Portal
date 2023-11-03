@@ -31,8 +31,9 @@
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
     <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
 
 
     <style>
@@ -211,19 +212,19 @@
                                             <div class="mb-3">
                                                 <input type="hidden" name="id" th:value="${subject.id}">
                                                 <label class="form-label">Subject Name</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.subjectName}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectName}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Subject Code</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.subjectCode}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectCode}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Manager</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.user.fullName}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.user.fullName}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -309,7 +310,7 @@
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Subject Assignment List</li>
+                            <li class="breadcrumb-item active">Assignment List</li>
                         </ol>
                     </div><!--end col-->
 
@@ -398,7 +399,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>
+                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>&nbsp
+                                        <a th:href="@{/subject-manager/subject/criteria(id=${assignment.id})}">Criteria</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -769,8 +771,8 @@
                                         </button>
                                     </div>
                                 </div>
-                                <input type="hidden" name="sortBySe" id="sortBySetting1">
-                                <input type="hidden" name="sortTypeSe" id="sortTypeSetting1">
+                                <input type="hidden" name="sortBySe" id="sortBySetting1" value="{sortBySe}">
+                                <input type="hidden" name="sortTypeSe" id="sortTypeSetting1" value="{sortTypeSe}">
                                 <table id="datatablesSimpleSetting1" class="display">
                                     <thead>
                                     <tr>
@@ -820,21 +822,23 @@
                                         <td th:text="${setting.subject.subjectCode}"></td>
                                         <td th:text="${setting.typeId==1?'Complexity':'Quality'}"></td>
                                         <td th:text="${setting.settingTitle}"></td>
-                                        <td th:text="${setting.settingValue}"></td>
+                                        <td th:text="${setting.typeId==1?setting.settingTitle:setting.settingTitle+'%'}" ></td>
                                         <td th:text="${setting.displayOrder}"></td>
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
                                                        th:checked="${setting.isStatus()}"
-                                                       th:onclick="'updateStatusSetting(' + ${setting.id} + ', this)'">
+                                                       th:attr="setting-id=${setting.id},data-title=${setting.settingTitle}" onchange="showConfirmationDialog(this, 3)">
                                             </div>
                                         </td>
                                         <td>
                                             <a th:href="@{/subject-manager/subject-setting/detail?id={id}(id=${setting.id})}"><i
-                                                    class="fas fa-pen-to-square"></i></a></td>
+                                                    class="fas fa-pen-to-square"></i></a>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
+                                <input type="hidden" name="pageNoSe" id="pageNoInputSetting1" value="${pageNoSe}">
                                 <nav th:if="${totalPageSe!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                     <ul class="pagination justify-content-end">
                                         <li th:class="${pageNoSe == 0 ? 'page-item disabled' : 'page-item'}">
@@ -843,7 +847,6 @@
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
-                                        <input type="hidden" name="pageNoSe" id="pageNoInputSetting1">
                                         <li th:each="i : ${#numbers.sequence(1, totalPageS)}"
                                             th:class="${pageNoSe == (i - 1) ? 'page-item active' : 'page-item'}">
                                             <a class="page-link" th:text="${i}" style="cursor: pointer"
@@ -917,16 +920,12 @@
     </main>
 </div>
 
-<!-- javascript -->
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
 
-<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
-
-<script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
 <script>
     let id;
     let status;
@@ -938,8 +937,10 @@
         typeId=type;
         if(typeId==1)
             id = checkbox.getAttribute("assignment-id");
-        else
+        else if(typeId==2)
             id = checkbox.getAttribute("update-id");
+        else
+            id = checkbox.getAttribute("setting-id");
         var settingTitle = checkbox.getAttribute('data-title');
         status = checkbox.checked;
         initialStatus = !status;
@@ -957,8 +958,10 @@
         let checkbox;
         if(typeId==1)
             checkbox = document.querySelector('input[assignment-id="' + id + '"]');
-        else
+        else if (typeId==2)
             checkbox = document.querySelector('input[update-id="' + id + '"]');
+        else
+            checkbox = document.querySelector('input[setting-id="' + id + '"]');
         checkbox.checked = initialStatus;
         confirmClicked = false;
         $('#confirmationModal').modal('hide');
@@ -972,8 +975,15 @@
                     $('#confirmationModal').modal('hide');
                     $('#confirmationModalRed').modal('hide');
                 });
-        else
+        else if (typeId==2)
             fetch(`issue-setting/updateStatus?id=${id}&status=${status}`)
+                .then(() => {
+                    confirmClicked = true;
+                    $('#confirmationModal').modal('hide');
+                    $('#confirmationModalRed').modal('hide');
+                });
+        else
+            fetch(`/subject-manager/subject/subject-setting/updateStatus?id=${id}&status=${status}`)
                 .then(() => {
                     confirmClicked = true;
                     $('#confirmationModal').modal('hide');

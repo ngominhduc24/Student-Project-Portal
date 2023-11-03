@@ -172,6 +172,16 @@ public class SubjectHomeController {
         return "redirect:/subject-manager/subject?subjectId=" + id;
     }
 
+    @GetMapping("/subject-manager/subject/subject-setting/updateStatus")
+    public String updateSubjectSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        SubjectSetting subjectSetting = subjectSettingService.findById(id);
+        subjectSetting.setStatus(status);
+        subjectSettingService.saveSubjectSetting(subjectSetting);
+        return "redirect:/";
+    }
+
     private String checkValidateAssignment(String title, String description) {
         if (title.isEmpty()) return "Please input subject assignment title";
         if (description.isEmpty()) return "Please input subject assignment description";

@@ -28,7 +28,7 @@ public class SubjectSetting {
     private String settingTitle;
 
     @Column(name = "setting_value")
-    private String settingValue;
+    private Integer settingValue;
 
     @Column(name = "status")
     private boolean status = true;
