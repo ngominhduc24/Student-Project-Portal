@@ -57,6 +57,8 @@ public class LoginController {
             response.addCookie(cu);
             response.addCookie(cp);
             response.addCookie(cr);
+            if(user.getSetting().getId()==1)
+                return "redirect:student/home" ;
             if(user.getSetting().getId()==2)
                 return "redirect:admin/home" ;
             if(user.getSetting().getId()==3)

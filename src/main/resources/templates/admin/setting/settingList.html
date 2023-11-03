@@ -349,11 +349,12 @@
                                     customToast.show();
                                     setTimeout(function () {
                                         customToast.hide();
+                                        document.getElementById('toastMessage').textContent = "";
                                     }, 5000);
-                                    document.getElementById('toastMessage').textContent = "";
+
                                 }
                             </script>
-
+                            <input type="hidden" name="pageNo" id="pageNoInput" value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
@@ -362,7 +363,6 @@
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <input type="hidden" name="pageNo" id="pageNoInput">
                                     <li th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
                                            th:onclick="'goToPage('+ ${i-1}+')'">
@@ -423,7 +423,6 @@
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
 
-
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
 <!-- Datatable -->
@@ -433,7 +432,9 @@
 
         const datatablesSimple = document.getElementById('datatablesSimple');
         if (datatablesSimple) {
-            new simpleDatatables.DataTable(datatablesSimple);
+            new simpleDatatables.DataTable(datatablesSimple, {
+                paging: false // Tắt phân trang
+            });
         }
     });
 </script>

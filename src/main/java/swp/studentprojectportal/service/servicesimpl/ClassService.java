@@ -105,5 +105,16 @@ public class ClassService implements IClassService {
         classRepository.delete(classA);
     }
 
+    @Override
+    public List<Class> findAllByStudentUserId(Integer userId) {
+        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(userId);
+        List<Class> classList = new ArrayList<>();
+
+        for (StudentClass studentClass : studentClassList)
+            classList.add(studentClass.getAclass());
+
+        return classList;
+    }
+
 
 }

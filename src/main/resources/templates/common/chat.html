@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <!--    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>-->
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+</head>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="page-wrapper doctris-theme toggled">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid">
+            <div class="layout-specing">
+
+                <div class="row position-relative" style="height: 80vh;">
+
+                    <div class="chat-header position-absolute w-75" style="top: 0; z-index: 2; background-color: #f8f9fc">
+                        <h5 class="mb-0">Class Chat: SE1741</h5>
+                    </div>
+
+                    <div class="chat-body d-flex flex-column-reverse overflow-auto" style="height: 70vh;">
+
+<!--                        <div class="message row mb-3">-->
+<!--                            <div class="col-1 text-center">-->
+<!--                                <img class="w-75 h-auto rounded pt-2" src="https://cdn-icons-png.flaticon.com/512/3468/3468447.png">-->
+<!--                            </div>-->
+
+<!--                            <div class="col-10">-->
+<!--                                <div>-->
+<!--                                    <span class="d-flex">-->
+<!--                                        <p style="font-weight: bold">User 1 - now</p>-->
+<!--                                    </span>-->
+<!--                                </div>-->
+
+<!--                                <div>-->
+<!--                                    dep trai qua!-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+
+                    </div>
+
+                    <div class="chat-footer row justify-content-center d-flex position-absolute" style="bottom: 0">
+                        <form class="col-8" onsubmit="sendMessage(event)">
+                            <input class="form-control" type="text" id="chatInput" placeholder="Type something">
+                        </form>
+
+                        <div class="col-2">
+                            <button onclick="sendMessage()" class="btn btn-primary"><i class="uil uil-comment"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script>
+    const classId = [[${classId}]];
+    const chatBody = document.querySelector('.chat-body');
+    const username = '[[${username}]]';
+    const chatInput = document.getElementById('chatInput');
+
+    async function getToken(data) {
+        let token;
+
+        await fetch('/api/v1/encode/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return token = response.text();
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            })
+            .then(data => {})
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        return token;
+    }
+
+    const socket = io('http://localhost:3000');
+
+    //async run
+    (async () => {
+
+        //connect
+        socket.emit('new-user', await getToken({
+            classId: classId,
+        }));
+
+    })();
+
+    socket.on("receive-message", data => {
+        addMessage(data.username, data.message, data.sendtime);
+    });
+
+    //send message
+    async function sendMessage(event) {
+        event.preventDefault();
+
+        let messageText = chatInput.value;
+
+        socket.emit('send-chat-message', await getToken({
+            username: username,
+            message: messageText,
+            classId: classId,
+        }));
+
+        //add message
+        addMessage(username, messageText, 'now');
+
+        //reset chat input
+        chatInput.value = '';
+    }
+
+    //add message
+    function addMessage(user, message, sendtime) {
+        // Create the outer div element with the "message row mb-3" class
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message row mb-3';
+
+        // Create the div for the user's profile picture (col-1)
+        const profileDiv = document.createElement('div');
+        profileDiv.className = 'col-1 text-center';
+
+        // Create the user's profile picture (img element)
+        const profileImg = document.createElement('img');
+        profileImg.className = 'w-75 h-auto rounded pt-2';
+        profileImg.src = 'https://cdn-icons-png.flaticon.com/512/3468/3468447.png';
+
+        // Append the profile picture to the profile div
+        profileDiv.appendChild(profileImg);
+
+        // Create the div for the user's name and message (col-10)
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'col-10';
+
+        // Create the user's name (p element)
+        const userName = document.createElement('p');
+        userName.style.fontWeight = 'bold';
+        userName.textContent = user + ' - ' + sendtime;
+
+        // Create the message content div
+        const messageContent = document.createElement('div');
+        messageContent.textContent = message;
+
+        // Append the user's name and message to the content div
+        contentDiv.appendChild(userName);
+        contentDiv.appendChild(messageContent);
+
+        // Append the profile div and content div to the message div
+        messageDiv.appendChild(profileDiv);
+        messageDiv.appendChild(contentDiv);
+
+        const firstChild = chatBody.firstChild;
+        // Insert the message div before the first child of the body
+        chatBody.insertBefore(messageDiv, firstChild);
+
+        //scroll to bottom
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+</script>
+
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
+
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Milestone;
+import swp.studentprojectportal.model.Project;
 
 import java.util.List;
 
@@ -26,4 +27,20 @@ public interface IMilestoneRepository extends JpaRepository<Milestone, Integer> 
             "and (:status = -1 OR status = :status)", nativeQuery = true)
     Page<Milestone> filterClassBySubjectManager(@Param("classId") Integer classId, @Param("search") String search,
                                             @Param("status") Integer status, Pageable pageable);
+
+    @Query(value="SELECT * FROM  milestone\n" +
+            "WHERE ((class_id= :classId AND status=1) OR project_id = :projectId )" +
+            "and (LOWER(title) LIKE LOWER(CONCAT('%', :search, '%'))  " +
+            "OR LOWER(description) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(start_date) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(end_date) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "and (:status = -1 OR status = :status)", nativeQuery = true)
+    Page<Milestone> filterByProject(@Param("classId") Integer classId, @Param("projectId") Integer projectId, @Param("search") String search,
+                                                @Param("status") Integer status, Pageable pageable);
+
+    List<Milestone> findAllByProjectProjectMentorId(Integer projectMentorId);
+
+    List<Milestone> findAllByAclass_Id(Integer classId);
+
+    List<Milestone> findAllByProjectInAndProject(List<Project> projectList, Project project);
 }
