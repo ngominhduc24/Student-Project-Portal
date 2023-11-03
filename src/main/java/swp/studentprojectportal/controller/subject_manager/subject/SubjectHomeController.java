@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import swp.studentprojectportal.model.Assignment;
-import swp.studentprojectportal.model.Subject;
-import swp.studentprojectportal.model.IssueSetting;
-import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.service.servicesimpl.AssignmentService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
+import swp.studentprojectportal.service.servicesimpl.SubjectSettingService;
 import swp.studentprojectportal.utils.Validate;
 
 import java.util.List;
@@ -30,6 +28,8 @@ public class SubjectHomeController {
     AssignmentService assignmentService;
     @Autowired
     IssueSettingService issueSettingService;
+    @Autowired
+    SubjectSettingService subjectSettingService;
 
     @GetMapping("/subject-manager/subject")
     public String subjectPage(@RequestParam Integer subjectId,
@@ -44,6 +44,7 @@ public class SubjectHomeController {
 
         Page<IssueSetting> issueSettingList = issueSettingService.filter(subjectId, "", 0, 10, "id", 1, "", -1);
         Page<Assignment> assignmentList = assignmentService.filter(user.getId(), "", 0, 10, "id", 1, subjectId, -1);
+        Page<SubjectSetting> subjectSettingList= subjectSettingService.filter(user.getId(), "", 0, 10, "id", 1, subjectId, -1, -1);
         List<String> settingGroupList = issueSettingService.findAllDistinctSettingGroup(subjectId);
         model.addAttribute("pageSize", 10);
         model.addAttribute("pageNo", 0);
@@ -59,9 +60,16 @@ public class SubjectHomeController {
         model.addAttribute("totalPageS", issueSettingList.getTotalPages());
         model.addAttribute("assignment", assignment);
 
+        model.addAttribute("pageSizeSe", 10);
+        model.addAttribute("pageNoSe", 0);
+        model.addAttribute("sortBySe", "id");
+        model.addAttribute("sortTypeSe", 1);
+        model.addAttribute("totalPageSe", subjectSettingList.getTotalPages());
+
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("issueSettingList", issueSettingList);
         model.addAttribute("assignmentList", assignmentList);
+        model.addAttribute("subjectSettingList", subjectSettingList);
         model.addAttribute("settingGroupList", settingGroupList);
         return "/subject_manager/subjectHome";
     }
@@ -76,6 +84,10 @@ public class SubjectHomeController {
                           @RequestParam String searchS, @RequestParam Integer assignmentId,
                           @RequestParam Integer statusS, @RequestParam String settingGroupS,
                           @RequestParam String sortByS, @RequestParam Integer sortTypeS,
+                          @RequestParam(defaultValue = "0") Integer pageNoSe, @RequestParam(defaultValue = "10") Integer pageSizeSe,
+                          @RequestParam(defaultValue = "") String searchSe,
+                          @RequestParam(defaultValue = "-1") Integer statusSe, @RequestParam(defaultValue = "-1") Integer typeIdSe,
+                          @RequestParam(defaultValue = "id") String sortBySe, @RequestParam(defaultValue = "1") Integer sortTypeSe,
                           Model model, HttpSession session, WebRequest request) {
         String newStatus = request.getParameter("newStatus");
         Subject subject = subjectService.getSubjectById(subjectId);
@@ -86,21 +98,18 @@ public class SubjectHomeController {
         if (assignment==null) {
             assignment = new Assignment();
             assignment.setId(-1);
+            assignment.setDescription("");
         }
 
         Page<Assignment> assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
-        String errorMsg = checkValidateAssignment(newTitle, description);
-        if(errorMsg != null){
-            model.addAttribute("errorMessage", errorMsg);
-            model.addAttribute("newTitle", newTitle);
-            model.addAttribute("description", description);
-        } else {
+
+        if (!newTitle.isEmpty()) {
             assignment.setTitle(newTitle);
             assignment.setDescription(description);
             if(assignmentId!=-1)  assignment.setStatus(newStatus!=null);
             assignment.setSubject(subject);
             if (assignmentService.checkExistedAssignment(newTitle, subjectId, assignmentId)) {
-                model.addAttribute("errorMessage", "This assignemnt name has already existed in this subject!");
+                model.addAttribute("errorMessage", "This assignment name has already existed in this subject!");
             } else {
                 if (assignmentId == -1)
                     model.addAttribute("toastMessage", "Add new assignment successfully");
@@ -110,11 +119,12 @@ public class SubjectHomeController {
                 assignmentList = assignmentService.filter(user.getId(), search, pageNo, pageSize, sortBy, sortType, subjectId, status);
                 assignment = new Assignment();
                 assignment.setId(-1);
+                assignment.setDescription("");
             }
         }
 
         model.addAttribute("assignment", assignment);
-
+        Page<SubjectSetting> subjectSettingList= subjectSettingService.filter(user.getId(), searchSe, pageNoSe, pageSizeSe, sortBySe, sortTypeSe, subjectId, typeIdSe, statusSe);
         Page<IssueSetting> issueSettingList = issueSettingService.filter(subjectId, searchS, pageNoS, pageSizeS, sortByS, sortTypeS, settingGroupS, statusS);
         List<String> settingGroupList = issueSettingService.findAllDistinctSettingGroup(subjectId);
 
@@ -135,6 +145,16 @@ public class SubjectHomeController {
         model.addAttribute("sortTypeS", sortTypeS);
         model.addAttribute("totalPageS", issueSettingList.getTotalPages());
 
+        model.addAttribute("pageSizeSe", pageSizeSe);
+        model.addAttribute("pageNoSe", pageNoSe);
+        model.addAttribute("searchSe", searchSe);
+        model.addAttribute("statusSe", statusSe);
+        model.addAttribute("sortBySe", sortBySe);
+        model.addAttribute("typeIdSe", typeIdSe);
+        model.addAttribute("sortTypeSe", sortTypeSe);
+        model.addAttribute("totalPageSe", subjectSettingList.getTotalPages());
+
+        model.addAttribute("subjectSettingList", subjectSettingList);
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("issueSettingList", issueSettingList);
         model.addAttribute("assignmentList", assignmentList);
@@ -150,6 +170,16 @@ public class SubjectHomeController {
         subjectService.saveSubject(subject);
         attributes.addFlashAttribute("toastMessage", "Update subject description successfully");
         return "redirect:/subject-manager/subject?subjectId=" + id;
+    }
+
+    @GetMapping("/subject-manager/subject/subject-setting/updateStatus")
+    public String updateSubjectSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        SubjectSetting subjectSetting = subjectSettingService.findById(id);
+        subjectSetting.setStatus(status);
+        subjectSettingService.saveSubjectSetting(subjectSetting);
+        return "redirect:/";
     }
 
     private String checkValidateAssignment(String title, String description) {

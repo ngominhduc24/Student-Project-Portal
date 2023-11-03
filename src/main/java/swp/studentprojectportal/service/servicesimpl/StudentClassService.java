@@ -13,7 +13,6 @@ import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IStudentClassService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentClassService implements IStudentClassService {
@@ -164,5 +163,10 @@ public class StudentClassService implements IStudentClassService {
         if (studentClass == null) return false;
         studentClassRepository.delete(studentClass);
         return true;
+    }
+
+    @Override
+    public List<StudentClass> findAllByStudentId(int studentId) {
+        return studentClassRepository.findAllByStudentId(studentId);
     }
 }

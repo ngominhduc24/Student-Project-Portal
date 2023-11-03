@@ -112,6 +112,16 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
+    public Page<Milestone> filterMilestoneByProject(int classId, int projectId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return milestoneRepository.filterByProject(classId, projectId, search, status, PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
     public List<Milestone> findAllByProjectMentor(Integer projectMentorId) {
 
         List<Milestone> milestoneList = new ArrayList<>();

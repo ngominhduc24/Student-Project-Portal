@@ -1,14 +1,13 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,10 +28,10 @@ public class SubjectSetting {
     private String settingTitle;
 
     @Column(name = "setting_value")
-    private String settingValue;
+    private Integer settingValue;
 
     @Column(name = "status")
-    private Boolean status = true;
+    private boolean status = true;
 
     @Column(name = "display_order")
     private Integer displayOrder;

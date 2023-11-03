@@ -26,6 +26,9 @@ public interface IMilestoneService {
 
     Milestone findMilestoneByTitle(String milestoneTitle);
 
+    Page<Milestone> filterMilestoneByProject(int classId, int projectId, String search, Integer pageNo,
+                                    Integer pageSize, String sortBy, Integer sortType, Integer status);
+
     List<Milestone> findAllByProjectMentor(Integer projectMentorId);
 
     List<Milestone> findAllByStudentId(Integer sutdentId);

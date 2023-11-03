@@ -139,11 +139,13 @@
             <div class="layout-specing" style="padding-top: 84px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1 style="margin: 0">Setting List</h1>
+                        <h1 style="margin: 0">Criteria List</h1>
                         <ol class="breadcrumb mb-1 ms-1">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active"><a>Setting List</a></li>
+                            <li class="breadcrumb-item"><a href="/subject-manager/subject">Assignment List</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item active"><a>Criteria List</a></li>
                         </ol>
                     </div><!--end col-->
 
@@ -168,7 +170,8 @@
 
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form class="card-body rounded-3" action="/admin/setting" id="form">
+                        <form class="card-body rounded-3" action="/subject-manager/subject/criteria" id="form">
+                            <input type="hidden" th:value="${assignmentId}" name="id"/>
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <div class="mb-3 col-md-4 pe-1" >
@@ -183,16 +186,6 @@
                                     <p class="ps-2 col-md-5 pt-2">per page</p>
                                 </div>
                                 <div class="row col-md-8" style="margin-left: -100px">
-                                    <div class="col-md-4">
-                                        <div class="mb-3 px-4">
-                                            <select name="typeId" class="form-select" onchange="this.form.submit()">
-                                                <option value="-1" th:selected="${typeId == -1}">All Setting Type</option>
-                                                <option value="1" th:selected="${typeId == 1}">User Role</option>
-                                                <option value="2" th:selected="${typeId == 2}">Permitted Email Domain</option>
-                                                <option value="3" th:selected="${typeId == 3}">Semester</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-md-3 px-4">
                                         <div class="mb-3">
                                             <select name="status" class="form-select" onchange="this.form.submit()">
@@ -208,8 +201,8 @@
                                     <button onclick="this.form.submit()" class="search-button"> <i class="fas fa-search"  aria-hidden="true"></i></button>
                                 </div>
                             </div>
-                            <input type="hidden" name="sortBy" id="sortBy">
-                            <input type="hidden" name="sortType" id="sortType">
+                            <input type="hidden" name="sortBy" id="sortBy" th:value="${sortBy}">
+                            <input type="hidden" name="sortType" id="sortType" th:value="${sortType}">
                             <table id="datatablesSimple" class="display">
                                 <thead>
                                 <tr>
@@ -217,37 +210,29 @@
                                         <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('id',1)"></i>
                                         <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('id',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Setting Name
-                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('setting_title',1)"></i>
-                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('setting_title',2)"></i>
+                                    <th data-sortable="false">Name
+                                        <i th:class="${(sortBy eq 'name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('name',1)"></i>
+                                        <i th:class="${(sortBy eq 'name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('name',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Type
-                                        <i th:class="${(sortBy eq 'type_id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('type_id',1)"></i>
-                                        <i th:class="${(sortBy eq 'type_id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('type_id',2)"></i>
-                                    </th>
-                                    <th data-sortable="false">Display Order
-                                        <i th:class="${(sortBy eq 'display_order' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('display_order',1)"></i>
-                                        <i th:class="${(sortBy eq 'display_order' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('display_order',2)"></i>
-
+                                    <th data-sortable="false">Weight
+                                        <i th:class="${(sortBy eq 'weight' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('weight',1)"></i>
+                                        <i th:class="${(sortBy eq 'weight' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('weight',2)"></i>
                                     </th>
                                     <th data-sortable="false">Status</th>
                                     <th data-sortable="false">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="setting : ${settingList}">
-                                    <td th:text="${setting.id}"></td>
-                                    <td th:text="${setting.settingTitle}"></td>
-                                    <td th:if="${setting.typeId==1}">User Role</td>
-                                    <td th:if="${setting.typeId==2}">Permitted Email Domain</td>
-                                    <td th:if="${setting.typeId==3}">Semester</td>
-                                    <td th:text="${setting.displayOrder}"></td>
+                                <tr th:each="criteria : ${criteriaList}">
+                                    <td th:text="${criteria.id}"></td>
+                                    <td th:text="${criteria.name}"></td>
+                                    <td th:text="${criteria.weight+'%'}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingTitle}" th:onclick="showConfirmationDialog(this)" />
+                                            <input class="form-check-input" type="checkbox" th:checked="${criteria.status}" th:attr="update-id=${criteria.id},data-title=${criteria.name}" th:onclick="showConfirmationDialog(this)" />
                                         </div>
                                     </td>
-                                    <td><a th:href="@{/admin/setting/detail?id={id}(id=${setting.id})}"><i style="font-size: 18px" class="fas fa-pen-to-square"></i></a></td>
+                                    <td><a th:href="@{/admin/setting/detail(id=${criteria.id})}"><i style="font-size: 18px" class="fas fa-pen-to-square"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -322,7 +307,7 @@
                                     $('#confirmationModalRed').modal('hide');
                                 }
                                 $(".confirmButton").click(function () {
-                                    fetch(`/admin/setting/updateStatus?id=${id}&status=${status}`)
+                                    fetch(`/subject-manager/subject/criteria/updateStatus?id=${id}&status=${status}`)
                                         .then(() => {
                                             confirmClicked = true;
                                             $('#confirmationModal').modal('hide');
@@ -354,7 +339,7 @@
 
                                 }
                             </script>
-                            <input type="hidden" name="pageNo" id="pageNoInput" value="${pageNo}">
+                            <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">

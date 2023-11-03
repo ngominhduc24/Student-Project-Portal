@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 
 @Controller
-
 public class StudentHomeController {
     @Autowired
     SettingService settingService;

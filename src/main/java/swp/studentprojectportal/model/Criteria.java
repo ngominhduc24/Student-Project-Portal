@@ -1,11 +1,10 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -18,6 +17,8 @@ public class Criteria {
     private String name;
 
     private Integer weight;
+
+    private Boolean status;
 
     @ManyToOne
     @JoinColumn(name = "assignment_id")
