@@ -345,11 +345,15 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submission` (
     `evaluation` float ,
     `comment` VARCHAR(255) ,
     `status` INT NULL default 1,
-    `create_by` INT NULL DEFAULT 0,
+    `create_by` INT NULL DEFAULT 1,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
     `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
+    FOREIGN KEY (`create_by`)
+    REFERENCES `swp391`.`user` (`id`)
+                                                        ON DELETE NO ACTION
+                                                        ON UPDATE NO ACTION,
     FOREIGN KEY (`milestone_id`)
     REFERENCES `swp391`.`milestone` (`id`)
                                                         ON DELETE NO ACTION
@@ -576,7 +580,7 @@ VALUES
 
 INSERT INTO `class` (`class_name`,`description`,`subject_id`,`semester_id`,`teacher_id`,`status`)
 VALUES
-    ("SE1720","Study software engineering",1,8,3,2),
+    ("SE1720","Study software engineering",1,7,3,3),
     ("SE1741","Study software engineering",1,7,3,3),
     ("SE1704","Study software engineering",1,7,3,3),
     ("SE1707","Study software engineering",1,7,3,3),
@@ -591,16 +595,16 @@ VALUES
     ("SE1740","Study software engineering",2,8,3,2),
     ("SE1745","Study software engineering",2,8,3,1),
     ("SE1734","Study software engineering",2,8,3,2),
-    ("SE1736","Study software engineering",2,8,6,0);
+    ("SE1736","Study software engineering",2,8,3,0);
 
 INSERT INTO project (class_id, project_mentor_id, team_leader_id, title, status,group_name,description)
 VALUES
-    (1, 3, 1, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
-    (1, 3, 6, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
-    (1, 3, 11, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
-    (1, 3, 16, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
-    (1, 3, 21, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
-    (1, 3, 26, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
+    (13, 3, 6, "Project A", 0, "Group A", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 11, "Project B", 0, "Group B", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 16, "Project C", 0, "Group C", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 21, "Project D", 0, "Group D", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 26, "Project E", 0, "Group E", "Web app with Servlet/JSP and Mysql"),
+    (13, 3, 4, "Project F", 0, "Group F", "Web app with Servlet/JSP and Mysql");
 
 INSERT INTO student_class (student_id, class_id, project_id)
 VALUES
@@ -766,12 +770,12 @@ VALUES
 
 INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status)
 VALUES
-    (1, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 1),
-    (1, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 2),
-    (2, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1),
-    (2, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 2),
-    (3, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1),
-    (3, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 2);
+    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 1),
+    (20, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 2),
+    (21, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1),
+    (22, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 2),
+    (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1),
+    (24, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 2);
 
 INSERT INTO evaluation(submit_id, student_id, criteria, weight, grade, comment)
 VALUES
