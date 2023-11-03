@@ -6,6 +6,7 @@ import swp.studentprojectportal.model.Issue;
 import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.StudentClass;
 import swp.studentprojectportal.repository.IIssueRepository;
+import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.service.IIssueService;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public class IssueService implements IIssueService {
     @Autowired
     IIssueRepository issueRepository;
+    @Autowired
+    IUserRepository userRepository;
 
     @Autowired
     IStudentClassRepository studentClassRepository;
@@ -61,5 +64,25 @@ public class IssueService implements IIssueService {
 
         return listIssue;
     }
+
+
+    @Override
+    public List<Issue> findAllByMilestoneId(Integer milestoneId) {
+        return issueRepository.findAllByMilestoneId(milestoneId);
+    }
+
+    @Override
+    public boolean updateIssueAssignee(Integer issueId, Integer assigneeId) {
+        try {
+            Issue issue = issueRepository.findById(issueId).get();
+
+            issue.setAssignee(userRepository.findUserById(assigneeId));
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
 }

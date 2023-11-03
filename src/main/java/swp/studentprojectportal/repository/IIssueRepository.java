@@ -28,4 +28,7 @@ public interface IIssueRepository extends JpaRepository<Issue, Integer> {
     List<Issue> filterIssue(@Param("search") String search,
                             @Param("projectId") Integer projectId, @Param("milestoneId") Integer milestoneId,
                             @Param("assigneeId") Integer assigneeId);
+    List<Issue> findAllByAssigneeId(Integer studentId);
+
+    public List<Issue> findAllByMilestoneId(Integer milestoneId);
 }
