@@ -54,12 +54,11 @@ public class Submission {
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
     public String getPathFile() {
-        return "/submission/" + milestone.getId() + "-" + project.getId() + "/" + fileLocation;
+        return "/submission/" + milestone.getId() + "/" + id + "/" + fileLocation;
     }
 
     public String getStatusDetails() {
-        if(status == 1) return "Pending";
-        if(status == 2) return "Submitted";
+        if(status == 1) return "Submitted";
 
         return "Evaluated";
     }

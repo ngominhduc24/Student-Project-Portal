@@ -771,11 +771,11 @@ VALUES
 INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status, create_by)
 VALUES
     (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
-    (20, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 2, 6),
-    (21, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 2, 6),
-    (22, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 2, 6),
-    (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 2, 6),
-    (24, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 2, 6);
+    (20, 2, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 1, 6),
+    (21, 3, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1, 6),
+    (22, 4, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 1, 6),
+    (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1, 6),
+    (24, 3, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 7, 'Overall, the group did quite well', 1, 6);
 
 INSERT INTO evaluation(submit_id, student_id, criteria, weight, grade, comment)
 VALUES
@@ -829,7 +829,14 @@ VALUES
     ("Assignment Evaluation" ,2, 3, 6, 4, 1, 4),
     ("LOC Evaluation" ,2, 3, 6, 4, 1, 12),
     ("Issue" ,2, 3, 6, 4, 1, 11),
-    ("Issue Details" ,2, 3, 6, 4, 1, 12);
+    ("Issue Details" ,2, 3, 6, 4, 1, 12),
+
+    ("Login" ,1, 25, 6, 4, 1, 6),
+    ("Register" ,1, 25, 6, 4, 1, 7),
+    ("Password Reset" ,1, 25, 6, 4, 1, 8),
+    ("Password Change" ,1, 25, 6, 4, 1, 9),
+    ("User List" ,1, 25, 6, 4, 1, 10),
+    ("Class List" ,1, 25, 6, 4, 1, 9);
 
 INSERT INTO submit_issue(issue_id, submit_id, is_final, quality_id, complexity_id, function_loc, is_rejected)
 VALUES
