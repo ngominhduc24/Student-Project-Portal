@@ -146,7 +146,7 @@ public class ProfileController {
             return "profile";
         }
 
-        if(verifyMail == true) {
+        if(verifyMail) {
             user.setEmail(username);
         } else {
             user.setPhone(username);
