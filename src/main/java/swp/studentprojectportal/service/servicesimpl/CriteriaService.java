@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.model.Criteria;
 import swp.studentprojectportal.repository.ICriteriaRepository;
 import swp.studentprojectportal.service.ICriteriaService;
@@ -30,5 +31,15 @@ public class CriteriaService implements ICriteriaService {
     @Override
     public Criteria save(Criteria criteria) {
         return criteriaRepository.save(criteria);
+    }
+
+    @Override
+    public Boolean checkExistedName(String name, Integer assignmentId, Integer id) {
+        Criteria criteria = criteriaRepository.findByNameAndAssignmentId(name, assignmentId);
+        if(criteria !=null)  {
+            if(id==-1) return true;
+            if(criteria.getId()!=id)  return true;
+        }
+        return false;
     }
 }
