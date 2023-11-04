@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 @Getter
@@ -61,5 +62,9 @@ public class Submission {
         if(status == 1) return "Submitted";
 
         return "Evaluated";
+    }
+
+    public String getCreateAtString() {
+        return new SimpleDateFormat("MMM dd, HH:mm").format(createAt);
     }
 }

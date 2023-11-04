@@ -9,6 +9,8 @@ import swp.studentprojectportal.repository.ISubmitIssueRepository;
 import swp.studentprojectportal.service.IIssueService;
 import swp.studentprojectportal.service.ISubmitIssueService;
 
+import java.util.List;
+
 @Service
 public class SubmitIssueService implements ISubmitIssueService {
     @Autowired
@@ -28,5 +30,10 @@ public class SubmitIssueService implements ISubmitIssueService {
         submitIssueRepository.save(submitIssue);
 
         return submitIssue;
+    }
+
+    @Override
+    public List<SubmitIssue> findAllBySubmissionId(Integer submissionId) {
+        return submitIssueRepository.findAllBySubmitId(submissionId);
     }
 }
