@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"/>
+  <title th:text="${@title}"></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+  <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+  <meta name="author" content="Shreethemes"/>
+  <meta name="email" content="support@shreethemes.in"/>
+  <meta name="website" content="../../../index.html"/>
+  <meta name="Version" content="v1.2.0"/>
+  <!-- favicon -->
+  <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+  <!-- Bootstrap -->
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- simplebar -->
+  <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+  <!-- Select2 -->
+  <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+  <!-- Date picker -->
+  <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+  <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+  <!-- Icons -->
+  <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+  <!-- Css -->
+  <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+  <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <!-- Datatables -->
+  <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+  <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+  <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+  <script th:src="@{/js/notify.js}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<style>
+  .multiselect {
+    width: 200px;
+    position: relative;
+    margin-left: 3px;
+    width: 100%;
+  }
+
+  .selectBox {
+    position: relative;
+  }
+
+  .selectBox select {
+    width: 100%;
+    font-weight: bold;
+  }
+
+  .overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  #checkboxes {
+    display: none;
+    position: absolute;
+    border: 1px #dadada solid;
+    z-index: 1;
+    background-color: white;
+    width: 100%;
+    /* Set the width to 100% to match the select width */
+  }
+
+  #checkboxes label {
+    display: block;
+  }
+
+  #checkboxes label:hover {
+    background-color: #1e90ff;
+  }
+
+  .gl-label{
+    line-height: 1rem;
+    display: flex;
+    font-size: 0.75rem;
+    font-weight: 400;
+    overflow: hidden;
+    color: inherit;
+    max-width: 100%;
+  }
+  #myTable_filter {
+    float: left;
+  }
+
+  .topnav {
+    overflow: hidden;
+    border-bottom: 1px solid darkgray;
+    margin-top: 70px;
+    background: white;
+  }
+
+  .topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 26px;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    margin:0
+  }
+
+  .topnav a:hover {
+    border-bottom: 3px solid blue;
+  }
+
+  .topnav a.active {
+    border-bottom: 3px solid blue;
+  }
+
+  .dataTables_filter {
+    display: flex;
+  }
+</style>
+
+<body>
+<h6 id="loader">System are loading ... Please wait!</h6>
+
+<div class="page-wrapper doctris-theme toggled">
+  <!-- sidebar-wrapper  -->
+  <div th:replace="~{dashboardSidebar}"></div>
+
+  <!-- Start Page Content -->
+  <main class="page-content bg-light">
+    <div th:replace="~{dashboardHeader}"></div>
+    <div class="topnav" style="margin-top: 44px">
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
+<!--      <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>-->
+<!--      <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>-->
+<!--      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>-->
+<!--      <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
+    </div>
+    <div class="container-fluid">
+      <div class="layout-specing" style="padding: 35px 14px 24px !important;">
+        <div class="row px-4">
+          <div class="col-xl-5 col-md-6">
+            <h3 style="margin-top: -14px;margin-bottom: 20px;" >Assignment Evaluations</h3>
+<!--            <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">-->
+<!--              <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>-->
+<!--              <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>-->
+<!--              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>-->
+<!--              <li class="breadcrumb-item active">Issue list</li>-->
+<!--              <li class="breadcrumb-item active"></li>-->
+<!--            </ol>-->
+          </div><!--end col-->
+
+          <div class="row" style="margin-bottom: 10px">
+              <!-- filter -->
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <select name="milestone" class="form-select" id="a">
+                    <option value="-1" >bcd</option>
+                    <option value="2" >123</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                <select name="milestone" class="form-select" id="milestone">
+                  <option value="-1" >All Milestones</option>
+                  <option value="2" >123</option>
+                </select>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top: 5px">
+                <form>
+                  <div class="col-md-6" style="padding-left: 0px">
+                    <div class="multiselect">
+                      <div class="selectBox" onclick="showCheckboxes()">
+                        <select class="form-select">
+                          <option>Select an option</option>
+                        </select>
+                        <div class="overSelect"></div>
+                      </div>
+                      <div id="checkboxes">
+                        <label for="one">
+                          <input type="checkbox" id="one" />First checkbox</label>
+                        <label for="two">
+                          <input type="checkbox" id="two" />Second checkbox</label>
+                        <label for="three">
+                          <input type="checkbox" id="three" />Third checkbox</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+            <div class="col-md-6 text-md-end" style="margin-top: -14px;">
+              <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
+                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                Add student to class</button>
+            </div><!--end col-->
+          </div><!--end row-->
+
+        </div>
+
+        <div class="container-fluid px-4">
+          <div class="card mb-4">
+            <div class="card-body">
+
+              <table id="myTable" class="display">
+                <thead>
+                <tr>
+                  <th>Requirement</th>
+                  <th>Type</th>
+                  <th>Process</th>
+                  <th>Status</th>
+                  <th>Group</th>
+                  <th>Milestone</th>
+                  <th>Assignee</th>
+                  <th>Group</th>
+                  <th>Milestone</th>
+                  <th>Assignee</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="issue : ${issueList}">
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                  <td>8</td>
+                  <td>9</td>
+                  <td>10</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!--end container-->
+    <div th:replace="~{footer}"></div>
+
+    <!-- End -->
+  </main>
+</div>
+
+</body>
+<!-- javascript -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+<link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+<script th:src="@{/js/notify.js}"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#myTable').DataTable({
+      "dom": 'frtipl',
+      "bInfo" : false
+    });
+  });
+</script>
+
+<script>
+  var expanded = false;
+
+  function showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+      checkboxes.style.display = "block";
+      expanded = true;
+    } else {
+      checkboxes.style.display = "none";
+      expanded = false;
+    }
+  }
+</script>
+
+<script th:inline="javascript">
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+      const toastMessage = [[${toastMessage}]];
+      if (toastMessage != null) {
+        notify('success', 'Successfully!', toastMessage );
+      }
+    });
+  </script>
+
+<script th:inline="javascript">
+  document.addEventListener("DOMContentLoaded", function(event) {
+    const smessage = [[${smessage}]];
+    if (smessage != null) {
+      notify('success', 'Successfully!', smessage);
+    }
+    const emessage = [[${emessage}]];
+
+    if (emessage != null) {
+      notify('error', 'Error!', emessage);
+    }
+  });
+</script>
+</html>
