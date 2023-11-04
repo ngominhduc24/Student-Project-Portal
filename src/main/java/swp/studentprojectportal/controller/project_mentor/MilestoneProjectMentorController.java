@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Milestone;
+import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.MilestoneService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
@@ -24,6 +25,18 @@ public class MilestoneProjectMentorController {
     @Autowired
     ProjectService projectService;
 
+    @GetMapping("/milestone/list")
+    public String milestoneList(HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        List<Project> projectList = projectService.findAllByProjectMentorId(user.getId());
+
+        if(projectList.isEmpty()) return "redirect:./list/";
+
+        return "redirect:./list/" + projectList.get(0).getId();
+
+    }
+
     @GetMapping("/milestone/list/")
     public String milestoneList(HttpSession session, Model model) {
 
@@ -35,6 +48,7 @@ public class MilestoneProjectMentorController {
         return "project_mentor/milestone/milestoneList";
 
     }
+
     @GetMapping("/milestone/list/{projectId}")
     public String milestoneList(HttpSession session, Model model, @PathVariable Integer projectId) {
 

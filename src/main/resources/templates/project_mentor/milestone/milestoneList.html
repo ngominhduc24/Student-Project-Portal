@@ -65,11 +65,19 @@
 
                     <div class="col-3">
                         <select class="form-select" onchange="changeProject(this.value)">
-                            <option value="" selected>All</option>
                             <option th:each="project : ${projectList}"
                                     th:value="${project.id}"
                                     th:text="${project.groupName} + ' - ' + ${project.aclass.className}"
                                     th:selected="${project.id == projectId}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-3">
+                        <select class="form-select" onchange="filterByStatus(this.value)">
+                            <option value="all" selected>All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Evaluated">Evaluated</option>
                         </select>
                     </div>
 
@@ -82,9 +90,9 @@
                         <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Submitter</th>
+                            <th th:if="${isMentor}">Submitter</th>
                             <th>Class</th>
-                            <th>Group</th>
+                            <th th:if="${isMentor}">Group</th>
                             <th>Assignment</th>
                             <th>Submit File</th>
                             <th>Submit At</th>
@@ -94,31 +102,40 @@
                         </thead>
 
                         <tbody>
-                        <tr th:each="milestone : ${milestoneList}"
+                        <tr th:each="milestone : ${milestoneList}" class="milestone"
                             th:with="submission=${milestone.submissionList.size()>0 ? milestone.submissionList.get(0) : null}">
                             <td th:text="${milestone.id}"></td>
 
-                            <td th:if="${submission!=null}"
-                                th:text="${submission.createBy.fullName}"></td>
-                            <td th:unless="${submission!=null}"></td>
+                            <td th:if="${isMentor}">
+                                <div th:if="${submission!=null}"
+                                     th:text="${submission.createBy.fullName}"></div>
+                            </td>
 
                             <td th:text="${milestone.project.aclass.className}"></td>
-                            <td th:text="${milestone.project.groupName}"></td>
+                            <td th:text="${milestone.project.groupName}" th:if="${isMentor}"></td>
                             <td th:text="${milestone.title}"></td>
 
-                            <td th:if="${submission!=null}">
-                                <a th:href="${submission.pathFile}" target="_blank"
-                                   th:text="${submission.fileLocation}"></a>
+                            <td>
+                                <div th:if="${submission!=null}">
+                                    <a th:href="${submission.pathFile}" target="_blank"
+                                       th:text="${submission.fileLocation}"></a>
+                                </div>
                             </td>
-                            <td th:unless="${submission!=null}"></td>
 
-                            <td th:if="${submission!=null}"
-                                th:text="${submission.createAt}"></td>
-                            <td th:unless="${submission!=null}"></td>
+                            <td>
+                                <div th:if="${submission!=null}"
+                                     th:text="${submission.createAt}"></div>
+                            </td>
 
-                            <td th:if="${submission!=null}"
-                                th:text="${submission.statusDetails}"></td>
-                            <td th:unless="${submission!=null}">Pending</td>
+                            <td>
+                                <div th:if="${submission!=null}" class="milestoneStatus"
+                                     th:text="${submission.statusDetails}">
+                                </div>
+
+                                <div th:unless="${submission!=null}" class="milestoneStatus">
+                                    Pending
+                                </div>
+                            </td>
 
                             <td>
                                 <a th:if="${!isMentor && submission==null}"
@@ -126,8 +143,11 @@
 
                                 <a th:if="${!isMentor && submission!=null && submission.status==1}"
                                    th:href="'../submit/' + ${milestone.id}">Resubmit</a>
+
                                 <a th:if="${!isMentor && submission!=null}"
                                    th:href="'/student/submission/details/' + ${submission.id}">Details</a>
+                                <a th:if="${isMentor && submission!=null && submission.status==1}"
+                                   th:href="'/project-mentor/submission/evaluate/' + ${submission.id}">Evaluate</a>
                             </td>
                         </tr>
                         </tbody>
@@ -144,6 +164,17 @@
 <script>
     function changeProject(projectId) {
         window.location.href = `./${projectId}`;
+    }
+
+    function filterByStatus(status) {
+        const milestones = document.querySelectorAll('.milestone');
+
+        for (milestone of milestones)
+            if (status == 'all' || milestone.querySelector('.milestoneStatus').textContent.includes(status))
+                milestone.style.display = 'table-row';
+            else milestone.style.display = 'none';
+
+        console.log(milestones)
     }
 </script>
 
