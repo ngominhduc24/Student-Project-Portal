@@ -105,7 +105,8 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <p class="btn btn-link">Evaluate</p>
+                                        <div th:if="${isMentor}" class="btn btn-link">Evaluate</div>
+                                        <div th:if="${!isMentor}" class="btn btn-link">Result</div>
                                     </td>
                                 </tr>
                             </tbody>
