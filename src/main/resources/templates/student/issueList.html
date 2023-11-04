@@ -129,9 +129,6 @@
               Add student to class</button>
             </div><!--end col-->
         </div><!--end row-->
-      <script>
-
-      </script>
         <div class="container-fluid px-4">
           <div class="card mb-4">
             <div class="card-body">
@@ -139,10 +136,46 @@
               <div class="row">
                 <div class="col-md-3">
                   <div class="mb-3">
-                    Filter: <input type="text" class="form-control form-control-sm" id="myInput" onkeyup="myFunction()" placeholder="Filter ">
+                    <select id="group" class="form-select">
+                      <option value="-1">All Group</option>
+                      <!-- Loop through the "groups" attribute and populate the options -->
+                      <th:block th:each="group : ${groups}">
+                        <option th:value="${group.getId()}" th:text="${group.getGroupName()}"
+                                th:selected="${group.getId() == projectId}"></option>
+                      </th:block>
+                    </select>
                   </div>
                 </div>
+
+                <div class="col-md-3">
+                  <div class="mb-3">
+                    <select id="milestone" class="form-select">
+                      <option value="-1">All Milestone</option>
+                      <!-- Loop through the "milestones" attribute and populate the options -->
+                      <th:block th:each="milestone : ${milestones}">
+                        <option th:value="${milestone.getId()}" th:text="${milestone.getTitle()}"
+                                th:selected="${milestone.getId() == milestoneId}"></option>
+                      </th:block>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="mb-3">
+                    <select id="assignee" class="form-select">
+                      <option value="-1">All Assignee</option>
+                      <!-- Loop through the "assignees" attribute and populate the options -->
+                      <th:block th:each="assignee : ${assignees}">
+                        <option th:value="${assignee.getId()}" th:text="${assignee.getDisplayName()}"
+                                th:selected="${assignee.getId() == assigneeId}"></option>
+                      </th:block>
+                    </select>
+                  </div>
+                </div>
+
               </div>
+
+
 
               <!-- End Filter -->
               <table id="myTable" class="display">
@@ -219,41 +252,6 @@
             </div>
           </div>
         </div>
-        <script>
-          // Function to fetch data from the API
-          function viewMemberGroup(groupId) {
-            fetch('http://localhost:8080/api/v1/project/member/'+ groupId)
-                    .then(response => response.json())
-                    .then(data => {
-                      // Get the table body element
-                      const tableBody = document.querySelector('#tableMember tbody');
-
-                        // Clear the table body
-                        tableBody.innerHTML = '';
-
-                      // Create a new row
-
-                      // Populate the row with data
-                      data.forEach(element => {
-                        const newRow = document.createElement('tr');
-                        newRow.innerHTML = `
-                         <td>${element.fullName}</td>
-                        <td>${element.email}</td>
-                        <td>${element.phone}</td>
-                        `;
-                        tableBody.appendChild(newRow);
-                          });
-
-                      // Add the new row to the table
-                    })
-                    .catch(error => {
-                      console.error('Failed to fetch data from the API', error);
-                    });
-          }
-
-          // Call the fetchData function to populate the table
-          fetchData();
-        </script>
       </div>
     </div><!--end container-->
     <div th:replace="~{footer}"></div>
@@ -316,6 +314,33 @@
       notify('error', 'Error!', emessage);
     }
   });
+</script>
+<script>
+  // Get references to the select elements
+  const groupSelect = document.getElementById("group");
+  const milestoneSelect = document.getElementById("milestone");
+  const assigneeSelect = document.getElementById("assignee");
+
+  // Function to construct the URL and navigate to it
+  function updateURL() {
+    // Get the selected values from the select elements
+    const projectId = document.getElementById("group").value;
+    const milestoneId = document.getElementById("milestone").value;
+    const assigneeId = document.getElementById("assignee").value;
+
+    // Construct the URL with the selected values
+    const url = `/student/issue/list?projectId=${projectId}&milestoneId=${milestoneId}&assigneeId=${assigneeId}`;
+
+    // Navigate to the new URL
+    location.href = url;
+  }
+
+  // Add an onchange event handler to each select element
+  groupSelect.addEventListener("change", updateURL);
+  milestoneSelect.addEventListener("change", updateURL);
+  assigneeSelect.addEventListener("change", updateURL);
+
+  // Function to construct the URL and navigate to it
 </script>
 
 </html>

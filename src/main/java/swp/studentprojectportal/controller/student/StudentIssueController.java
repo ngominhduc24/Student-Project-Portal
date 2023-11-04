@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.Issue;
+import swp.studentprojectportal.model.Milestone;
+import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.IssueService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
@@ -29,24 +31,30 @@ public class StudentIssueController {
     ) {
         User user = (User) session.getAttribute("user");
         List<Issue> issueList = issueService.getAllIssueByStudentId(user.getId());
-        issueList = issueService.filterIssue(issueList, -1, -1, -1, "3");
 
         // Get unique group names from all issues
-        Set<String> uniqueGroups = issueList.stream()
-                .map(issue -> issue.getProject().getGroupName())
+        Set<Project> uniqueGroups = issueList.stream()
+                .map(issue -> issue.getProject())
                 .collect(Collectors.toSet());
 
         // Get unique milestone titles from all issues
-        Set<String> uniqueMilestones = issueList.stream()
-                .map(issue -> issue.getMilestone().getTitle())
+        Set<Milestone> uniqueMilestones = issueList.stream()
+                .map(issue -> issue.getMilestone())
                 .collect(Collectors.toSet());
 
-        // Get unique assignee display names from all issues
-        Set<String> uniqueAssignees = issueList.stream()
-                .map(issue -> issue.getAssignee().getDisplayName())
-                .collect(Collectors.toSet());
 
         // filter issue
+        issueList = issueService.filterIssue(issueList, projectId, milestoneId, assigneeId, "");
+
+        // Asignee must all be in filtered issue list
+        Set<User> uniqueAssignees = issueList.stream()
+                .map(issue -> issue.getAssignee())
+                .collect(Collectors.toSet());
+
+        // add attribute for select option
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("milestoneId", milestoneId);
+        model.addAttribute("assigneeId", assigneeId);
 
         model.addAttribute("groups", uniqueGroups);
         model.addAttribute("milestones", uniqueMilestones);
