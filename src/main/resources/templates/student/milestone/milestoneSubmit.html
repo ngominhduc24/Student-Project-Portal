@@ -52,9 +52,9 @@
                 <div>
                     <h4 class="mb-0">Assignment List</h4>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="../home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a href="../list/">Assignment List</a></li>
+                        <li class="breadcrumb-item"><a th:href="'../list/' + ${milestone.project.id}">Assignment List</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Assignment Submit</li>
                     </ol>

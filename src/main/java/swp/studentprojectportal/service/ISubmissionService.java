@@ -9,4 +9,6 @@ public interface ISubmissionService {
 
     public boolean updateFileLocation(Integer submissionId, String fileLocation);
 
+    public Submission findById(Integer submissionId);
+
 }
