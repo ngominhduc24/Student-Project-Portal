@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import swp.studentprojectportal.model.Milestone;
+import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.Submission;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.*;
@@ -35,6 +36,16 @@ public class MilestoneStudentController {
     SubmissionService submissionService;
     @Autowired
     SubmitIssueService submitIssueService;
+
+    @GetMapping("/milestone/list")
+    public String milestoneList(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        List<Project> projectList = projectService.findAllByStudentUserId(user.getId());
+
+        if(projectList.isEmpty()) return "redirect:./list/";
+
+        return "redirect:./list/" + projectList.get(0).getId();
+    }
 
     @GetMapping("/milestone/list/")
     public String milestoneList(HttpSession session, Model model) {

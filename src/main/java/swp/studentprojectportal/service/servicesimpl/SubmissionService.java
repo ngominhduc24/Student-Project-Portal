@@ -47,4 +47,9 @@ public class SubmissionService implements ISubmissionService {
         }
 
     }
+
+    @Override
+    public Submission findById(Integer submissionId) {
+        return submissionRepository.findById(submissionId).orElseGet(null);
+    }
 }
