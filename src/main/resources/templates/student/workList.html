@@ -42,6 +42,7 @@
     <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 
     <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <style>
         .datatable-table {
             border: 1px solid #dee2e6;
@@ -55,13 +56,16 @@
             padding-left: 5px;
         }
         th:first-child {
-            width: 6%;
+            width: 4%;
         }
         th:nth-child(2), th:nth-child(3) {
+            width: 10%;
+        }
+        th:nth-child(4) {
             width: 25%;
         }
-        th:nth-child(4),th:last-child {
-            width: 12%;
+        th:nth-child(5),th:last-child {
+            width: 8%;
         }
         td:last-child {
             font-size: 18px;
@@ -185,10 +189,10 @@
         <div class="topnav">
             <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
             <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
-            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
-            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
-            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
-            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
+<!--            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>-->
+<!--            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>-->
+<!--            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>-->
+<!--            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
         </div>
 
         <!--    Settings -->
@@ -196,47 +200,35 @@
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
+                        <h3 style="margin-top: -14px;margin-bottom: 20px;" >Wỏk List</h3>
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
                             <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+                            <li class="breadcrumb-item active">Work List</li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Issue Setting List</li>
                         </ol>
                     </div><!--end col-->
                     <div class="col-xl-5 col-md-6"></div><!--end col-->
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
-                                style="margin-left: 24px">Add New</a>
-                        </div>
-                        <div th:if="${session.user.setting.id==4}" style="display: inline">
-                            <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#createIssueSettingModal" style="margin-bottom: 8px; width: 155px" >
-                                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
-                                Add New
-                            </button>
-                            <button type="button" class="btn" data-toggle="modal" style="background-color: #298d5e; color: white; width: 155px;" data-target="#exampleModalCenter">
-                                <i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1
-                            1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0
-                            0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
-                                Sync gitlab
-                            </button>
-                        </div>
+                        <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#createIssueUpdateModal" style="margin-bottom: 8px; width: 155px" >
+                            <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                            Add New
+                        </button>
                     </div><!--end col-->
                     <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
                 </div><!--end row-->
 
-
+                <input type="hidden" name="id" th:value="${issueId}">
                 <!-- Add new -->
 
-                <div class="modal fade" id="createIssueSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueSettingModalLabel" aria-hidden="true">
+                <div class="modal fade" id="createIssueUpdateModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueUpdateModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
-<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                                <h5 class="modal-title" id="createIssueUpdateModalLabel">New Work</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -245,23 +237,9 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Subject Code</label>
-                                            <input type="text" name="subjectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly disabled>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Class Name</label>
-                                            <input type="text" name="className" class="form-control" required th:value="${setting.aclass.className}" readonly disabled>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Group<span class="text-danger">*</span></label>
+                                            <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Title</label>
-                                            <div class="d-flex">
-                                                <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" >
+                                                <input type="text" id="newTitle" name="newTitle" class="form-control"  required>
                                             </div>
                                         </div>
                                         <div class="mb-3 col-md-12">
@@ -275,115 +253,62 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Close</button>
-                                <button type="button" class="btn btn-primary"  id="addIssueSettingButton" >
+                                <button type="button" class="btn btn-primary"  id="addIssueUpdateButton" >
                                     Add New
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Add Issue-->
+                <!-- Add Issue Update-->
 
                 <script>
                     // Get a reference to the button
-                    var addIssueSettingButton = document.getElementById('addIssueSettingButton');
+                    var addIssueUpdateButton = document.getElementById('addIssueUpdateButton');
 
                     // Add a click event listener to the button
-                    addIssueSettingButton.addEventListener('click', function() {
+                    addIssueUpdateButton.addEventListener('click', function() {
                         // Get values from the form fields
-                        const classId = document.querySelector('input[name="id"]').value;
-                        const group = document.querySelector('input[id="newSettingGroup"]').value;
-                        const title = document.querySelector('input[id="newSettingTitle"]').value;
+                        const issueId = document.querySelector('input[name="id"]').value;
+                        const title = document.querySelector('input[id="newTitle"]').value;
                         const description = document.querySelector('textarea[name="newDescription"]').value;
 
                         // Prepare the URL with query parameters
-                        var endPoint = '/api/v1/add/issue-setting' +
-                            '?classId=' + classId +
-                            '&group=' + group+
+                        var endPoint = '/api/v1/add/issue-update' +
+                            '?issueId=' + issueId +
                             '&title=' + title +
                             '&description=' + description ;
 
-                            // Make an API request using fetch with GET method
-                            fetch(endPoint)
-                                .then(response => {
-                                    if (response.ok) {
-                                        notify('success', 'Add Issue setting successfully.', 'Success');
-                                        // Delay the page reload for a few seconds
-                                        setTimeout(() => {
-                                            location.reload();
-                                        }, 1000); // Adjust the delay duration as needed
-                                    } else {
-                                        // Handle API errors
-                                        return response.text();
-                                    }
-                                })
-                                .then(errorText =>{
-                                    if(errorText && !errorText.startsWith('Add'))
-                                        notify('error',errorText,'Error')
-                                })
-                                .catch(error => {
-                                    // Handle network errors
-                                    console.error('Network error:', error);
-                                });
+                        // Make an API request using fetch with GET method
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    notify('success', 'Add Work successfully.', 'Success');
+                                    // Delay the page reload for a few seconds
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000); // Adjust the delay duration as needed
+                                } else {
+                                    // Handle API errors
+                                    return response.text();
+                                }
+                            })
+                            .then(errorText =>{
+                                if(errorText && !errorText.startsWith('Add'))
+                                    notify('error',errorText,'Error')
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
                     });
-                </script>
-
-                <!-- Modal Sync GitLab -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Sync Gitlab</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Group id or Path<span class="text-danger">*</span></label>
-                                        <div class="d-flex">
-                                            <input type="text" name="groupIdOrPath" class="form-control" th:value="${groupGitlabId}" required>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Personal Token<span class="text-danger">*</span></label>
-                                        <div class="d-flex">
-                                            <input type="password" name="personalToken" class="form-control" th:value="${personalToken}" required>
-                                        </div>
-                                    </div>
-                                </div><!--end col-->
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="syncGitLab()">Sync</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    const syncGitLab = () => {
-                        const classId = document.querySelector('input[name="id"]').value;
-                        let groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
-                        groupIdOrPath = groupIdOrPath.charAt(groupIdOrPath.length - 1) === '/' ? groupIdOrPath.slice(0, -1) : groupIdOrPath;
-                        groupIdOrPath = groupIdOrPath.split('/').at(-1);
-                        const personalToken = document.querySelector('input[name="personalToken"]').value;
-                        // hidden body
-                        document.querySelector('#main').style.display = 'none';
-                        // show text
-                        document.querySelector('#syncText').removeAttribute('hidden');
-                        // change location
-                        window.location.href = `/issue-setting/sync-gitlab?classId=${classId}&group=${groupIdOrPath}&personalToken=${personalToken}`;
-                    }
                 </script>
 
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form action="/class/issue-setting" class="card-body rounded-3" id="form">
+                        <form action="/student/work" class="card-body rounded-3" id="form">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
-                                    <input type="hidden" name="id" th:value="${class.id}">
                                     <div class="mb-3 col-md-4 pe-1">
                                         <select name="pageSize" class="form-select"
                                                 onchange="this.form.submit()">
@@ -397,27 +322,6 @@
                                     <p class="ps-2 col-md-5 pt-2">per page</p>
                                 </div>
                                 <div class="row col-md-8" style="margin-left: -100px">
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <select name="settingGroup" class="form-select"
-                                                    onchange="this.form.submit()">
-                                                <option value="" th:selected="${settingGroup.isEmpty()}">All Group</option>
-                                                <option th:each="group : ${settingGroupList}"
-                                                        th:value="${group}"
-                                                        th:text="${group}" th:selected="${settingGroup.equalsIgnoreCase(group)}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <select name="status" class="form-select"
-                                                    onchange="this.form.submit()">
-                                                <option value="-1" th:selected="${status == -1}">All Status</option>
-                                                <option value="1" th:selected="${status == 1}">Active</option>
-                                                <option value="0" th:selected="${status == 0}">Inactive</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text"
@@ -441,16 +345,10 @@
                                         <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('id',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Group
-                                        <i th:class="${(sortBy eq 'setting_group' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortData('setting_group',1)"></i>
-                                        <i th:class="${(sortBy eq 'setting_group' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortData('setting_group',2)"></i>
-                                    </th>
                                     <th data-sortable="false">Title
-                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                        <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                            onclick="sortData('setting_title',1)"></i>
-                                        <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                        <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('setting_title',2)"></i>
                                     </th>
                                     <th data-sortable="false">Description
@@ -459,26 +357,20 @@
                                         <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('description',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Status</th>
+                                    <th>Update At</th>
                                     <th data-sortable="false">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="setting : ${issueSettingList}">
-                                    <td th:text="${setting.id}"></td>
-                                    <td th:text="${setting.settingGroup}"></td>
-                                    <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.description}"></td>
+                                <tr th:each="work : ${workList}">
+                                    <td th:text="${work.id}"></td>
+                                    <td th:text="${work.title}"></td>
+                                    <td th:text="${work.description}"></td>
+                                    <td th:text="${#dates.format(work.updateAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+<!--                                    <td th:text="${work.updateAt}"></td>-->
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input th:if="${setting.aclass!=null}" class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingGroup}" onchange="showConfirmationDialog(this)">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div th:if="${setting.aclass!=null}">
-                                            <div th:onclick="'details(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                            <div th:onclick="'details(' + ${work.id} + ')'" style="border: none; background-color: white; color: blue"><i
                                                     class="fas fa-pen-to-square"></i></div>
-                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -519,49 +411,6 @@
                                     document.getElementById('form').submit();
                                 }
                             </script>
-
-                            <!-- Modal Dialog -->
-                            <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
-                                <div class="modal-dialog modal-confirm">
-                                    <div class="modal-content">
-                                        <div class="modal-header flex-column">
-                                            <div class="icon-box">
-                                                <i  class="material-icons">&#xE876;</i>
-                                            </div>
-                                            <h4 class="modal-title w-100">Are you sure?</h4>
-                                            <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p></p>
-                                        </div>
-                                        <div class="modal-footer justify-content-center">
-                                            <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn confirmButton" >Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
-                                <div class="modal-dialog modal-confirm">
-                                    <div class="modal-content">
-                                        <div class="modal-header flex-column">
-                                            <div class="icon-box" style="border-color: #f15e5e">
-                                                <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
-                                            </div>
-                                            <h4 class="modal-title w-100">Are you sure?</h4>
-                                            <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p></p>
-                                        </div>
-                                        <div class="modal-footer justify-content-center">
-                                            <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <script>
                                 let id;
                                 let status;
@@ -620,7 +469,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="detailsModalLongTitle">Issue Setting details</h5>
+                                <h5 class="modal-title" id="detailsModalLongTitle">Work details</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -628,27 +477,22 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
+<!--                                        <div class="mb-3 col-md-6">-->
+<!--                                            <label class="form-label">Subject Code</label>-->
+<!--                                            <input type="text" name="subjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly disabled>-->
+<!--                                        </div>-->
+<!--                                        <div class="mb-3 col-md-6">-->
+<!--                                            <label class="form-label">Class Name</label>-->
+<!--                                            <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly disabled>-->
+<!--                                        </div>-->
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Subject Code</label>
-                                            <input type="text" name="subjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly disabled>
+                                            <label class="form-label">Title<span class="text-danger">*</span></label>
+                                            <input type="text" id="details-title" class="form-control" >
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Class Name</label>
-                                            <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly disabled>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Group<span class="text-danger">*</span></label>
-                                            <input type="text" id="details-issue-setting-group" class="form-control" >
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Title</label>
-                                            <input type="text" id="details-issue-setting-title" class="form-control" >
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <div class="form-switch">
-                                                <label class="form-label" style="margin-left: -40px">Status</label>
-                                                <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 20px; margin-left: 20px">
-                                            </div>
+                                            <label class="form-label">Update At</label>
+<!--                                            <input type="text" id="details-update-at" class="form-control" >-->
+                                            <input type="text" id="details-update-at" class="form-control" disabled>
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description</label>
@@ -659,7 +503,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal">Close</button>
-                                <button type="button" class="btn btn-primary" id="updateIssueSettingButton">Update</button>
+                                <button type="button" class="btn btn-primary" id="updateIssueUpdateButton">Update</button>
                             </div>
                         </div>
                     </div>
@@ -669,17 +513,16 @@
                 <script>
                     function details(id) {
                         console.log('show detail'+id)
-                        let endPoint = '/api/v1/issue-setting?issueSettingId=' + id;
+                        let endPoint = '/api/v1/issue-update?issueUpdateId=' + id;
                         fetch(endPoint)
                             .then(response => {
                                 if (response.ok) {
                                     // Handle a successful API response
                                     response.json().then(data => {
-                                        document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
-                                        document.querySelector('input[id="details-issue-setting-title"]').value = data.title;
+                                        document.querySelector('input[id="details-title"]').value = data.title;
+                                        document.querySelector('input[id="details-update-at"]').value = moment(data.updateAt).format('YYYY-MM-DD HH:mm:ss');
                                         document.querySelector('textarea[name="detail-description"]').value = data.description;
-                                        document.getElementById('detail-status').checked = data.status == 1 ? true : false;
-                                        document.getElementById('updateIssueSettingButton').setAttribute('onclick', 'updateIssueSetting(' + data.id + ')');
+                                        document.getElementById('updateIssueUpdateButton').setAttribute('onclick', 'updateIssueUpdate(' + data.id + ')');
                                     });
                                 } else {
                                     // Handle API errors
@@ -696,20 +539,18 @@
 
                 <!--Update Issue-->
                 <script>
-                    function updateIssueSetting(id){
-                        const classId = document.querySelector('input[name="id"]').value;
-                        const group = document.querySelector('input[id="details-issue-setting-group"]').value;
-                        const title = document.querySelector('input[id="details-issue-setting-title"]').value;
+                    function updateIssueUpdate(id){
+                        const issueId = document.querySelector('input[name="id"]').value;
+                        const title = document.querySelector('input[id="details-title"]').value;
                         const description = document.querySelector('textarea[name="detail-description"]').value;
-                        const status = document.getElementById('detail-status').checked ? 1 : 0;
-                        let endPoint = '/api/v1/update/issue-setting?issueSettingId=' + id + '&classId=' + classId +'&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
+                        let endPoint = '/api/v1/update/issue-update?issueUpdateId=' + id + '&issueId=' + issueId +'&title=' + title + '&description=' + description;
 
                         fetch(endPoint, {
                             method: 'GET',
                         })
                             .then(response => {
                                 if(response.ok) {
-                                    notify('success','Update issue setting successfully' , 'Success');
+                                    notify('success','Update work successfully' , 'Success');
                                     setTimeout(() => {
                                         location.reload();
                                     }, 1000);
@@ -727,6 +568,7 @@
                             });
                     }
                 </script>
+
 
             </div>
         </div>
