@@ -13,7 +13,7 @@ public interface ISettingService {
     List<Setting> getAllRole();
     Setting getLastestSemester();
     Setting findById(int id);
-    boolean checkExistedSettingTitle(String settingTitle, String id);
+    boolean checkExistedSettingTitle(String settingTitle, Integer id);
     boolean checkExistedDisplayOrder(int typeId, int displayOrder, String id);
     String setTypeName(int typeId);
     Setting findLastDisplayOrder(int typeId);

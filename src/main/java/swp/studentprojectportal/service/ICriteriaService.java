@@ -10,4 +10,5 @@ public interface ICriteriaService {
                           String sortBy, Integer sortType, Integer status);
     Criteria findById(int id);
     Criteria save(Criteria criteria);
+    Boolean checkExistedName(String name, Integer assignmentId, Integer id);
 }

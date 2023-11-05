@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.model.User;
 
@@ -55,6 +56,17 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
             "WHERE s.subject_manager_id = ?1", nativeQuery = true)
     List<User> findTeacherBySubjectManagerId(int subjectManagerId);
     List<User> findTeacherBySettingIdAndStatus(Integer roleId, Boolean status);
+
+    @Query(value="SELECT u.* FROM user u join student_class sc on u.id = sc.student_id \n" +
+            "WHERE (project_id = :projectId) \n" +
+            "and (LOWER(full_name) LIKE LOWER(CONCAT('%', :search, '%')) \n" +
+            "OR LOWER(email) LIKE LOWER(CONCAT('%', :search, '%')) \n" +
+            "OR LOWER(phone) LIKE LOWER(CONCAT('%', :search, '%'))) \n" +
+            "and (:status = -1 OR status = :status)"
+            , nativeQuery = true)
+    Page<User> filterProjectMember(
+            @Param("projectId") Integer projectId, @Param("search") String search,
+            @Param("status") Integer status, Pageable pageable);
 }
 
 

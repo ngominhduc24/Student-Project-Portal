@@ -76,4 +76,12 @@ public class User {
         this.password = Utility.hash(password);
     }
 
+    public String getDisplayName() {
+        if(email == null) {
+            return fullName;
+        } else {
+            return email.split("@")[0];
+        }
+    }
+
 }

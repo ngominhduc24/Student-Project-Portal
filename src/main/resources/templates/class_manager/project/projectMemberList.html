@@ -157,8 +157,6 @@
     </div>
   </div>
 </div>
-<!-- Loader -->
-<div id="syncText" hidden="hidden">System are sync with Gitlab ....</div>
 
 <div class="page-wrapper doctris-theme toggled" id="main">
   <!-- sidebar-wrapper  -->
@@ -169,13 +167,12 @@
     <div class="topnav">
       <a style="cursor: pointer;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}" ><p style="margin:0;">General</p></a>
       <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}" ><p style="margin:0;">General</p></a>
-      <a style="cursor: pointer;" th:href="@{/class-manager/project/members(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
-      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class-manager/project/milestone(projectId=${project.id})}"><p style="margin:0;"  >Milestones</p></a>
+      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class-manager/project/members(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
+      <a style="cursor: pointer;" th:href="@{/class-manager/project/milestone(projectId=${project.id})}"><p style="margin:0;"  >Milestones</p></a>
       <a style="cursor: pointer;" th:href="@{/class-manager/project/issue-setting(id=${project.id})}" ><p style="margin:0;">Settings</p></a>
     </div>
 
-    <!--    Assignment-->
-    <div class="container-fluid" id="assignment">
+    <div class="container-fluid" >
       <div class="layout-specing" style="padding: 15px 14px 24px !important;">
         <div class="row px-4" style="width: 100%; justify-content: space-between">
           <div class="col-xl-5 col-md-6">
@@ -192,114 +189,59 @@
 
           <!--                    <div class="col-xl-2 col-md-6"></div>-->
 
-          <div class="col-xl-2 col-md-6 align-items-center justify-content-center mb-2">
+          <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-bottom: 8px; width: 155px">
               <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
               Add New
-            </button>
-            <button type="button" class="btn" data-toggle="modal" style="background-color: #298d5e; color: white; width: 155px" data-target="#syncModalCenter">
-              <i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1
-                            1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0
-                            0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
-              Sync gitlab
             </button>
           </div><!--end col-->
         </div><!--end row-->
         <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
 
-        <!-- Modal sync -->
-        <div class="modal fade" id="syncModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="syncModalLongTitle">Sync Gitlab</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="col-md-12">
-                  <div class="mb-3">
-                    <label class="form-label">Group id or Path<span class="text-danger">*</span></label>
-                    <div class="d-flex">
-                      <input type="text" name="groupIdOrPath" class="form-control" th:value="${groupGitlabId}" required>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Personal Token<span class="text-danger">*</span></label>
-                    <div class="d-flex">
-                      <input type="password" name="personalToken" class="form-control" th:value="${personalToken}"  required>
-                    </div>
-                  </div>
-                </div><!--end col-->
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="syncGitLab()">Sync</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <script>
-          const syncGitLab = () => {
-            const classId = document.querySelector('input[name="id"]').value;
-            let groupIdOrPath = document.querySelector('input[name="groupIdOrPath"]').value;
-            groupIdOrPath = groupIdOrPath.charAt(groupIdOrPath.length - 1) === '/' ? groupIdOrPath.slice(0, -1) : groupIdOrPath;
-            groupIdOrPath = groupIdOrPath.split('/').at(-1);
-            const personalToken = document.querySelector('input[name="personalToken"]').value;
-            // hidden body
-            document.querySelector('#main').style.display = 'none';
-            // show text
-            document.querySelector('#syncText').removeAttribute('hidden');
-            // change location
-            window.location.href = `/milestone/sync-gitlab?classId=${classId}&group=${groupIdOrPath}&personalToken=${personalToken}`;
-          }
-        </script>
-
-        <!-- Modal add new-->
-        <div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add new milestone</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="row justify-content-center">
-                  <div class="col-md-12 row" style="margin-top: 12px;">
-                    <div class="mb-3 col-md-12">
-                      <label class="form-label">Title<span class="text-danger">*</span></label>
-                      <input type="text" name="milestone-title" class="form-control" required>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                      <label class="form-label">Start date<span class="text-danger">*</span></label>
-                      <input type="date" id="start-date" name="start" required>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                      <label class="form-label">End date<span class="text-danger">*</span></label>
-                      <input type="date" id="end-date" name="end" required>
-                    </div>
-                    <div class="mb-3 col-md-12">
-                      <label class="form-label">Description</label>
-                      <textarea type="text" rows="3" name="description" class="form-control"></textarea>
-                    </div>
-                  </div><!--end col-->
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Close</button>
-                <button type="button" class="btn btn-primary" id="createMilestoneButton">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
+<!--        &lt;!&ndash; Modal add new&ndash;&gt;-->
+<!--        <div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--          <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--            <div class="modal-content">-->
+<!--              <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalLongTitle">Add new milestone</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">-->
+<!--                  <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--              </div>-->
+<!--              <div class="modal-body">-->
+<!--                <div class="row justify-content-center">-->
+<!--                  <div class="col-md-12 row" style="margin-top: 12px;">-->
+<!--                    <div class="mb-3 col-md-12">-->
+<!--                      <label class="form-label">Title<span class="text-danger">*</span></label>-->
+<!--                      <input type="text" name="milestone-title" class="form-control" required>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3 col-md-6">-->
+<!--                      <label class="form-label">Start date<span class="text-danger">*</span></label>-->
+<!--                      <input type="date" id="start-date" name="start" required>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3 col-md-6">-->
+<!--                      <label class="form-label">End date<span class="text-danger">*</span></label>-->
+<!--                      <input type="date" id="end-date" name="end" required>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3 col-md-12">-->
+<!--                      <label class="form-label">Description</label>-->
+<!--                      <textarea type="text" rows="3" name="description" class="form-control"></textarea>-->
+<!--                    </div>-->
+<!--                  </div>&lt;!&ndash;end col&ndash;&gt;-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Close</button>-->
+<!--                <button type="button" class="btn btn-primary" id="createMilestoneButton">Save changes</button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
 
 
         <div class="container-fluid px-4">
           <div class="card mb-4">
-            <form action="/class-manager/project/milestone" class="card-body rounded-3" id="form">
+            <form action="/class-manager/project/members" class="card-body rounded-3" id="form">
               <div class="row" style="width: 100%; justify-content: space-between">
                 <input type="hidden" name="projectId" th:value="${project.id}">
                 <div class="col-md-3 row">
@@ -344,41 +286,41 @@
                     <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                        onclick="sortData('id',2)"></i>
                   </th>
-                  <th data-sortable="false">Title
-                    <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                       onclick="sortData('title',1)"></i>
-                    <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                       onclick="sortData('title',2)"></i>
+                  <th data-sortable="false">Name
+                    <i th:class="${(sortBy eq 'full_name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                       onclick="sortData('full_name',1)"></i>
+                    <i th:class="${(sortBy eq 'full_name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                       onclick="sortData('full_name',2)"></i>
                   </th>
-                  <th data-sortable="false">Start Date
-                    <i th:class="${(sortBy eq 'start_date' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                       onclick="sortData('start_date',1)"></i>
-                    <i th:class="${(sortBy eq 'start_date' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                       onclick="sortData('start_date',2)"></i>
+                  <th data-sortable="false">Email
+                    <i th:class="${(sortBy eq 'email' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                       onclick="sortData('email',1)"></i>
+                    <i th:class="${(sortBy eq 'email' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                       onclick="sortData('email',2)"></i>
                   </th>
-                  <th data-sortable="false">End Date
-                    <i th:class="${(sortBy eq 'end_date' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                       onclick="sortData('end_date',1)"></i>
-                    <i th:class="${(sortBy eq 'end_date' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                       onclick="sortData('end_date',2)"></i>
+                  <th data-sortable="false">Phone
+                    <i th:class="${(sortBy eq 'phone' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                       onclick="sortData('phone',1)"></i>
+                    <i th:class="${(sortBy eq 'phone' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                       onclick="sortData('phone',2)"></i>
                   </th>
                   <th data-sortable="false">Status</th>
                   <th data-sortable="false">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="milestone : ${milestoneList}">
-                  <td th:text="${milestone.id}"></td>
-                  <td th:text="${milestone.title}"></td>
-                  <td th:text="${milestone.startDate}"></td>
-                  <td th:text="${milestone.endDate}"></td>
+                <tr th:each="student : ${studentList}">
+                  <td th:text="${student.id}"></td>
+                  <td th:text="${student.fullName}"></td>
+                  <td th:text="${student.email}"></td>
+                  <td th:text="${student.phone}"></td>
                   <td>
                     <div class="form-check form-switch">
-                      <input th:disabled="${milestone.project==null}" class="form-check-input" type="checkbox" th:checked="${milestone.status}" th:attr="update-id=${milestone.id},data-title=${milestone.title}" onchange="showConfirmationDialog(this)">
+                      <input th:disabled="${session.user.setting.id==1}" class="form-check-input" type="checkbox" th:checked="${student.status}" th:attr="update-id=${student.id},data-title=${student.fullName}" onchange="showConfirmationDialog(this)">
                     </div>
                   </td>
                   <td>
-                    <div th:onclick="'details(' + ${milestone.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                    <div th:onclick="'details(' + ${student.id} + ')'" style="border: none; background-color: white; color: blue"><i
                             class="fas fa-pen-to-square"></i></div>
                   </td>
                 </tr>
@@ -549,111 +491,111 @@
           </div>
         </div>
         <!--                milestone details-->
-        <script>
-          function details(id) {
-            let endPoint = '/api/v1/milestone?milestoneId=' + id;
-            fetch(endPoint)
-                    .then(response => {
-                      if (response.ok) {
-                        // Handle a successful API response
-                        response.json().then(data => {
-                          document.querySelector('input[id="details-milestone-title"]').value = data.title;
-                          document.querySelector('textarea[name="detail-description"]').value = data.description;
-                          document.getElementById('detail-start-date').value = data.startDate;
-                          document.getElementById('detail-end-date').value = data.endDate;
-                          document.getElementById('detail-status').checked = data.status == 1 ? true : false;
-                          document.getElementById('updateMilestoneButton').setAttribute('onclick', 'updateMilestone(' + data.id + ')');
-                        });
-                      } else {
-                        // Handle API errors
-                        console.error('Error getting milestone.');
-                      }
-                    })
-                    .catch(error => {
-                      // Handle network errors
-                      console.error('Network error:', error);
-                    });
-            document.getElementById('btndetails').click();
-          }
-        </script>
-        <!--                milestone update-->
-        <script>
-          function updateMilestone(id){
-            const title = document.querySelector('input[id="details-milestone-title"]').value;
-            const description = document.querySelector('textarea[name="detail-description"]').value;
-            const startDate = document.getElementById('detail-start-date').value;
-            const endDate = document.getElementById('detail-end-date').value;
-            const status = document.getElementById('detail-status').checked ? 1 : 0;
-            let endPoint = '/api/v1/updateMilestone?milestoneId=' + id + '&title=' + title + '&description=' + description + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status;
-            fetch(endPoint)
-                    .then(response => {
-                      if (response.ok) {
-                        // Handle a successful API response
-                        notify('success', 'Successfully!', 'Update milestone successful');
-                        // Delay the page reload for a few seconds
-                        setTimeout(() => {
-                          location.reload();
-                        }, 2000); // Adjust the delay duration as needed
-                        // Close the modal
-                        document.getElementById('detailcloseModal').click();
-                        // reload page
-                        location.reload();
-                      } else {
-                        // Handle API errors
-                        console.error('Error updating milestone.');
-                      }
-                    })
-                    .catch(error => {
-                      // Handle network errors
-                      console.error('Network error:', error);
-                    });
-            location.reload();
-          }
-        </script>
+<!--        <script>-->
+<!--          function details(id) {-->
+<!--            let endPoint = '/api/v1/milestone?milestoneId=' + id;-->
+<!--            fetch(endPoint)-->
+<!--                    .then(response => {-->
+<!--                      if (response.ok) {-->
+<!--                        // Handle a successful API response-->
+<!--                        response.json().then(data => {-->
+<!--                          document.querySelector('input[id="details-milestone-title"]').value = data.title;-->
+<!--                          document.querySelector('textarea[name="detail-description"]').value = data.description;-->
+<!--                          document.getElementById('detail-start-date').value = data.startDate;-->
+<!--                          document.getElementById('detail-end-date').value = data.endDate;-->
+<!--                          document.getElementById('detail-status').checked = data.status == 1 ? true : false;-->
+<!--                          document.getElementById('updateMilestoneButton').setAttribute('onclick', 'updateMilestone(' + data.id + ')');-->
+<!--                        });-->
+<!--                      } else {-->
+<!--                        // Handle API errors-->
+<!--                        console.error('Error getting milestone.');-->
+<!--                      }-->
+<!--                    })-->
+<!--                    .catch(error => {-->
+<!--                      // Handle network errors-->
+<!--                      console.error('Network error:', error);-->
+<!--                    });-->
+<!--            document.getElementById('btndetails').click();-->
+<!--          }-->
+<!--        </script>-->
+<!--        &lt;!&ndash;                milestone update&ndash;&gt;-->
+<!--        <script>-->
+<!--          function updateMilestone(id){-->
+<!--            const title = document.querySelector('input[id="details-milestone-title"]').value;-->
+<!--            const description = document.querySelector('textarea[name="detail-description"]').value;-->
+<!--            const startDate = document.getElementById('detail-start-date').value;-->
+<!--            const endDate = document.getElementById('detail-end-date').value;-->
+<!--            const status = document.getElementById('detail-status').checked ? 1 : 0;-->
+<!--            let endPoint = '/api/v1/updateMilestone?milestoneId=' + id + '&title=' + title + '&description=' + description + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status;-->
+<!--            fetch(endPoint)-->
+<!--                    .then(response => {-->
+<!--                      if (response.ok) {-->
+<!--                        // Handle a successful API response-->
+<!--                        notify('success', 'Successfully!', 'Update milestone successful');-->
+<!--                        // Delay the page reload for a few seconds-->
+<!--                        setTimeout(() => {-->
+<!--                          location.reload();-->
+<!--                        }, 2000); // Adjust the delay duration as needed-->
+<!--                        // Close the modal-->
+<!--                        document.getElementById('detailcloseModal').click();-->
+<!--                        // reload page-->
+<!--                        location.reload();-->
+<!--                      } else {-->
+<!--                        // Handle API errors-->
+<!--                        console.error('Error updating milestone.');-->
+<!--                      }-->
+<!--                    })-->
+<!--                    .catch(error => {-->
+<!--                      // Handle network errors-->
+<!--                      console.error('Network error:', error);-->
+<!--                    });-->
+<!--            location.reload();-->
+<!--          }-->
+<!--        </script>-->
 
-        <script>
-          // Get a reference to the button
-          var createMilestoneButton = document.getElementById('createMilestoneButton');
+<!--        <script>-->
+<!--          // Get a reference to the button-->
+<!--          var createMilestoneButton = document.getElementById('createMilestoneButton');-->
 
-          // Add a click event listener to the button
-          createMilestoneButton.addEventListener('click', function() {
-            // Get values from the form fields
-            var title = document.querySelector('input[name="milestone-title"]').value;
-            var status = document.querySelector('input[type="checkbox"]').checked ? 1 : 0;
-            var startDate = document.getElementById('start-date').value;
-            var endDate = document.getElementById('end-date').value;
-            var description = document.querySelector('textarea[name="description"]').value;
-            var classId = document.querySelector('input[name="classId"]').value;
+<!--          // Add a click event listener to the button-->
+<!--          createMilestoneButton.addEventListener('click', function() {-->
+<!--            // Get values from the form fields-->
+<!--            var title = document.querySelector('input[name="milestone-title"]').value;-->
+<!--            var status = document.querySelector('input[type="checkbox"]').checked ? 1 : 0;-->
+<!--            var startDate = document.getElementById('start-date').value;-->
+<!--            var endDate = document.getElementById('end-date').value;-->
+<!--            var description = document.querySelector('textarea[name="description"]').value;-->
+<!--            var classId = document.querySelector('input[name="classId"]').value;-->
 
-            // Prepare the URL with query parameters
-            var endPoint = 'http://localhost:8080/api/v1/newMilestone' +
-                    '?classId=' + classId +
-                    '&title=' + title +
-                    '&description=' + description +
-                    '&startDate=' + startDate +
-                    '&endDate=' + endDate +
-                    '&status=' + status;
+<!--            // Prepare the URL with query parameters-->
+<!--            var endPoint = 'http://localhost:8080/api/v1/newMilestone' +-->
+<!--                    '?classId=' + classId +-->
+<!--                    '&title=' + title +-->
+<!--                    '&description=' + description +-->
+<!--                    '&startDate=' + startDate +-->
+<!--                    '&endDate=' + endDate +-->
+<!--                    '&status=' + status;-->
 
-            // Make an API request using fetch with GET method
-            fetch(endPoint)
-                    .then(response => {
-                      if (response.ok) {
-                        notify('success', 'Milestone created successfully.', 'Success');
-                        // Delay the page reload for a few seconds
-                        setTimeout(() => {
-                          location.reload();
-                        }, 2000); // Adjust the delay duration as needed
-                      } else {
-                        // Handle API errors
-                        console.error('Error creating milestone.');
-                      }
-                    })
-                    .catch(error => {
-                      // Handle network errors
-                      console.error('Network error:', error);
-                    });
-          });
-        </script>
+<!--            // Make an API request using fetch with GET method-->
+<!--            fetch(endPoint)-->
+<!--                    .then(response => {-->
+<!--                      if (response.ok) {-->
+<!--                        notify('success', 'Milestone created successfully.', 'Success');-->
+<!--                        // Delay the page reload for a few seconds-->
+<!--                        setTimeout(() => {-->
+<!--                          location.reload();-->
+<!--                        }, 2000); // Adjust the delay duration as needed-->
+<!--                      } else {-->
+<!--                        // Handle API errors-->
+<!--                        console.error('Error creating milestone.');-->
+<!--                      }-->
+<!--                    })-->
+<!--                    .catch(error => {-->
+<!--                      // Handle network errors-->
+<!--                      console.error('Network error:', error);-->
+<!--                    });-->
+<!--          });-->
+<!--        </script>-->
 
 
 

@@ -13,4 +13,6 @@ public interface IProjectRepository extends JpaRepository<Project, Integer> {
     public List<Project> findAllByAclassUserId(int teacherId);
 
     public Project findByAclass_IdAndGroupName(int classId, String groupName);
+
+    public List<Project> findAllByProjectMentorId(Integer projectMentorId);
 }

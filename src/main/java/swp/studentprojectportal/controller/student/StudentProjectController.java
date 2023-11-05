@@ -16,6 +16,6 @@ public class StudentProjectController {
     public String projectList(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         model.addAttribute("studentClassList", studentClassService.findAllByStudentId(user.getId()));
-        return "student/issueList";
+        return "student/projectList";
     }
 }

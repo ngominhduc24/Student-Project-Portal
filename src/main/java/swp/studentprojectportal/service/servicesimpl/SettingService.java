@@ -56,11 +56,11 @@ public class SettingService implements ISettingService {
     }
 
     @Override
-    public boolean checkExistedSettingTitle(String settingTitle, String id) {
+    public boolean checkExistedSettingTitle(String settingTitle, Integer id) {
         Setting setting = settingRepository.findBySettingTitle(settingTitle);
         if(setting !=null)  {
-            if (id==null || id.isEmpty())    return true;
-            if(setting.getId()!=Integer.parseInt(id))  return true;
+            if(settingTitle.equals(setting.getSettingTitle()) && id != setting.getId())
+                return true;
         }
         return false;
     }

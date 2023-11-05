@@ -27,15 +27,19 @@ public class MilestoneService implements IMilestoneService {
     ISubjectRepository subjectRepository;
     @Autowired
     IStudentClassRepository studentClassRepository;
+    @Autowired
+    ProjectService projectService;
 
     @Override
-    public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
+    public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy,
+            Integer sortType, Integer status) {
         Sort sort;
-        if(sortType==1)
+        if (sortType == 1)
             sort = Sort.by(sortBy).ascending();
         else
             sort = Sort.by(sortBy).descending();
-        return milestoneRepository.filterClassBySubjectManager(classId, search, status, PageRequest.of(pageNo, pageSize, sort));
+        return milestoneRepository.filterClassBySubjectManager(classId, search, status,
+                PageRequest.of(pageNo, pageSize, sort));
     }
 
     public List<Milestone> findAllMilestoneByClassId(int classId) {
@@ -43,12 +47,12 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
-    public Milestone findMilestoneById(Integer id){
+    public Milestone findMilestoneById(Integer id) {
         return milestoneRepository.findMilestoneById(id);
     }
 
     @Override
-    public List<Milestone> findMilestoneByClassId(Integer classid){
+    public List<Milestone> findMilestoneByClassId(Integer classid) {
         return milestoneRepository.findMilestoneByAclass_Id(classid);
     }
 
@@ -70,10 +74,11 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
-    public boolean addNewMilestone(Integer classId, String title, String description, Date startDate, Date endDate, int status) {
+    public boolean addNewMilestone(Integer classId, String title, String description, Date startDate, Date endDate,
+            int status) {
         // get class by classId
-        Class _class =  classRepository.findClassById(classId);
-        if(_class == null) {
+        Class _class = classRepository.findClassById(classId);
+        if (_class == null) {
             return false;
         }
 
@@ -86,28 +91,29 @@ public class MilestoneService implements IMilestoneService {
         milestone.setProject(null);
         milestone.setStartDate(startDate);
         milestone.setEndDate(endDate);
-        if(milestoneRepository.save(milestone) != null)
+        if (milestoneRepository.save(milestone) != null)
             return true;
         else
             return false;
     }
 
-    public boolean updateMilestone(Integer milestoneId,String title,String description,Date startDate,Date endDate,int status) {
+    public boolean updateMilestone(Integer milestoneId, String title, String description, Date startDate, Date endDate,
+            int status) {
         Milestone milestone = milestoneRepository.findMilestoneById(milestoneId);
-        if(milestone == null)
+        if (milestone == null)
             return false;
         milestone.setTitle(title);
         milestone.setDescription(description);
         milestone.setStartDate(startDate);
         milestone.setEndDate(endDate);
         milestone.setStatus(status == 1 ? true : false);
-        if(milestoneRepository.save(milestone) != null)
+        if (milestoneRepository.save(milestone) != null)
             return true;
         else
             return false;
     }
 
-    public Milestone findMilestoneByTitle(String milestoneTitle){
+    public Milestone findMilestoneByTitle(String milestoneTitle) {
         return milestoneRepository.findMilestoneByTitle(milestoneTitle).get(0);
     }
 
@@ -123,26 +129,17 @@ public class MilestoneService implements IMilestoneService {
 
     @Override
     public List<Milestone> findAllByProjectMentor(Integer projectMentorId) {
+        return milestoneRepository.findAllByProjectProjectMentorId(projectMentorId);
+    }
 
-        List<Milestone> milestoneList = new ArrayList<>();
-
-
-
-        // find all project milestone
-        milestoneList.addAll(milestoneRepository.findAllByProjectProjectMentorId(projectMentorId));
-
-        return milestoneList;
+    @Override
+    public List<Milestone> findAllByProjectId(Integer projectId) {
+        return milestoneRepository.findAllByProjectId(projectId);
     }
 
     @Override
     public List<Milestone> findAllByStudentId(Integer studentId) {
-        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(studentId);
-        List<Project> projectList = new ArrayList<>();
-
-        for (StudentClass studentClass : studentClassList)
-            projectList.add(studentClass.getProject());
-
-        return milestoneRepository.findAllByProjectInAndProject(projectList, null);
+        return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
     }
 
 }
