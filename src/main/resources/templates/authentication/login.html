@@ -35,18 +35,16 @@
 </div>
 <!-- Loader -->
 
-<div class="back-to-home rounded d-none d-sm-block">
-    <a href="/" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
-</div>
+<div th:replace="~{navbar}"></div>
 
 <!-- Hero Start -->
-<section class="bg-home d-flex bg-light align-items-center" th:style="'background: url('+@{/images/bg/bg-lines-one.png}+') center;'">
-    <div class="container">
+<section class="bg-home d-flex bg-light align-items-center" style="background: url(https://img.freepik.com/free-vector/blue-shades-mountains-landscape_23-2148273707.jpg) no-repeat center; background-size: 100%; margin-top: 72px;">
+    <div class="container" style="margin-top: -72px">
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-8">
                 <img src="../../static/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                 <div class="card login-page bg-white shadow mt-4 rounded border-0">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 32px">
                         <h4 class="text-center">Sign In</h4>
                         <form th:action="@{/login}" class="login-form mt-4" method="post">
                             <h6 style="color: red; text-align: center" th:text="${errmsg}" ></h6>
@@ -111,7 +109,7 @@
     </div> <!--end container-->
 </section><!--end section-->
 <!-- Hero End -->
-
+<div th:replace="~{footer}"></div>
 <!-- javascript -->
 <script th:src="@{js/bootstrap.bundle.min.js}"></script>
 <!-- Icons -->
