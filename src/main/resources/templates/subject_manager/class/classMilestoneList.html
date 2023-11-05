@@ -181,7 +181,7 @@
                 <div class="row px-4" style="width: 100%; justify-content: space-between">
                     <div class="col-xl-5 col-md-6">
                         <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
-                        <ol class="breadcrumb mb-2">
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
@@ -334,8 +334,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <input type="hidden" name="sortBy" id="sortBy">
-                            <input type="hidden" name="sortType" id="sortType">
+                            <input type="hidden" name="sortBy" id="sortBy" th:value="${sortBy}">
+                            <input type="hidden" name="sortType" id="sortType" th:value="${sortType}">
                             <table id="datatablesSimple" class="display" style="width: 100%">
                                 <thead>
                                 <tr>
@@ -476,7 +476,7 @@
                                     }
                                 });
                             </script>
-
+                            <input type="hidden" name="pageNo" id="pageNoInput" value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
@@ -485,7 +485,6 @@
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <input type="hidden" name="pageNo" id="pageNoInput">
                                     <li th:each="i : ${#numbers.sequence(1, totalPage)}"
                                         th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"

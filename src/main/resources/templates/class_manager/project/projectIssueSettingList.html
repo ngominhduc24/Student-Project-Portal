@@ -42,7 +42,7 @@
     <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 
     <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
-<!--    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI/t1pO5BKe3uZExmv1cSJf4/9Utktx/NlA7p9uE=" crossorigin="anonymous"></script>-->
+    <!--    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI/t1pO5BKe3uZExmv1cSJf4/9Utktx/NlA7p9uE=" crossorigin="anonymous"></script>-->
 
     <style>
         .datatable-table {
@@ -188,12 +188,11 @@
         <div th:replace="~{dashboardHeader}"></div>
 
         <div class="topnav">
-            <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
-            <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
-            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>
-            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
-            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
-            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
+            <a style="cursor: pointer;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/${project.id}}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/project/details/${project.id}}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/member(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/milestone(projectId=${project.id})}"><p style="margin:0;"  >Milestones</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class-manager/project/issue-setting(id=${project.id})}" ><p style="margin:0;">Settings</p></a>
         </div>
 
         <!--    Settings -->
@@ -201,34 +200,29 @@
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
-                        <ol class="breadcrumb mb-2">
+                        <h3 class="mb-0" th:text="${project.title} + ' - ' + ${project.aclass.className}"></h3>
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
-                            <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
+                            <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/class-manager/project/list${project.class.id}}" >Project List</a></li>
+                            <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list${project.class.id}}" >Project List</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Issue Setting List</li>
                         </ol>
                     </div><!--end col-->
                     <div class="col-xl-5 col-md-6"></div><!--end col-->
 
-                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
-                                style="margin-left: 24px">Add New</a>
-                        </div>
-                        <div th:if="${session.user.setting.id==4}" style="display: inline">
-                            <button type="button" class="btn btn-primary"  onclick="showCreateForm()" style="margin-bottom: 8px; width: 155px" >
-                                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
-                                Add New
-                            </button>
-                            <button type="button" class="btn" data-toggle="modal" style="background-color: #298d5e; color: white; width: 155px;" data-target="#exampleModalCenter">
-                                <i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1
+                    <div class="col-xl-2 col-md-6 align-items-center justify-content-center mb-2">
+                        <button type="button" class="btn btn-primary"  onclick="showCreateForm()" style="margin-bottom: 8px; width: 155px" >
+                            <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                            Add New
+                        </button>
+                        <button type="button" class="btn" data-toggle="modal" style="background-color: #298d5e; color: white; width: 155px;" data-target="#exampleModalCenter">
+                            <i><svg width="16px" height="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.91 15.51h-4.53a1
                             1 0 0 0 0 2h2.4A8 8 0 0 1 4 12a1 1 0 0 0-2 0 10 10 0 0 0 16.88 7.23V21a1 1 0 0 0 2 0v-4.5a1 1 0 0 0-.97-.99ZM12 2a10 10 0 0
                             0-6.88 2.77V3a1 1 0 0 0-2 0v4.5a1 1 0 0 0 1 1h4.5a1 1 0 0 0 0-2h-2.4A8 8 0 0 1 20 12a1 1 0 0 0 2 0A10 10 0 0 0 12 2Z"/></svg></i>
-                                Sync gitlab
-                            </button>
-                        </div>
+                            Sync gitlab
+                        </button>
                     </div><!--end col-->
                     <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
                 </div><!--end row-->
@@ -298,7 +292,7 @@
                         <form action="/class/issue-setting" class="card-body rounded-3" id="form" method="post">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
-                                    <input type="hidden" name="id" th:value="${class.id}">
+                                    <input type="hidden" name="id" th:value="${project.id}">
                                     <div class="mb-3 col-md-4 pe-1">
                                         <select name="pageSize" class="form-select"
                                                 onchange="this.form.submit()">
@@ -337,7 +331,7 @@
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text"
                                            th:value="${search}" name="search"
-                                           placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                           placeholder="Search" style="border-color: #ced4da; height: 36px;" aria-label="Search">
                                     <button onclick="this.form.submit()" class="search-button"><i
                                             class="fas fa-search"
                                             aria-hidden="true"></i>
@@ -368,12 +362,6 @@
                                         <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('setting_title',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Description
-                                        <i th:class="${(sortBy eq 'description' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortData('description',1)"></i>
-                                        <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortData('description',2)"></i>
-                                    </th>
                                     <th data-sortable="false">Status</th>
                                     <th data-sortable="false">Actions</th>
                                 </tr>
@@ -383,10 +371,9 @@
                                     <td th:text="${setting.id}"></td>
                                     <td th:text="${setting.settingGroup}"></td>
                                     <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.description}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input th:if="${setting.aclass!=null}" class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingGroup}" onchange="showConfirmationDialog(this)">
+                                            <input th:disabled="${setting.project==null}" class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingGroup}" onchange="showConfirmationDialog(this)">
                                         </div>
                                     </td>
                                     <td>
@@ -450,11 +437,11 @@
                                                 <div class="col-md-12 row" style="margin-top: 12px;">
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Subject Code<span class="text-danger">*</span></label>
-                                                        <input type="text" name="subjectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly>
+                                                        <input type="text" name="subjectCode" class="form-control" required th:value="${setting.project.aclass.subject.subjectCode}" readonly>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                                        <input type="text" name="className" class="form-control" required th:value="${setting.aclass.className}" readonly>
+                                                        <input type="text" name="className" class="form-control" required th:value="${setting.project.aclass.className}" readonly>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Group<span class="text-danger">*</span></label>
@@ -476,7 +463,7 @@
                                                     </div>
                                                     <div class="mt-2">
                                                         <h6 style="color: indianred;" id="errormsg" th:text="${errmsg}"></h6>
-<!--                                                        <h6 style="color: green;" id="msg" th:text="${errmsg}"></h6>-->
+                                                        <!--                                                        <h6 style="color: green;" id="msg" th:text="${errmsg}"></h6>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -507,6 +494,13 @@
                                 function showCreateForm() {
                                     $('#createIssueSettingModal').modal('show');
                                 }
+                                $(document).ready(function () {
+                                    $('#createIssueSettingModal').on('hidden.bs.modal', function () {
+                                        $('input[name="newSettingGroup"]').val('Not Empty');
+                                        $('input[name="newSettingTitle"]').val('');
+                                        $('#errormsg').text('');
+                                    });
+                                });
                             </script>
 
                             <!-- Modal Dialog -->
@@ -581,7 +575,8 @@
                                 }
 
                                 $(".confirmButton").click(function () {
-                                    fetch(`/issue-setting/updateStatus?id=${id}&status=${status}`)
+                                    console.log('hello');
+                                    fetch(`issue-setting/updateStatus?id=${id}&status=${status}`)
                                         .then(() => {
                                             confirmClicked = true;
                                             $('#confirmationModal').modal('hide');
@@ -689,7 +684,7 @@
                                 if (response.ok) {
                                     // Handle a successful API response
                                     console.log('Issue setting updated successfully.');
-                                     // notify('success', 'Issue setting update successfully.', 'Success');
+                                    // notify('success', 'Issue setting update successfully.', 'Success');
                                     // Delay the page reload for a few seconds
                                     setTimeout(() => {
                                         location.reload();
@@ -727,7 +722,9 @@
 
         const datatablesSimpleSetting = document.getElementById('datatablesSimpleSetting');
         if (datatablesSimpleSetting) {
-            new simpleDatatables.DataTable(datatablesSimpleSetting);
+            new simpleDatatables.DataTable(datatablesSimpleSetting, {
+                paging: false // Tắt phân trang
+            });
         }
     });
 </script>

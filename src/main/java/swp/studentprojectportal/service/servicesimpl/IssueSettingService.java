@@ -65,6 +65,21 @@ public class IssueSettingService implements IIssueSettingService {
     }
 
     @Override
+    public List<String> findAllDistinctProjectSettingGroup(Integer subjectId, Integer classId, Integer projectId) {
+        return issueSettingRepository.findAllDistinctProjectSettingGroup(subjectId, classId, projectId);
+    }
+
+    @Override
+    public Page<IssueSetting> filterProjectIssueSetting(Integer subjectId, Integer classId, Integer projectId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, String settingGroup, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return issueSettingRepository.filterProjectIssueSetting(subjectId, classId,projectId, search, settingGroup, status, PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
     public IssueSetting findByClassAndGroupAndTitle(int classId,String settingGroup, String settingTitle){
         return issueSettingRepository.findIssueSettingByAclassAndSettingGroupAndSettingTitle(classId, settingGroup, settingTitle).orElse(null);
     }

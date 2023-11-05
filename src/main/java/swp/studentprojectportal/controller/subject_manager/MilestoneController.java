@@ -1,8 +1,7 @@
-package swp.studentprojectportal.controller.subject_manager.sclass;
+package swp.studentprojectportal.controller.subject_manager;
 
 import jakarta.servlet.http.HttpSession;
 import org.gitlab4j.api.GitLabApiException;
-import org.gitlab4j.api.models.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -11,14 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Milestone;
+import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.IMilestoneService;
-import swp.studentprojectportal.service.servicesimpl.ClassService;
-import swp.studentprojectportal.service.servicesimpl.GitlabApiService;
-import swp.studentprojectportal.service.servicesimpl.SubjectService;
-import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.service.servicesimpl.*;
 import swp.studentprojectportal.utils.dto.Mapper;
 
 import java.util.List;
@@ -35,6 +31,8 @@ public class MilestoneController {
     GitlabApiService gitlabApiService;
     @Autowired
     UserService userService;
+    @Autowired
+    ProjectService projectService;
 
 
     @GetMapping("/class/milestone")
@@ -63,7 +61,7 @@ public class MilestoneController {
         //milestone detail
         Milestone milestone = milestoneService.findMilestoneById(milestoneId);
         model.addAttribute("milestone", milestone);
-        return "subject_manager/milestone/classMilestoneList";
+        return "subject_manager/class/classMilestoneList";
     }
 
     @GetMapping("/class/milestone/updateStatus")
@@ -167,9 +165,9 @@ public class MilestoneController {
         if(user != null){
             // if personal token is change then update
             if(user.getPersonalTokenGitlab() == null || user.getPersonalTokenGitlab().equals(personalToken)){
-                    user.setPersonalTokenGitlab(personalToken);
-                    session.setAttribute("user", user);
-                    userService.saveUser(user);
+                user.setPersonalTokenGitlab(personalToken);
+                session.setAttribute("user", user);
+                userService.saveUser(user);
             }
         }
 
@@ -179,5 +177,34 @@ public class MilestoneController {
         classService.saveClass(classA);
         attributes.addFlashAttribute("smessage", "synchronized with Gitlab successful!");
         return "redirect:/class/milestone?classId=" + classId;
+    }
+
+    @GetMapping("/class-manager/project/milestone")
+    public String projectMilestonePage(@RequestParam("projectId") Integer projectId,@RequestParam(defaultValue = "0") Integer pageNo,
+                                       @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                                       @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                                       @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") Integer milestoneId,
+                                       Model model, HttpSession session) {
+        Project project = projectService.findById(projectId);
+        Page<Milestone> milestoneList= milestoneService.filterMilestoneByProject(project.getAclass().getId(), projectId, search, pageNo, pageSize,sortBy, sortType, status);
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
+        model.addAttribute("personalToken", user.getPersonalTokenGitlab());
+//        model.addAttribute("groupGitlabId", classA.getGitlabGroupId());
+        model.addAttribute("project", project);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("status", status);
+        model.addAttribute("totalPage", milestoneList.getTotalPages());
+        model.addAttribute("milestoneList", milestoneList);
+
+        //milestone detail
+        Milestone milestone = milestoneService.findMilestoneById(milestoneId);
+        model.addAttribute("milestone", milestone);
+        return "class_manager/project/projectMilestoneList";
     }
 }

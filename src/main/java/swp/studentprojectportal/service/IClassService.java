@@ -35,4 +35,6 @@ public interface IClassService {
     Class saveClass(Class classA);
     public boolean checkExistedClassName(String className, Integer subjectId, Integer id);
     void delete(Class classA);
+
+    List<Class> findAllByStudentUserId(Integer userId);
 }

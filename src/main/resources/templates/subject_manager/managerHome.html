@@ -32,6 +32,9 @@
           th:href="@{https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css}"/>
 
     <style>
+        .slider {
+            height: 100%;
+        }
         /* Dots */
         .slick-dotted.slick-slider
         {
@@ -121,6 +124,9 @@
             opacity: .75;
             color: black;
         }
+        .imgbackground {
+            height: 150px;
+        }
     </style>
 
 </head>
@@ -144,10 +150,10 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <h4>List subject managing</h4>
-                <div class="row slider">
+                <div class="row slider mx-5">
                     <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4 mx-2" th:each="subject : ${subjectList}">
                         <div class="card blog blog-primary border-opacity-10 shadow rounded overflow-hidden">
-                            <div class="img-fluid p-4 pb-5"
+                            <div class="imgbackground p-4 pb-5"
                                  th:style="'background: url('+@{/images/subjectBackground.png}+'); background-size: cover'">
                                 <a th:href="@{'/subject-manager/subject?subjectId=' + ${subject.id}}"
                                    class="text-white title h5"
@@ -230,8 +236,8 @@
             slidesToScroll: 2, // Adjust the number of slides to scroll
             autoplay: false, // Set to false for auto-play
             autoplaySpeed: 3000, // Set the auto-play speed in milliseconds
-            dots: true, // Show navigation dots
-            arrows: false,// Show navigation arrows
+            dots: false, // Show navigation dots
+            arrows: true,// Show navigation arrows
 
         });
     });
