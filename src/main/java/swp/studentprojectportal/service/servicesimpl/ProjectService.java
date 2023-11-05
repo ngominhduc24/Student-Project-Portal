@@ -143,4 +143,9 @@ public class ProjectService implements IProjectService {
         return projectList;
     }
 
+    @Override
+    public List<StudentClass> findAllByProjectId(int projectId) {
+        return studentClassRepository.findAllByProjectId(projectId);
+    }
+
 }

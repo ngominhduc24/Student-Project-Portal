@@ -2,6 +2,7 @@ package swp.studentprojectportal.service;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.Project;
+import swp.studentprojectportal.model.StudentClass;
 
 import java.util.List;
 
@@ -29,4 +30,5 @@ public interface IProjectService {
     public List<Project> findAllByProjectMentorId(Integer projectMentorId);
 
     public List<Project> findAllByStudentUserId(Integer studentId);
+    public List<StudentClass> findAllByProjectId(int classId);
 }
