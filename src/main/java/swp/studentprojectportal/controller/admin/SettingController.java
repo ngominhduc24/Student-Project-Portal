@@ -3,11 +3,13 @@ package swp.studentprojectportal.controller.admin;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import swp.studentprojectportal.model.Criteria;
 import swp.studentprojectportal.model.Setting;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 
@@ -21,7 +23,14 @@ public class SettingController {
     public String settingPage(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
                 @RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") Integer typeId,
                 @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
-                @RequestParam(defaultValue = "1") Integer sortType, Model model) {
+                @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(value = "settingId", defaultValue = "-1") Integer settingId,Model model) {
+        if (settingId != -1) {
+            model.addAttribute("setting", settingService.findById(settingId));
+        } else {
+            Setting setting = new Setting();
+            setting.setId(-1);
+            model.addAttribute("setting", setting);
+        }
         Page<Setting> settingList = settingService.filter(search, pageNo, pageSize, sortBy, sortType, typeId, status);
         model.addAttribute("settingList", settingList);
         model.addAttribute("pageSize", pageSize);
@@ -35,54 +44,59 @@ public class SettingController {
         return "admin/setting/settingList";
     }
 
-    @GetMapping("/admin/setting/detail")
-    public String settingDetail(@RequestParam("id") Integer id, Model model) {
-        Setting setting = settingService.getSettingByID(id);
-        String typeName=settingService.setTypeName(setting.getTypeId());
-        model.addAttribute("setting", setting);
-        model.addAttribute("typeName", typeName);
-        return "admin/setting/settingDetail";
-    }
+    @PostMapping("/admin/setting")
+    public String updateSetting(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+                                @RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") Integer typeId,
+                                @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                                @RequestParam(defaultValue = "1") Integer sortType, @RequestParam String newSettingTitle,
+                                @RequestParam Integer newTypeId, @RequestParam Integer newDisplayOrder,
+                                @RequestParam(defaultValue = "0") Boolean newStatus, @RequestParam String description,
+                                @RequestParam(defaultValue = "-1") Integer updateId,Model model) {
 
-    @PostMapping("/admin/setting/update")
-    public String updateSetting(
-            @RequestParam Integer typeId, @RequestParam String settingTitle,
-            @RequestParam Integer displayOrder, @RequestParam String description, WebRequest request, Model model, RedirectAttributes attributes) {
-        String status = request.getParameter("status");
-        Setting setting = new Setting();
-        String id = request.getParameter("id");
-        if(id!=null && !id.isEmpty())    setting.setId(Integer.parseInt(id));
-        setting.setTypeId(typeId);
-        String typeName=settingService.setTypeName(typeId);
-        setting.setSettingTitle(settingTitle);
-        setting.setDescription(description);
-        setting.setDisplayOrder(displayOrder);
-        setting.setStatus(status!=null);
-        model.addAttribute("setting", setting);
-        if(settingService.checkExistedSettingTitle(settingTitle, id)){
-            model.addAttribute("errmsg", "This " + typeName.toLowerCase() + " has already existed!");
+        Setting setting = Setting.builder()
+                .settingTitle(newSettingTitle)
+                .typeId(newTypeId)
+                .displayOrder(newDisplayOrder)
+                .status(newStatus)
+                .description(description)
+                .build();
+
+        if(updateId!=-1){
+            setting.setId(updateId);
         }
-        else if(settingService.checkExistedDisplayOrder(typeId, displayOrder, id)){
-            model.addAttribute("errmsg", "Display Order has already existed!");
-        }
-        else {
-            attributes.addFlashAttribute("toastMessage", "Update setting details successfully");
-            if(id==null || id.isEmpty()){
-                attributes.addFlashAttribute("toastMessage", "Add new setting successfully");
+
+        if (settingService.checkExistedSettingTitle(newSettingTitle, updateId)) {
+            model.addAttribute("toastMessageRed", "Duplicate name");
+        } else {
+            if(updateId==-1) {
+                model.addAttribute("toastMessage", "Add new setting successfully");
+            } else {
+                model.addAttribute("toastMessage", "Update setting details successfully");
             }
             settingService.saveSetting(setting);
-            return "redirect:/admin/setting";
         }
+
+        setting = new Setting();
+        setting.setId(-1);
+        model.addAttribute("setting", setting);
+
+        Page<Setting> settingList = settingService.filter(search, pageNo, pageSize, sortBy, sortType, typeId, status);
+        model.addAttribute("settingList", settingList);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
         model.addAttribute("typeId", typeId);
-        model.addAttribute("typeName", typeName);
-        return "admin/setting/settingDetail";
+        model.addAttribute("status", status);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("totalPage", settingList.getTotalPages());
+        return "admin/setting/settingList";
     }
 
-    @GetMapping("/admin/setting/add")
-    public String settingAddForm(Model model) {
-        Setting setting = new Setting();
-        model.addAttribute("setting", setting);
-        return "admin/setting/settingDetail";
+    @GetMapping("/subject-manager/setting/checkExisted")
+    public ResponseEntity<Boolean> checkExisted(
+            @RequestParam Integer updateId, @RequestParam String newSettingTitle) {
+        return ResponseEntity.ok(settingService.checkExistedSettingTitle(newSettingTitle, updateId));
     }
 
     @GetMapping("/admin/setting/updateStatus")

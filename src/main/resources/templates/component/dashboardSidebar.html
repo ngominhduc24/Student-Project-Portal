@@ -43,6 +43,7 @@
         </div>
 
         <ul class="sidebar-menu pt-3">
+
             <!--    admin function == 2-->
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
@@ -52,6 +53,7 @@
                     class="uil uil-user me-2 d-inline-block"></i>User</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i
                     class="uil uil-setting me-2 d-inline-block"></i>Setting</a></li>
+
             <!--    subject manager function == 3-->
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
@@ -81,6 +83,7 @@
             </li>
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i
                     class="uil uil-calender me-2 d-inline-block"></i>Class</a></li>
+
             <!--    class manager function == 4-->
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
@@ -88,6 +91,15 @@
                     class="uil uil-presentation me-2 d-inline-block"></i>Assigned Classes</a></li>
             <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i
                     class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>
+
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/project-mentor/milestone/list"><i
+                    class="uil uil-file me-2 d-inline-block"></i>Assignment list</a></li>
+
+            <!--    student function == 1-->
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/home"><i
+                    class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/milestone/list"><i
+                    class="uil uil-file me-2 d-inline-block"></i>Assignment list</a></li>
         </ul>
         <!-- sidebar-menu  -->
     </div>
@@ -99,6 +111,63 @@
         </li>
     </ul>
 </nav>
+<script>
+    function loadSocketIO() {
+        const script = document.createElement('script');
+        script.src = 'http://localhost:3000/socket.io/socket.io.js';
+
+        const timer = setTimeout(() => {
+            document.body.removeChild(script);
+        }, 500);
+
+        // Add an event listener to execute when the script has finished loading.
+        script.onload = () => {
+            clearTimeout(timer); // Clear the timeout since the script loaded successfully.
+            initializeSocket();
+        };
+
+        // Append the script to the document, which starts loading it.
+        document.body.appendChild(script);
+    }
+
+    async function initializeSocket() {
+        const classId = [[${classId}]];
+        const chatBody = document.querySelector('.chat-body');
+        const username = '[[${username}]]';
+        const chatInput = document.getElementById('chatInput');
+
+        const socket = io('http://localhost:3000');
+
+        socket.emit('listen-class', await getToken());
+
+        socket.on("receive-message", data => {
+            console.log(data);
+        });
+    }
+    async function getToken() {
+        let token;
+
+        await fetch('/api/v1/encode/getClassId', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return token = response.text();
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            })
+            .then(data => {})
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        return token;
+    }
+</script>
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

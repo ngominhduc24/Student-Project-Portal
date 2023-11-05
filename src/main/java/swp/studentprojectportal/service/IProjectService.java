@@ -27,4 +27,8 @@ public interface IProjectService {
     public boolean updateNote(Integer studentId, String note);
 
     public Project checkDuplicateGroupNameInClass(int classId, String groupName);
+
+    public List<Project> findAllByProjectMentorId(Integer projectMentorId);
+
+    public List<Project> findAllByStudentUserId(Integer studentId);
 }

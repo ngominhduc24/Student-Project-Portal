@@ -22,4 +22,6 @@ public interface IStudentClassService {
 
     public StudentClass findByStudentIdAndAclassId(Integer userId, Integer classId);
 
+    public List<StudentClass> findAllByStudentId(Integer studentId);
+
 }
