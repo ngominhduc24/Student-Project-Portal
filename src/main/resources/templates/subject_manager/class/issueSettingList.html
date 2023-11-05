@@ -216,7 +216,7 @@
                                 style="margin-left: 24px">Add New</a>
                         </div>
                         <div th:if="${session.user.setting.id==4}" style="display: inline">
-                            <button type="button" class="btn btn-primary"  onclick="showCreateForm()" style="margin-bottom: 8px; width: 155px" >
+                            <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#createIssueSettingModal" style="margin-bottom: 8px; width: 155px" >
                                 <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
                                 Add New
                             </button>
@@ -230,16 +230,106 @@
                     </div><!--end col-->
                     <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
                 </div><!--end row-->
-                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                    <div class="toast-header">
-                        <strong class="me-auto">Success</strong>
-                        <small>Now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        <span id="toastMessage" th:text="${toastMessage}"></span>
+
+
+                <!-- Add new -->
+
+                <div class="modal fade" id="createIssueSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueSettingModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
+<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject Code</label>
+                                            <input type="text" name="subjectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Class Name</label>
+                                            <input type="text" name="className" class="form-control" required th:value="${setting.aclass.className}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Group<span class="text-danger">*</span></label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Title</label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" >
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <div class="d-flex">
+                                                <textarea type="text" rows="3" name="newDescription" class="form-control" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Close</button>
+                                <button type="button" class="btn btn-primary"  id="addIssueSettingButton" >
+                                    Add New
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <!-- Add Issue-->
+
+                <script>
+                    // Get a reference to the button
+                    var addIssueSettingButton = document.getElementById('addIssueSettingButton');
+
+                    // Add a click event listener to the button
+                    addIssueSettingButton.addEventListener('click', function() {
+                        // Get values from the form fields
+                        const classId = document.querySelector('input[name="id"]').value;
+                        const group = document.querySelector('input[id="newSettingGroup"]').value;
+                        const title = document.querySelector('input[id="newSettingTitle"]').value;
+                        const description = document.querySelector('textarea[name="newDescription"]').value;
+
+                        // Prepare the URL with query parameters
+                        var endPoint = '/api/v1/add/issue-setting' +
+                            '?classId=' + classId +
+                            '&group=' + group+
+                            '&title=' + title +
+                            '&description=' + description ;
+
+                            // Make an API request using fetch with GET method
+                            fetch(endPoint)
+                                .then(response => {
+                                    if (response.ok) {
+                                        notify('success', 'Add Issue setting successfully.', 'Success');
+                                        // Delay the page reload for a few seconds
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000); // Adjust the delay duration as needed
+                                    } else {
+                                        // Handle API errors
+                                        return response.text();
+                                    }
+                                })
+                                .then(errorText =>{
+                                    if(errorText && !errorText.startsWith('Add'))
+                                        notify('error',errorText,'Error')
+                                })
+                                .catch(error => {
+                                    // Handle network errors
+                                    console.error('Network error:', error);
+                                });
+                    });
+                </script>
 
                 <!-- Modal Sync GitLab -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -293,7 +383,7 @@
 
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form action="/class/issue-setting" class="card-body rounded-3" id="form" method="post">
+                        <form action="/class/issue-setting" class="card-body rounded-3" id="form">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
                                     <input type="hidden" name="id" th:value="${class.id}">
@@ -388,12 +478,6 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <!--                                        <div th:if="${session.user.setting.id==3}" ><a th:if="${setting.aclass!=null}" th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i-->
-                                        <!--                                                class="fas fa-pen-to-square"></i></a></div>-->
-                                        <!--                                        <div th:if="${session.user.setting.id==4 || session.user.setting.id==3 }" ><a th:if="${setting.aclass!=null}" th:href="@{/class-manager/issue-setting/detail(id=${setting.id})}"><i-->
-                                        <!--                                                class="fas fa-pen-to-square"></i></a></div>-->
-<!--                                        <div th:onclick="'details(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i-->
-<!--                                                class="fas fa-pen-to-square"></i></div>-->
                                         <div th:if="${setting.aclass!=null}">
                                             <div th:onclick="'details(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
                                                     class="fas fa-pen-to-square"></i></div>
@@ -436,91 +520,6 @@
                                     document.getElementById('sortBySetting').value = sortBySetting;
                                     document.getElementById('sortTypeSetting').value = sortTypeSetting;
                                     document.getElementById('form').submit();
-                                }
-                            </script>
-                            <!-- Add new -->
-
-                            <div class="modal fade" id="createIssueSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueSettingModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
-                                            <button onclick="resetCreateForm()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-12 row" style="margin-top: 12px;">
-                                                    <div class="mb-3 col-md-6">
-                                                        <label class="form-label">Subject Code<span class="text-danger">*</span></label>
-                                                        <input type="text" name="subjectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly>
-                                                    </div>
-                                                    <div class="mb-3 col-md-6">
-                                                        <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                                        <input type="text" name="className" class="form-control" required th:value="${setting.aclass.className}" readonly>
-                                                    </div>
-                                                    <div class="mb-3 col-md-6">
-                                                        <label class="form-label">Group<span class="text-danger">*</span></label>
-                                                        <div class="d-flex">
-                                                            <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control" th:value="${setting.settingGroup}" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-3 col-md-6">
-                                                        <label class="form-label">Title</label>
-                                                        <div class="d-flex">
-                                                            <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" th:value="${setting.settingTitle}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-3 col-md-12">
-                                                        <label class="form-label">Description</label>
-                                                        <div class="d-flex">
-                                                            <textarea type="text" rows="3" id="newDescription" name="description" class="form-control" th:field="${setting.description}"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-2">
-                                                        <h6 style="color: indianred;" id="errormsg" th:text="${errmsg}"></h6>
-<!--                                                        <h6 style="color: green;" id="msg" th:text="${errmsg}"></h6>-->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button onclick="resetCreateForm()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-<!--                                            <button type="submit"  class="btn btn-primary">Add</button>-->
-                                            <button type="button" class="btn btn-primary"  onclick="addNewIssueSetting()" >
-                                                Add New
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <script>
-                                var toastMessage = document.getElementById('toastMessage').textContent.trim();
-                                if (toastMessage) {
-                                    var customToast = new bootstrap.Toast(document.getElementById('customToast'));
-                                    customToast.show();
-                                    setTimeout(function () {
-                                        customToast.hide();
-                                    }, 2000);
-                                }
-                                var errmsg = document.getElementById('errormsg').textContent.trim();
-                                $(document).ready(function() {
-                                    if (errmsg.trim() !== '' ) {
-                                        $('#createIssueSettingModal').modal('show');
-                                    }
-                                });
-                                function showCreateForm() {
-                                    $('#createIssueSettingModal').modal('show');
-                                }
-
-                                function addNewIssueSetting(){
-                                    $('#form').submit();
-                                }
-
-                                function resetCreateForm(){
-                                    $('#newSettingGroup').value = 'Not Empty';
-                                    $('#newSettingTitle').value = '';
-                                    $('#newDescription').value = '';
                                 }
                             </script>
 
@@ -633,6 +632,14 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
                                         <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject Code</label>
+                                            <input type="text" name="subjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Class Name</label>
+                                            <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <input type="text" id="details-issue-setting-group" class="form-control" >
                                         </div>
@@ -723,6 +730,7 @@
                             });
                     }
                 </script>
+
             </div>
         </div>
     </main>
