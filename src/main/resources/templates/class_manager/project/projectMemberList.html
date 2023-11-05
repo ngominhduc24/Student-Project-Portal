@@ -180,8 +180,8 @@
             <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
               <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
               <li class="breadcrumb-item">/</li>
-              <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/class-manager/project/list${project.class.id}}">Project List</a></li>
-              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list${project.class.id}}">Project List</a></li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/student/project}" >Project List</a></li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list/{classId}(classId=${project.aclass.id})}" >Project List</a></li>
               <li class="breadcrumb-item">/</li>
               <li class="breadcrumb-item active">Milestone List</li>
             </ol>

@@ -518,7 +518,7 @@
 </div>
 <!-- page-wrapper -->
 <script>
-    var toastMessage = document.getElementById('toastMessage').textContent.trim();
+    let toastMessage = document.getElementById('toastMessage').textContent.trim();
     if (toastMessage) {
         var customToast = new bootstrap.Toast(document.getElementById('customToast'));
         customToast.show();
@@ -526,8 +526,8 @@
             customToast.hide();
             document.getElementById('toastMessage').textContent = "";
         }, 5000);
-
     }
+
     var errmsg = document.getElementById('error').textContent.trim();
     $(document).ready(function() {
         if (errmsg.trim() !== '') {
