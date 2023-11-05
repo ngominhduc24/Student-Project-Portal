@@ -80,10 +80,19 @@
 
   #checkboxes label {
     display: block;
+    margin-left: 10px;
+  }
+
+  #checkboxes label input{
+    margin-right: 5px;
   }
 
   #checkboxes label:hover {
     background-color: #1e90ff;
+  }
+
+  .form-select option {
+    font-weight: initial;
   }
 
   .gl-label{
@@ -183,7 +192,6 @@
               </div>
 
               <div class="row" style="margin-top: 5px">
-                <form>
                   <div class="col-md-6" style="padding-left: 0px">
                     <div class="multiselect">
                       <div class="selectBox" onclick="showCheckboxes()">
@@ -206,15 +214,18 @@
 
                   </div>
 
-                </form>
               </div>
             </div>
 
-            <div class="col-md-6 text-md-end" style="margin-top: -14px;">
-              <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
-                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
-                Add student to class</button>
+            <div class="col-md-6 text-md-end" >
+              <div>
+                <button type="button" class="btn btn-primary" style="width: 226px;" >
+                  Save</button>
+                <button type="button" class="btn btn-secondary" style="width: 226px;">
+                  Reverse Changes</button>
+              </div>
             </div><!--end col-->
+
           </div><!--end row-->
 
         </div>
@@ -226,30 +237,45 @@
               <table id="myTable" class="display">
                 <thead>
                 <tr>
-                  <th>Checkbox</th>
                   <th>Student</th>
-                  <th>Process</th>
-                  <th>Status</th>
-                  <th>Group</th>
-                  <th>Milestone</th>
-                  <th>Assignee</th>
-                  <th>Group</th>
-                  <th>Milestone</th>
-                  <th>Assignee</th>
+                  <th>Full Name</th>
+                  <th>Mark</th>
+                  <th>WG</th>
+                  <th>WP</th>
+                  <th>Bonus/Penalty</th>
+                  <th>Comments</th>
+                  <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
+                    <th th:text="${evalGrade.criteriaName}"></th>
+                  </th:block>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="issue : ${issueList}">
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                  <td>8</td>
-                  <td>9</td>
-                  <td>10</td>
+                <tr>
+                  <td>GROUP</td>
+                  <td th:text="${evaluationDTO.get(0).groupname}"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td th:text="${evaluationDTO.get(0).commentGroup}"></td>
+                  <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
+                    <td></td>
+                  </th:block>
+                </tr>
+                <tr th:each="item : ${evaluationDTO}">
+                  <td th:text="${item.username}"></td>
+                  <td th:text="${item.fullname}"></td>
+                  <td th:text="${item.grade}"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <th:block  th:each="evalGrade : ${item.getCriteriaGradeList()}">
+                    <td>
+                      <label th:text="${evalGrade.grade}"></label>
+                      <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\')'" >...</label>
+                    </td>
+                  </th:block>
                 </tr>
                 </tbody>
               </table>
@@ -257,6 +283,46 @@
           </div>
         </div>
 
+        <script>
+          function showComment(comment, criteria) {
+            var btnComment = document.getElementById("btn-modal-comment");
+            var titleComment = document.getElementById("exampleModalLongTitle");
+            var contentComment = document.getElementById("comment-modal");
+            //
+            // labelComment.innerHTML = `Comments for Criteria ${criteria} Grading`;
+            // commentModal.value = comment;
+
+            titleComment.innerHTML = `Comments for Criteria ${criteria} Grading ${comment}`;
+            contentComment.innerHTML = comment;
+
+            btnComment.click();
+          }
+        </script>
+
+        <!--  Modal for comment criteria-->
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" id="btn-modal-comment" data-toggle="modal" data-target="#exampleModalCenter">
+          Launch demo modal
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div><h6 class="modal-title" id="exampleModalLongTitle">Modal title</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button></div>
+                <textarea type="text" rows="3"  id="comment-modal" name="description" class="form-control"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- End Modal -->
       </div>
     </div><!--end container-->
     <div th:replace="~{footer}"></div>

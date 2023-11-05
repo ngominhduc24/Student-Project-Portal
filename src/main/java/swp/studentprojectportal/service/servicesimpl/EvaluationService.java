@@ -6,14 +6,15 @@ import swp.studentprojectportal.model.Evaluation;
 import swp.studentprojectportal.repository.IEvaluationRepository;
 import swp.studentprojectportal.service.IEvaluationService;
 
+import java.util.List;
+
 @Service
 public class EvaluationService implements IEvaluationService {
     @Autowired
     IEvaluationRepository evaluationRepository;
 
     @Override
-    public Evaluation getEvaluationBySubmissionId(int submissionId) {
-        Evaluation evaluation = evaluationRepository.findEvaluationBySubmissionId(submissionId);
-        return evaluation;
+    public List<Evaluation> getEvaluationBySubmissionId(int submissionId) {
+        return evaluationRepository.findEvaluationBySubmissionId(submissionId);
     }
 }
