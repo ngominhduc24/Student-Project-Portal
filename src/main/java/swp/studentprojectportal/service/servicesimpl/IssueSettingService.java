@@ -84,6 +84,11 @@ public class IssueSettingService implements IIssueSettingService {
         return issueSettingRepository.findIssueSettingByAclassAndSettingGroupAndSettingTitle(classId, settingGroup, settingTitle).orElse(null);
     }
 
+    @Override
+    public IssueSetting findBySubjectAndGroupAndTitle(int subjectId,String settingGroup, String settingTitle){
+        return issueSettingRepository.findIssueSettingBySubjectAndSettingGroupAndSettingTitle(subjectId, settingGroup, settingTitle).orElse(null);
+    }
+
     public List<IssueSetting> findAllSettingServiceByClassId(int classId){
         return issueSettingRepository.findAllByAclass_Id(classId);
     }

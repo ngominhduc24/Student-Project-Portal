@@ -24,6 +24,11 @@ public class SubjectService implements ISubjectService {
 
     @Autowired
     ISettingRepository settingRepository;
+
+    @Override
+    public Subject findSubjectById(int id){
+        return subjectRepository.findById(id).get();
+    }
     @Override
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();

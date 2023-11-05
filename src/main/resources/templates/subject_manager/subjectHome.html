@@ -33,6 +33,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+
+    <script th:src="@{/js/notify.js}"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
 
 
 
@@ -522,12 +531,125 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a href="subject-manager/issue-setting/add" class="btn btn-primary"
-                           style="margin-left: 24px">Add
-                            New</a>
+                        <button type="button" class="btn btn-primary"  id="addNewButton" style="margin-bottom: 8px; width: 155px" >
+                            <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                            Add New
+                        </button>
                     </div><!--end col-->
 
                 </div><!--end row-->
+
+                <!-- Add new -->
+
+                <div class="modal fade" id="createIssueSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueSettingModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
+                                <button type="button" class="close" data-dismiss="modal" id="closeModalBtn1" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject Code</label>
+                                            <input type="text" name="subjectCode" class="form-control" required th:value="${subject.subjectCode}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Group<span class="text-danger">*</span></label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Title</label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" >
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <div class="d-flex">
+                                                <textarea type="text" rows="3" name="newDescription" class="form-control" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn">Close</button>
+                                <button type="button" class="btn btn-primary"  id="addIssueSettingButton" >
+                                    Add New
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Issue Setting-->
+
+                <script>
+                    var addNewButton = document.getElementById('addNewButton');
+
+                    addNewButton.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('show');
+                    });
+
+                    var closeModalBtn = document.getElementById('closeModalBtn');
+                    var closeModalBtn1 = document.getElementById('closeModalBtn1');
+
+                    closeModalBtn.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('hide');
+                    });
+                    closeModalBtn1.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('hide');
+                    });
+
+                    // Get a reference to the button
+                    var addIssueSettingButton = document.getElementById('addIssueSettingButton');
+
+                    // Add a click event listener to the button
+                    addIssueSettingButton.addEventListener('click', function() {
+                        console.log("Da bam nut");
+                        // Get values from the form fields
+                        const subjectId = document.querySelector('input[name="id"]').value;
+                        const group = document.querySelector('input[id="newSettingGroup"]').value;
+                        const title = document.querySelector('input[id="newSettingTitle"]').value;
+                        const description = document.querySelector('textarea[name="newDescription"]').value;
+
+                        // Prepare the URL with query parameters
+                        var endPoint = '/api/v1/add2/issue-setting' +
+                            '?subjectId=' + subjectId +
+                            '&group=' + group+
+                            '&title=' + title +
+                            '&description=' + description ;
+
+                        // Make an API request using fetch with GET method
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    notify('success', 'Add Issue setting successfully.', 'Success');
+                                    // Delay the page reload for a few seconds
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000); // Adjust the delay duration as needed
+                                } else {
+                                    // Handle API errors
+                                    return response.text();
+                                }
+                            })
+                            .then(errorText =>{
+                                if(errorText && !errorText.startsWith('Add'))
+                                    notify('error',errorText,'Error')
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                    });
+                </script>
+
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-body rounded-3">

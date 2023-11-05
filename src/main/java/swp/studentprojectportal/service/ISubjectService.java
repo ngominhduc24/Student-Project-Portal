@@ -28,4 +28,6 @@ public interface ISubjectService {
     List<Subject> findAllSubjectByUser(User user);
     List<Subject> findAllSubjectByClassManagerId(Integer classManagerId);
     List<Subject> findAllSubjectByUserAndStatus(User user, Boolean status);
+
+    Subject findSubjectById(int id);
 }
