@@ -115,4 +115,24 @@ public class MilestoneService implements IMilestoneService {
         return milestoneRepository.findMilestoneByTitle(milestoneTitle).get(0);
     }
 
+    @Override
+    public Page<Milestone> filterMilestoneByProject(int classId, int projectId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
+        return null;
+    }
+
+    @Override
+    public List<Milestone> findAllByProjectMentor(Integer projectMentorId) {
+        return null;
+    }
+
+    @Override
+    public List<Milestone> findAllByStudentId(Integer sutdentId) {
+        return null;
+    }
+
+    @Override
+    public List<Milestone> findAllByProjectId(Integer projectId) {
+        return null;
+    }
+
 }
