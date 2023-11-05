@@ -31,6 +31,11 @@ public class MilestoneService implements IMilestoneService {
     ProjectService projectService;
 
     @Override
+    public int milestoneCount(){
+        return milestoneRepository.findAll().size();
+    }
+
+    @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy,
             Integer sortType, Integer status) {
         Sort sort;
