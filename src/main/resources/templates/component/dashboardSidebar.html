@@ -100,6 +100,10 @@
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
             <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/milestone/list"><i
                     class="uil uil-file me-2 d-inline-block"></i>Assignment list</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/issue/list"><i
+                    class="uil uil-home me-2 d-inline-block"></i>Issue</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/project/list"><i
+                    class="uil uil-home me-2 d-inline-block"></i>Project</a></li>
         </ul>
         <!-- sidebar-menu  -->
     </div>
