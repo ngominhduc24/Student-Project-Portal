@@ -27,4 +27,5 @@ public interface IIssueUpdateRepository extends JpaRepository<IssueUpdate, Integ
             , nativeQuery = true)
     Page<IssueUpdate> filterWork(@Param("issueId") Integer issueId,
                                                @Param("search") String search, Pageable pageable);
+
 }
