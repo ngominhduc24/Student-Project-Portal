@@ -11,4 +11,6 @@ public interface IIssueService {
     public List<Issue> findAllByMilestoneId(Integer milestoneId);
 
     public boolean updateIssueAssignee(Integer issueId, Integer assigneeId);
+
+    public Issue findById(int id);
 }
