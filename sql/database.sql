@@ -479,11 +479,14 @@ DROP TABLE IF EXISTS `swp391`.`issue_update` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`issue_update` (
                                                        `id` INT NOT NULL AUTO_INCREMENT,
                                                        `issue_id` INT NULL,
+                                                       `title` VARCHAR(45) NULL,
                                                        `description`  VARCHAR(255) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
-    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  --   `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    `update_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     PRIMARY KEY (`id`),
     FOREIGN KEY (`issue_id`)
     REFERENCES `swp391`.`issue` (`id`)
@@ -849,11 +852,11 @@ VALUES
     (7 ,1, 1, 5, 3, 45, 0),
     (8 ,1, 1, 5, 3, 45, 0),
     (9 ,1, 1, 5, 3, 45, 0);
-INSERT INTO issue_update(issue_id, description)
+INSERT INTO issue_update(issue_id,title, description)
 VALUES
-    (1 ,"Basic login "),
-    (1 ,"Check user blocked"),
-    (1 ,"Check user verified"),
-    (1 ,"Remember with cookie"),
-    (1 ,"Login with gg"),
-    (1 ,"Hash password");
+    (1 ,"Job1","Basic login "),
+    (1 ,"Job2","Check user blocked"),
+    (1 ,"Job3","Check user verified"),
+    (1 ,"Job4","Remember with cookie"),
+    (1 ,"Job5","Login with gg"),
+    (1 ,"Job6","Hash password");

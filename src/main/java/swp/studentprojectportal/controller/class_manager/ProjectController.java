@@ -75,8 +75,7 @@ public class ProjectController {
                          @RequestParam int mentorId,
                          @RequestParam int leaderId) {
 
-        Project project = projectService.update(projectId,title,groupName,description,mentorId,leaderId);
-
+        projectService.update(projectId,title,groupName,description,mentorId,leaderId);
         model.addAttribute("project", projectService.findById(projectId));
         model.addAttribute("projectMemberList", studentClassService.findAllByProjectId(projectId));
         model.addAttribute("projectMentorList", userService.findAllProjectMentor());

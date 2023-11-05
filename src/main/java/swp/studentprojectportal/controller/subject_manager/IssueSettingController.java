@@ -45,9 +45,9 @@ public class IssueSettingController {
         List<String> settingGroupList = issueSettingService.findAllDistinctClassSettingGroup(classA.getSubject().getId(), classId);
         IssueSetting setting = new IssueSetting();
         setting.setAclass(classA);
-        setting.setSettingGroup("Not Empty");
-        setting.setSettingTitle("");
-        setting.setDescription("");
+//        setting.setSettingGroup("Not Empty");
+//        setting.setSettingTitle("");
+//        setting.setDescription("");
         model.addAttribute("setting",setting);
 
         User user = (User) session.getAttribute("user");
@@ -76,9 +76,7 @@ public class IssueSettingController {
                                   @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
                                   @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
                                   @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") String settingGroup,
-                                  @RequestParam String description,
-                                  @RequestParam("newSettingGroup") String newSettingGroup,
-                                  @RequestParam("newSettingTitle") String newSettingTitle,
+
                                   Model model, HttpSession session) {
         Class classA = classService.findById(classId);
         Page<IssueSetting> issueSettingList= issueSettingService.filterClassIssueSetting(classA.getSubject().getId(), classId,search, pageNo, pageSize, sortBy, sortType, settingGroup, status);
@@ -86,28 +84,6 @@ public class IssueSettingController {
 
         IssueSetting setting = new IssueSetting();
         setting.setAclass(classA);
-        setting.setSettingGroup(newSettingGroup);
-        setting.setSettingTitle(newSettingTitle);
-        setting.setDescription(description);
-        if(newSettingGroup.equals("Not Empty") == false) {
-            if (Validate.validNotempty(newSettingGroup) == false) {
-                String errmsg = "Group can't empty. Add failed!";
-                model.addAttribute("errmsg", errmsg);
-            } else {
-                if (issueSettingService.findByClassAndGroupAndTitle(classId, newSettingGroup, newSettingTitle) != null) {
-                    String errmsg = "Issue setting existed. Add failed!";
-                    model.addAttribute("errmsg", errmsg);
-                } else {
-                    issueSettingService.saveSubjectSetting(setting);
-                    setting = new IssueSetting();
-                    setting.setAclass(classA);
-                    setting.setSettingGroup("Not Empty");
-                    setting.setSettingTitle("");
-                    setting.setDescription("");
-                    model.addAttribute("toastMessage", "Add new issue setting successfully");
-                }
-            }
-        }
 
         model.addAttribute("setting",setting);
 
