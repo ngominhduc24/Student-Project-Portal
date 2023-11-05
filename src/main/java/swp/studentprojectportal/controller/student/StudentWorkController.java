@@ -30,4 +30,14 @@ public class StudentWorkController {
         model.addAttribute("totalPage", workList.getTotalPages());
         return "student/workList";
     }
+    @GetMapping(path = "student/work/delete")
+    public String DeleteWork(@RequestParam int id, Model model){
+        IssueUpdate issueUpdate = issueUpdateService.findById(id);
+        if( issueUpdateService.deleteById(id)) {
+            //Delete
+            int issueId = issueUpdate.getIssue().getId();
+            return "redirect:/student/work/" + issueId;
+        }
+        return "redirect:/student/home";
+    }
 }

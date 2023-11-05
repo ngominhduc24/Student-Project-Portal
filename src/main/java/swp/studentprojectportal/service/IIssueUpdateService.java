@@ -12,6 +12,8 @@ public interface IIssueUpdateService{
 
     public IssueUpdate saveIssueUpdate(IssueUpdate issueUpdate);
 
+    public boolean deleteById(int id);
+
     Page<IssueUpdate> filterWork(Integer issueId, String search, Integer pageNo, Integer pageSize,
                                                String sortBy, Integer sortType);
 }

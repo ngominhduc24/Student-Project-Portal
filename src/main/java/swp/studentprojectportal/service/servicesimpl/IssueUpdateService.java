@@ -43,4 +43,12 @@ public class IssueUpdateService implements IIssueUpdateService{
     public IssueUpdate saveIssueUpdate(IssueUpdate issueUpdate){
         return issueUpdateRepository.save(issueUpdate);
     }
+
+    @Override public boolean deleteById(int id){
+        if(issueUpdateRepository.existsById(id)){
+            issueUpdateRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
