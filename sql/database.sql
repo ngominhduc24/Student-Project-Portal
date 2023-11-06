@@ -481,6 +481,7 @@ DROP TABLE IF EXISTS `swp391`.`issue_update` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`issue_update` (
                                                        `id` INT NOT NULL AUTO_INCREMENT,
                                                        `issue_id` INT NULL,
+                                                       `title` VARCHAR(45),
                                                        `description`  VARCHAR(255) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
