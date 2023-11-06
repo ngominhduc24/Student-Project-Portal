@@ -51,7 +51,7 @@ public class IssueSettingApiController {
 
     }
     @GetMapping("/update/issue-setting")
-    public ResponseEntity updateIssueSetting(
+    public ResponseEntity updateIssueSettingForClass(
             @RequestParam(name = "issueSettingId") Integer issueSettingId,
             @RequestParam(name = "classId") int classId,
             @RequestParam(name = "title") String title,
@@ -73,13 +73,44 @@ public class IssueSettingApiController {
                 return ResponseEntity.badRequest().body("Issue setting existed. Update failed!");
             }
             else {
-                issueSettingService.saveSubjectSetting(issueSetting);
+                issueSettingService.saveIssueSetting(issueSetting);
                 return ResponseEntity.ok().body("1");
 
             }
         }
 
     }
+    @GetMapping("/update2/issue-setting")
+    public ResponseEntity updateIssueSettingForSubject(
+            @RequestParam(name = "issueSettingId") Integer issueSettingId,
+            @RequestParam(name = "subjectId") int subjectId,
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "group") String group,
+            @RequestParam(name = "status") Integer status) {
+
+        IssueSetting issueSetting = issueSettingService.findById(issueSettingId);
+        issueSetting.setDescription(description);
+        issueSetting.setSettingTitle(title);
+        issueSetting.setSettingGroup(group);
+        issueSetting.setStatus(status == 1 ? true : false);
+        if(Validate.validNotempty(group) == false){
+            return ResponseEntity.badRequest().body("Group can not empty. Update failed!");
+        }
+        else{
+            IssueSetting findIssueSetting = issueSettingService.findBySubjectAndGroupAndTitle(subjectId,group,title);
+            if(findIssueSetting!=null && findIssueSetting.getId() != issueSettingId){
+                return ResponseEntity.badRequest().body("Issue setting existed. Update failed!");
+            }
+            else {
+                issueSettingService.saveIssueSetting(issueSetting);
+                return ResponseEntity.ok().body("1");
+
+            }
+        }
+
+    }
+
 
     @GetMapping(path="/add/issue-setting")
     public ResponseEntity addNewIssueSettingForClass(@RequestParam(name = "classId") int classId,
@@ -105,7 +136,7 @@ public class IssueSettingApiController {
                 return ResponseEntity.badRequest().body("Issue setting existed. Add failed!");
             }
             else {
-                issueSettingService.saveSubjectSetting(issueSetting);
+                issueSettingService.saveIssueSetting(issueSetting);
                 return ResponseEntity.ok().body("1");
 
             }
@@ -136,7 +167,7 @@ public class IssueSettingApiController {
                 return ResponseEntity.badRequest().body("Issue setting existed. Add failed!");
             }
             else {
-                issueSettingService.saveSubjectSetting(issueSetting);
+                issueSettingService.saveIssueSetting(issueSetting);
                 return ResponseEntity.ok().body("1");
 
             }

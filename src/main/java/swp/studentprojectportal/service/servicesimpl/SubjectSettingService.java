@@ -42,4 +42,9 @@ public class SubjectSettingService implements ISubjectSettingService {
     public SubjectSetting findById(int id){
         return subjectSettingRepository.findById(id).get();
     }
+
+    @Override
+    public SubjectSetting findByIdAndTypeIdAndTitle(int subjectId, int typeId, String title){
+        return subjectSettingRepository.findSubjectSettingByIdAndTypeIdAndSettingTitle(subjectId,typeId,title);
+    }
 }

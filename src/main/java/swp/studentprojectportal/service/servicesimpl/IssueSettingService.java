@@ -46,7 +46,7 @@ public class IssueSettingService implements IIssueSettingService {
     }
 
     @Override
-    public IssueSetting saveSubjectSetting(IssueSetting issueSetting) {
+    public IssueSetting saveIssueSetting(IssueSetting issueSetting) {
         return issueSettingRepository.save(issueSetting);
     }
 

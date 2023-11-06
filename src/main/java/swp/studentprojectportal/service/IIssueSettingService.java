@@ -12,7 +12,7 @@ public interface IIssueSettingService {
     Page<IssueSetting> filterClassIssueSetting(Integer subjectId, Integer classId, String search, Integer pageNo, Integer pageSize,
                                                String sortBy, Integer sortType, String settingGroup, Integer status);
 
-    IssueSetting saveSubjectSetting(IssueSetting setting);
+    IssueSetting saveIssueSetting(IssueSetting setting);
     IssueSetting findById(int id);
 
     IssueSetting findByClassAndGroupAndTitle(int classId,String settingGroup, String settingTitle);
