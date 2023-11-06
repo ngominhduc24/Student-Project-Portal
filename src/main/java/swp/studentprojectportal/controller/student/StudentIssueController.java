@@ -29,6 +29,9 @@ public class StudentIssueController {
     @Autowired
     MilestoneService milestoneService;
 
+    @Autowired
+    ProjectService projectService;
+
     @GetMapping("student/issue/list")
     public String IssueList(Model model, HttpSession session,
                             @RequestParam(defaultValue = "") String search,
@@ -148,6 +151,9 @@ public class StudentIssueController {
                 .map(issue -> issue.getAssignee())
                 .collect(Collectors.toSet());
 
+        // function to get project by user
+        List<Project> projects = projectService.findAllByStudentUserId(user.getId());
+
         //function to get all process
         List<IssueSetting> processes = issueSettingService.findProcessTitle(subjectId, "process");
 
@@ -166,12 +172,14 @@ public class StudentIssueController {
         model.addAttribute("process", processes);
         model.addAttribute("status", status);
         model.addAttribute("type", type);
+        model.addAttribute("project", projects);
 
         return "student/issueAdd";
     }
 
     @PostMapping("/issueCreate")
     public String issueCreate(@RequestParam String title,
+                              @RequestParam int project,
                               @RequestParam int type,
                               @RequestParam int milestone,
                               @RequestParam int assignee,
@@ -179,6 +187,7 @@ public class StudentIssueController {
                               @RequestParam int status,
                               Model model){
         User user = userService.findById(assignee);
+        Project project1 = projectService.findById(project);
         Milestone milestone1 = milestoneService.findMilestoneById(milestone);
         IssueSetting typeSetting = issueSettingService.findById(type);
         IssueSetting statusSetting = issueSettingService.findById(status);
@@ -186,6 +195,7 @@ public class StudentIssueController {
 
         Issue issue = new Issue();
         issue.setTitle(title);
+        issue.setProject(project1);
         issue.setAssignee(user);
         issue.setMilestone(milestone1);
         issue.setType(typeSetting);
@@ -193,6 +203,6 @@ public class StudentIssueController {
         issue.setProcess(processSetting);
         issueService.saveIssue(issue);
 
-        return "student/issueList";
+        return "redirect:/student/issue/list?issueId=" + -1;
     }
 }

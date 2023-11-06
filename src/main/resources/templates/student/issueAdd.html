@@ -64,7 +64,7 @@
                 <div class="row">
                     <div class="col-lg-8 mt-4">
                         <div class="card border-0 p-4 rounded shadow">
-                            <form action="./addSubject" method="post" class="mt-4">
+                            <form action="/issueCreate" method="post" class="mt-4">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="mb-3">
@@ -81,11 +81,27 @@
                                         <div class="mb-3">
                                             <label class="form-label"> Group<span class="text-danger">*</span></label>
                                             <select name="group" class="form-select">
-                                                <option value="-1">All Group</option>
                                                 <!-- Loop through the "groups" attribute and populate the options -->
                                                 <th:block th:each="group : ${groups}">
                                                     <option th:value="${group.getId()}"
-                                                            th:text="${group.getGroupName()}"></option>
+                                                            th:text="${group.getGroupName()}"
+                                                            th:selected="${group.getId() == projectId}">
+                                                    </option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label"> Project<span class="text-danger">*</span></label>
+                                            <select name="project" class="form-select">
+                                                <!-- Loop through the "groups" attribute and populate the options -->
+                                                <th:block th:each="project : ${project}">
+                                                    <option th:value="${project.getId()}"
+                                                            th:text="${project.getTitle()}"
+                                                            th:selected="${project.getId() == projectId}">
+                                                    </option>
                                                 </th:block>
                                             </select>
                                         </div>
@@ -124,7 +140,7 @@
                                         <div class="mb-3">
                                             <label class="form-label"> Assignee<span
                                                     class="text-danger">*</span></label>
-                                            <select id="assignee" class="form-select">
+                                            <select name="assignee" class="form-select">
                                                 <option value="-1">All Assignee</option>
                                                 <!-- Loop through the "assignees" attribute and populate the options -->
                                                 <th:block th:each="assignee : ${assignees}">
