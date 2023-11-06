@@ -39,7 +39,7 @@ public class StudentIssueController {
                             @RequestParam(defaultValue = "-1") int milestoneId,
                             @RequestParam(defaultValue = "-1") int assigneeId,
                             @RequestParam(defaultValue = "-1") int issueId,
-                            @RequestParam(defaultValue =  "1") int subjectId
+                            @RequestParam(defaultValue = "1") int subjectId
     ) {
         User user = (User) session.getAttribute("user");
         List<Issue> issueList = issueService.getAllIssueByStudentId(user.getId());
@@ -112,7 +112,7 @@ public class StudentIssueController {
         IssueSetting statusSetting = issueSettingService.findById(status);
         IssueSetting processSetting = issueSettingService.findById(process);
 
-        if(title == null) {
+        if (title == null) {
             model.addAttribute("errorMsg", "Please enter issue title");
         } else {
             Issue issue = issueService.getIssueById(issueIdPost);
@@ -132,7 +132,7 @@ public class StudentIssueController {
                                @RequestParam(defaultValue = "-1") int projectId,
                                @RequestParam(defaultValue = "-1") int milestoneId,
                                @RequestParam(defaultValue = "-1") int assigneeId,
-                               @RequestParam(defaultValue =  "1") int subjectId){
+                               @RequestParam(defaultValue = "1") int subjectId) {
         User user = (User) session.getAttribute("user");
         List<Issue> issueList = issueService.getAllIssueByStudentId(user.getId());
 
@@ -185,7 +185,7 @@ public class StudentIssueController {
                               @RequestParam int assignee,
                               @RequestParam int process,
                               @RequestParam int status,
-                              Model model){
+                              Model model) {
         User user = userService.findById(assignee);
         Project project1 = projectService.findById(project);
         Milestone milestone1 = milestoneService.findMilestoneById(milestone);
@@ -193,16 +193,42 @@ public class StudentIssueController {
         IssueSetting statusSetting = issueSettingService.findById(status);
         IssueSetting processSetting = issueSettingService.findById(process);
 
-        Issue issue = new Issue();
-        issue.setTitle(title);
-        issue.setProject(project1);
-        issue.setAssignee(user);
-        issue.setMilestone(milestone1);
-        issue.setType(typeSetting);
-        issue.setStatus(statusSetting);
-        issue.setProcess(processSetting);
-        issueService.saveIssue(issue);
+        String msg = checkValidateAddIssue(title, type, milestone, assignee, process, status);
 
+        if (msg != null) {
+            model.addAttribute("errorMsg", msg);
+            model.addAttribute("title", title);
+            model.addAttribute("assignee", assignee);
+            model.addAttribute("milestone", milestone1);
+            model.addAttribute("type", type);
+            model.addAttribute("status", status);
+            model.addAttribute("process", process);
+            return "/student/issueAdd";
+        } else {
+
+            Issue issue = new Issue();
+            issue.setTitle(title);
+            issue.setProject(project1);
+            issue.setAssignee(user);
+            issue.setMilestone(milestone1);
+            issue.setType(typeSetting);
+            issue.setStatus(statusSetting);
+            issue.setProcess(processSetting);
+            issueService.saveIssue(issue);
+        }
         return "redirect:/student/issue/list?issueId=" + -1;
+    }
+
+    private String checkValidateAddIssue(String title, int typeId,
+                                         int milestoneId, int assigneeId,
+                                         int processId, int statusId){
+        if (title.isEmpty()) return "Please input issue title";
+        if (milestoneId == -1) return "Please input milestone";
+        if (typeId == -1) return "Please input type option";
+        if (assigneeId == -1) return "Please input assignee";
+        if (statusId == -1) return "Please input status option";
+        if (processId == -1) return "Please input process option";
+
+        return null;
     }
 }

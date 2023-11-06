@@ -73,7 +73,8 @@
                                             <input type="text" class="form-control"
                                                    name="title"
                                                    th:value="${title}"
-                                                   placeholder="Issue Title :">
+                                                   placeholder="Issue Title :"
+                                                   required>
                                         </div>
                                     </div><!--end col-->
 
@@ -111,10 +112,10 @@
                                         <div class="mb-3">
                                             <label class="form-label"> Type<span class="text-danger">*</span></label>
                                             <select name="type" class="form-select">
-                                                <option value="-1">All Type</option>
                                                 <option th:each="selectedType : ${type}"
-                                                        th:value="${selectedType.id}"
-                                                        th:text="${selectedType.settingTitle}">
+                                                        th:value="${selectedType != null ? selectedType.id : ''}"
+                                                        th:text="${selectedType != null ? selectedType.settingTitle : ''}"
+                                                        th:selected="${selectedType != null && selectedType == type}">
                                                 </option>
                                             </select>
                                         </div>
@@ -125,7 +126,6 @@
                                             <label class="form-label"> Milestone<span
                                                     class="text-danger">*</span></label>
                                             <select name="milestone" class="form-select">
-                                                <option value="-1">All Milestone</option>
                                                 <!-- Loop through the "milestones" attribute and populate the options -->
                                                 <th:block th:each="milestone : ${milestones}">
                                                     <option th:value="${milestone.getId()}"
@@ -141,7 +141,6 @@
                                             <label class="form-label"> Assignee<span
                                                     class="text-danger">*</span></label>
                                             <select name="assignee" class="form-select">
-                                                <option value="-1">All Assignee</option>
                                                 <!-- Loop through the "assignees" attribute and populate the options -->
                                                 <th:block th:each="assignee : ${assignees}">
                                                     <option th:value="${assignee.getId()}"
@@ -156,10 +155,10 @@
                                         <div class="mb-3">
                                             <label class="form-label"> Process<span class="text-danger">*</span></label>
                                             <select name="process" class="form-select">
-                                                <option value="-1">All Process</option>
                                                 <option th:each="selectedProcess : ${process}"
                                                         th:value="${selectedProcess.id}"
-                                                        th:text="${selectedProcess.settingTitle}">
+                                                        th:text="${selectedProcess.settingTitle}"
+                                                        th:select="${selectedProcess.id == type}">
                                                 </option>
                                             </select>
                                         </div>
@@ -169,10 +168,10 @@
                                         <div class="mb-3">
                                             <label class="form-label"> Status<span class="text-danger">*</span></label>
                                             <select name="status" class="form-select">
-                                                <option value="-1">All Status</option>
                                                 <option th:each="selectedStatus : ${status}"
                                                         th:value="${selectedStatus.id}"
-                                                        th:text="${selectedStatus.settingTitle}">
+                                                        th:text="${selectedStatus.settingTitle}"
+                                                        th:select="${selectedStatus.id == type}">>
                                                 </option>
                                             </select>
                                         </div>

@@ -51,7 +51,14 @@ public class IssueSettingService implements IIssueSettingService {
     }
 
     public IssueSetting findById(int id){
-        return issueSettingRepository.findById(id).get();
+        IssueSetting setting = new IssueSetting();
+        if(id == -1) {
+            setting.setId(-1);
+            setting.setSettingTitle("");
+        } else {
+            setting = issueSettingRepository.findById(id).get();
+        }
+        return setting;
     }
 
     @Override
