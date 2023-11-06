@@ -49,52 +49,6 @@
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-
-<style>
-    .gl-label {
-        line-height: 1rem;
-        display: flex;
-        font-size: 0.75rem;
-        font-weight: 400;
-        overflow: hidden;
-        color: inherit;
-        max-width: 100%;
-    }
-
-    #myTable_filter {
-        float: left;
-    }
-
-    .topnav {
-        overflow: hidden;
-        border-bottom: 1px solid darkgray;
-        margin-top: 70px;
-        background: white;
-    }
-
-    .topnav a {
-        float: left;
-        display: block;
-        color: black;
-        text-align: center;
-        padding: 10px 26px;
-        text-decoration: none;
-        font-size: 14px;
-        border-bottom: 3px solid transparent;
-        margin: 0
-    }
-
-    .topnav a:hover {
-        border-bottom: 3px solid blue;
-    }
-
-    .topnav a.active {
-        border-bottom: 3px solid blue;
-    }
-
-    .dataTables_filter {
-        display: flex;
-    }
 </style>
 
 <body>
@@ -107,18 +61,8 @@
     <!-- Start Page Content -->
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
-        <div class="topnav" style="margin-top: 44px">
-            <a style="cursor: pointer;" th:if="${session.user.setting.id==3}"
-               th:href="@{/subject-manager/classDetail(id=${classId})}"><p style="margin:0;">General</p></a>
-            <a style="cursor: pointer;" th:if="${session.user.setting.id==4}"
-               th:href="@{/class-manager/classDetail(id=${classId})}"><p style="margin:0;">General</p></a>
-            <!--      <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>-->
-            <!--      <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>-->
-            <!--      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>-->
-            <!--      <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
-        </div>
         <div class="container-fluid">
-            <div class="layout-specing" style="padding: 35px 14px 24px !important;">
+            <div class="layout-specing" style="padding: 35px 14px 24px !important; margin-top: 40px">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
                         <h3 style="margin-top: -14px;margin-bottom: 20px;">Issue List</h3>
@@ -134,22 +78,21 @@
                     </div><!--end col-->
                     <div class="col-xl-4 col-md-6">
                     </div>
-<!--                add button-->
-<!--                    <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">-->
-<!--                        <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal"-->
-<!--                                data-target=".bd-example-modal-lg">-->
-<!--                            <i>-->
-<!--                                <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none"-->
-<!--                                     xmlns="http://www.w3.org/2000/svg">-->
-<!--                                    <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"-->
-<!--                                          fill="white"/>-->
-<!--                                </svg>-->
-<!--                            </i>-->
-<!--                            Add student to class-->
-<!--                        </button>-->
-<!--                    </div>&lt;!&ndash;end col&ndash;&gt;-->
+
+                    <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
+                        <a href="/student/issue/add" type="button" class="btn btn-primary" style="width: 226px;">
+                            <i>
+                                <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"
+                                          fill="white"/>
+                                </svg>
+                            </i>
+                            Add issue
+                        </a>
+                    </div><!--end col-->
                 </div><!--end row-->
-                <div class="container-fluid px-4">
+                <div class="container-fluid px-2">
                     <div class="card mb-4">
                         <div class="card-body">
                             <!-- Filter -->
@@ -245,7 +188,7 @@
                             <form action="/issueUpdate" method="post">
                                 <input type="hidden" name="issueIdPost" th:value="${selectedIssue.id}">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Member group</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Issue details</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -259,7 +202,7 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Type</label>
-                                                <select name="type">
+                                                <select name="type" class="form-select">
                                                     <option th:each="selectedType : ${type}"
                                                             th:value="${selectedType.id}"
                                                             th:text="${selectedType.settingTitle}" th:selected="${selectedIssue.type == selectedType.id}">
@@ -268,7 +211,7 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Milestone</label>
-                                                <select name="milestone">
+                                                <select name="milestone" class="form-select">
                                                     <th:block th:each="milestone : ${milestones}">
                                                         <option th:value="${milestone.getId()}"
                                                                 th:text="${milestone.getTitle()}"
@@ -278,7 +221,7 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Asignee</label>
-                                                <select name="assignee">
+                                                <select name="assignee" class="form-select">
                                                     <th:block th:each="assignee : ${assignees}">
                                                         <option th:value="${assignee.getId()}"
                                                                 th:text="${assignee.getDisplayName()}"
@@ -288,7 +231,7 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Process</label>
-                                                <select name="process">
+                                                <select name="process" class="form-select">
                                                     <option th:each="selectedProcess : ${process}"
                                                             th:value="${selectedProcess.id}"
                                                             th:text="${selectedProcess.settingTitle}" th:selected="${selectedIssue.process == selectedProcess.id}">
@@ -297,7 +240,7 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Status</label>
-                                                <select name="status">
+                                                <select name="status" class="form-select">
                                                     <option th:each="selectedStatus : ${status}"
                                                             th:value="${selectedStatus.id}"
                                                             th:text="${selectedStatus.settingTitle}" th:selected="${selectedIssue.status == selectedStatus.id}">

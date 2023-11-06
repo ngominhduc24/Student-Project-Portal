@@ -123,4 +123,76 @@ public class StudentIssueController {
         }
         return "redirect:/student/issue/list?issueId=" + issueIdPost;
     }
+
+    @GetMapping("student/issue/add")
+    public String issueAddPage(Model model, HttpSession session,
+                               @RequestParam(defaultValue = "-1") int projectId,
+                               @RequestParam(defaultValue = "-1") int milestoneId,
+                               @RequestParam(defaultValue = "-1") int assigneeId,
+                               @RequestParam(defaultValue =  "1") int subjectId){
+        User user = (User) session.getAttribute("user");
+        List<Issue> issueList = issueService.getAllIssueByStudentId(user.getId());
+
+        // Get unique group names from all issues
+        Set<Project> uniqueGroups = issueList.stream()
+                .map(issue -> issue.getProject())
+                .collect(Collectors.toSet());
+
+        // Get unique milestone titles from all issues
+        Set<Milestone> uniqueMilestones = issueList.stream()
+                .map(issue -> issue.getMilestone())
+                .collect(Collectors.toSet());
+
+        // Asignee must all be in filtered issue list
+        Set<User> uniqueAssignees = issueList.stream()
+                .map(issue -> issue.getAssignee())
+                .collect(Collectors.toSet());
+
+        //function to get all process
+        List<IssueSetting> processes = issueSettingService.findProcessTitle(subjectId, "process");
+
+        //function to get all status
+        List<IssueSetting> status = issueSettingService.findProcessTitle(subjectId, "status");
+
+        //function to get all type
+        List<IssueSetting> type = issueSettingService.findProcessTitle(subjectId, "type");
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("milestoneId", milestoneId);
+        model.addAttribute("assigneeId", assigneeId);
+        model.addAttribute("groups", uniqueGroups);
+        model.addAttribute("milestones", uniqueMilestones);
+        model.addAttribute("assignees", uniqueAssignees);
+        model.addAttribute("process", processes);
+        model.addAttribute("status", status);
+        model.addAttribute("type", type);
+
+        return "student/issueAdd";
+    }
+
+    @PostMapping("/issueCreate")
+    public String issueCreate(@RequestParam String title,
+                              @RequestParam int type,
+                              @RequestParam int milestone,
+                              @RequestParam int assignee,
+                              @RequestParam int process,
+                              @RequestParam int status,
+                              Model model){
+        User user = userService.findById(assignee);
+        Milestone milestone1 = milestoneService.findMilestoneById(milestone);
+        IssueSetting typeSetting = issueSettingService.findById(type);
+        IssueSetting statusSetting = issueSettingService.findById(status);
+        IssueSetting processSetting = issueSettingService.findById(process);
+
+        Issue issue = new Issue();
+        issue.setTitle(title);
+        issue.setAssignee(user);
+        issue.setMilestone(milestone1);
+        issue.setType(typeSetting);
+        issue.setStatus(statusSetting);
+        issue.setProcess(processSetting);
+        issueService.saveIssue(issue);
+
+        return "student/issueList";
+    }
 }
