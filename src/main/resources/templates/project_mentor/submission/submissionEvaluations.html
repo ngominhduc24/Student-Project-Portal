@@ -229,48 +229,39 @@
 
               </div>
             </div>
-            <script>
-              function EditMark() {
-                var view = document.getElementsByClassName("view");
-                var edit = document.getElementsByClassName("edit");
-                for (var i = 0; i < view.length; i++) {
-                  view[i].hidden = true;
-                }
-                for (var i = 0; i < edit.length; i++) {
-                  edit[i].hidden = false;
-                }
-              }
-            </script>
 
-<!--            <div class="col-md-6 d-flex flex-column justify-content-end view" >-->
-<!--              <div class="row">-->
-<!--                <div class="col-md-3"></div>-->
-<!--                <div class="col-md-3" style="padding: 0px 3px">-->
-<!--                </div>-->
-<!--                <div class="col-md-3" style="padding: 0px 3px">-->
-<!--                  <a onclick="EditMark()" class="btn btn-secondary" style="width: 100%;">Edit Marks</a>-->
-<!--                </div>-->
-<!--                <div class="col-md-3" style="padding: 0px 3px">-->
-<!--                  <button type="button" class="btn btn-warning" style="width: 100%;">Copy Group Evals</button>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>&lt;!&ndash;end col&ndash;&gt;-->
+              <div class="col-md-6 d-flex flex-column justify-content-start edit"  >
+                <div class="view">
+                  <div class="row">
 
-            <div class="col-md-6 d-flex flex-column justify-content-start edit"  >
-              <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-3" style="padding: 0px 3px">
-                  <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
-                </div>
-                <div class="col-md-3" style="padding: 0px 3px">
-                  <a onclick="window.location.reload()" class="btn btn-secondary" style="width: 100%;">Reverse Changes</a>
-                </div>
-                <div class="col-md-3" style="padding: 0px 3px">
-                  <button type="button" class="btn btn-warning" style="width: 100%;">Copy Group Evals</button>
-                </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3" style="padding: 0px 3px">
+                    </div>
+                    <div class="col-md-3" style="padding: 0px 3px">
+                      <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 100%;">Edit</button>
+                    </div>
+                    <div class="col-md-3" style="padding: 0px 3px">
+                      <button type="button" class="btn btn-warning" style="width: 100%;">Copy Group Evals</button>
+                    </div>
+                  </div>
+                </div><!--end col-->
+
+                <div class="edit" hidden="">
+                    <div class="row">
+
+                      <div class="col-md-3" style="padding: 0px 3px">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
+                      </div>
+                      <div class="col-md-3" style="padding: 0px 3px">
+                        <a onclick="window.location.reload()" class="btn btn-secondary" style="width: 100%;">Reverse Changes</a>
+                      </div>
+                      <div class="col-md-3"><button type="button" onclick="viewMark()" class="btn btn-primary" style="width: 100%;">View</button></div>
+                      <div class="col-md-3" style="padding: 0px 3px">
+                        <button type="button" class="btn btn-warning" style="width: 100%;">Copy Group Evals</button>
+                      </div>
+                    </div>
+                  </div><!--end col-->
               </div>
-            </div><!--end col-->
-
 
           </div><!--end row-->
 
@@ -318,11 +309,11 @@
                   <td></td>
                   <th:block  th:each="evalGrade : ${item.getCriteriaGradeList()}">
                     <td>
-<!--                      <div class="view">-->
-<!--                        <label th:text="${evalGrade.grade}"></label>-->
-<!--                      </div>-->
-                      <div class="edit">
-                        <input type="number" max="10" min="0" name="evalGrade" th:value="${evalGrade.grade}" style="width: 50px">
+                      <div class="view" >
+                        <label th:text="${evalGrade.grade}"></label>
+                      </div>
+                      <div class="edit" hidden="hidden">
+                        <input type="number" max="10" min="0" name="evalGrade" th:value="${evalGrade.grade}" style="width: 50px" >
                         <input type="hidden" name="evalGradeId" th:value="${evalGrade.criteriaGradeId}">
                         <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\')'" >...</label>
                       </div>
@@ -404,11 +395,35 @@
     $('#myTable').DataTable({
       "dom": 'frtipl',
       "ordering": false,
-      "info": false,
       "bInfo" : false
     });
   });
 </script>
+
+<script>
+  function editMark() {
+    var view = document.getElementsByClassName("view");
+    var edit = document.getElementsByClassName("edit");
+    for (var i = 0; i < view.length; i++) {
+      view[i].hidden = true;
+    }
+    for (var i = 0; i < edit.length; i++) {
+      edit[i].hidden = false;
+    }
+  }
+  function viewMark() {
+    var view = document.getElementsByClassName("view");
+    var edit = document.getElementsByClassName("edit");
+    for (var i = 0; i < view.length; i++) {
+      view[i].hidden = false;
+    }
+    for (var i = 0; i < edit.length; i++) {
+      edit[i].hidden = true;
+    }
+  }
+
+</script>
+
 
 <script>
   var expanded = false;
