@@ -57,4 +57,19 @@ public class SubmitIssueService implements ISubmitIssueService {
         evaluationDTO.setWorkGrade(workGrade.get());
         return evaluationDTO;
     }
+
+    @Override
+    public SubmitIssue findById(Integer submitIssueId){
+        return submitIssueRepository.findById(submitIssueId).orElse(null);
+    }
+
+    @Override
+    public List<Integer> findAllComplexitySubjectSettingValueById(Integer subjectId){
+        return submitIssueRepository.findAllComplexitySubjectSettingValueById(subjectId);
+    }
+
+    @Override
+    public List<Integer> findAllQualitySubjectSettingValueById(Integer subjectId){
+        return submitIssueRepository.findAllQualitySubjectSettingValueById(subjectId);
+    }
 }

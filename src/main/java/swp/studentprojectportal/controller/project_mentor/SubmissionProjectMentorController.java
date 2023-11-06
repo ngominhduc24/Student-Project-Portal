@@ -27,6 +27,7 @@ public class SubmissionProjectMentorController {
         model.addAttribute("isMentor", user.getSetting().getId() == 4);
         model.addAttribute("submitIssueList", submitIssueService.findAllBySubmissionId(submissionId));
         model.addAttribute("submission", submissionService.findById(submissionId));
+        model.addAttribute("",submitIssueService.findAllComplexitySubjectSettingValueById(1);
 
         return "project_mentor/submission/submissionDetails";
     }
