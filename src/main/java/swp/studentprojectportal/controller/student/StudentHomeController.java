@@ -14,6 +14,6 @@ public class StudentHomeController {
     @GetMapping("student/home")
     public String dashboard(Model model) {
         model.addAttribute("currentSemester", settingService.getLastestSemester().getSettingTitle());
-        return "common/home";
+        return "student/studentDashboard";
     }
 }

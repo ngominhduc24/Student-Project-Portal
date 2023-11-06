@@ -22,6 +22,14 @@ public class IssueService implements IIssueService {
 
     @Autowired
     IStudentClassRepository studentClassRepository;
+    @Override
+    public Issue getIssueById(Integer issueId) {
+        Issue issue = new Issue();
+        if(issueId != -1) {
+            issue =  issueRepository.findIssueById(issueId);
+        }
+        return issue;
+    }
 
     @Override
     public List<Issue> getAllIssueByStudentId(Integer studentId) {

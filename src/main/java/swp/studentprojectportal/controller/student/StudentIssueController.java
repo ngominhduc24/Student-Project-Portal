@@ -14,6 +14,7 @@ import swp.studentprojectportal.service.servicesimpl.IssueService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,8 @@ public class StudentIssueController {
                             @RequestParam(defaultValue = "") String search,
                             @RequestParam(defaultValue = "-1") int projectId,
                             @RequestParam(defaultValue = "-1") int milestoneId,
-                            @RequestParam(defaultValue = "-1") int assigneeId
+                            @RequestParam(defaultValue = "-1") int assigneeId,
+                            @RequestParam(defaultValue = "-1") int issueId
     ) {
         User user = (User) session.getAttribute("user");
         List<Issue> issueList = issueService.getAllIssueByStudentId(user.getId());
@@ -51,6 +53,8 @@ public class StudentIssueController {
                 .map(issue -> issue.getAssignee())
                 .collect(Collectors.toSet());
 
+        Issue issue = issueService.getIssueById(issueId);
+
         // add attribute for select option
         model.addAttribute("projectId", projectId);
         model.addAttribute("milestoneId", milestoneId);
@@ -60,6 +64,9 @@ public class StudentIssueController {
         model.addAttribute("milestones", uniqueMilestones);
         model.addAttribute("assignees", uniqueAssignees);
         model.addAttribute("issueList", issueList);
+
+        model.addAttribute("selectedIssue", issue);
+
         return "student/issueList";
     }
 }

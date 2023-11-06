@@ -318,21 +318,22 @@
 
 <script>
     // Get the canvas element
-    var pie = document.getElementById('myBarChart').getContext('2d');
+    var doughnut = document.getElementById('myBarChart').getContext('2d');
 
-    // Define your pie chart data
-    var pieChartData = {
-        labels: ['0-5', '5-8', '8-10'],
+    // Define your doughnut chart data
+    var doughnutChartData = {
+        labels: ['0-4', '4-6', '6-8', '8-10'],
         datasets: [{
-            data: [30, 40, 30],
-            backgroundColor: ['red', 'yellow', 'green']
+            data: [30, 40, 20, 10],
+            backgroundColor: ['rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)'],
+            borderWidth: 1, // Add this line to set the border width
         }]
     };
 
-    // Create the pie chart
-    var myPieChart = new Chart(pie, {
-        type: 'pie',
-        data: pieChartData
+    // Create the doughnut chart
+    var myDoughnutChart = new Chart(doughnut, {
+        type: 'doughnut', // Change the chart type to 'doughnut'
+        data: doughnutChartData
     });
 </script>
 

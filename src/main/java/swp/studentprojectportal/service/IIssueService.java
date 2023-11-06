@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IIssueService {
 
+    Issue getIssueById(Integer issueId);
+
     List<Issue> getAllIssueByStudentId(Integer studentId);
 
     public List<Issue> findAllByMilestoneId(Integer milestoneId);
