@@ -124,6 +124,11 @@ public class SubjectService implements ISubjectService {
         return subjectRepository.findAllSubjectByUserAndStatus(user, status);
     }
 
+    @Override
+    public List<Subject> findSubjectForProject(Integer projectMentorId) {
+        return subjectRepository.findSubjectByClassesProjectsProjectMentorId(projectMentorId);
+    }
+
     public Object getTotalPage(int pageSize) {
         long count = subjectRepository.count();
         int totalPage = count % pageSize == 0 ? (int) (count/pageSize) : (int) (count/pageSize) +1;

@@ -62,7 +62,8 @@
                     <ol class="breadcrumb mb-2 ms-2">
                         <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a th:href="'/class-manager/project/list/' + ${project.aclass.id}">Project</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/student/project}" >Project List</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list/{classId}(classId=${project.aclass.id})}" >Project List</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Project Details</li>
                     </ol>
