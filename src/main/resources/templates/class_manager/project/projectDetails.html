@@ -48,9 +48,9 @@
         <div th:replace="~{dashboardHeader}"></div>
 
         <div class="topnav">
-            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/{projectId}}" ><p style="margin:0;">General</p></a>
-            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/project/details/{projectId}}" ><p style="margin:0;">General</p></a>
-            <a style="cursor: pointer;" th:href="@{/class-manager/project/member(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/members(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
             <a style="cursor: pointer;" th:href="@{/class-manager/project/milestone(projectId=${project.id})}"><p style="margin:0;"  >Milestones</p></a>
             <a style="cursor: pointer;" th:href="@{/class-manager/project/issue-setting(id=${project.id})}" ><p style="margin:0;">Settings</p></a>
         </div>
@@ -62,7 +62,8 @@
                     <ol class="breadcrumb mb-2 ms-2">
                         <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
-                        <li class="breadcrumb-item"><a th:href="'/class-manager/project/list/' + ${project.aclass.id}">Project</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/student/project}" >Project List</a></li>
+                        <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list/{classId}(classId=${project.aclass.id})}" >Project List</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active">Project Details</li>
                     </ol>

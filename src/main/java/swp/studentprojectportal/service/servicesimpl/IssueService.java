@@ -92,5 +92,10 @@ public class IssueService implements IIssueService {
         }
     }
 
+    @Override
+    public Issue findById(int id){
+        return issueRepository.findById(id).get();
+    }
+
 
 }

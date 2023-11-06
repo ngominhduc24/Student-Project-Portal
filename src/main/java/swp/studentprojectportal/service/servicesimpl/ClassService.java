@@ -126,5 +126,10 @@ public class ClassService implements IClassService {
         return classList;
     }
 
+    @Override
+    public List<Class> findClassForProject(Integer projectMentorId) {
+        return classRepository.findClassByProjectsProjectMentorId(projectMentorId);
+    }
+
 
 }

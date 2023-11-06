@@ -65,5 +65,5 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
                                             @Param("status") Integer status,
                                             Pageable pageable);
 
-
+    List<Class> findClassByProjectsProjectMentorId(@Param("projectMentorId") Integer projectMentorId);
 }

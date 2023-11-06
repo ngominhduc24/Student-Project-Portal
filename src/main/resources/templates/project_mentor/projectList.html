@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8"/>
     <title th:text="${@title}"></title>
@@ -24,13 +23,18 @@
     <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
     <!-- Icons -->
     <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
     <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
-    <!-- Datatables -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
     <style>
         .datatable-table {
@@ -40,8 +44,16 @@
         tr, td, th {
             border: 1px solid #dee2e6 !important;
         }
-        td:last-child {
-            text-align: center;
+        .action {
+            font-size: 20px;
+            margin-left: 11px;
+            cursor: pointer;
+        }
+        .action1:hover {
+            color: #0f7d49 !important;
+        }
+        .action2:hover {
+            color: #962c35 !important;
         }
         th:first-child {
             width: 10%;
@@ -109,9 +121,7 @@
             content: none !important;
         }
     </style>
-
 </head>
-
 <body>
 <!-- Loader -->
 <div id="preloader">
@@ -122,24 +132,21 @@
         </div>
     </div>
 </div>
-<!-- Loader -->
 
-<div class="page-wrapper doctris-theme toggled">
+<div class="page-wrapper doctris-theme toggled" id="main">
     <!-- sidebar-wrapper  -->
     <div th:replace="~{dashboardSidebar}"></div>
-
-    <!-- Start Page Content -->
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
-        <div class="container-fluid">
+        <div class="container-fluid" >
             <div class="layout-specing" style="padding-top: 84px !important;">
-                <div class="row px-4">
+                <div class="row px-4" >
                     <div class="col-xl-5 col-md-6">
-                        <h1 style="margin: 0">Class List</h1>
+                        <h1 style="margin: 0">Project List</h1>
                         <ol class="breadcrumb mb-1 ms-1">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Class List</li>
+                            <li class="breadcrumb-item active">Project List</li>
                         </ol>
                     </div><!--end col-->
 
@@ -157,12 +164,13 @@
                         <span id="toastMessage" th:text="${toastMessage}"></span>
                     </div>
                 </div>
+
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
-                        <form class="card-body rounded-3" action="/class-manager/classList" id="form">
+                        <form action="/project-mentor/project" class="card-body rounded-3" id="form">
                             <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
                                 <div class="col-md-3 row">
-                                    <div class="mb-3 col-md-4 pe-1" >
+                                    <div class="mb-3 col-md-5 pe-3">
                                         <select name="pageSize" class="form-select" onchange="this.form.submit()">
                                             <option th:selected="${pageSize==5}" value="5">5</option>
                                             <option th:selected="${pageSize==10}" value="10">10</option>
@@ -175,7 +183,26 @@
                                 </div>
                                 <div class="row col-md-8" style="margin-left: -100px">
                                     <div class="col-md-3">
-                                        <div class="mb-3" >
+                                        <div class="mb-3">
+                                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1" th:selected="${status == -1}">All Status</option>
+                                                <option value="1" th:selected="${status == 1}">Active</option>
+                                                <option value="0" th:selected="${status == 0}">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <select name="classId" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1">All Class</option>
+                                                <option th:each="class : ${classList}"
+                                                        th:value="${class.id}"
+                                                        th:text="${class.className}" th:selected="${classId == class.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
                                             <select name="subjectId" class="form-select" onchange="this.form.submit()">
                                                 <option value="-1">All Subject</option>
                                                 <option th:each="subject : ${subjectList}"
@@ -184,76 +211,71 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <select name="semesterId" class="form-select" onchange="this.form.submit()">
-                                                <option value="-1">All Semester</option>
-                                                <option th:each="semester : ${semesterList}"
-                                                        th:value="${semester.id}"
-                                                        th:text="${semester.settingTitle}" th:selected="${semesterId == semester.id}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <select name="status" class="form-select" onchange="this.form.submit()">
-                                                <option value="-1" th:selected="${status == -1}">All Status</option>
-                                                <option value="0" th:selected="${status == 0}">Pending</option>
-                                                <option value="1" th:selected="${status == 1}">Canceled</option>
-                                                <option value="2" th:selected="${status == 2}">Started</option>
-                                                <option value="3" th:selected="${status == 3}">Closed</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <input class="form-control form-control-sm" type="text" th:value="${search}" name="search" placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
-                                    <button onclick="this.form.submit()" class="search-button"> <i class="fas fa-search"  aria-hidden="true"></i></button>
+                                    <input class="form-control form-control-sm" type="text" th:value="${search}"
+                                           name="search" placeholder="Search" style="border-color: #ced4da; height: 36px"
+                                           aria-label="Search">
+                                    <button onclick="this.form.submit()" class="search-button"><i class="fas fa-search" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <input type="hidden" name="sortBy" id="sortBy">
-                            <input type="hidden" name="sortType" id="sortType">
-                            <table id="datatablesSimple" class="display">
+                            <input type="hidden" name="sortBy" id="sortBy" th:value="${sortBy}">
+                            <input type="hidden" name="sortType" id="sortType" th:value="${sortType}">
+                            <table id="datatablesSimple" class="display" style="width: 100%">
                                 <thead>
                                 <tr>
-                                    <th data-sortable="false">Class ID
-                                        <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('id',1)"></i>
-                                        <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('id',2)"></i>
+                                    <th data-sortable="false">Id
+                                        <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('id',1)"></i>
+                                        <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('id',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Class Name
-                                        <i th:class="${(sortBy eq 'class_name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('class_name',1)"></i>
-                                        <i th:class="${(sortBy eq 'class_name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('class_name',2)"></i>
+                                    <th data-sortable="false">Group
+                                        <i th:class="${(sortBy eq 'group_name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('group_name',1)"></i>
+                                        <i th:class="${(sortBy eq 'group_name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('group_name',2)"></i>
                                     </th>
+                                    <th data-sortable="false">Title
+                                        <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('title',1)"></i>
+                                        <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('title',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Class
+                                        <i th:class="${(sortBy eq 'c.class_name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('c.class_name',1)"></i>
+                                        <i th:class="${(sortBy eq 'c.class_name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('c.class_name',2)"></i></th>
                                     <th data-sortable="false">Subject
-                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('s.subject_code',1)"></i>
-                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('s.subject_code',2)"></i>
-                                    </th>
-                                    <th data-sortable="false">Semester
-                                        <i th:class="${(sortBy eq 'st.setting_title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}" onclick="sortData('st.setting_title',1)"></i>
-                                        <i th:class="${(sortBy eq 'st.setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}" onclick="sortData('st.setting_title',2)"></i>
-                                    </th>
-                                    <th data-sortable="false">Status </th>
-                                    <th data-sortable="false">Actions </th>
+                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('s.subject_code',1)"></i>
+                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('s.subject_code',2)"></i></th>
+                                    <th data-sortable="false">Status</th>
+                                    <th data-sortable="false">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="class : ${classList}">
-                                    <td th:text="${class.id}"></td>
-                                    <td th:text="${class.className}"></td>
-                                    <td th:text="${class.subject.subjectCode}"></td>
-                                    <td th:text="${class.semester.settingTitle}"></td>
+                                <tr th:each="project : ${projectList}">
+                                    <td th:text="${project.id}"></td>
+                                    <td th:text="${project.groupName}"></td>
+                                    <td th:text="${project.title}"></td>
+                                    <td th:text="${project.aclass.className}"></td>
+                                    <td th:text="${project.aclass.subject.subjectCode}"></td>
                                     <td>
-                                        <p class="text-warning m-0" th:if="${class.getStatus()==0}">Pending</p>
-                                        <p class="text-danger m-0" th:if="${class.getStatus()==1}">Canceled</p>
-                                        <p class="text-success m-0" th:if="${class.getStatus()==2}">Started</p>
-                                        <p class="text-primary m-0" th:if="${class.getStatus()==3}">Closed</p>
+                                        <p class="text-success m-0" th:if="${project.status}">Active</p>
+                                        <p class="text-danger m-0" th:if="${!project.status}">Inactive</p>
                                     </td>
                                     <td>
-                                        <a th:href="@{/class-manager/classDetail(id=${class.id})}"><i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="fas fa-pen-to-square action"></i></a>
+                                        <a th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}"><i
+                                                class="fas fa-pen-to-square"></i></a>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
+
                             <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
@@ -263,7 +285,8 @@
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <li  th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+                                        th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
                                            th:onclick="'goToPage('+ ${i-1}+')'">
                                         </a>
@@ -285,70 +308,61 @@
                         document.getElementById('pageNoInput').value = i;
                         document.getElementById('form').submit();
                     }
+
                     function sortData(sortBy, sortType) {
                         document.getElementById('sortBy').value = sortBy;
                         document.getElementById('sortType').value = sortType;
                         document.getElementById('form').submit();
                     }
-                </script>
 
-                <script>
-                    var toastMessage = document.getElementById('toastMessage').textContent.trim();
+                    let toastMessage = document.getElementById('toastMessage').textContent.trim();
                     if (toastMessage) {
                         var customToast = new bootstrap.Toast(document.getElementById('customToast'));
                         customToast.show();
                         setTimeout(function () {
                             customToast.hide();
+                            document.getElementById('toastMessage').textContent = "";
                         }, 5000);
                     }
                 </script>
 
             </div>
-        </div><!--end container-->
-
-        <!-- Footer Start -->
-        <footer class="bg-white shadow py-3">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <div class="text-sm-start text-center">
-                            <p class="mb-0 text-muted">
-                                <script>document.write(new Date().getFullYear())</script>
-                                Copyright © Student Project Portal 2023 - All rights reserved.
-                            </p>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </footer><!--end footer-->
-        <!-- End -->
+        </div>
     </main>
-    <!--End page-content" -->
 </div>
-<!-- page-wrapper -->
+<!-- notify -->
+<script th:inline="javascript">
 
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const smessage = [[${smessage}]];
+        if (smessage != null) {
+            notify('success', 'Successfully!', smessage);
+        }
+        const emessage = [[${emessage}]];
+
+        if (emessage != null) {
+            notify('error', 'Error!', emessage);
+        }
+    });
+</script>
 <!-- javascript -->
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
 
-<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
-
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
 
-<!-- Datatable -->
 <script>
     window.addEventListener('DOMContentLoaded', event => {
 
-    const datatablesSimple = document.getElementById('datatablesSimple');
+        const datatablesSimple = document.getElementById('datatablesSimple');
         if (datatablesSimple) {
             new simpleDatatables.DataTable(datatablesSimple, {
                 paging: false // Tắt phân trang
             });
         }
-});
+    });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script>window.addEventListener('DOMContentLoaded', event => {
@@ -367,5 +381,4 @@
 
 
 </body>
-
 </html>

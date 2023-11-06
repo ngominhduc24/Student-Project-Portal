@@ -60,7 +60,7 @@
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}" class="sidebar-dropdown">
                 <a href="javascript:void(0)" id="link">
                     <i class="uil uil-globe me-2 d-inline-block"></i>
-                    Subject Managing
+                    Subject List
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" fill="currentColor"
                          class="bi bi-chevron-right" viewBox="0 0 16 16" style="margin-left: 60px;" id="rotate-icon">
                         <path fill-rule="evenodd"
@@ -82,24 +82,30 @@
                 </div>
             </li>
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i
-                    class="uil uil-calender me-2 d-inline-block"></i>Class</a></li>
+                    class="uil uil-calender me-2 d-inline-block"></i>Class List</a></li>
 
             <!--    class manager function == 4-->
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/classList"><i
-                    class="uil uil-presentation me-2 d-inline-block"></i>Assigned Classes</a></li>
+                    class="uil uil-presentation me-2 d-inline-block"></i>Class List</a></li>
             <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i
-                    class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>
-
+                    class="uil uil-notes me-2 d-inline-block"></i>Project List</a></li>
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/project-mentor/project"><i
+                    class="uil uil-clipboard-notes me-2 d-inline-block"></i>Managed Projects</a></li>
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/project-mentor/milestone/list"><i
                     class="uil uil-file me-2 d-inline-block"></i>Assignment list</a></li>
+
 
             <!--    student function == 1-->
             <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/issue/list"><i
+                    class="uil uil-file-check-alt me-2 d-inline-block"></i>Issue List</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/project"><i
+                    class="uil uil-notes me-2 d-inline-block"></i>Project List</a></li>
             <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/milestone/list"><i
-                    class="uil uil-file me-2 d-inline-block"></i>Assignment list</a></li>
+                    class="uil uil-file me-2 d-inline-block"></i>Assignment List</a></li>
         </ul>
         <!-- sidebar-menu  -->
     </div>

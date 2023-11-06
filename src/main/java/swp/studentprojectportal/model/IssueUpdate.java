@@ -21,6 +21,9 @@ public class IssueUpdate {
     @JoinColumn(name = "issue_id")
     private Issue issue;
 
+    @Column(name = "title")
+    private String title;
+
     private String description;
 
     @Column(name = "create_by")
@@ -32,8 +35,11 @@ public class IssueUpdate {
     @Column(name = "update_by")
     private Integer updateBy = 0;
 
-    @Column(name = "update_at")
-    private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+//    @Column(name = "update_at")
+//    private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+
+    @Column(name = "update_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Timestamp updateAt;
 
     // Getters and setters for the fields
 
