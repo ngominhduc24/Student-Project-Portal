@@ -209,10 +209,10 @@
                     <div class="col-xl-5 col-md-6"></div><!--end col-->
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"
-                                style="margin-left: 24px">Add New</a>
-                        </div>
-                        <div th:if="${session.user.setting.id==4}" style="display: inline">
+<!--                        <div th:if="${session.user.setting.id==3}" ><a href="/subject-manager/issue-setting/add" class="btn btn-primary"-->
+<!--                                style="margin-left: 24px">Add New</a>-->
+<!--                        </div>-->
+                        <div style="display: inline">
                             <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#createIssueSettingModal" style="margin-bottom: 8px; width: 155px" >
                                 <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
                                 Add New
@@ -246,7 +246,7 @@
                                     <div class="col-md-12 row" style="margin-top: 12px;">
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Subject Code</label>
-                                            <input type="text" name="subjectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly disabled>
+                                                <input type="text" name="subjectCode" class="form-control" required th:value="${setting.aclass.subject.subjectCode}" readonly disabled>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Name</label>

@@ -13,4 +13,6 @@ public interface ISubjectSettingService {
 
     SubjectSetting saveSubjectSetting(SubjectSetting setting);
     SubjectSetting findById(int id);
+
+    SubjectSetting findByIdAndTypeIdAndTitle(int subjectId, int typeId, String title);
 }
