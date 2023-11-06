@@ -5,14 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Evaluation;
 import swp.studentprojectportal.model.EvaluationDTO;
 import swp.studentprojectportal.service.servicesimpl.EvaluationService;
 import swp.studentprojectportal.service.servicesimpl.SubmissionService;
 import swp.studentprojectportal.utils.dto.Mapper;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 
 @Controller
@@ -26,18 +30,32 @@ public class AssignmentEvaluationsController {
                                 @RequestParam(defaultValue = "-1") Integer submissionId
     ) {
         List<Evaluation> evaluation =  evaluationService.getEvaluationBySubmissionId(submissionId);
+
         // Map evaluation to evaluationDTO
         List<EvaluationDTO> evaluationDTO = Mapper.evaluationMapper(evaluation);
-        System.out.println(evaluationDTO.size());
-        evaluationDTO.forEach(e -> {
-            System.out.println(e.getFullname());
-            e.getCriteriaGradeList().forEach(c -> {
-                System.out.println(c.getCriteriaName() + " " + c.getGrade());
-            });
-        });
+
         // set atriibute
+        model.addAttribute("submissionId", submissionId);
         model.addAttribute("evaluationDTO", evaluationDTO);
 //        model.addAttribute("evaluation", evaluation);
         return "project_mentor/submission/submissionEvaluations";
+    }
+
+    @PostMapping("/evaluation")
+    public String evaluationUpdate(HttpSession session, Model model, WebRequest request, RedirectAttributes attributes) {
+        String submissionId = request.getParameter("submissionId");
+        String[] evalGrades = request.getParameterValues("evalGrade");
+        String[] evalGradeId = request.getParameterValues("evalGradeId");
+        for (int i = 0; i < evalGradeId.length; i++) {
+            System.out.println(evalGradeId[i] + " " + evalGrades[i]);
+            try {
+                evaluationService.updateEvaluation(Integer.parseInt(evalGradeId[i]), Float.parseFloat(evalGrades[i]));
+            } catch (Exception e) {
+                attributes.addFlashAttribute("emessage", "Update failed");
+                return "redirect:/project-mentor/evaluation?submissionId=" + submissionId;
+            }
+        }
+        attributes.addFlashAttribute("smessage", "Update successfully");
+        return "redirect:/project-mentor/evaluation?submissionId=" + submissionId;
     }
 }

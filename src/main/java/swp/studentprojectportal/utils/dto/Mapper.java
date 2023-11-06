@@ -108,12 +108,12 @@ public class Mapper {
 
                 // add criteria grade list
                 List<CriteriaDTO> criteriaDTOList = new ArrayList<>();
-                criteriaDTOList.add(new CriteriaDTO(item.getCriteria(), item.getGrade(), item.getComment()));
+                criteriaDTOList.add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment()));
                 evaluationDTO.setCriteriaGradeList(criteriaDTOList);
                 evaluationDTOList.add(evaluationDTO);
             } else {
                 evaluationDTOList.stream().filter(evaluationDTO -> evaluationDTO.getStudentId().equals(item.getStudent().getId())).forEach(evaluationDTO -> {
-                     evaluationDTO.getCriteriaGradeList().add(new CriteriaDTO(item.getCriteria(), item.getGrade(), item.getComment()));
+                     evaluationDTO.getCriteriaGradeList().add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment()));
                 });
             }
         });

@@ -10,6 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CriteriaDTO {
+    private Integer criteriaGradeId;
+
     private String criteriaName;
 
     private Float grade;

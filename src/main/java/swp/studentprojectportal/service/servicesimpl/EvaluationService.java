@@ -17,4 +17,13 @@ public class EvaluationService implements IEvaluationService {
     public List<Evaluation> getEvaluationBySubmissionId(int submissionId) {
         return evaluationRepository.findEvaluationBySubmissionId(submissionId);
     }
+
+    public boolean updateEvaluation(Integer criteriaGradeId, Float grade) {
+        Evaluation evaluation = evaluationRepository.findById(criteriaGradeId).orElse(null);
+        if(evaluation == null)
+            return false;
+        evaluation.setGrade(grade);
+        evaluationRepository.save(evaluation);
+        return true;
+    }
 }
