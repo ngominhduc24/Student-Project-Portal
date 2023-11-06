@@ -44,6 +44,10 @@
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <style>
+  table.scroll {
+    white-space: nowrap;
+  }
+
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
@@ -234,13 +238,12 @@
                 <div class="view">
                   <div class="row">
 
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3" style="padding: 0px 3px">
+                    <div class="col-md-4" style="padding: 0px 3px">
                     </div>
-                    <div class="col-md-3" style="padding: 0px 3px">
+                    <div class="col-md-4" style="padding: 0px 3px">
                       <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 160px">Edit</button>
                     </div>
-                    <div class="col-md-3" style="padding: 0px 3px">
+                    <div class="col-md-4" style="padding: 0px 3px">
                       <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
                     </div>
                   </div>
@@ -249,13 +252,13 @@
                 <div class="edit" hidden="">
                     <div class="row">
 
-                      <div class="col-md-3" style="padding: 0px 3px">
+                      <div class="col-md-4" style="padding: 0px 3px">
                         <button type="submit" class="btn btn-primary" style="width: 160px;">Save Changes</button>
                       </div>
-                      <div class="col-md-3" style="padding: 0px 3px">
+                      <div class="col-md-4" style="padding: 0px 3px">
                         <button onclick="reverseChange()" class="btn btn-secondary" style="width: 160px; margin-left: 7px;">Reverse Changes</button>
                       </div>
-                      <div class="col-md-3" style="padding: 0px 3px">
+                      <div class="col-md-4" style="padding: 0px 3px">
                         <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
                       </div>
                     </div>
@@ -270,7 +273,7 @@
           <div class="card mb-4">
             <div class="card-body">
 
-              <table id="myTable" class="display">
+              <table id="myTable" class="display scroll">
                 <thead>
                 <tr>
                   <th>Student</th>
@@ -298,7 +301,7 @@
                       <label th:text="${submission.comment}"></label>
                     </div>
                     <div class="edit" hidden="hidden">
-                      <input type="text" name="commentGroup" th:value="${submission.comment}" style="width: 400px" >
+                      <input type="text" name="commentGroup" th:value="${submission.comment}" style="width: 300px" >
                     </div>
                   </td>
                   <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
@@ -319,9 +322,9 @@
                         <label th:text="${evalGrade.grade}"></label>
                       </div>
                       <div class="edit" hidden="hidden">
-                        <input type="number" max="10" min="0" name="evalGrade" th:value="${evalGrade.grade}" style="width: 50px" >
+                        <input type="number" oninput="checkValue(this)" name="evalGrade" th:value="${evalGrade.grade}" style="width: 37px" >
                         <input type="hidden" name="evalGradeId" th:value="${evalGrade.criteriaGradeId}">
-                        <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\')'" >...</label>
+                        <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\', ' + ${evalGrade.getCriteriaGradeId()} + ')'       " >...</label>
                       </div>
                     </td>
                   </th:block>
@@ -351,11 +354,12 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button></div>
+                <input type="hidden"  id="id-modal" >
                 <textarea type="text" rows="3"  id="comment-modal" name="description" class="form-control"></textarea>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" onclick="updateCommentEvaluation()" class="btn btn-primary">Save changes</button>
               </div>
             </div>
           </div>
@@ -414,18 +418,50 @@
 
 
 <script>
-  function showComment(comment, criteria) {
+  function showComment(comment, criteria, criteriaId) {
     var btnComment = document.getElementById("btn-modal-comment");
     var titleComment = document.getElementById("exampleModalLongTitle");
     var contentComment = document.getElementById("comment-modal");
+    var id = document.getElementById("id-modal");
     //
     // labelComment.innerHTML = `Comments for Criteria ${criteria} Grading`;
     // commentModal.value = comment;
 
     titleComment.innerHTML = `Comments for Criteria ${criteria} Grading ${comment}`;
     contentComment.innerHTML = comment;
+    id.value = criteriaId;
+    console.log(criteriaId)
 
     btnComment.click();
+  }
+
+  function updateCommentEvaluation() {
+    var contentComment = document.getElementById("comment-modal").value;
+    var id = document.getElementById("id-modal").value;
+
+    var endPoint = "/api/v1/evaluation?evaluationId=" + id + "&comment=" + contentComment;
+
+    fetch(endPoint).then(response => {
+      notify('success', 'Successfully!', 'Update comment successfully!');
+        setTimeout(function () {
+            location.reload();
+        }, 1000);
+
+    });
+  }
+
+  // check input is > 0 and < 10
+
+  function checkValue(input) {
+    const min = 0;
+    const max = 10;
+    const value = parseFloat(input.value);
+
+    if (value < min) {
+      input.value = min;
+    } else if (value > max) {
+      input.value = max;
+    }
   }
 </script>
 

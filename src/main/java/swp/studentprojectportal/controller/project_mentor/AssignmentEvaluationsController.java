@@ -30,6 +30,9 @@ public class AssignmentEvaluationsController {
     @Autowired
     SubmitIssueService submitIssueService;
 
+    @Autowired
+    SubmissionService submissionService;
+
     @GetMapping("/evaluation")
     public String evaluationList(HttpSession session, Model model,
                                 @RequestParam(defaultValue = "-1") Integer submissionId
@@ -58,12 +61,21 @@ public class AssignmentEvaluationsController {
 
     @PostMapping("/evaluation")
     public String evaluationUpdate(HttpSession session, Model model, WebRequest request, RedirectAttributes attributes) {
+        Float submissionMark = 0f;
+        String commentGroup = request.getParameter("commentGroup");
         String submissionId = request.getParameter("submissionId");
         String[] evalGrades = request.getParameterValues("evalGrade");
         String[] evalGradeId = request.getParameterValues("evalGradeId");
-        Float submissionMark = 0f;
+
+        // Update comment
+        try {
+            submissionService.updateComment(Integer.parseInt(submissionId), commentGroup);
+        }catch (Exception e) {
+            attributes.addFlashAttribute("emessage", "Update failed");
+            return "redirect:/project-mentor/evaluation?submissionId=" + submissionId;
+        }
+
         for (int i = 0; i < evalGradeId.length; i++) {
-            System.out.println(evalGradeId[i] + " " + evalGrades[i]);
             try {
                 evaluationService.updateEvaluation(Integer.parseInt(evalGradeId[i]), Float.parseFloat(evalGrades[i]));
             } catch (Exception e) {
