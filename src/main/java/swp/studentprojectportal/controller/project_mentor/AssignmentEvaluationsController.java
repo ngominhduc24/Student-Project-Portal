@@ -37,7 +37,7 @@ public class AssignmentEvaluationsController {
         // set atriibute
         model.addAttribute("submissionId", submissionId);
         model.addAttribute("evaluationDTO", evaluationDTO);
-//        model.addAttribute("evaluation", evaluation);
+        model.addAttribute("submission", evaluation.get(0).getSubmission());
         return "project_mentor/submission/submissionEvaluations";
     }
 

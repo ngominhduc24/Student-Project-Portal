@@ -279,7 +279,7 @@
                   <th>Mark</th>
                   <th>WG</th>
                   <th>WP</th>
-                  <th>Bonus/Penalty</th>
+                  <th>B/P</th>
                   <th>Comments</th>
                   <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
                     <th th:text="${evalGrade.criteriaName}"></th>
@@ -289,12 +289,19 @@
                 <tbody>
                 <tr>
                   <td>GROUP</td>
-                  <td th:text="${evaluationDTO.get(0).groupname}"></td>
+                  <td th:text="${submission.getProject().groupName}"></td>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td th:text="${evaluationDTO.get(0).commentGroup}"></td>
+                  <td>
+                    <div class="view" >
+                      <label th:text="${submission.comment}"></label>
+                    </div>
+                    <div class="edit" hidden="hidden">
+                      <input type="text" name="commentGroup" th:value="${submission.comment}" style="width: 400px" >
+                    </div>
+                  </td>
                   <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
                     <td></td>
                   </th:block>
@@ -326,25 +333,14 @@
           </div>
         </div>
         </form>
-        <script>
-          function showComment(comment, criteria) {
-            var btnComment = document.getElementById("btn-modal-comment");
-            var titleComment = document.getElementById("exampleModalLongTitle");
-            var contentComment = document.getElementById("comment-modal");
-            //
-            // labelComment.innerHTML = `Comments for Criteria ${criteria} Grading`;
-            // commentModal.value = comment;
 
-            titleComment.innerHTML = `Comments for Criteria ${criteria} Grading ${comment}`;
-            contentComment.innerHTML = comment;
-
-            btnComment.click();
-          }
-        </script>
+        <p>WG: converted grade from Work Point (WP): WG = WP/Expected-Work*10</p>
+        <p>WP is calculated after having work evaluations (from the Work Evals page</p>
+        <p>B/P is Bonus/Penalty </p>
 
         <!--  Modal for comment criteria-->
         <!-- Button trigger modal -->
-        <button type="hidden" class="btn btn-primary" id="btn-modal-comment" data-toggle="modal" data-target="#exampleModalCenter">
+        <button type="hidden" class="btn btn-primary" id="btn-modal-comment" data-toggle="modal" data-target="#exampleModalCenter" hidden="hidden">
           Launch demo modal
         </button>
         <!-- Modal -->
@@ -424,6 +420,22 @@
 
 </script>
 
+
+<script>
+  function showComment(comment, criteria) {
+    var btnComment = document.getElementById("btn-modal-comment");
+    var titleComment = document.getElementById("exampleModalLongTitle");
+    var contentComment = document.getElementById("comment-modal");
+    //
+    // labelComment.innerHTML = `Comments for Criteria ${criteria} Grading`;
+    // commentModal.value = comment;
+
+    titleComment.innerHTML = `Comments for Criteria ${criteria} Grading ${comment}`;
+    contentComment.innerHTML = comment;
+
+    btnComment.click();
+  }
+</script>
 
 <script>
   var expanded = false;
