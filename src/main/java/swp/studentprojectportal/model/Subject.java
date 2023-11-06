@@ -45,4 +45,7 @@ public class Subject {
     @ManyToOne
     @JoinColumn(name = "subject_manager_id")
     private User user;
+
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Class> classes;
 }

@@ -1,6 +1,7 @@
 package swp.studentprojectportal.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.StudentClass;
 
@@ -30,4 +31,5 @@ public interface IClassService {
     void delete(Class classA);
 
     List<Class> findAllByStudentUserId(Integer userId);
+    List<Class> findClassForProject(Integer projectMentorId);
 }
