@@ -195,8 +195,8 @@
               <div class="row">
                 <div class="col-md-6">
                   <select name="milestone" class="form-select" id="a">
-                    <option value="-1" >bcd</option>
-                    <option value="2" >123</option>
+                    <option value="-1" >All Group</option>
+                    <option value="2" >Group A</option>
                   </select>
                 </div>
 
@@ -219,11 +219,11 @@
                       </div>
                       <div id="checkboxes">
                         <label for="one">
-                          <input type="checkbox" id="one" />First checkbox</label>
+                          <input type="checkbox" id="one" />Code</label>
                         <label for="two">
-                          <input type="checkbox" id="two" />Second checkbox</label>
+                          <input type="checkbox" id="two" />RDS</label>
                         <label for="three">
-                          <input type="checkbox" id="three" />Third checkbox</label>
+                          <input type="checkbox" id="three" />Tracking</label>
                       </div>
                     </div>
                   </div>
@@ -238,8 +238,7 @@
                 <div class="view">
                   <div class="row">
 
-                    <div class="col-md-4" style="padding: 0px 3px">
-                    </div>
+                    <div class="col-md-4" style="padding: 0px 3px"></div>
                     <div class="col-md-4" style="padding: 0px 3px">
                       <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 160px">Edit</button>
                     </div>
@@ -256,13 +255,14 @@
                         <button type="submit" class="btn btn-primary" style="width: 160px;">Save Changes</button>
                       </div>
                       <div class="col-md-4" style="padding: 0px 3px">
-                        <button onclick="reverseChange()" class="btn btn-secondary" style="width: 160px; margin-left: 7px;">Reverse Changes</button>
+                        <a onclick="reverseChange()" class="btn btn-secondary" style="width: 160px; margin-left: 7px;">Reverse Changes</a>
                       </div>
                       <div class="col-md-4" style="padding: 0px 3px">
                         <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
                       </div>
                     </div>
                   </div><!--end col-->
+
               </div>
 
           </div><!--end row-->
@@ -297,10 +297,10 @@
                   <td></td>
                   <td></td>
                   <td>
-                    <div class="view" >
+                    <div class="view view-value" >
                       <label th:text="${submission.comment}"></label>
                     </div>
-                    <div class="edit" hidden="hidden">
+                    <div class="edit edit-value" hidden="hidden">
                       <input type="text" name="commentGroup" th:value="${submission.comment}" style="width: 300px" >
                     </div>
                   </td>
@@ -318,10 +318,10 @@
                   <td></td>
                   <th:block  th:each="evalGrade : ${item.getCriteriaGradeList()}">
                     <td>
-                      <div class="view" >
+                      <div class="view view-value " >
                         <label th:text="${evalGrade.grade}"></label>
                       </div>
-                      <div class="edit" hidden="hidden">
+                      <div class="edit edit-value " hidden="hidden">
                         <input type="number" oninput="checkValue(this)" name="evalGrade" th:value="${evalGrade.grade}" style="width: 37px" >
                         <input type="hidden" name="evalGradeId" th:value="${evalGrade.criteriaGradeId}">
                         <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\', ' + ${evalGrade.getCriteriaGradeId()} + ')'       " >...</label>
@@ -411,7 +411,17 @@
     }
   }
   function reverseChange() {
-    alert(0)
+    // Find all "view-value" elements
+    var viewValueElements = document.querySelectorAll(".view-value");
+
+// Loop through the "view-value" elements
+    viewValueElements.forEach(function(viewValueElement) {
+      var viewValue = viewValueElement.querySelector("label");
+      var editValueElement = viewValueElement.nextElementSibling;
+      var inputField = editValueElement.getElementsByTagName("input")[0];
+
+      inputField.value = viewValue.innerHTML ;
+    });
   }
 
 </script>
@@ -428,7 +438,7 @@
     // commentModal.value = comment;
 
     titleComment.innerHTML = `Comments for Criteria ${criteria} Grading ${comment}`;
-    contentComment.innerHTML = comment;
+    contentComment.value = comment;
     id.value = criteriaId;
     console.log(criteriaId)
 
@@ -439,13 +449,10 @@
     var contentComment = document.getElementById("comment-modal").value;
     var id = document.getElementById("id-modal").value;
 
-    var endPoint = "/api/v1/evaluation?evaluationId=" + id + "&comment=" + contentComment;
+    var endPoint = "/api/v1/evaluation/update?evaluationId=" + id + "&comment=" + contentComment;
 
     fetch(endPoint).then(response => {
       notify('success', 'Successfully!', 'Update comment successfully!');
-        setTimeout(function () {
-            location.reload();
-        }, 1000);
 
     });
   }
