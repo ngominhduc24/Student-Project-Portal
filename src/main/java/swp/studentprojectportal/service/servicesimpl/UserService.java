@@ -120,6 +120,10 @@ public class UserService implements IUserService {
         return userRepository.findById(id);
     }
 
+    public User findById(int id){
+        return userRepository.findUserById(id);
+    }
+
     @Override
     public List<User> findAllUserByRoleId(int roleId) {
         return userRepository.findAllBySetting(settingRepository.findById(roleId).get());

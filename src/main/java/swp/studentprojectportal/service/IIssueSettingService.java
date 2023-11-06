@@ -19,7 +19,7 @@ public interface IIssueSettingService {
 
     List<String> findAllDistinctSettingGroup(Integer subjectId);
 
-    List<String> findProcessTitle(Integer subjectId, String type);
+    List<IssueSetting> findProcessTitle(Integer subjectId, String type);
 
     List<String> findAllDistinctClassSettingGroup(Integer subjectId, Integer classId);
     List<String> findAllDistinctProjectSettingGroup(Integer subjectId, Integer classId, Integer projectId);

@@ -35,8 +35,8 @@ public interface IIssueSettingRepository extends JpaRepository<IssueSetting, Int
     @Query(value="SELECT distinct setting_group FROM issue_setting WHERE subject_id= ?1", nativeQuery = true)
     List<String> findAllDistinctSettingGroup(Integer subjectId);
 
-    @Query(value = "SELECT distinct setting_title FROM issue_setting WHERE subject_id= ? and setting_group = ?", nativeQuery = true)
-    List<String> findProcessTitle(Integer subjectId, String type);
+    @Query(value = "select * from issue_setting where subject_id= ? and setting_group = ?;", nativeQuery = true)
+    List<IssueSetting> findProcessTitle(Integer subjectId, String type);
 
     @Query(value="SELECT * FROM issue_setting\n" +
             "WHERE ((subject_id = :subjectId AND status=1 )OR class_id = :classId)\n" +

@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.*;
-import swp.studentprojectportal.service.servicesimpl.IssueService;
-import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
-import swp.studentprojectportal.service.servicesimpl.StudentClassService;
+import swp.studentprojectportal.service.servicesimpl.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +22,12 @@ public class StudentIssueController {
 
     @Autowired
     IssueSettingService issueSettingService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    MilestoneService milestoneService;
 
     @GetMapping("student/issue/list")
     public String IssueList(Model model, HttpSession session,
@@ -54,14 +59,14 @@ public class StudentIssueController {
                 .map(issue -> issue.getAssignee())
                 .collect(Collectors.toSet());
 
-        //Redo function to get all process
-        List<String> processes = issueSettingService.findProcessTitle(subjectId, "process");
+        //function to get all process
+        List<IssueSetting> processes = issueSettingService.findProcessTitle(subjectId, "process");
 
-        //Redo function to get all status
-        List<String> status = issueSettingService.findProcessTitle(subjectId, "status");
+        //function to get all status
+        List<IssueSetting> status = issueSettingService.findProcessTitle(subjectId, "status");
 
-        //Redo function to get all type
-        List<String> type = issueSettingService.findProcessTitle(subjectId, "type");
+        //function to get all type
+        List<IssueSetting> type = issueSettingService.findProcessTitle(subjectId, "type");
 
         //Get issue by id
         Issue issue = issueService.getIssueById(issueId);
@@ -76,15 +81,46 @@ public class StudentIssueController {
         model.addAttribute("assignees", uniqueAssignees);
         model.addAttribute("issueList", issueList);
 
-//        System.out.println(issueList.get(0).getProject().getAclass().getSubject());
-        System.out.println(processes);
-
+        // add attribute for popup detail modal
         model.addAttribute("selectedIssue", issue);
         model.addAttribute("id", issueId);
         model.addAttribute("process", processes);
         model.addAttribute("status", status);
         model.addAttribute("type", type);
 
+//        System.out.println(issueList.get(0).getProject().getAclass().getSubject());
+        System.out.println(processes);
+
         return "student/issueList";
+    }
+
+    @PostMapping("/issueUpdate")
+    public String issueUpdate(@RequestParam int issueIdPost,
+                              @RequestParam String title,
+                              @RequestParam int type,
+                              @RequestParam int milestone,
+                              @RequestParam int assignee,
+                              @RequestParam int process,
+                              @RequestParam int status,
+                              Model model) {
+        User user = userService.findById(assignee);
+        Milestone milestone1 = milestoneService.findMilestoneById(milestone);
+        IssueSetting typeSetting = issueSettingService.findById(type);
+        IssueSetting statusSetting = issueSettingService.findById(status);
+        IssueSetting processSetting = issueSettingService.findById(process);
+
+        if(title == null) {
+            model.addAttribute("errorMsg", "Please enter issue title");
+        } else {
+            Issue issue = issueService.getIssueById(issueIdPost);
+            issue.setTitle(title);
+            issue.setAssignee(user);
+            issue.setMilestone(milestone1);
+            issue.setType(typeSetting);
+            issue.setStatus(statusSetting);
+            issue.setProcess(processSetting);
+            issueService.saveIssue(issue);
+        }
+        return "redirect:/student/issue/list?issueId=" + issueIdPost;
     }
 }

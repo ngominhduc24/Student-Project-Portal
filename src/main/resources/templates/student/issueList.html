@@ -242,7 +242,8 @@
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content" style="width: 130%;">
-                            <form action="" method="post">
+                            <form action="/issueUpdate" method="post">
+                                <input type="hidden" name="issueIdPost" th:value="${selectedIssue.id}">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle">Member group</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -254,14 +255,14 @@
                                         <div class="col-md-12 row" style="margin-top: 12px;">
                                             <div class="mb-3 col-md-12">
                                                 <label class="form-label">Requirement<span class="text-danger">*</span></label>
-                                                <input type="text" name="milestone-title" class="form-control" th:value="${selectedIssue.title}" required>
+                                                <input type="text" name="title" class="form-control" th:value="${selectedIssue.title}" required>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Type</label>
                                                 <select name="type">
-                                                    <option th:each="type : ${type}"
-                                                            th:value="${type}"
-                                                            th:text="${type}" th:selected="${selectedIssue.type.getSettingTitle().equalsIgnoreCase(type)}">
+                                                    <option th:each="selectedType : ${type}"
+                                                            th:value="${selectedType.id}"
+                                                            th:text="${selectedType.settingTitle}" th:selected="${selectedIssue.type == selectedType.id}">
                                                     </option>
                                                 </select>
                                             </div>
@@ -288,18 +289,18 @@
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Process</label>
                                                 <select name="process">
-                                                    <option th:each="process : ${process}"
-                                                            th:value="${process}"
-                                                            th:text="${process}" th:selected="${selectedIssue.process.getSettingTitle().equalsIgnoreCase(process)}">
+                                                    <option th:each="selectedProcess : ${process}"
+                                                            th:value="${selectedProcess.id}"
+                                                            th:text="${selectedProcess.settingTitle}" th:selected="${selectedIssue.process == selectedProcess.id}">
                                                     </option>
                                                 </select>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Status</label>
                                                 <select name="status">
-                                                    <option th:each="status : ${status}"
-                                                            th:value="${status}"
-                                                            th:text="${status}" th:selected="${selectedIssue.status.getSettingTitle().equalsIgnoreCase(status)}">
+                                                    <option th:each="selectedStatus : ${status}"
+                                                            th:value="${selectedStatus.id}"
+                                                            th:text="${selectedStatus.settingTitle}" th:selected="${selectedIssue.status == selectedStatus.id}">
                                                     </option>
                                                 </select>
                                             </div>
