@@ -2,9 +2,7 @@ package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.model.Issue;
-import swp.studentprojectportal.model.Project;
-import swp.studentprojectportal.model.StudentClass;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.repository.IIssueRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
@@ -25,12 +23,35 @@ public class IssueService implements IIssueService {
     @Override
     public Issue getIssueById(Integer issueId) {
         Issue issue = new Issue();
-        if(issueId != -1) {
+        if(issueId == -1) {
+            Milestone milestone = new Milestone();
+            milestone.setId(-1);
+
+            Project project = new Project();
+            project.setId(-1);
+
+            User user = new User();
+            user.setId(-1);
+
+            IssueSetting setting = new IssueSetting();
+            setting.setId(-1);
+            setting.setSettingTitle("");
+
+            issue.setTitle(null);
+            issue.setProject(project);
+            issue.setMilestone(milestone);
+            issue.setType(setting);
+            issue.setStatus(setting);
+            issue.setProcess(setting);
+            issue.setAssignee(user);
+        } else {
             issue =  issueRepository.findIssueById(issueId);
         }
         return issue;
     }
 
+    @Override
+    public Issue saveIssue(Issue issue){return issueRepository.save(issue);}
     @Override
     public List<Issue> getAllIssueByStudentId(Integer studentId) {
         List<Issue> listIssue = new ArrayList<>();
@@ -41,7 +62,7 @@ public class IssueService implements IIssueService {
         });
         return listIssue;
     }
-
+    @Override
     public List<Issue> filterIssue(List<Issue> listIssue, Integer projectId, Integer milestoneId, Integer assigneeId, String search) {
 
         // filter by project id

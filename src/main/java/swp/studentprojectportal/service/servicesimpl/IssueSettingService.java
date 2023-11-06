@@ -60,6 +60,11 @@ public class IssueSettingService implements IIssueSettingService {
     }
 
     @Override
+    public List<String> findProcessTitle(Integer subjectId, String type) {
+        return issueSettingRepository.findProcessTitle(subjectId, type);
+    }
+
+    @Override
     public List<String> findAllDistinctClassSettingGroup(Integer subjectId, Integer classId) {
         return issueSettingRepository.findAllDistinctClassSettingGroup(subjectId, classId);
     }

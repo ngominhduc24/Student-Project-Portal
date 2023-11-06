@@ -6,11 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import swp.studentprojectportal.model.Issue;
-import swp.studentprojectportal.model.Milestone;
-import swp.studentprojectportal.model.Project;
-import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.service.servicesimpl.IssueService;
+import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 
 import java.util.List;
@@ -23,13 +21,17 @@ public class StudentIssueController {
     @Autowired
     IssueService issueService;
 
+    @Autowired
+    IssueSettingService issueSettingService;
+
     @GetMapping("student/issue/list")
     public String IssueList(Model model, HttpSession session,
                             @RequestParam(defaultValue = "") String search,
                             @RequestParam(defaultValue = "-1") int projectId,
                             @RequestParam(defaultValue = "-1") int milestoneId,
                             @RequestParam(defaultValue = "-1") int assigneeId,
-                            @RequestParam(defaultValue = "-1") int issueId
+                            @RequestParam(defaultValue = "-1") int issueId,
+                            @RequestParam(defaultValue =  "1") int subjectId
     ) {
         User user = (User) session.getAttribute("user");
         List<Issue> issueList = issueService.getAllIssueByStudentId(user.getId());
@@ -44,7 +46,6 @@ public class StudentIssueController {
                 .map(issue -> issue.getMilestone())
                 .collect(Collectors.toSet());
 
-
         // filter issue
         issueList = issueService.filterIssue(issueList, projectId, milestoneId, assigneeId, "");
 
@@ -53,6 +54,16 @@ public class StudentIssueController {
                 .map(issue -> issue.getAssignee())
                 .collect(Collectors.toSet());
 
+        //Redo function to get all process
+        List<String> processes = issueSettingService.findProcessTitle(subjectId, "process");
+
+        //Redo function to get all status
+        List<String> status = issueSettingService.findProcessTitle(subjectId, "status");
+
+        //Redo function to get all type
+        List<String> type = issueSettingService.findProcessTitle(subjectId, "type");
+
+        //Get issue by id
         Issue issue = issueService.getIssueById(issueId);
 
         // add attribute for select option
@@ -65,7 +76,14 @@ public class StudentIssueController {
         model.addAttribute("assignees", uniqueAssignees);
         model.addAttribute("issueList", issueList);
 
+//        System.out.println(issueList.get(0).getProject().getAclass().getSubject());
+        System.out.println(processes);
+
         model.addAttribute("selectedIssue", issue);
+        model.addAttribute("id", issueId);
+        model.addAttribute("process", processes);
+        model.addAttribute("status", status);
+        model.addAttribute("type", type);
 
         return "student/issueList";
     }

@@ -134,20 +134,20 @@
                     </div><!--end col-->
                     <div class="col-xl-4 col-md-6">
                     </div>
-
-                    <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
-                        <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal"
-                                data-target=".bd-example-modal-lg">
-                            <i>
-                                <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"
-                                          fill="white"/>
-                                </svg>
-                            </i>
-                            Add student to class
-                        </button>
-                    </div><!--end col-->
+<!--                add button-->
+<!--                    <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">-->
+<!--                        <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal"-->
+<!--                                data-target=".bd-example-modal-lg">-->
+<!--                            <i>-->
+<!--                                <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none"-->
+<!--                                     xmlns="http://www.w3.org/2000/svg">-->
+<!--                                    <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"-->
+<!--                                          fill="white"/>-->
+<!--                                </svg>-->
+<!--                            </i>-->
+<!--                            Add student to class-->
+<!--                        </button>-->
+<!--                    </div>&lt;!&ndash;end col&ndash;&gt;-->
                 </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
@@ -222,11 +222,12 @@
                                     <td th:text="${issue.getMilestone().title }"></td>
                                     <td th:text="${issue.getAssignee().getDisplayName() }">
                                     <td>
-                                        <div style="border: none; background-color: white; color: blue">
-                                            <a style=" user-select: none" th:onclick="'getIssueId(' + ${issue.id} + ')'" data-toggle="modal" data-target="#viewIssueModal">
+                                        <div style="border: none; color: blue">
+                                            <button  style=" user-select: none" th:onclick="'getIssueId(' + ${issue.id} + ')'">
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                                    class="fas fa-pen-to-square action"></i>
-                                            </a>
+                                            </button>
+                                            <button name="btn-modal"  data-toggle="modal" data-target="#viewIssueModal" style="display: none"></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -241,7 +242,7 @@
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content" style="width: 130%;">
-                            <form action="">
+                            <form action="" method="post">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle">Member group</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -256,44 +257,50 @@
                                                 <input type="text" name="milestone-title" class="form-control" th:value="${selectedIssue.title}" required>
                                             </div>
                                             <div class="mb-3 col-md-6">
-                                                <label class="form-label">Type<span class="text-danger">*</span></label>
+                                                <label class="form-label">Type</label>
                                                 <select name="type">
-                                                    <option value="1">Required</option>
-                                                    <option value="2">Optional</option>
+                                                    <option th:each="type : ${type}"
+                                                            th:value="${type}"
+                                                            th:text="${type}" th:selected="${selectedIssue.type.getSettingTitle().equalsIgnoreCase(type)}">
+                                                    </option>
                                                 </select>
                                             </div>
                                             <div class="mb-3 col-md-6">
-                                                <label class="form-label">Milestone<span class="text-danger">*</span></label>
+                                                <label class="form-label">Milestone</label>
                                                 <select name="milestone">
                                                     <th:block th:each="milestone : ${milestones}">
                                                         <option th:value="${milestone.getId()}"
                                                                 th:text="${milestone.getTitle()}"
-                                                                th:selected="${milestone.getId() == selectedIssue.milestone}"></option>
+                                                                th:selected="${milestone.getId() == selectedIssue.milestone.id}"></option>
                                                     </th:block>
                                                 </select>
                                             </div>
                                             <div class="mb-3 col-md-6">
-                                                <label class="form-label">Asignee<span class="text-danger">*</span></label>
+                                                <label class="form-label">Asignee</label>
                                                 <select name="assignee">
                                                     <th:block th:each="assignee : ${assignees}">
                                                         <option th:value="${assignee.getId()}"
                                                                 th:text="${assignee.getDisplayName()}"
-                                                                th:selected="${assignee.getId() == selectedIssue.assignee}"></option>
+                                                                th:selected="${assignee.getId() == selectedIssue.assignee.id}"></option>
                                                     </th:block>
                                                 </select>
                                             </div>
                                             <div class="mb-3 col-md-6">
-                                                <label class="form-label">Process<span class="text-danger">*</span></label>
-                                                <select name="type">
-                                                    <option value="1">Required</option>
-                                                    <option value="2">Optional</option>
+                                                <label class="form-label">Process</label>
+                                                <select name="process">
+                                                    <option th:each="process : ${process}"
+                                                            th:value="${process}"
+                                                            th:text="${process}" th:selected="${selectedIssue.process.getSettingTitle().equalsIgnoreCase(process)}">
+                                                    </option>
                                                 </select>
                                             </div>
                                             <div class="mb-3 col-md-6">
-                                                <label class="form-label">Status<span class="text-danger">*</span></label>
-                                                <select name="type">
-                                                    <option value="1">Required</option>
-                                                    <option value="2">Optional</option>
+                                                <label class="form-label">Status</label>
+                                                <select name="status">
+                                                    <option th:each="status : ${status}"
+                                                            th:value="${status}"
+                                                            th:text="${status}" th:selected="${selectedIssue.status.getSettingTitle().equalsIgnoreCase(status)}">
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div><!--end col-->
@@ -310,7 +317,6 @@
             </div>
         </div><!--end container-->
         <div th:replace="~{footer}"></div>
-
         <!-- End -->
     </main>
 </div>
@@ -399,13 +405,21 @@
     // Function to construct the URL and navigate to it
 </script>
 
-<script>
+<script th:inline="javascript">
     function getIssueId(issueId) {
         // Update the URL with the issueId parameter using pushState
         var newURL = window.location.pathname + "?issueId=" + issueId;
         history.pushState(null, null, newURL);
 
-        // Other actions you want to perform
+        // First, reload the window
+        window.location.reload();
+    }
+
+    var id  = [[${id}]];
+    console.log(id);
+    if(id != -1){
+        var modal = document.getElementsByName('btn-modal');
+        modal.item(0).click();
     }
 </script>
 
