@@ -6,6 +6,7 @@ import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.repository.IEvaluationRepository;
 import swp.studentprojectportal.service.IEvaluationService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,29 +32,41 @@ public class EvaluationService implements IEvaluationService {
     }
 
     @Override
-    public boolean updateEvaluation(Integer criteriaGradeId, Float grade) {
+    public Float updateEvaluation(Integer criteriaGradeId, Float grade) {
         Evaluation evaluation = evaluationRepository.findById(criteriaGradeId).orElse(null);
         if(evaluation == null)
-            return false;
+            return -1f;
         evaluation.setGrade(grade);
         evaluationRepository.save(evaluation);
-        return true;
+        return evaluation.getGrade()*evaluation.getWeight()/100;
     }
 
     public List<Evaluation> createEvaluation(int submissionId) {
+        List<Evaluation> output = new ArrayList<>();
         Submission submission =  submissionService.findById(submissionId);
 
         // Get all student of project
         List<StudentClass> studentList = studentClassService.findAllByProjectId(submission.getProject().getId());
 
         // get all criteria
-        System.out.println("123");
         List<Criteria> criteriaList = criteriaService.getAllCriteriaByAssignmentId(submission.getMilestone().getSubjectAssignment().getId());
-        criteriaList.forEach( e -> {
-            System.out.println(e.getName());
-                }
-        );
+        criteriaList.forEach( criteria -> {
 
-        return null;
+            studentList.forEach(student -> {
+                try {
+                    Evaluation evaluation = new Evaluation();
+                    evaluation.setCriteria(criteria.getName());
+                    evaluation.setWeight(criteria.getWeight());
+                    evaluation.setSubmission(submission);
+                    evaluation.setStudent(student.getStudent());
+                    evaluation.setGrade(0f);
+                    evaluationRepository.save(evaluation);
+                    output.add(evaluation);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        return output;
     }
 }

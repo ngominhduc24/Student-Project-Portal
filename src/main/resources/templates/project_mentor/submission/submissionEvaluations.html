@@ -238,10 +238,10 @@
                     <div class="col-md-3" style="padding: 0px 3px">
                     </div>
                     <div class="col-md-3" style="padding: 0px 3px">
-                      <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 100%;">Edit</button>
+                      <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 160px">Edit</button>
                     </div>
                     <div class="col-md-3" style="padding: 0px 3px">
-                      <button type="button" class="btn btn-warning" style="width: 100%;">Copy Group Evals</button>
+                      <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
                     </div>
                   </div>
                 </div><!--end col-->
@@ -250,14 +250,13 @@
                     <div class="row">
 
                       <div class="col-md-3" style="padding: 0px 3px">
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
+                        <button type="submit" class="btn btn-primary" style="width: 160px;">Save Changes</button>
                       </div>
                       <div class="col-md-3" style="padding: 0px 3px">
-                        <a onclick="window.location.reload()" class="btn btn-secondary" style="width: 100%;">Reverse Changes</a>
+                        <button onclick="reverseChange()" class="btn btn-secondary" style="width: 160px; margin-left: 7px;">Reverse Changes</button>
                       </div>
-                      <div class="col-md-3"><button type="button" onclick="viewMark()" class="btn btn-primary" style="width: 100%;">View</button></div>
                       <div class="col-md-3" style="padding: 0px 3px">
-                        <button type="button" class="btn btn-warning" style="width: 100%;">Copy Group Evals</button>
+                        <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
                       </div>
                     </div>
                   </div><!--end col-->
@@ -309,9 +308,9 @@
                 <tr th:each="item : ${evaluationDTO}">
                   <td th:text="${item.username}"></td>
                   <td th:text="${item.fullname}"></td>
-                  <td th:text="${item.grade}"></td>
-                  <td></td>
-                  <td></td>
+                  <td th:text="${item.getGradeSubmission()}"></td>
+                  <td th:text="${item.workGrade}"></td>
+                  <td th:text="${item.workPoint}"></td>
                   <td></td>
                   <td></td>
                   <th:block  th:each="evalGrade : ${item.getCriteriaGradeList()}">
@@ -335,7 +334,7 @@
         </form>
 
         <p>WG: converted grade from Work Point (WP): WG = WP/Expected-Work*10</p>
-        <p>WP is calculated after having work evaluations (from the Work Evals page</p>
+        <p>WP is calculated after having work evaluations (from the Work Evals page)</p>
         <p>B/P is Bonus/Penalty </p>
 
         <!--  Modal for comment criteria-->
@@ -407,15 +406,8 @@
       edit[i].hidden = false;
     }
   }
-  function viewMark() {
-    var view = document.getElementsByClassName("view");
-    var edit = document.getElementsByClassName("edit");
-    for (var i = 0; i < view.length; i++) {
-      view[i].hidden = false;
-    }
-    for (var i = 0; i < edit.length; i++) {
-      edit[i].hidden = true;
-    }
+  function reverseChange() {
+    alert(0)
   }
 
 </script>

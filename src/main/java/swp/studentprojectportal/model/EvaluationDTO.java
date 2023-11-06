@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EvaluationDTO {
     private Integer submissionId;
+
     private Integer studentId;
 
     private String username;
@@ -26,11 +27,21 @@ public class EvaluationDTO {
 
     private Integer bonusAndPenalty;
 
-    private Float grade = 0.0f;
-
     private String commentGroup;
 
     private String groupname;
 
+    private Integer workPoint = 0;
+
+    private Float workGrade = 0f;
+
     private List<CriteriaDTO> criteriaGradeList;
+
+    public Float getGradeSubmission() {
+        Float grade = 0f;
+        for (CriteriaDTO criteriaGrade : criteriaGradeList) {
+            grade += criteriaGrade.getGrade()*criteriaGrade.getWeight()/100;
+        }
+        return grade;
+    }
 }

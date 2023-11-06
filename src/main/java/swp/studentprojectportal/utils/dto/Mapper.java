@@ -106,17 +106,16 @@ public class Mapper {
                 evaluationDTO.setFullname(item.getStudent().getFullName());
                 evaluationDTO.setGroupname(item.getSubmission().getProject().getGroupName());
                 evaluationDTO.setWeight(item.getWeight());
-                evaluationDTO.setGrade(item.getGrade());
                 evaluationDTO.setCommentGroup(item.getSubmission().getComment());
 
                 // add criteria grade list
                 List<CriteriaDTO> criteriaDTOList = new ArrayList<>();
-                criteriaDTOList.add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment()));
+                criteriaDTOList.add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment(), item.getWeight()));
                 evaluationDTO.setCriteriaGradeList(criteriaDTOList);
                 evaluationDTOList.add(evaluationDTO);
             } else {
                 evaluationDTOList.stream().filter(evaluationDTO -> evaluationDTO.getStudentId().equals(item.getStudent().getId())).forEach(evaluationDTO -> {
-                     evaluationDTO.getCriteriaGradeList().add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment()));
+                     evaluationDTO.getCriteriaGradeList().add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment(), item.getWeight()));
                 });
             }
         });

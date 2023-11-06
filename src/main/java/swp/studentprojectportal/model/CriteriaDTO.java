@@ -17,4 +17,6 @@ public class CriteriaDTO {
     private Float grade;
 
     private String comment;
+
+    private Integer weight;
 }

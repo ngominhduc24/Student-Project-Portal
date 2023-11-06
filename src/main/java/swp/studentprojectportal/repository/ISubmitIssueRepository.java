@@ -11,4 +11,6 @@ public interface ISubmitIssueRepository extends JpaRepository<SubmitIssue, Integ
 
     public List<SubmitIssue> findAllBySubmitId(Integer submissionId);
 
+    public SubmitIssue findSubmitIssueById(Integer issueId);
+
 }
