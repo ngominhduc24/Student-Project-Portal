@@ -27,8 +27,17 @@
     <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/js/notify.js}"></script>
     <!-- Include DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
 </head>
 <body>
 <!-- Loader -->
@@ -101,11 +110,27 @@
                                     <td th:text="${submitIssue.issue.title}"></td>
                                     <td th:text="${submitIssue.issue.assignee.fullName}"></td>
                                     <td>
-                                        <div></div>
+                                        <div th:if="${submitIssue.functionLoc!=null}">
+                                            Evaluated
+                                        </div>
+                                        <div th:if="${submitIssue.functionLoc==null}">
+                                            Submitted
+                                        </div>
                                     </td>
-                                    <td></td>
                                     <td>
-                                        <div th:if="${isMentor}" class="btn btn-link">Evaluate</div>
+                                        <div th:if="${submitIssue.functionLoc!=null}" th:text="${submitIssue.functionLoc}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div th:if="${isMentor}" class="btn btn-link">
+<!--                                            <div th:onclick="'detailsSubjectSetting(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue">-->
+<!--                                                Evaluate-->
+<!--                                            </div>-->
+                                            <div th:onclick="showLoc();" style="border: none; background-color: white; color: blue;">
+                                                Evaluate
+                                            </div>
+
+                                        </div>
                                         <div th:if="${!isMentor}" class="btn btn-link">Result</div>
                                     </td>
                                 </tr>
@@ -115,6 +140,141 @@
                     </div>
 
                 </div>
+
+                <button type="button" id="btndetails1" data-toggle="modal" data-target="#detailsModalCenter1" hidden="hidden"></button>
+                <!--  Detail Modal-->
+                <div class="modal fade" id="detailsModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailsModalLongTitle1">LOC EVLATUTION</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject Code</label>
+                                            <input type="text" name="subjectCode" class="form-control" th:value="${submission.project.aclass.subject.subjectCode}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Milstone</label>
+                                            <input type="text" name="subjectCode" class="form-control" th:value="${submission.milestone.title}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Complexity<span class="text-danger">*</span></label>
+                                            <select id="details-submit-issue-complexity" class="form-select">
+                                                <option value="1">High</option>
+                                                <option value="1">Medium</option>
+                                                <option value="1">Low</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Quality<span class="text-danger">*</span></label>
+                                            <select id="details-submit-issue-quality" class="form-select">
+                                                <option value="1">High</option>
+                                                <option value="1">Medium</option>
+                                                <option value="1">Low</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Function Loc<span class="text-danger">*</span></label>
+                                            <input type="text" id="details-subject-setting-value" class="form-control" >
+                                        </div>
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal1">Close</button>
+                                <button type="button" class="btn btn-primary" id="updateSubjectSettingButton">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail-->
+                <script>
+
+                    function showLoc(){
+                        console.log("showLoc hihi")
+                        document.getElementById('btndetails1').click();
+                    }
+                    function detailsSubjectSetting(id) {
+                        console.log('show detail'+id)
+                        let endPoint = '/api/v1/subject-setting?subjectSettingId=' + id;
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    // Handle a successful API response
+                                    response.json().then(data => {
+                                        document.querySelector('input[id="details-subject-setting-title"]').value = data.title;
+                                        document.querySelector('input[id="details-subject-setting-value"]').value = data.value;
+                                        document.querySelector('input[id="details-subject-setting-display-order"]').value = data.displayOrder;
+                                        var selectElement = document.querySelector('select[id="details-subject-setting-type"]');
+                                        var dataValue = data.typeId;
+                                        for (var i = 0; i < selectElement.options.length; i++) {
+                                            // Nếu giá trị của option khớp với giá trị từ dữ liệu, đặt selected
+                                            if (selectElement.options[i].value == dataValue) {
+                                                selectElement.options[i].selected = true;
+                                                break; // Dừng vòng lặp nếu đã tìm thấy giá trị khớp
+                                            }
+                                        }
+                                        // document.querySelector('select[id="details-subject-setting-type"]').value = data.typeId;
+                                        document.getElementById('detail-subject-setting-status').checked = data.status == 1 ? true : false;
+                                        document.getElementById('updateSubjectSettingButton').setAttribute('onclick', 'updateSubjectSetting(' + data.id + ')');
+                                    });
+                                } else {
+                                    // Handle API errors
+                                    console.error('Error getting issue setting.');
+                                }
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                        document.getElementById('btndetails1').click();
+                    }
+                </script>
+
+                <!--Update Subject Setting-->
+                <script>
+                    function updateSubjectSetting(id){
+                        console.log('updateSubjectSetting '+ id);
+                        const subjectId = document.querySelector('input[name="id"]').value;
+                        const typeId = document.querySelector('select[id="details-subject-setting-type"]').value;
+                        const title = document.querySelector('input[id="details-subject-setting-title"]').value;
+                        const value = document.querySelector('input[id="details-subject-setting-value"]').value;
+                        const displayOrder = document.querySelector('input[id="details-subject-setting-display-order"]').value;
+                        const status = document.getElementById('detail-subject-setting-status').checked ? 1 : 0;
+                        let endPoint = '/api/v1/update/subject-setting?subjectSettingId=' + id +
+                            '&subjectId=' + subjectId +'&typeId=' +typeId + '&title=' + title + '&value=' +
+                            value + '&displayOrder=' + displayOrder + '&status=' + status;
+
+                        fetch(endPoint, {
+                            method: 'GET',
+                        })
+                            .then(response => {
+                                if(response.ok) {
+                                    notify('success','Update subject setting successfully' , 'Success');
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000);
+                                } else  {
+                                    // notify('error' ,response.text()  ,'Error' );
+                                    return response.text();
+                                }
+                            })
+                            .then(errorText =>{
+                                if(errorText && !errorText.startsWith('Update'))
+                                    notify('error',errorText,'Error')
+                            })
+                            .catch(error => {
+                                alert("Network error " + error);
+                            });
+                    }
+                </script>
 
             </div>
         </div>
