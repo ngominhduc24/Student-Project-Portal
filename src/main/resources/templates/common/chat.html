@@ -51,11 +51,16 @@
 
                 <div class="row position-relative" style="height: 80vh;">
 
-                    <div class="chat-header position-absolute w-75" style="top: 0; z-index: 2; background-color: #f8f9fc">
-                        <h5 class="mb-0">Class Chat: SE1741</h5>
+                    <div class="chat-header w-75 d-flex align-content-center align-items-center" style="background-color: #f8f9fc; height: 5vh">
+                        <h5 class="mb-0 mr">Class Chat:   </h5>
+
+                        <select class="form-select" style="width: 20%; margin-left: 2%" onchange="changeClass(this.value)">
+                            <option th:each="class : ${classList}" th:value="${class.id}"
+                                    th:text="${class.className}" th:selected="${classId==class.id}"></option>
+                        </select>
                     </div>
 
-                    <div class="chat-body d-flex flex-column-reverse overflow-auto" style="height: 70vh;">
+                    <div class="chat-body d-flex flex-column-reverse overflow-auto" style="height: 65vh;">
 
 <!--                        <div class="message row mb-3">-->
 <!--                            <div class="col-1 text-center">-->
@@ -84,7 +89,7 @@
                         </form>
 
                         <div class="col-2">
-                            <button onclick="sendMessage()" class="btn btn-primary"><i class="uil uil-comment"></i></button>
+                            <button onclick="sendMessage(event)" class="btn btn-primary"><i class="uil uil-comment"></i></button>
                         </div>
                     </div>
 
@@ -132,6 +137,23 @@
     //async run
     (async () => {
 
+        //get message data
+        let token = await getToken({classId: classId});
+        await fetch(`http://localhost:3000/api/v1/chat/${token}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error');
+                }
+                return response.json();
+            })
+            .then(data => {
+                for (let m of data.message)
+                    addMessage(m.username, m.message, m.sendtime);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
         //connect
         socket.emit('new-user', await getToken({
             classId: classId,
@@ -175,7 +197,8 @@
         // Create the user's profile picture (img element)
         const profileImg = document.createElement('img');
         profileImg.className = 'w-75 h-auto rounded pt-2';
-        profileImg.src = 'https://cdn-icons-png.flaticon.com/512/3468/3468447.png';
+        // profileImg.src = 'https://cdn-icons-png.flaticon.com/512/3468/3468447.png';
+        profileImg.src = 'https://picsum.photos/100/100/?image=' + Math.floor(Math.random() * 800);
 
         // Append the profile picture to the profile div
         profileDiv.appendChild(profileImg);
@@ -187,7 +210,7 @@
         // Create the user's name (p element)
         const userName = document.createElement('p');
         userName.style.fontWeight = 'bold';
-        userName.textContent = user + ' - ' + sendtime;
+        userName.textContent = user + ' - ' + (sendtime!='now' ? formatDateString(sendtime) : sendtime);
 
         // Create the message content div
         const messageContent = document.createElement('div');
@@ -207,6 +230,29 @@
 
         //scroll to bottom
         chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function changeClass(classId) {
+        window.location.href = `./${classId}`;
+    }
+
+    function formatDateString(inputDateString) {
+        const inputDate = new Date(inputDateString);
+
+        const day = String(inputDate.getDate()).padStart(2, '0');
+        const month = String(inputDate.getMonth() + 1).padStart(2, '0'); // Adding 1 to month because it's zero-based
+        const year = inputDate.getFullYear();
+
+        let hours = inputDate.getHours();
+        const minutes = String(inputDate.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // 0 should be displayed as 12
+
+        // Add 17 hours to the hours value
+        hours += 17;
+
+        return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
     }
 </script>
 
