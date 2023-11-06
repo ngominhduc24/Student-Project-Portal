@@ -31,6 +31,10 @@ public class AssignmentEvaluationsController {
     ) {
         List<Evaluation> evaluation =  evaluationService.getEvaluationBySubmissionId(submissionId);
 
+        if(evaluation == null || evaluation.size() == 0) {
+            evaluation = evaluationService.createEvaluation(submissionId);
+        }
+
         // Map evaluation to evaluationDTO
         List<EvaluationDTO> evaluationDTO = Mapper.evaluationMapper(evaluation);
 

@@ -5,10 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.model.Assignment;
 import swp.studentprojectportal.model.Criteria;
 import swp.studentprojectportal.repository.ICriteriaRepository;
 import swp.studentprojectportal.service.ICriteriaService;
+
+import java.util.List;
+
 @Service
 public class CriteriaService implements ICriteriaService {
     @Autowired
@@ -41,5 +43,10 @@ public class CriteriaService implements ICriteriaService {
             if(criteria.getId()!=id)  return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Criteria> getAllCriteriaByAssignmentId(int assignmentId) {
+        return criteriaRepository.findAllByAssignmentId(assignmentId);
     }
 }

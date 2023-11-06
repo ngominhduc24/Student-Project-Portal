@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.Criteria;
+
+import java.util.List;
+
 @Repository
 public interface ICriteriaRepository extends JpaRepository<Criteria, Integer> {
     @Query(value="SELECT * FROM criteria \n" +
@@ -17,4 +20,6 @@ public interface ICriteriaRepository extends JpaRepository<Criteria, Integer> {
     Page<Criteria> filter(@Param("assignmentId") Integer assignmentId, String search, Integer status, Pageable pageable);
 
     Criteria findByNameAndAssignmentId(String name, Integer assignmentId);
+
+    List<Criteria> findAllByAssignmentId(int assignmentId);
 }

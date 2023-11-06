@@ -93,6 +93,9 @@ public class Mapper {
 
     // Convert Evaluation to EvaluationDTO
     public static List<EvaluationDTO> evaluationMapper(List<Evaluation> evaluation) {
+        if(evaluation == null || evaluation.size() == 0)
+            return new ArrayList<>();
+
         List<EvaluationDTO> evaluationDTOList= new ArrayList<>();
         evaluation.forEach(item -> {
             if(evaluationDTOList.stream().noneMatch(evaluationDTO -> evaluationDTO.getStudentId().equals(item.getStudent().getId()))) {

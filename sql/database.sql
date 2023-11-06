@@ -169,17 +169,19 @@ CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
                                                     `title` VARCHAR(45) NULL,
     `description` VARCHAR(245) NULL,
     `class_id` INT NULL,
+    `subject_assignment_id` INT DEFAULT null,
     `project_id` INT NULL,
     `start_date` DATE NULL,
     `end_date` DATE NULL,
     `status` BIT(1) NULL,
-    `is_subject_assignment` BIT(1) DEFAULT 0,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
     `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     INDEX `a_idx` (`class_id` ASC) VISIBLE,
+    FOREIGN KEY (`subject_assignment_id`)
+    REFERENCES `swp391`.`assignment` (`id`),
     FOREIGN KEY (`class_id`)
     REFERENCES `swp391`.`class` (`id`),
     FOREIGN KEY (`project_id`)
@@ -657,17 +659,17 @@ VALUES
     (6,'React App','Make React App to print "Hello React"',1),
     (6,'JS ES6','Learn new synctax in JS ES6',1);
 
-INSERT INTO milestone (`title`,`description`,`status`, `is_subject_assignment`,`class_id`,`start_date`, `end_date`)
+INSERT INTO milestone (`title`,`description`,`status`, `subject_assignment_id`,`class_id`,`start_date`, `end_date`)
 VALUES
     ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,1,'2023-09-05', '2023-09-26'),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,1,'2023-09-27', '2023-10-16'),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,1,'2023-10-18', '2023-11-08'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2,1,'2023-09-27', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,1,'2023-10-18', '2023-11-08'),
     ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,2,'2023-09-05', '2023-09-25'),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,2,'2023-09-26', '2023-10-16'),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,2,'2023-10-18', '2023-11-09'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2,2,'2023-09-26', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,2,'2023-10-18', '2023-11-09'),
     ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,3,'2023-09-05', '2023-09-25'),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,3,'2023-09-28', '2023-10-17'),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,3,'2023-10-18', '2023-11-08');
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2,3,'2023-09-28', '2023-10-17'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,3,'2023-10-18', '2023-11-08');
 
 INSERT INTO milestone (`title`,`description`,`status`,`class_id`,`start_date`, `end_date`)
 VALUES
@@ -773,8 +775,8 @@ VALUES
 
 INSERT INTO submission(milestone_id, project_id, submit_date, note, file_location, evaluation, comment, status, create_by)
 VALUES
-    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
-    (20, 1, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 1, 6),
+    (1, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
+    (2, 1, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 1, 6),
     (21, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1, 6),
     (22, 1, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 1, 6),
     (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1, 6),
