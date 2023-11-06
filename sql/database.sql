@@ -479,14 +479,11 @@ DROP TABLE IF EXISTS `swp391`.`issue_update` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`issue_update` (
                                                        `id` INT NOT NULL AUTO_INCREMENT,
                                                        `issue_id` INT NULL,
-                                                       `title` VARCHAR(45) NULL,
                                                        `description`  VARCHAR(255) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
-  --   `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-    `update_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`issue_id`)
     REFERENCES `swp391`.`issue` (`id`)
@@ -660,17 +657,20 @@ VALUES
     (6,'React App','Make React App to print "Hello React"',1),
     (6,'JS ES6','Learn new synctax in JS ES6',1);
 
+INSERT INTO milestone (`title`,`description`,`status`, `is_subject_assignment`,`class_id`,`start_date`, `end_date`)
+VALUES
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,1,'2023-09-05', '2023-09-26'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,1,'2023-09-27', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,1,'2023-10-18', '2023-11-08'),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,2,'2023-09-05', '2023-09-25'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,2,'2023-09-26', '2023-10-16'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,2,'2023-10-18', '2023-11-09'),
+    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,3,'2023-09-05', '2023-09-25'),
+    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,3,'2023-09-28', '2023-10-17'),
+    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,3,'2023-10-18', '2023-11-08');
+
 INSERT INTO milestone (`title`,`description`,`status`,`class_id`,`start_date`, `end_date`)
 VALUES
-    ('Review Iteration 1','Review docs and code iteration 1 all group',1,1,'2023-09-05', '2023-09-26'),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,1,'2023-09-27', '2023-10-16'),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,1,'2023-10-18', '2023-11-08'),
-    ('Review Iteration 1','Review docs and code iteration 1 all group',1,2,'2023-09-05', '2023-09-25'),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,2,'2023-09-26', '2023-10-16'),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,2,'2023-10-18', '2023-11-09'),
-    ('Review Iteration 1','Review docs and code iteration 1 all group',1,3,'2023-09-05', '2023-09-25'),
-    ('Review Iteration 2','Review docs and code iteration 2 all group',1,3,'2023-09-28', '2023-10-17'),
-    ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,'2023-10-18', '2023-11-08'),
     ('Java Servlet','Intro to JavaServlet + JSP',1,5,'2023-09-05', '2023-09-25'),
     ('Connect to Database','Learn JDBC',1,5,'2023-09-27', '2023-10-16'),
     ('Project','Pratice to create a website',1,5,'2023-10-18', '2023-11-08'),
@@ -852,11 +852,11 @@ VALUES
     (7 ,1, 1, 5, 3, 45, 0),
     (8 ,1, 1, 5, 3, 45, 0),
     (9 ,1, 1, 5, 3, 45, 0);
-INSERT INTO issue_update(issue_id,title, description)
+INSERT INTO issue_update(issue_id, description)
 VALUES
-    (1 ,"Job1","Basic login "),
-    (1 ,"Job2","Check user blocked"),
-    (1 ,"Job3","Check user verified"),
-    (1 ,"Job4","Remember with cookie"),
-    (1 ,"Job5","Login with gg"),
-    (1 ,"Job6","Hash password");
+    (1 ,"Basic login "),
+    (1 ,"Check user blocked"),
+    (1 ,"Check user verified"),
+    (1 ,"Remember with cookie"),
+    (1 ,"Login with gg"),
+    (1 ,"Hash password");
