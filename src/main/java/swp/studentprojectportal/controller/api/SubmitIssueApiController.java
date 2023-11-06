@@ -35,32 +35,48 @@ public class SubmitIssueApiController {
     ObjectMapper objectMapper;
 
     @GetMapping("/submit-issue")
-    public ResponseEntity getSubjectSettingById(@RequestParam(name = "submitIssueId") Integer submitIssueId) {
-//        SubmitIssue submitIssue = submitIssueService.findById(submitIssueId);
-//        List<Integer> complexityValueList = submitIssueService.findAllComplexitySubjectSettingValueById(submitIssueId);
-//        List<Integer> qualityValueList = submitIssueService.findAllQualitySubjectSettingValueById(submitIssueId);
-//        for (Integer value : complexityValueList) {
-//            System.out.println(value);
-//        }
-//        for (Integer value : qualityValueList) {
-//            System.out.println(value);
+    public ResponseEntity getSubmitIssueById(@RequestParam(name = "submitIssueId") Integer submitIssueId) {
+        SubmitIssue submitIssue = submitIssueService.findById(submitIssueId);
+        if(submitIssue != null){
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", submitIssue.getId());
+            if(submitIssue.getComplexity()==null) response.put("complexityValue", -1);
+            else response.put("complexityValue", submitIssue.getComplexity().getSettingValue());
+            if(submitIssue.getQuality()==null) response.put("qualityValue", -1);
+            else response.put("qualityValue", submitIssue.getQuality().getSettingValue());
+            response.put("functionLoc", submitIssue.getFunctionLoc());
+            return ResponseEntity.ok().body(response);
         }
-//        response.put("details-submit-issue-complexity",List)
-//        if(submitIssue != null){
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("id", submitIssue.getId());
-//            response.put("complexity-title", submitIssue.getComplexity().getSettingTitle());
-//            response.put("complexity-value", submitIssue.getComplexity().getSettingValue());
-//            response.put("quality-title", submitIssue.getQuality().getSettingTitle());
-//            response.put("quality-value", submitIssue.getQuality().getSettingValue());
-//            response.put("function-loc", submitIssue.getFunctionLoc());
-//            return ResponseEntity.ok().body(response);
-//        }
-//        else
+        else
             return ResponseEntity.badRequest().body("Subject Setting not found");
 
     }
 
-
-
+    @GetMapping(path="/update/submit-issue")
+    public ResponseEntity updateSubmitIssue(@RequestParam(name = "submitIssueId") Integer submitIssueId,
+                                            @RequestParam(name = "functionLoc") String fuctionLoc,
+                                            @RequestParam(name = "complexity") Integer complexity,
+                                            @RequestParam(name = "quality") Integer quality,
+                                            @RequestParam(name = "subjectId") int subjectId){
+        System.out.println("fetc du lieu nay bạn ơi ???");
+        SubmitIssue submitIssue = submitIssueService.findById(submitIssueId);
+        int complexityId = submitIssueService.findIdBySubjectIdAndValue(subjectId,complexity,1);
+        int qualityId = submitIssueService.findIdBySubjectIdAndValue(subjectId,quality,2);
+        submitIssue.setComplexity(subjectSettingService.findById(complexityId));
+        submitIssue.setQuality(subjectSettingService.findById(qualityId));
+        if(!Validate.validNotempty(fuctionLoc)){
+            return ResponseEntity.badRequest().body("Function Loc can not empty. Evalute failed!");
+        }
+        else{
+            if(!Validate.isNumeric(fuctionLoc)){
+                return ResponseEntity.badRequest().body("Function Loc must be positive integer. Evalute failed!");
+            }
+            else{
+                Integer real_loc = Integer.parseInt(fuctionLoc);
+                submitIssue.setFunctionLoc(real_loc);
+                submitIssueService.saveSubmitIssue(submitIssue);
+                return ResponseEntity.ok().body("1");
+            }
+        }
+    }
 }

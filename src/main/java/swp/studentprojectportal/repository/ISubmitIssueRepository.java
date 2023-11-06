@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import swp.studentprojectportal.model.SubjectSetting;
 import swp.studentprojectportal.model.SubmitIssue;
 
 import java.util.List;
@@ -24,5 +25,12 @@ public interface ISubmitIssueRepository extends JpaRepository<SubmitIssue, Integ
             nativeQuery = true)
     public List<Integer> findAllQualitySubjectSettingValueById(
             @Param("subjectId") Integer subjectId);
+
+    @Query(value="SELECT id FROM subject_setting WHERE subject_id = :subjectId AND setting_value = :settingValue AND type_id = :type",
+    nativeQuery = true)
+    public int findIdBySubjectIdAndValue(@Param("subjectId") Integer subjectId,
+                                         @Param("settingValue") Integer settingValue,
+                                         @Param("type") Integer type);
+
 
 }

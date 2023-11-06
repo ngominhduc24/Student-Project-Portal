@@ -18,4 +18,8 @@ public interface ISubmitIssueService {
     public List<Integer> findAllComplexitySubjectSettingValueById(Integer subjectId);
 
     public List<Integer> findAllQualitySubjectSettingValueById(Integer subjectId);
+
+    public int findIdBySubjectIdAndValue(Integer subjectId, Integer settingValue,Integer type);
+
+    public SubmitIssue saveSubmitIssue(SubmitIssue submitIssue);
 }

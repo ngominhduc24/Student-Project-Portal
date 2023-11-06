@@ -22,12 +22,11 @@
     <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
     <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
     <!-- Icons -->
-    <!--    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>-->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
     <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
-    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
     <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
@@ -37,7 +36,6 @@
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 
-    <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
 </head>
 <body>
 <!-- Loader -->
@@ -101,7 +99,7 @@
                                     <th>Assignee</th>
                                     <th>Status</th>
                                     <th>LOC</th>
-                                    <th>Action</th>
+                                    <th style="text-align: center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,10 +108,13 @@
                                     <td th:text="${submitIssue.issue.title}"></td>
                                     <td th:text="${submitIssue.issue.assignee.fullName}"></td>
                                     <td>
-                                        <div th:if="${submitIssue.functionLoc!=null}">
+                                        <div th:if="${submitIssue.isRejected==true}">
+                                            Rejected
+                                        </div>
+                                        <div th:if="${submitIssue.functionLoc!=null && submitIssue.isRejected==false}">
                                             Evaluated
                                         </div>
-                                        <div th:if="${submitIssue.functionLoc==null}">
+                                        <div th:if="${submitIssue.functionLoc==null && submitIssue.isRejected==false}">
                                             Submitted
                                         </div>
                                     </td>
@@ -123,15 +124,16 @@
                                     </td>
                                     <td>
                                         <div th:if="${isMentor}" class="btn btn-link">
-                                            <div th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" style="border: none; background-color: white; color: blue">
+                                            <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link">
                                                 Evaluate
-                                            </div>
-<!--                                            <div th:onclick="showLoc();" style="border: none; background-color: white; color: blue;">-->
-<!--                                                Evaluate-->
-<!--                                            </div>-->
-
+                                            </a>
+                                            <span class="action-separator"> | </span>
+                                            <a th:onclick="'showDialog(this,' + ${submitIssue.id} + ')'" th:attr="data-title=${submitIssue.issue.title}" class="action-link">
+                                                Reject</a>
                                         </div>
-                                        <div th:if="${!isMentor}" class="btn btn-link">Result</div>
+                                        <div th:if="${!isMentor}" class="btn btn-link">
+                                            <span class="action-link">Result</span>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -140,6 +142,10 @@
                     </div>
 
                 </div>
+
+                <input type="hidden" name="subjectId" th:value="${subjectId}">
+                <input type="hidden" name="submissionId" th:value="${submission.id}">
+
 
                 <button type="button" id="btndetails1" data-toggle="modal" data-target="#detailsModalCenter1" hidden="hidden"></button>
                 <!--  Detail Modal-->
@@ -166,29 +172,31 @@
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Complexity<span class="text-danger">*</span></label>
                                             <select id="details-submit-issue-complexity" class="form-select">
-                                                <option value="1">High</option>
-                                                <option value="1">Medium</option>
-                                                <option value="1">Low</option>
+                                                <option th:each="subjectSettingComplexity : ${listSubjectSettingComplexity}"
+                                                        th:value="${subjectSettingComplexity}"
+                                                        th:text="${subjectSettingComplexity}"
+                                                ></option>
                                             </select>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Quality<span class="text-danger">*</span></label>
                                             <select id="details-submit-issue-quality" class="form-select">
-                                                <option value="1">High</option>
-                                                <option value="1">Medium</option>
-                                                <option value="1">Low</option>
+                                                <option th:each="subjectSettingQuality : ${listSubjectSettingQuality}"
+                                                        th:value="${subjectSettingQuality}"
+                                                        th:text="${subjectSettingQuality}+'%'"
+                                                ></option>
                                             </select>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Function Loc<span class="text-danger">*</span></label>
-                                            <input type="text" id="details-subject-setting-value" class="form-control" >
+                                            <input type="text" id="details-submit-issue-function-loc" class="form-control" >
                                         </div>
                                     </div><!--end col-->
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal1">Close</button>
-                                <button type="button" class="btn btn-primary" id="updateSubjectSettingButton">Update</button>
+                                <button type="button" class="btn btn-primary" id="updateSubmitIssueButton">Update</button>
                             </div>
                         </div>
                     </div>
@@ -207,24 +215,35 @@
                         fetch(endPoint)
                             .then(response => {
                                 if (response.ok) {
-                                    // Handle a successful API response
-                                    // response.json().then(data => {
-                                    //     document.querySelector('input[id="details-subject-setting-title"]').value = data.title;
-                                    //     document.querySelector('input[id="details-subject-setting-value"]').value = data.value;
-                                    //     document.querySelector('input[id="details-subject-setting-display-order"]').value = data.displayOrder;
-                                    //     var selectElement = document.querySelector('select[id="details-subject-setting-type"]');
-                                    //     var dataValue = data.typeId;
-                                    //     for (var i = 0; i < selectElement.options.length; i++) {
-                                    //         // Nếu giá trị của option khớp với giá trị từ dữ liệu, đặt selected
-                                    //         if (selectElement.options[i].value == dataValue) {
-                                    //             selectElement.options[i].selected = true;
-                                    //             break; // Dừng vòng lặp nếu đã tìm thấy giá trị khớp
-                                    //         }
-                                    //     }
-                                    //     // document.querySelector('select[id="details-subject-setting-type"]').value = data.typeId;
-                                    //     document.getElementById('detail-subject-setting-status').checked = data.status == 1 ? true : false;
-                                    //     document.getElementById('updateSubjectSettingButton').setAttribute('onclick', 'updateSubjectSetting(' + data.id + ')');
-                                    // })
+                                    response.json().then(data => {
+                                        document.querySelector('input[id="details-submit-issue-function-loc"]').value = data.functionLoc;
+                                        var selectElementComplexity = document.querySelector('select[id="details-submit-issue-complexity"]');
+                                        var dataComplexityValue = data.complexityValue;
+                                        if(dataComplexityValue == -1) selectElementComplexity.options[0].selected = true;
+                                        else {
+                                            for (var i = 0; i < selectElementComplexity.options.length; i++) {
+                                                if (selectElementComplexity.options[i].value == dataComplexityValue) {
+                                                    selectElementComplexity.options[i].selected = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        var selectElementQuality = document.querySelector('select[id="details-submit-issue-quality"]');
+                                        var dataQualityValue = data.qualityValue;
+                                        if(dataQualityValue == -1) selectElementQuality.options[0].selected = true;
+                                        else {
+                                            for (var i = 0; i < selectElementQuality.options.length; i++) {
+
+                                                if (selectElementQuality.options[i].value == dataQualityValue) {
+                                                    selectElementQuality.options[i].selected = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        document.getElementById('updateSubmitIssueButton').setAttribute('onclick', 'updateSubmitIssue(' + data.id + ')');
+                                    })
                                 } else {
                                     // Handle API errors
                                     console.error('Error getting issue setting.');
@@ -238,26 +257,21 @@
                     }
                 </script>
 
-                <!--Update Subject Setting-->
+                <!--Update Submit Issue-->
                 <script>
-                    function updateSubjectSetting(id){
-                        console.log('updateSubjectSetting '+ id);
-                        const subjectId = document.querySelector('input[name="id"]').value;
-                        const typeId = document.querySelector('select[id="details-subject-setting-type"]').value;
-                        const title = document.querySelector('input[id="details-subject-setting-title"]').value;
-                        const value = document.querySelector('input[id="details-subject-setting-value"]').value;
-                        const displayOrder = document.querySelector('input[id="details-subject-setting-display-order"]').value;
-                        const status = document.getElementById('detail-subject-setting-status').checked ? 1 : 0;
-                        let endPoint = '/api/v1/update/subject-setting?subjectSettingId=' + id +
-                            '&subjectId=' + subjectId +'&typeId=' +typeId + '&title=' + title + '&value=' +
-                            value + '&displayOrder=' + displayOrder + '&status=' + status;
-
+                    function updateSubmitIssue(id){
+                        const subjectId = document.querySelector('input[name="subjectId"]').value;
+                        const complexity = document.querySelector('select[id="details-submit-issue-complexity"]').value;
+                        const quality = document.querySelector('select[id="details-submit-issue-quality"]').value;
+                        const functionLoc = document.querySelector('input[id="details-submit-issue-function-loc"]').value;
+                        let endPoint = '/api/v1/update/submit-issue?submitIssueId=' + id +
+                            '&functionLoc=' + functionLoc +'&complexity=' +complexity + '&quality=' + quality + '&subjectId=' +subjectId;
                         fetch(endPoint, {
                             method: 'GET',
                         })
                             .then(response => {
                                 if(response.ok) {
-                                    notify('success','Update subject setting successfully' , 'Success');
+                                    notify('success','Evaluate submit issue successfully' , 'Success');
                                     setTimeout(() => {
                                         location.reload();
                                     }, 1000);
@@ -274,6 +288,53 @@
                                 alert("Network error " + error);
                             });
                     }
+                </script>
+
+                <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+                    <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                            <div class="modal-header flex-column">
+                                <div class="icon-box" style="border-color: #f15e5e">
+                                    <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                                </div>
+                                <h4 class="modal-title w-100">Are you sure?</h4>
+                                <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p></p>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let id;
+                    let status;
+                    let submissionId = document.querySelector('input[name="submissionId"]').value;
+                    function showDialog(checkbox, submitIssueId) {
+                        id = submitIssueId;
+                        var title = checkbox.getAttribute('data-title');
+
+                        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>reject</strong> issue ${title}?`);
+                        $('#confirmationModalRed').modal('show');
+
+                    }
+                    $(".confirmButton").click(function () {
+                        notify('success', 'Reject Issue successfully.', 'Success');
+                        // Delay the page reload for a few seconds
+                        setTimeout(() => {
+                            window.location.href=`/project-mentor/submission/submit-issue/reject?id=${id}&submissionId=${submissionId}`;
+                        }, 1000);
+
+                    });
+                    $(".cancelButton, .closeButton").click(function () {
+                        $('#confirmationModalRed').modal('hide');
+                        $('#confirmationModalClose').modal('hide');
+                    });
                 </script>
 
             </div>

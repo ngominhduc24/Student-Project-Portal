@@ -72,4 +72,14 @@ public class SubmitIssueService implements ISubmitIssueService {
     public List<Integer> findAllQualitySubjectSettingValueById(Integer subjectId){
         return submitIssueRepository.findAllQualitySubjectSettingValueById(subjectId);
     }
+
+    @Override
+    public int findIdBySubjectIdAndValue(Integer subjectId, Integer settingValue, Integer type){
+        return submitIssueRepository.findIdBySubjectIdAndValue(subjectId,settingValue,type);
+    }
+
+    @Override
+    public SubmitIssue saveSubmitIssue(SubmitIssue submitIssue){
+        return submitIssueRepository.save(submitIssue);
+    }
 }
