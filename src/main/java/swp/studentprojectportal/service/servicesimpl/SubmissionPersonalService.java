@@ -17,4 +17,16 @@ public class SubmissionPersonalService implements ISubmissionPersonalService {
         return submissionPersonalReposiroty.findAllBySubmissionId(submissionId);
     }
 
+    public boolean updateSubmissionPersonal(Integer submissionId, Integer studentId, Integer bonus, String comment){
+        try {
+            SubmissionPersonal submissionPersonal = submissionPersonalReposiroty.findBySubmissionIdAndStudentId(submissionId, studentId);
+            submissionPersonal.setBonus(bonus);
+            submissionPersonal.setComment(comment);
+            submissionPersonalReposiroty.save(submissionPersonal);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

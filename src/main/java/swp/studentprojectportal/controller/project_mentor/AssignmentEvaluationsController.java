@@ -81,6 +81,10 @@ public class AssignmentEvaluationsController {
         Float submissionMark = 0f;
         String commentGroup = request.getParameter("commentGroup");
         String submissionId = request.getParameter("submissionId");
+
+        /*
+            Update comment group and submission mark
+         */
         String[] evalGrades = request.getParameterValues("evalGrade");
         String[] evalGradeId = request.getParameterValues("evalGradeId");
 
@@ -95,6 +99,22 @@ public class AssignmentEvaluationsController {
         for (int i = 0; i < evalGradeId.length; i++) {
             try {
                 evaluationService.updateEvaluation(Integer.parseInt(evalGradeId[i]), Float.parseFloat(evalGrades[i]));
+            } catch (Exception e) {
+                attributes.addFlashAttribute("emessage", "Update failed");
+                return "redirect:/project-mentor/evaluation?submissionId=" + submissionId;
+            }
+        }
+
+        /*
+            Update comment personal and bonus
+         */
+        String[] commentPersonal = request.getParameterValues("evalCommentPersonal");
+        String[] bonus = request.getParameterValues("evalBonusAndPenalty");
+        String[] studentId = request.getParameterValues("evalStudentId");
+
+        for (int i = 0; i < studentId.length; i++) {
+            try {
+                submissionPersonalService.updateSubmissionPersonal(Integer.parseInt(submissionId), Integer.parseInt(studentId[i]), Integer.parseInt(bonus[i]), commentPersonal[i]);
             } catch (Exception e) {
                 attributes.addFlashAttribute("emessage", "Update failed");
                 return "redirect:/project-mentor/evaluation?submissionId=" + submissionId;

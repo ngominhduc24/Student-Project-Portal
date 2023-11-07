@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ISubmissionPersonalReposiroty extends JpaRepository<SubmissionPersonal, Integer> {
     List<SubmissionPersonal> findAllBySubmissionId(int submissionId);
+
+    SubmissionPersonal findBySubmissionIdAndStudentId(int submissionId, int studentId);
 }

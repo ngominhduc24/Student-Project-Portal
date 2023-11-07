@@ -94,6 +94,7 @@
   }
 
   #checkboxes label {
+    user-select: none;
     display: block;
     margin-left: 10px;
   }
@@ -209,7 +210,7 @@
               </div>
 
               <div class="row" style="margin-top: 5px">
-                  <div class="col-md-6" style="padding-left: 0px">
+                  <div class="col-md-6" >
                     <div class="multiselect">
                       <div class="selectBox" onclick="showCheckboxes()">
                         <select class="form-select">
@@ -218,12 +219,11 @@
                         <div class="overSelect"></div>
                       </div>
                       <div id="checkboxes">
-                        <label for="one">
-                          <input type="checkbox" id="one" />Code</label>
-                        <label for="two">
-                          <input type="checkbox" id="two" />RDS</label>
-                        <label for="three">
-                          <input type="checkbox" id="three" />Tracking</label>
+                        <th:block  th:each="item : ${evaluationDTO.get(0).getCriteriaGradeList()}">
+                          <label th:for="${item.criteriaName}">
+                            <input type="checkbox" th:id="${item.criteriaName}" th:text="${item.criteriaName}" onchange="updateEvalDisplay(this)" checked />
+                          </label>
+                        </th:block>
                       </div>
                     </div>
                   </div>
@@ -284,7 +284,7 @@
                   <th>B/P</th>
                   <th>Comments</th>
                   <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
-                    <th th:text="${evalGrade.criteriaName}"></th>
+                      <th th:text="${evalGrade.criteriaName}" th:name="${evalGrade.criteriaName}"></th>
                   </th:block>
                 </tr>
                 </thead>
@@ -319,8 +319,7 @@
                       <label th:text="${item.bonusAndPenalty}"></label>
                     </div>
                     <div class="edit edit-value " hidden="hidden">
-                      <input type="number" oninput="checkValue(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
-                      <input type="hidden" name="evalStudentId" th:value="${item.studentId}">
+                      <input type="number" oninput="checkValueBonus(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
                     </div>
                   </td>
                   <td>
@@ -333,7 +332,7 @@
                     </div>
                   </td>
                   <th:block  th:each="evalGrade : ${item.getCriteriaGradeList()}">
-                    <td>
+                    <td th:name="${evalGrade.criteriaName}">
                       <div class="view view-value " >
                         <label th:text="${evalGrade.grade}"></label>
                       </div>
@@ -383,7 +382,6 @@
           <!-- End Modal -->
       </div>
     </div><!--end container-->
-    <div th:replace="~{footer}"></div>
 
     <!-- End -->
   </main>
@@ -440,6 +438,27 @@
     });
   }
 
+  function updateEvalDisplay(checkbox) {
+    // Get the ID and state of the checkbox
+    const checkboxId = checkbox.id;
+    const isChecked = checkbox.checked;
+
+    // Log the checkbox ID and its state
+    console.log(`Checkbox with ID "${checkboxId}" is checked: ${isChecked}`);
+    var evalColumn = document.getElementsByName(checkboxId);
+    if(isChecked) {
+      console.log(2)
+      for(var i = 0; i < evalColumn.length; i++){
+        evalColumn[i].hidden = false;
+      }
+    }else {
+          console.log(1)
+        for(var i = 0; i < evalColumn.length; i++){
+            evalColumn[i].hidden = true;
+        }
+    }
+  }
+
 </script>
 
 
@@ -456,7 +475,6 @@
     titleComment.innerHTML = `Comments for Criteria ${criteria} Grading ${comment}`;
     contentComment.value = comment;
     id.value = criteriaId;
-    console.log(criteriaId)
 
     btnComment.click();
   }
@@ -477,6 +495,18 @@
 
   function checkValue(input) {
     const min = 0;
+    const max = 10;
+    const value = parseFloat(input.value);
+
+    if (value < min) {
+      input.value = min;
+    } else if (value > max) {
+      input.value = max;
+    }
+  }
+
+  function checkValueBonus(input) {
+    const min = -10;
     const max = 10;
     const value = parseFloat(input.value);
 
