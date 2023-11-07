@@ -10,14 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import swp.studentprojectportal.model.Evaluation;
-import swp.studentprojectportal.model.EvaluationDTO;
-import swp.studentprojectportal.model.SubmissionPersonal;
-import swp.studentprojectportal.model.SubmitIssue;
-import swp.studentprojectportal.service.servicesimpl.EvaluationService;
-import swp.studentprojectportal.service.servicesimpl.SubmissionPersonalService;
-import swp.studentprojectportal.service.servicesimpl.SubmissionService;
-import swp.studentprojectportal.service.servicesimpl.SubmitIssueService;
+import swp.studentprojectportal.model.*;
+import swp.studentprojectportal.service.servicesimpl.*;
 import swp.studentprojectportal.utils.dto.Mapper;
 
 import java.net.http.HttpRequest;
@@ -37,6 +31,12 @@ public class AssignmentEvaluationsController {
 
     @Autowired
     SubmissionPersonalService submissionPersonalService;
+
+    @Autowired
+    ProjectService projectService;
+
+    @Autowired
+    MilestoneService milestoneService;
 
     @GetMapping("/evaluation")
     public String evaluationList(HttpSession session, Model model,
@@ -73,6 +73,15 @@ public class AssignmentEvaluationsController {
         model.addAttribute("submissionId", submissionId);
         model.addAttribute("evaluationDTO", evaluationDTO);
         model.addAttribute("submission", evaluation.get(0).getSubmission());
+
+        // Get project list and milestone list of mentor
+        User user = (User) session.getAttribute("user");
+//        List<Submission> submissionList = submissionService.findAllByProjectMentorId(user.getId());
+        List<Project> projectList = projectService.findAllByProjectMentorId(user.getId());
+        model.addAttribute("projectList", projectList);
+        List<Milestone> milestoneList = milestoneService.findAllByProjectMentor(user.getId());
+        //filter milestone list where   status = Submitted
+        model.addAttribute("milestoneList", milestoneList);
         return "project_mentor/submission/submissionEvaluations";
     }
 

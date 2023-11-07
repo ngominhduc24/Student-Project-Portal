@@ -196,15 +196,17 @@
               <div class="row">
                 <div class="col-md-6">
                   <select name="milestone" class="form-select" id="a">
-                    <option value="-1" >All Group</option>
-                    <option value="2" >Group A</option>
+                    <th:block  th:each="milestone : ${milestoneList}">
+                      <option th:value="${milestone.id}" th:text="${milestone.title}" >All Assignments</option>
+                    </th:block>
                   </select>
                 </div>
 
                 <div class="col-md-6">
                 <select name="milestone" class="form-select" id="milestone">
-                  <option value="-1" >All Milestones</option>
-                  <option value="2" >123</option>
+                  <th:block  th:each="project : ${projectList}">
+                    <option th:value="${project.id}" th:text=" ${project.getAclass().className} + ' - ' +${project.groupName}" >All Assignments</option>
+                  </th:block>
                 </select>
                 </div>
               </div>
