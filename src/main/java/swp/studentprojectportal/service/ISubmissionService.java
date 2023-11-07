@@ -11,4 +11,5 @@ public interface ISubmissionService {
 
     public Submission findById(Integer submissionId);
 
+    boolean updateComment(Integer submissionId, String comment);
 }
