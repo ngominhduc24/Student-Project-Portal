@@ -93,7 +93,7 @@ public class SettingController {
         return "admin/setting/settingList";
     }
 
-    @GetMapping("/subject-manager/setting/checkExisted")
+    @GetMapping("/admin/setting/checkExisted")
     public ResponseEntity<Boolean> checkExisted(
             @RequestParam Integer updateId, @RequestParam String newSettingTitle) {
         return ResponseEntity.ok(settingService.checkExistedSettingTitle(newSettingTitle, updateId));

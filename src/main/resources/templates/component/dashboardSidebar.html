@@ -136,20 +136,20 @@
         document.body.appendChild(script);
     }
 
-    async function initializeSocket() {
-        const classId = [[${classId}]];
-        const chatBody = document.querySelector('.chat-body');
-        const username = '[[${username}]]';
-        const chatInput = document.getElementById('chatInput');
-
-        const socket = io('http://localhost:3000');
-
-        socket.emit('listen-class', await getToken());
-
-        socket.on("receive-message", data => {
-            console.log(data);
-        });
-    }
+    // async function initializeSocket() {
+    //     const classId = [[${classId}]];
+    //     const chatBody = document.querySelector('.chat-body');
+    //     const username = '[[${username}]]';
+    //     const chatInput = document.getElementById('chatInput');
+    //
+    //     const socket = io('http://localhost:3000');
+    //
+    //     socket.emit('listen-class', await getToken());
+    //
+    //     socket.on("receive-message", data => {
+    //         console.log(data);
+    //     });
+    // }
     async function getToken() {
         let token;
 

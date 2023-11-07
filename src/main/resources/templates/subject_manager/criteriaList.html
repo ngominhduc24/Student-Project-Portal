@@ -517,12 +517,13 @@
     }
 
     function submitForm() {
+        console.log(!isExisted())
         if (!isExisted()) {
             let form = $('#form');
             form.attr('method', 'post');
             form.submit();
         } else {
-            $('#error').text('Duplicate Name');
+            $('#error').text('This criteria name has been existed in this subject assignment!');
         }
 
     }
