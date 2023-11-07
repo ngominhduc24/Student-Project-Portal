@@ -481,7 +481,8 @@ DROP TABLE IF EXISTS `swp391`.`issue_update` ;
 CREATE TABLE IF NOT EXISTS `swp391`.`issue_update` (
                                                        `id` INT NOT NULL AUTO_INCREMENT,
                                                        `issue_id` INT NULL,
-                                                       `description`  VARCHAR(255) NULL,
+                                                       `title` VARCHAR(45),
+    `description`  VARCHAR(255) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -777,6 +778,7 @@ INSERT INTO submission(milestone_id, project_id, submit_date, note, file_locatio
 VALUES
     (1, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
     (2, 1, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 1, 6),
+    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 1, 6),
     (21, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1, 6),
     (22, 1, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 1, 6),
     (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1, 6),
@@ -853,12 +855,23 @@ VALUES
     (6 ,1, 1, 5, 3, 45, 0),
     (7 ,1, 1, 5, 3, 45, 0),
     (8 ,1, 1, 5, 3, 45, 0),
-    (9 ,1, 1, 5, 3, 45, 0);
-INSERT INTO issue_update(issue_id, description)
+    (9 ,1, 1, 5, 3, 45, 0),
+
+    (1 ,3, 1, NULL, NULL, NULL, 0),
+    (2 ,3, 1, NULL, NULL, NULL, 0),
+    (3 ,3, 1, NULL, NULL, NULL, 0),
+    (4 ,3, 1, NULL, NULL, NULL, 0),
+    (5 ,3, 1, NULL, NULL, NULL, 0),
+    (6 ,3, 1, NULL, NULL, NULL, 0),
+    (7 ,3, 1, NULL, NULL, NULL, 0),
+    (8 ,3, 1, NULL, NULL, NULL, 0),
+    (9 ,3, 1, NULL, NULL, NULL, 0);
+
+INSERT INTO issue_update(issue_id,title, description)
 VALUES
-    (1 ,"Basic login "),
-    (1 ,"Check user blocked"),
-    (1 ,"Check user verified"),
-    (1 ,"Remember with cookie"),
-    (1 ,"Login with gg"),
-    (1 ,"Hash password");
+    (1 ,"Job1","Basic login "),
+    (1 ,"Job2","Check user blocked"),
+    (1 ,"Job3","Check user verified"),
+    (1 ,"Job4","Remember with cookie"),
+    (1 ,"Job5","Login with gg"),
+    (1 ,"Job6","Hash password");

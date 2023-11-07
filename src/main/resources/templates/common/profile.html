@@ -57,6 +57,7 @@
         </div>
 
         <div class="row">
+
           <div class="col-lg-8 mt-4">
             <div class="card border-0 p-4 rounded shadow">
               <form action="/profile" method="post" enctype="multipart/form-data">
@@ -85,7 +86,7 @@
                       <div class="d-flex">
                       <input name="email" type="text" class="form-control" readonly
                              th:value="${user.email}">
-                      <a href="/update-mail" class="btn btn-link" style="text-decoration: none">Edit</a>
+                      <button type="button" data-toggle="modal" data-target="#updateEmailModal" class="btn btn-link" style="text-decoration: none">Edit</button>
                       </div>
                       </div>
                   </div><!--end col-->
@@ -96,7 +97,7 @@
                       <div class="d-flex">
                       <input name="phone" type="text" class="form-control" readonly
                              th:value="${user.phone}">
-                      <a href="/update-phone" class="btn btn-link" style="text-decoration: none">Edit</a>
+                      <button type="button" data-toggle="modal" data-target="#updatePhoneModal" class="btn btn-link" style="text-decoration: none">Edit</button>
                       </div>
                     </div>
                   </div><!--end col-->
@@ -133,6 +134,61 @@
     </div>
   </main>
 </div>
+
+<div class="modal" id="updateEmailModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <form action="update-mail" method="post">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Update Email</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label>New email: </label>
+          <input type="text" class="form-control" name="new_mail" placeholder="Type new email" required>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="updatePhoneModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <form action="update-phone" method="post">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Update Phone</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label>New Phone: </label>
+          <input type="text" class="form-control" name="new_phone" placeholder="Type new phone" required>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->
