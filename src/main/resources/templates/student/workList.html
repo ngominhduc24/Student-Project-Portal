@@ -189,10 +189,10 @@
         <div class="topnav">
             <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
             <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
-<!--            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>-->
-<!--            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>-->
-<!--            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>-->
-<!--            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
+            <!--            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>-->
+            <!--            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>-->
+            <!--            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>-->
+            <!--            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
         </div>
 
         <!--    Settings -->
@@ -200,7 +200,7 @@
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h3 style="margin-top: -14px;margin-bottom: 20px;" >Wỏk List</h3>
+                        <h3 style="margin-top: -14px;margin-bottom: 20px;" >Work List</h3>
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
@@ -367,12 +367,12 @@
                                     <td th:text="${work.title}"></td>
                                     <td th:text="${work.description}"></td>
                                     <td th:text="${#dates.format(work.updateAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-<!--                                    <td th:text="${work.updateAt}"></td>-->
+                                    <!--                                    <td th:text="${work.updateAt}"></td>-->
                                     <td>
-                                            <a th:onclick="'details(' + ${work.id} + ')'" style="border: none; background-color: white; color: blue"><i
-                                                    class="fas fa-pen-to-square"></i></a>
-                                            <a th:onclick="'showDialog(this,' + ${work.id} + ')'" th:attr="data-title=${work.title}">
-                                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="fa-regular fa-trash-can text-danger action action2"></i></a>
+                                        <a th:onclick="'details(' + ${work.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                class="fas fa-pen-to-square"></i></a>
+                                        <a th:onclick="'showDialog(this,' + ${work.id} + ')'" th:attr="data-title=${work.title}">
+                                            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="fa-regular fa-trash-can text-danger action action2"></i></a>
 
                                     </td>
                                 </tr>
@@ -479,21 +479,21 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <label class="form-label">Subject Code</label>-->
-<!--                                            <input type="text" name="subjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly disabled>-->
-<!--                                        </div>-->
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <label class="form-label">Class Name</label>-->
-<!--                                            <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly disabled>-->
-<!--                                        </div>-->
+                                        <!--                                        <div class="mb-3 col-md-6">-->
+                                        <!--                                            <label class="form-label">Subject Code</label>-->
+                                        <!--                                            <input type="text" name="subjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly disabled>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div class="mb-3 col-md-6">-->
+                                        <!--                                            <label class="form-label">Class Name</label>-->
+                                        <!--                                            <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly disabled>-->
+                                        <!--                                        </div>-->
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <input type="text" id="details-title" class="form-control" >
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Update At</label>
-<!--                                            <input type="text" id="details-update-at" class="form-control" >-->
+                                            <!--                                            <input type="text" id="details-update-at" class="form-control" >-->
                                             <input type="text" id="details-update-at" class="form-control" disabled>
                                         </div>
                                         <div class="mb-3 col-md-12">
