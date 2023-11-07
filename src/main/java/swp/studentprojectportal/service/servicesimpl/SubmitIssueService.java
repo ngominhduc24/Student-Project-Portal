@@ -47,9 +47,13 @@ public class SubmitIssueService implements ISubmitIssueService {
         AtomicReference<Float> workGrade = new AtomicReference<>(0f);
         issueListOfAssignee.forEach(issue -> {
             SubmitIssue submitIssue = submitIssueRepository.findSubmitIssueById(issue.getId());
-            if(submitIssue != null) {
-                workPoint.updateAndGet(v -> v + submitIssue.getFunctionLoc());
-                workGrade.updateAndGet(v -> v + submitIssue.getComplexity().getSettingValue() / submitIssue.getFunctionLoc());
+            try {
+                if(submitIssue != null && submitIssue.getFunctionLoc() != null && submitIssue.getComplexity() != null) {
+                    workPoint.updateAndGet(v -> v + submitIssue.getFunctionLoc());
+                    workGrade.updateAndGet(v -> v + submitIssue.getComplexity().getSettingValue() / submitIssue.getFunctionLoc());
+                }
+            } catch ( Exception e) {
+                System.out.println(e.getMessage());
             }
         });
 
