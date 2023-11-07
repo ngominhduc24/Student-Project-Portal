@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Doctris - Doctor Appointment Booking System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
-    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
-    <meta name="author" content="Shreethemes" />
-    <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="../../../index.html" />
-    <meta name="Version" content="v1.2.0" />
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
     <!-- favicon -->
     <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
     <!-- Bootstrap -->
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <!-- simplebar -->
-    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
     <!-- Select2 -->
-    <link th:href="@{/css/select2.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
     <!-- Date picker -->
     <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
-    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
     <!-- Icons -->
-    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{https://unicons.iconscout.com/release/v3.0.6/css/line.css}"  rel="stylesheet">
-    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{https://unicons.iconscout.com/release/v3.0.6/css/line.css}" rel="stylesheet">
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
     <!-- Css -->
-    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <style>
+        a::after, a::before {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <nav id="sidebar" class="sidebar-wrapper" th:fragment="sidebar">
@@ -38,26 +43,74 @@
         </div>
 
         <ul class="sidebar-menu pt-3">
+
             <!--    admin function == 2-->
-            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/home"><i class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
-            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
-            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i class="uil uil-user me-2 d-inline-block"></i>User</a></li>
-            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i class="uil uil-setting me-2 d-inline-block"></i>Setting</a></li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/home"><i
+                    class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i
+                    class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i
+                    class="uil uil-user me-2 d-inline-block"></i>User</a></li>
+            <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/setting"><i
+                    class="uil uil-setting me-2 d-inline-block"></i>Setting</a></li>
+
             <!--    subject manager function == 3-->
-            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/home"><i class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/home"><i
+                    class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}" class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-globe me-2 d-inline-block"></i>Subject Managing</a>
+                <a href="javascript:void(0)" id="link">
+                    <i class="uil uil-globe me-2 d-inline-block"></i>
+                    Subject List
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" fill="currentColor"
+                         class="bi bi-chevron-right" viewBox="0 0 16 16" style="margin-left: 60px;" id="rotate-icon">
+                        <path fill-rule="evenodd"
+                              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </a>
                 <div class="sidebar-submenu">
                     <ul th:each="subject : ${subjectList}">
-                        <li><a th:href="@{'/subject-manager/subject?subjectId=' + ${subject.id}}" th:text="${subject.subjectCode}"></a></li>
+                        <li style="display: flex; align-items: center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" fill="currentColor"
+                                 class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                            <a th:href="@{'/subject-manager/subject?subjectId=' + ${subject.id}}"
+                               th:text="${subject.subjectCode}"></a>
+                        </li>
                     </ul>
                 </div>
             </li>
-            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i class="uil uil-calender me-2 d-inline-block"></i>Class</a></li>
+            <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/class"><i
+                    class="uil uil-calender me-2 d-inline-block"></i>Class List</a></li>
+
             <!--    class manager function == 4-->
-            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/home"><i class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
-            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/classList"><i class="uil uil-presentation me-2 d-inline-block"></i>Assigned Classes</a></li>
-            <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i class="uil uil-notes me-2 d-inline-block"></i>Project</a></li>
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/home"><i
+                    class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/classList"><i
+                    class="uil uil-presentation me-2 d-inline-block"></i>Class List</a></li>
+            <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i
+                    class="uil uil-notes me-2 d-inline-block"></i>Project List</a></li>
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/project-mentor/project"><i
+                    class="uil uil-clipboard-notes me-2 d-inline-block"></i>Managed Projects</a></li>
+            <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/project-mentor/milestone/list"><i
+                    class="uil uil-file me-2 d-inline-block"></i>Assignment list</a></li>
+
+
+            <!--    student function == 1-->
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/home"><i
+                    class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/issue/list"><i
+                    class="uil uil-file-check-alt me-2 d-inline-block"></i>Issue List</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/project"><i
+                    class="uil uil-notes me-2 d-inline-block"></i>Project List</a></li>
+            <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/milestone/list"><i
+                    class="uil uil-file me-2 d-inline-block"></i>Assignment List</a></li>
+
+<!--            chat-->
+            <li>
+                <a href="/chat/class/"><i
+                    class="uil uil-comment me-2 d-inline-block"></i>Class Chat</a></li>
         </ul>
         <!-- sidebar-menu  -->
     </div>
@@ -69,6 +122,63 @@
         </li>
     </ul>
 </nav>
+<script>
+    function loadSocketIO() {
+        const script = document.createElement('script');
+        script.src = 'http://localhost:3000/socket.io/socket.io.js';
+
+        const timer = setTimeout(() => {
+            document.body.removeChild(script);
+        }, 500);
+
+        // Add an event listener to execute when the script has finished loading.
+        script.onload = () => {
+            clearTimeout(timer); // Clear the timeout since the script loaded successfully.
+            initializeSocket();
+        };
+
+        // Append the script to the document, which starts loading it.
+        document.body.appendChild(script);
+    }
+
+    async function initializeSocket() {
+        const classId = [[${classId}]];
+        const chatBody = document.querySelector('.chat-body');
+        const username = '[[${username}]]';
+        const chatInput = document.getElementById('chatInput');
+
+        const socket = io('http://localhost:3000');
+
+        socket.emit('listen-class', await getToken());
+
+        socket.on("receive-message", data => {
+            console.log(data);
+        });
+    }
+    async function getToken() {
+        let token;
+
+        await fetch('/api/v1/encode/getClassId', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return token = response.text();
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            })
+            .then(data => {})
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        return token;
+    }
+</script>
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
@@ -78,6 +188,20 @@
 <script th:src="@{/js/feather.min.js}"></script>
 <!-- Main Js -->
 <script th:src="@{/js/app.js}"></script>
+
+<script>
+    var link = document.getElementById('link');
+    var icon = document.getElementById('rotate-icon');
+
+    link.addEventListener('click', function() {
+        // Toggle the rotation class on the SVG
+        if (icon.classList.contains('rotate-45')) {
+            icon.classList.remove('rotate-45');
+        } else {
+            icon.classList.add('rotate-45');
+        }
+    });
+</script>
 
 </body>
 </html>

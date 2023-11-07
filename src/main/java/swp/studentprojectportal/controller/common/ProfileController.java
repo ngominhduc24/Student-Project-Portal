@@ -33,12 +33,31 @@ public class ProfileController {
     UserService userService;
 
     @GetMapping(path = "/profile")
-    public String profilePage(HttpSession session, Model model) {
+    public String profilePage(HttpSession session, Model model, WebRequest request) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             model.addAttribute("errmsg", "You need login before view profile!");
             return "login";
         }
+
+        //check update phone error
+        if(request.getParameter("error1") != null)
+            model.addAttribute("errmsg", "Phone number is not correct!");
+        if(request.getParameter("error2") != null)
+            model.addAttribute("errmsg", "Phone number already exist!");
+        if(request.getParameter("error3") != null)
+            model.addAttribute("errmsg", "Phone number can not be equal old phone number!");
+
+        //check update email error
+        if(request.getParameter("error4") != null)
+            model.addAttribute("errmsg", "Email is not correct!");
+        if(request.getParameter("error5") != null)
+            model.addAttribute("errmsg", "Email domain is not accept!");
+        if(request.getParameter("error6") != null)
+            model.addAttribute("errmsg", "Email already exist!");
+        if(request.getParameter("error7") != null)
+            model.addAttribute("errmsg", "Email can not be equal old email!");
+
         model.addAttribute("user", user);
         return "profile";
     }
@@ -63,6 +82,7 @@ public class ProfileController {
             model.addAttribute("errmsg", "Update success!");
 
         }
+
         model.addAttribute("user", user);
         return "profile";
     }
@@ -79,20 +99,24 @@ public class ProfileController {
         User user = (User) session.getAttribute("user");
 
         if (Validate.validEmail(newMail) == false) {
-            model.addAttribute("errmsg", "email is not correct!");
-            return "mailUpdate";
+//            model.addAttribute("errmsg", "email is not correct!");
+//            return "mailUpdate";
+            return "redirect:./profile?error4";
         }
         if (userService.checkEmailDomain(newMail) == false) {
-            model.addAttribute("errmsg", "email domain is not accept!");
-            return "mailUpdate";
+//            model.addAttribute("errmsg", "email domain is not accept!");
+//            return "mailUpdate";
+            return "redirect:./profile?error5";
         }
         if (userService.checkExistMail(newMail) == true) {
-            model.addAttribute("errmsg", "email already exist!");
-            return "mailUpdate";
+//            model.addAttribute("errmsg", "email already exist!");
+//            return "mailUpdate";
+            return "redirect:./profile?error6";
         }
         if (newMail.equals(user.getEmail())) {
-            model.addAttribute("errmsg", "email can not be equal old email!");
-            return "mailUpdate";
+//            model.addAttribute("errmsg", "email can not be equal old email!");
+//            return "mailUpdate";
+            return "redirect:./profile?error7";
         }
 
         user.setEmail(newMail);
@@ -116,16 +140,19 @@ public class ProfileController {
         User user = (User) session.getAttribute("user");
 
         if (Validate.validPhoneNumber(newPhone) == false) {
-            model.addAttribute("errmsg", "Phone number is not correct!");
-            return "phoneUpdate";
+//            model.addAttribute("errmsg", "Phone number is not correct!");
+//            return "phoneUpdate";
+            return "redirect:./profile?error1";
         }
         if (userService.checkExistPhoneNumber(newPhone) == true) {
-            model.addAttribute("errmsg", "Phone number already exist!");
-            return "phoneUpdate";
+            /*model.addAttribute("errmsg", "Phone number already exist!");
+            return "phoneUpdate";*/
+            return "redirect:./profile?error2";
         }
         if (newPhone.equals(user.getPhone())) {
-            model.addAttribute("errmsg", "Phone number can not be equal old phone number!");
-            return "phoneUpdate";
+//            model.addAttribute("errmsg", "Phone number can not be equal old phone number!");
+//            return "phoneUpdate";
+            return "redirect:./profile?error3";
         }
 
         user.setPhone(newPhone);
@@ -146,7 +173,7 @@ public class ProfileController {
             return "profile";
         }
 
-        if(verifyMail == true) {
+        if(verifyMail) {
             user.setEmail(username);
         } else {
             user.setPhone(username);

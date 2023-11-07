@@ -29,8 +29,20 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
     <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+
+    <script th:src="@{/js/notify.js}"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
+
 
 
     <style>
@@ -124,30 +136,46 @@
             margin-bottom: 36px;
         }
         .custom-toast {
-            background-color: #20ee68 !important;
+            background-color: #16ce7e !important;
             color: #FFFFFF;
             position: absolute;
-            top: 88px;
+            top: 124px;
             right: 0;
             z-index: 2;
         }
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
+        .topnav {
+            overflow: hidden;
+            border-bottom: 1px solid darkgray;
+            margin-top: 70px;
+            background: white;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 10px 26px;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            margin:0
+        }
+
+        .topnav a:hover {
+            border-bottom: 3px solid blue;
+        }
+
+        .topnav a.active {
+            border-bottom: 3px solid blue;
+        }
     </style>
 
 </head>
 <body>
-<!-- Loader -->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-</div>
-<!-- Loader -->
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
@@ -157,22 +185,24 @@
         <div class="topnav">
             <a onclick="showDiv('general')" class="general" style="cursor: pointer"><p style="margin:0; user-select: none;">General</p></a>
             <a onclick="showDiv('assignment')" class="assignment" style="cursor: pointer"><p style="margin:0; user-select: none;">Assignments</p></a>
-            <a onclick="showDiv('settings')" class="settings" style="cursor: pointer"><p style="margin:0; user-select: none;">Settings</p></a>
+            <a onclick="showDiv('settings')" class="settings" style="cursor: pointer"><p style="margin:0; user-select: none;">Issue Settings</p></a>
+            <a onclick="showDiv('subject-setting')" class="subject-setting" style="cursor: pointer"><p style="margin:0; user-select: none;">Subject Settings</p></a>
+        </div>
+
+        <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="toast-header">
+                <strong class="me-auto">Success</strong>
+                <small>Now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <span id="toastMessage" th:text="${toastMessage}"></span>
+            </div>
         </div>
 
 <!--        General-->
         <div id="general" class="container-fluid">
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
-                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                    <div class="toast-header">
-                        <strong class="me-auto">Success</strong>
-                        <small>Now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        <span id="toastMessage" th:text="${toastMessage}"></span>
-                    </div>
-                </div>
                 <div class="row px-4">
                     <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
                     <ol class="breadcrumb mb-2 ms-2">
@@ -191,19 +221,19 @@
                                             <div class="mb-3">
                                                 <input type="hidden" name="id" th:value="${subject.id}">
                                                 <label class="form-label">Subject Name</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.subjectName}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectName}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Subject Code</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.subjectCode}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.subjectCode}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Manager</label>
-                                                <input type="text" readonly class="form-control" th:value="${subject.user.fullName}">
+                                                <input type="text" readonly class="form-control" th:value="${subject.user.fullName}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -216,11 +246,10 @@
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description<span style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">(You only can change this field)</span></label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${subject.description}"></textarea>
+                                            <textarea type="text" rows="3" name="description" class="form-control" th:field="${subject.description}"></textarea>
                                         </div>
                                         <div class="mt-2">
                                             <h6 style="color: indianred;" th:text="${errmsg}"></h6>
-                                            <h6 style="color: green;" th:text="${msg}"></h6>
                                         </div>
 
                                     </div><!--end col-->
@@ -237,6 +266,49 @@
             </div>
         </div>
 
+        <!-- Modal Dialog -->
+        <div id="confirmationModal" class="modal fade" style="padding-top: 100px;">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+                        <div class="icon-box">
+                            <i  class="material-icons">&#xE876;</i>
+                        </div>
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn confirmButton" >Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+                        <div class="icon-box" style="border-color: #f15e5e">
+                            <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                        </div>
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <form action="/subject-manager/subject" method="post" id="form">
 <!--        Assignment-->
         <div class="container-fluid" id="assignment">
@@ -247,18 +319,19 @@
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
-                            <li class="breadcrumb-item active">Subject Assignment List</li>
+                            <li class="breadcrumb-item active">Assignment List</li>
                         </ol>
                     </div><!--end col-->
 
                     <div class="col-xl-4 col-md-6"></div>
 
-                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a th:href="@{/subject-manager/addSubjectAssignment?subjectId={id}(id=${subject.id})}" href="" class="btn btn-primary"
-                           style="margin-left: 24px">Add New</a>
-                    </div><!--end col-->
+                    <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-end mb-2">
+                        <button type="button" class="btn btn-primary" onclick="showCreateForm()">
+                            Add New
+                        </button>
+                    </div>
+                </div>
 
-                </div><!--end row-->
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-body rounded-3" >
@@ -331,59 +404,16 @@
 
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${assignment.status}" th:attr="assignment-id=${assignment.id}" onchange="showConfirmationDialog1(this)">
+                                            <input class="form-check-input" type="checkbox" th:checked="${assignment.status}" th:attr="assignment-id=${assignment.id},data-title=${assignment.title}" onchange="showConfirmationDialog(this, 1)">
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/subjectAssignmentDetail?id={id}(id=${assignment.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></td>
+                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>&nbsp
+                                        <a th:href="@{/subject-manager/subject/criteria(id=${assignment.id})}">Criteria</a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
-
-                            <div class="modal fade" id="confirmationModal1" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmationModalLabel1">Confirmation</h5>
-                                            <button type="button" class="btn-close" id="closeButton1" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to perform this action?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="cancelButton1" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary" id="confirmButton1">Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <script>
-                                let id;
-                                let status;
-                                let initialStatus;
-                                function showConfirmationDialog1(checkbox) {
-                                    id = checkbox.getAttribute("assignment-id");
-                                    status = checkbox.checked;
-                                    initialStatus = !status;
-                                    $('#confirmationModal1').modal('show');
-                                }
-                                $("#confirmButton1").click(function () {
-                                    fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`);
-                                    $('#confirmationModal1').modal('hide');
-                                });
-                                $("#cancelButton1").click(function () {
-                                    let checkbox = document.querySelector('input[assignment-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                                $("#closeButton1").click(function () {
-                                    let checkbox = document.querySelector('input[assignment-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                            </script>
 
                             <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
@@ -409,6 +439,63 @@
                                 </ul>
                             </nav>
                         </div>
+                    </div>
+                </div>
+
+                <!--Modal Assignment-->
+                <div class="modal fade" id="createClassModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                            <input type="hidden" name="newSubjectId" th:value="${subject.id}">
+                            <input type="hidden" name="assignmentId" id="assignmentId" th:value="${assignment.id}">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 th:if="${assignment.id==-1}" class="modal-title">New Assignment</h5>
+                                    <h5 th:if="${assignment.id!=-1}" class="modal-title">Update Assignment</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+
+                                            <!--create-->
+                                            <div th:if="${assignment.id==-1}" class="mb-3 col-md-12">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
+                                            </div>
+                                            <div th:if="${assignment.id==-1}" class="mb-3 col-md-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
+                                            </div>
+
+                                            <!--update-->
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-8">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" name="newTitle" class="form-control" required th:value="${assignment.title}">
+                                            </div>
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-4" style="padding-left: 10%;">
+                                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                                <div class="form-check form-switch" style="font-size: 24px">
+                                                    <input style="margin-left: -62px" class="form-check-input" value="on" name="newStatus" type="checkbox" th:checked="${assignment.isStatus()}" >
+                                                </div>
+                                            </div>
+                                            <div th:if="${assignment.id!=-1}" class="mb-3 col-md-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea type="text" rows="3" name="description" class="form-control" th:field="${assignment.description}"></textarea>
+                                            </div>
+
+                                            <!--message-->
+                                            <div class="mt-2">
+                                                <h6 style="color: indianred;" id="error" th:text="${errorMessage}"></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit"  class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+
                     </div>
                 </div>
 
@@ -444,12 +531,125 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a href="subject-manager/issue-setting/add" class="btn btn-primary"
-                           style="margin-left: 24px">Add
-                            New</a>
+                        <button type="button" class="btn btn-primary"  id="addNewButton" style="margin-bottom: 8px; width: 155px" >
+                            <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                            Add New
+                        </button>
                     </div><!--end col-->
 
                 </div><!--end row-->
+
+                <!-- Add new -->
+
+                <div class="modal fade" id="createIssueSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueSettingModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
+                                <button type="button" class="close" data-dismiss="modal" id="closeModalBtn1" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject Code</label>
+                                            <input type="text" name="subjectCode" class="form-control" required th:value="${subject.subjectCode}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Group<span class="text-danger">*</span></label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Title</label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" >
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <div class="d-flex">
+                                                <textarea type="text" rows="3" name="newDescription" class="form-control" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn">Close</button>
+                                <button type="button" class="btn btn-primary"  id="addIssueSettingButton" >
+                                    Add New
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Issue Setting-->
+
+                <script>
+                    var addNewButton = document.getElementById('addNewButton');
+
+                    addNewButton.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('show');
+                    });
+
+                    var closeModalBtn = document.getElementById('closeModalBtn');
+                    var closeModalBtn1 = document.getElementById('closeModalBtn1');
+
+                    closeModalBtn.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('hide');
+                    });
+                    closeModalBtn1.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('hide');
+                    });
+
+                    // Get a reference to the button
+                    var addIssueSettingButton = document.getElementById('addIssueSettingButton');
+
+                    // Add a click event listener to the button
+                    addIssueSettingButton.addEventListener('click', function() {
+                        console.log("Da bam nut");
+                        // Get values from the form fields
+                        const subjectId = document.querySelector('input[name="id"]').value;
+                        const group = document.querySelector('input[id="newSettingGroup"]').value;
+                        const title = document.querySelector('input[id="newSettingTitle"]').value;
+                        const description = document.querySelector('textarea[name="newDescription"]').value;
+
+                        // Prepare the URL with query parameters
+                        var endPoint = '/api/v1/add2/issue-setting' +
+                            '?subjectId=' + subjectId +
+                            '&group=' + group+
+                            '&title=' + title +
+                            '&description=' + description ;
+
+                        // Make an API request using fetch with GET method
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    notify('success', 'Add Issue setting successfully.', 'Success');
+                                    // Delay the page reload for a few seconds
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000); // Adjust the delay duration as needed
+                                } else {
+                                    // Handle API errors
+                                    return response.text();
+                                }
+                            })
+                            .then(errorText =>{
+                                if(errorText && !errorText.startsWith('Add'))
+                                    notify('error',errorText,'Error')
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                    });
+                </script>
+
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-body rounded-3">
@@ -542,63 +742,24 @@
                                     <td th:text="${setting.description}"></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id}" onchange="showConfirmationDialog(this)">
+                                            <input class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingTitle}" onchange="showConfirmationDialog(this, 2)">
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></td>
+                                        <div th:onclick="'detailsSetting(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                class="fas fa-pen-to-square"></i></div>
                                 </tr>
                                 </tbody>
                             </table>
-                            <!-- Modal Dialog -->
-                            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                                            <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to perform this action?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="cancelButton" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <script>
-                                function showConfirmationDialog(checkbox) {
-                                    id = checkbox.getAttribute("update-id");
-                                    status = checkbox.checked;
-                                    initialStatus = !status;
-                                    $('#confirmationModal').modal('show');
-                                }
-                                $("#confirmButton").click(function () {
-                                    fetch(`issue-setting/updateStatus?id=${id}&status=${status}`);
-                                    $('#confirmationModal').modal('hide');
-                                });
-                                $("#cancelButton").click(function () {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                                $("#closeButton").click(function () {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    $('#confirmationModal').modal('hide');
-                                });
-                            </script>
+
 
                             <input type="hidden" name="pageNoS" id="pageNoInputSetting" th:value="${pageNoS}">
                             <nav th:if="${totalPageS!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNoS == 0 ? 'page-item disabled' : 'page-item'}">
                                         <a class="page-link" style="cursor: pointer"
-                                           th:onclick="'goToPageS('+ ${pageNo-1}+')'">
+                                           th:onclick="'goToPageS('+ ${pageNoS-1}+')'">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
@@ -608,7 +769,7 @@
                                            th:onclick="'goToPageS('+ ${i-1}+')'">
                                         </a>
                                     </li>
-                                    <li th:class="${pageNoS == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
+                                    <li th:class="${pageNoS == (totalPageS-1) ? 'page-item disabled' : 'page-item'}">
                                         <a class="page-link user-select-all" style="cursor: pointer"
                                            th:onclick="'goToPageS('+ ${pageNoS+1}+')'">
                                             <span aria-hidden="true">&raquo;</span>
@@ -616,6 +777,116 @@
                                     </li>
                                 </ul>
                             </nav>
+                            <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
+                            <!--  Detail Modal-->
+                            <div class="modal fade" id="detailsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="detailsModalLongTitle">Issue Setting details</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-12 row" style="margin-top: 12px;">
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Subject Code</label>
+                                                        <input type="text" name="subjectCode" class="form-control" th:value="${subject.subjectCode}" readonly disabled>
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Group<span class="text-danger">*</span></label>
+                                                        <input type="text" id="details-issue-setting-group" class="form-control" >
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Title</label>
+                                                        <input type="text" id="details-issue-setting-title" class="form-control" >
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <div class="form-switch">
+                                                            <label class="form-label" style="margin-left: -40px">Status</label>
+                                                            <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 20px; margin-left: 20px">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 col-md-12">
+                                                        <label class="form-label">Description</label>
+                                                        <textarea type="text" rows="3" name="detail-description" class="form-control" content="description"></textarea>
+                                                    </div>
+                                                </div><!--end col-->
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal">Close</button>
+                                            <button type="button" class="btn btn-primary" id="updateIssueSettingButton">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detail-->
+                            <script>
+                                function detailsSetting(id) {
+                                    console.log('show detail'+id)
+                                    let endPoint = '/api/v1/issue-setting?issueSettingId=' + id;
+                                    fetch(endPoint)
+                                        .then(response => {
+                                            if (response.ok) {
+                                                // Handle a successful API response
+                                                response.json().then(data => {
+                                                    document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
+                                                    document.querySelector('input[id="details-issue-setting-title"]').value = data.title;
+                                                    document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                                    document.getElementById('detail-status').checked = data.status == 1 ? true : false;
+                                                    document.getElementById('updateIssueSettingButton').setAttribute('onclick', 'updateIssueSetting(' + data.id + ')');
+                                                });
+                                            } else {
+                                                // Handle API errors
+                                                console.error('Error getting issue setting.');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            // Handle network errors
+                                            console.error('Network error:', error);
+                                        });
+                                    document.getElementById('btndetails').click();
+                                }
+                            </script>
+
+                            <!--Update Issue Setting-->
+                            <script>
+                                function updateIssueSetting(id){
+                                    const subjectId = document.querySelector('input[name="id"]').value;
+                                    const group = document.querySelector('input[id="details-issue-setting-group"]').value;
+                                    const title = document.querySelector('input[id="details-issue-setting-title"]').value;
+                                    const description = document.querySelector('textarea[name="detail-description"]').value;
+                                    const status = document.getElementById('detail-status').checked ? 1 : 0;
+                                    let endPoint = '/api/v1/update2/issue-setting?issueSettingId=' + id + '&subjectId=' + subjectId +'&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
+
+                                    fetch(endPoint, {
+                                        method: 'GET',
+                                    })
+                                        .then(response => {
+                                            if(response.ok) {
+                                                notify('success','Update issue setting successfully' , 'Success');
+                                                setTimeout(() => {
+                                                    location.reload();
+                                                }, 1000);
+                                            } else  {
+                                                // notify('error' ,response.text()  ,'Error' );
+                                                return response.text();
+                                            }
+                                        })
+                                        .then(errorText =>{
+                                            if(errorText && !errorText.startsWith('Update'))
+                                                notify('error',errorText,'Error')
+                                        })
+                                        .catch(error => {
+                                            alert("Network error " + error);
+                                        });
+                                }
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -640,7 +911,9 @@
 
                     const datatablesSimpleSetting = document.getElementById('datatablesSimpleSetting');
                     if (datatablesSimpleSetting) {
-                        new simpleDatatables.DataTable(datatablesSimpleSetting);
+                        new simpleDatatables.DataTable(datatablesSimpleSetting, {
+                            paging: false // Tắt phân trang
+                        });
                     }
                 });
             </script>
@@ -660,20 +933,561 @@
 
             });</script>
         </div>
+<!--        Subject Setting-->
+            <div id="subject-setting" class="container-fluid">
+                <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+                    <div class="row px-4">
+                        <div class="col-xl-5 col-md-6">
+                            <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
+                            <ol class="breadcrumb mb-1 ms-1">
+                                <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                                <li class="breadcrumb-item">/</li>
+                                <li class="breadcrumb-item active"><a>Subject Setting List</a></li>
+                            </ol>
+                        </div><!--end col-->
+
+                        <div class="col-xl-5 col-md-6"></div>
+
+                        <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
+                            <button type="button" class="btn btn-primary"  id="addNewButton2" style="margin-bottom: 8px; width: 155px" >
+                                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                                Add New
+                            </button>
+                        </div><!--end col-->
+
+                    </div><!--end row-->
+                    <!-- Add new -->
+
+                    <div class="modal fade" id="createSubjectSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createSubjectSettingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createSubjectSettingModalLabel">New Subject Setting</h5>
+                                    <button type="button" class="close" data-dismiss="modal" id="closeModalBtn3" aria-label="Close" style="border: none; background-color: white;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Subject Code</label>
+                                                <input type="text" name="subjectCode" class="form-control" required th:value="${subject.subjectCode}" readonly disabled>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Type<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <select id="newSubjectSettingType" name="newSubjectSettingType" class="form-select">
+                                                        <option value="1" selected>Complexity</option>
+                                                        <option value="2" >Quality</option>
+                                                    </select>
+
+<!--                                                    <input type="text" id="newSubjectSettingType" name="newSubjectSettingType" class="form-control"  required>-->
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <input type="text" id="newSubjectSettingTitle" name="newSubjectSettingTitle" class="form-control" >
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Value<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <input type="text" id="newSubjectSettingValue" name="newSubjectSettingValue" class="form-control" >
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Display Order<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <input type="text" id="newSubjectSettingDisplayOrder" name="newSubjectSettingDisplayOrder" class="form-control" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn4">Close</button>
+                                    <button type="button" class="btn btn-primary"  id="addSubjectSettingButton" >
+                                        Add New
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add Subject Setting-->
+
+                    <script>
+                        var addNewButton2 = document.getElementById('addNewButton2');
+
+                        addNewButton2.addEventListener('click', function() {
+                            $('#createSubjectSettingModal').modal('show');
+                        });
+
+                        var closeModalBtn3 = document.getElementById('closeModalBtn3');
+                        var closeModalBtn4 = document.getElementById('closeModalBtn4');
+
+                        closeModalBtn3.addEventListener('click', function() {
+                            $('#createSubjectSettingModal').modal('hide');
+                        });
+                        closeModalBtn4.addEventListener('click', function() {
+                            $('#createSubjectSettingModal').modal('hide');
+                        });
+
+                        // Get a reference to the button
+                        var addSubjectSettingButton = document.getElementById('addSubjectSettingButton');
+
+                        // Add a click event listener to the button
+                        addSubjectSettingButton.addEventListener('click', function() {
+                            console.log("Da bam nut");
+                            // Get values from the form fields
+                            const subjectId = document.querySelector('input[name="id"]').value;
+                            const typeId = document.querySelector('select[id="newSubjectSettingType"]').value;
+                            const title = document.querySelector('input[id="newSubjectSettingTitle"]').value;
+                            const value = document.querySelector('input[id="newSubjectSettingValue"]').value;
+                            const displayOrder = document.querySelector('input[id="newSubjectSettingDisplayOrder"]').value;
+
+                            // Prepare the URL with query parameters
+                            var endPoint = '/api/v1/add/subject-setting' +
+                                '?subjectId=' + subjectId +
+                                '&typeId=' + typeId +
+                                '&value=' + value+
+                                '&title=' + title +
+                                '&displayOrder=' + displayOrder ;
+
+                            // Make an API request using fetch with GET method
+                            fetch(endPoint)
+                                .then(response => {
+                                    if (response.ok) {
+                                        notify('success', 'Add Subject setting successfully.', 'Success');
+                                        // Delay the page reload for a few seconds
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000); // Adjust the delay duration as needed
+                                    } else {
+                                        // Handle API errors
+                                        return response.text();
+                                    }
+                                })
+                                .then(errorText =>{
+                                    if(errorText && !errorText.startsWith('Add'))
+                                        notify('error',errorText,'Error')
+                                })
+                                .catch(error => {
+                                    // Handle network errors
+                                    console.error('Network error:', error);
+                                });
+                        });
+                    </script>
+
+                    <button type="button" id="btndetails1" data-toggle="modal" data-target="#detailsModalCenter1" hidden="hidden"></button>
+                    <!--  Detail Modal-->
+                    <div class="modal fade" id="detailsModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLongTitle1">Subject Setting details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Subject Code</label>
+                                                <input type="text" name="subjectCode" class="form-control" th:value="${subject.subjectCode}" readonly disabled>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Type<span class="text-danger">*</span></label>
+                                                <select id="details-subject-setting-type" class="form-select">
+                                                    <option value="1">Complexity</option>
+                                                    <option value="2">Quality</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" id="details-subject-setting-title" class="form-control" >
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Value<span class="text-danger">*</span></label>
+                                                <input type="text" id="details-subject-setting-value" class="form-control" >
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Display Order<span class="text-danger">*</span></label>
+                                                <input type="text" id="details-subject-setting-display-order" class="form-control" >
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <div class="form-switch">
+                                                    <label class="form-label" style="margin-left: -40px">Status</label> <br>
+                                                    <input class="form-check-input" type="checkbox" id="detail-subject-setting-status" style="width: 45px; height: 20px; margin-left: 20px">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal1">Close</button>
+                                    <button type="button" class="btn btn-primary" id="updateSubjectSettingButton">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail-->
+                    <script>
+                        function detailsSubjectSetting(id) {
+                            console.log('show detail'+id)
+                            let endPoint = '/api/v1/subject-setting?subjectSettingId=' + id;
+                            fetch(endPoint)
+                                .then(response => {
+                                    if (response.ok) {
+                                        // Handle a successful API response
+                                        response.json().then(data => {
+                                            document.querySelector('input[id="details-subject-setting-title"]').value = data.title;
+                                            document.querySelector('input[id="details-subject-setting-value"]').value = data.value;
+                                            document.querySelector('input[id="details-subject-setting-display-order"]').value = data.displayOrder;
+                                            var selectElement = document.querySelector('select[id="details-subject-setting-type"]');
+                                            var dataValue = data.typeId;
+                                            for (var i = 0; i < selectElement.options.length; i++) {
+                                                // Nếu giá trị của option khớp với giá trị từ dữ liệu, đặt selected
+                                                if (selectElement.options[i].value == dataValue) {
+                                                    selectElement.options[i].selected = true;
+                                                    break; // Dừng vòng lặp nếu đã tìm thấy giá trị khớp
+                                                }
+                                            }
+                                            // document.querySelector('select[id="details-subject-setting-type"]').value = data.typeId;
+                                            document.getElementById('detail-subject-setting-status').checked = data.status == 1 ? true : false;
+                                            document.getElementById('updateSubjectSettingButton').setAttribute('onclick', 'updateSubjectSetting(' + data.id + ')');
+                                        });
+                                    } else {
+                                        // Handle API errors
+                                        console.error('Error getting issue setting.');
+                                    }
+                                })
+                                .catch(error => {
+                                    // Handle network errors
+                                    console.error('Network error:', error);
+                                });
+                            document.getElementById('btndetails1').click();
+                        }
+                    </script>
+
+                    <!--Update Subject Setting-->
+                    <script>
+                        function updateSubjectSetting(id){
+                            console.log('updateSubjectSetting '+ id);
+                            const subjectId = document.querySelector('input[name="id"]').value;
+                            const typeId = document.querySelector('select[id="details-subject-setting-type"]').value;
+                            const title = document.querySelector('input[id="details-subject-setting-title"]').value;
+                            const value = document.querySelector('input[id="details-subject-setting-value"]').value;
+                            const displayOrder = document.querySelector('input[id="details-subject-setting-display-order"]').value;
+                            const status = document.getElementById('detail-subject-setting-status').checked ? 1 : 0;
+                            let endPoint = '/api/v1/update/subject-setting?subjectSettingId=' + id +
+                                '&subjectId=' + subjectId +'&typeId=' +typeId + '&title=' + title + '&value=' +
+                                value + '&displayOrder=' + displayOrder + '&status=' + status;
+
+                            fetch(endPoint, {
+                                method: 'GET',
+                            })
+                                .then(response => {
+                                    if(response.ok) {
+                                        notify('success','Update subject setting successfully' , 'Success');
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000);
+                                    } else  {
+                                        // notify('error' ,response.text()  ,'Error' );
+                                        return response.text();
+                                    }
+                                })
+                                .then(errorText =>{
+                                    if(errorText && !errorText.startsWith('Update'))
+                                        notify('error',errorText,'Error')
+                                })
+                                .catch(error => {
+                                    alert("Network error " + error);
+                                });
+                        }
+                    </script>
+                    <div class="container-fluid px-4">
+                        <div class="card mb-4">
+                            <div class="card-body rounded-3">
+                                <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
+                                    <div class="col-md-3 row">
+                                        <input type="hidden" name="subjectId" th:value="${subject.id}">
+                                        <div class="mb-3 col-md-4 pe-1">
+                                            <select name="pageSizeSe" class="form-select"
+                                                    onchange="this.form.submit()">
+                                                <option th:selected="${pageSizeSe==5}" value="5">5</option>
+                                                <option th:selected="${pageSizeSe==10}" value="10">10</option>
+                                                <option th:selected="${pageSizeSe==15}" value="15">15</option>
+                                                <option th:selected="${pageSizeSe==20}" value="20">20</option>
+                                                <option th:selected="${pageSizeSe==25}" value="25">25</option>
+                                            </select>
+                                        </div>
+                                        <p class="ps-2 col-md-5 pt-2">per page</p>
+                                    </div>
+                                    <div class="row col-md-8" style="margin-left: -100px">
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <select name="typeIdSe" class="form-select"
+                                                        onchange="this.form.submit()">
+                                                    <option value="-1" th:selected="${typeIdSe == -1}">All Type</option>
+                                                    <option value="1" th:selected="${typeIdSe == 1}">Complexity</option>
+                                                    <option value="2" th:selected="${typeIdSe == 2}">Quality</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <select name="statusSe" class="form-select"
+                                                        onchange="this.form.submit()">
+                                                    <option value="-1" th:selected="${statusSe == -1}">All Status</option>
+                                                    <option value="1" th:selected="${statusSe == 1}">Active</option>
+                                                    <option value="0" th:selected="${statusSe == 0}">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control form-control-sm" type="text"
+                                               th:value="${searchSe}" name="searchSe"
+                                               placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                        <button onclick="this.form.submit()" class="search-button"><i
+                                                class="fas fa-search"
+                                                aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="sortBySe" id="sortBySetting1" th:value="${sortBySe}">
+                                <input type="hidden" name="sortTypeSe" id="sortTypeSetting1" th:value="${sortTypeSe}">
+                                <table id="datatablesSimpleSetting1" class="display">
+                                    <thead>
+                                    <tr>
+                                        <th data-sortable="false">ID
+                                            <i th:class="${(sortBySe eq 'id' && sortTypeSe == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                               onclick="sortDataSe('id',1)"></i>
+                                            <i th:class="${(sortBySe eq 'id' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                               onclick="sortDataSe('id',2)"></i>
+                                        </th>
+                                        <th data-sortable="false">Subject
+                                            <i th:class="${(sortBySe eq 's.subject_code' && sortTypeSe == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                               onclick="sortDataSe('s.subject_code',1)"></i>
+                                            <i th:class="${(sortBySe eq 's.subject_code' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                               onclick="sortDataSe('s.subject_code',2)"></i>
+                                        </th>
+                                        <th data-sortable="false">Type
+                                            <i th:class="${(sortBySe eq 'type_id' && sortTypeSe == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                               onclick="sortDataSe('type_id',1)"></i>
+                                            <i th:class="${(sortBySe eq 'type_id' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                               onclick="sortDataSe('type_id',2)"></i>
+                                        </th>
+                                        <th data-sortable="false">Title
+                                            <i th:class="${(sortBySe eq 'setting_title' && sortTypeSe == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                               onclick="sortDataSe('setting_title',1)"></i>
+                                            <i th:class="${(sortBySe eq 'setting_title' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                               onclick="sortDataSe('setting_title',2)"></i>
+                                        </th>
+                                        <th data-sortable="false">Value
+                                            <i th:class="${(sortBySe eq 'setting_value' && sortTypeSe == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                               onclick="sortDataSe('setting_value',1)"></i>
+                                            <i th:class="${(sortBySe eq 'setting_value' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                               onclick="sortDataSe('setting_value',2)"></i>
+                                        </th>
+                                        <th data-sortable="false">Display Order
+                                            <i th:class="${(sortBySe eq 'display_order' && sortTypeSe == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                               onclick="sortDataSe('display_order',1)"></i>
+                                            <i th:class="${(sortBySe eq 'display_order' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                               onclick="sortDataSe('display_order',2)"></i>
+                                        </th>
+                                        <th data-sortable="false">Status</th>
+                                        <th data-sortable="false">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="setting : ${subjectSettingList}">
+                                        <td th:text="${setting.id}"></td>
+                                        <td th:text="${setting.subject.subjectCode}"></td>
+                                        <td th:text="${setting.typeId==1?'Complexity':'Quality'}"></td>
+                                        <td th:text="${setting.settingTitle}"></td>
+                                        <td th:text="${setting.typeId==1?setting.settingValue:setting.settingValue+'%'}" ></td>
+                                        <td th:text="${setting.displayOrder}"></td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                       th:checked="${setting.isStatus()}"
+                                                       th:attr="setting-id=${setting.id},data-title=${setting.settingTitle}" onchange="showConfirmationDialog(this, 3)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div th:onclick="'detailsSubjectSetting(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                    class="fas fa-pen-to-square"></i></div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <input type="hidden" name="pageNoSe" id="pageNoInputSetting1" th:value="${pageNoSe}">
+                                <nav th:if="${totalPageSe!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
+                                    <ul class="pagination justify-content-end">
+                                        <li th:class="${pageNoSe == 0 ? 'page-item disabled' : 'page-item'}">
+                                            <a class="page-link" style="cursor: pointer"
+                                               th:onclick="'goToPageSe('+ ${pageNoSe-1}+')'">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li th:each="i : ${#numbers.sequence(1, totalPageS)}"
+                                            th:class="${pageNoSe == (i - 1) ? 'page-item active' : 'page-item'}">
+                                            <a class="page-link" th:text="${i}" style="cursor: pointer"
+                                               th:onclick="'goToPageSe('+ ${i-1}+')'">
+                                            </a>
+                                        </li>
+                                        <li th:class="${pageNoSe == (totalPageSe-1) ? 'page-item disabled' : 'page-item'}">
+                                            <a class="page-link user-select-all" style="cursor: pointer"
+                                               th:onclick="'goToPageSe('+ ${pageNoSe+1}+')'">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function goToPageSe(i) {
+                            document.getElementById('pageNoInputSetting1').value = i;
+                            document.getElementById('form').submit();
+                        }
+
+                        function sortDataSe(sortBySetting, sortTypeSetting) {
+                            document.getElementById('sortBySetting1').value = sortBySetting;
+                            document.getElementById('sortTypeSetting1').value = sortTypeSetting;
+                            document.getElementById('form').submit();
+                        }
+                    </script>
+
+                    <script>
+                        function updateStatusSetting(id, checkbox) {
+                            let status = checkbox.checked;
+                            if (confirm('Are you sure?'))
+                                fetch(`/subject-manager/subject/updateStatusSetting?id=${id}&status=${status}`)
+                            else checkbox.checked = !status;
+                        }
+                    </script>
+
+                </div>
+
+                <script>
+                    window.addEventListener('DOMContentLoaded', event => {
+
+                        const datatablesSimpleSetting1 = document.getElementById('datatablesSimpleSetting1');
+                        if (datatablesSimpleSetting1) {
+                            new simpleDatatables.DataTable(datatablesSimpleSetting1, {
+                                paging: false // Tắt phân trang
+                            });
+                        }
+                    });
+                </script>
+                <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+                        crossorigin="anonymous"></script>
+                <script>window.addEventListener('DOMContentLoaded', event => {
+
+                    // Toggle the side navigation
+                    const sidebarToggle = document.body.querySelector('#sidebarToggle');
+                    if (sidebarToggle) {
+                        sidebarToggle.addEventListener('click', event => {
+                            event.preventDefault();
+                            document.body.classList.toggle('sb-sidenav-toggled');
+                            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+                        });
+                    }
+
+                });</script>
+            </div>
         </form>
     </main>
 </div>
 
-<!-- javascript -->
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
 
-<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+<script>
+    let id;
+    let status;
+    let initialStatus;
+    let confirmClicked = false;
+    let typeId;
 
-<script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
+    function showConfirmationDialog(checkbox, type) {
+        typeId=type;
+        if(typeId==1)
+            id = checkbox.getAttribute("assignment-id");
+        else if(typeId==2)
+            id = checkbox.getAttribute("update-id");
+        else
+            id = checkbox.getAttribute("setting-id");
+        var settingTitle = checkbox.getAttribute('data-title');
+        status = checkbox.checked;
+        initialStatus = !status;
+        confirmClicked = false;
+
+        if (status) {
+            $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${settingTitle}?`);
+            $('#confirmationModal').modal('show');
+        } else {
+            $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${settingTitle}?`);
+            $('#confirmationModalRed').modal('show');
+        }
+    }
+    function handleCancelClick() {
+        let checkbox;
+        if(typeId==1)
+            checkbox = document.querySelector('input[assignment-id="' + id + '"]');
+        else if (typeId==2)
+            checkbox = document.querySelector('input[update-id="' + id + '"]');
+        else
+            checkbox = document.querySelector('input[setting-id="' + id + '"]');
+        checkbox.checked = initialStatus;
+        confirmClicked = false;
+        $('#confirmationModal').modal('hide');
+        $('#confirmationModalRed').modal('hide');
+    }
+    $(".confirmButton").click(function () {
+        if(typeId==1)
+            fetch(`/subject-manager/subject-assignment/updateStatus?id=${id}&status=${status}`)
+                .then(() => {
+                    confirmClicked = true;
+                    $('#confirmationModal').modal('hide');
+                    $('#confirmationModalRed').modal('hide');
+                });
+        else if (typeId==2)
+            fetch(`/issue-setting/updateStatus?id=${id}&status=${status}`)
+                .then(() => {
+                    confirmClicked = true;
+                    $('#confirmationModal').modal('hide');
+                    $('#confirmationModalRed').modal('hide');
+                });
+        else
+            fetch(`/subject-manager/subject/subject-setting/updateStatus?id=${id}&status=${status}`)
+                .then(() => {
+                    confirmClicked = true;
+                    $('#confirmationModal').modal('hide');
+                    $('#confirmationModalRed').modal('hide');
+                });
+    });
+    $(".cancelButton, .closeButton").click(function () {
+        handleCancelClick();
+    });
+    $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
+        if (event.target === this && !confirmClicked) {
+            handleCancelClick();
+        }
+    });
+</script>
 
 <script>
     function showDiv(divId) {
@@ -684,6 +1498,7 @@
         document.getElementById('general').style.display = 'none';
         document.getElementById('assignment').style.display = 'none';
         document.getElementById('settings').style.display = 'none';
+        document.getElementById('subject-setting').style.display = 'none';
 
         // Display the div
         document.querySelector('.'+divId).style.borderBottom = '3px solid blue';
@@ -699,17 +1514,46 @@
             showDiv(lastDisplayedDiv);
         }
     });
-</script>
 
-<script>
     var toastMessage = document.getElementById('toastMessage').textContent.trim();
     if (toastMessage) {
         var customToast = new bootstrap.Toast(document.getElementById('customToast'));
         customToast.show();
         setTimeout(function () {
             customToast.hide();
+            document.getElementById('toastMessage').textContent = "";
         }, 5000);
     }
+    var errmsg = document.getElementById('error').textContent.trim();
+    $(document).ready(function() {
+        if (errmsg.trim() !== '') {
+            $('#createClassModal').modal('show');
+        }
+    });
+    var assignmentId = document.getElementById('assignmentId').value.trim();
+    $(document).ready(function() {
+        if (assignmentId.trim() >= 0) {
+            $('#createClassModal').modal('show');
+        }
+    });
+
+    function showCreateForm() {
+        $('#createClassModal').modal('show');
+    }
+    function assignmentDetail(assignmentId) {
+        document.getElementById('assignmentId').value = assignmentId;
+        document.getElementById('form').submit();
+    }
+    $(document).ready(function () {
+        $('#createClassModal').on('hidden.bs.modal', function () {
+            $('input[name="newTitle"]').val('');
+            $('textarea[name="description"]').val('');
+            $('#assignmentId').val('-1');
+            $('#error').text('');
+            $('#form').submit();
+        });
+    });
+
 </script>
 
 </body>

@@ -1,14 +1,17 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,13 +28,17 @@ public class Milestone {
     private String description;
 
     @Column(name = "start_date")
-    private Timestamp startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private Timestamp endDate;
+    private Date endDate;
 
     @Column(name = "status")
     private boolean status = true;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_assignment_id")
+    private Assignment subjectAssignment;
 
     @ManyToOne
     @JoinColumn(name = "class_id")
@@ -52,4 +59,8 @@ public class Milestone {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+
+    @OneToMany(mappedBy = "milestone", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createAt DESC")
+    private List<Submission> submissionList = new ArrayList<>();
 }

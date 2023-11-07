@@ -1,6 +1,7 @@
 package swp.studentprojectportal.controller.api;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -77,7 +78,7 @@ public class ExportController {
 
         // Write workbook to response
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=student_project.xlsx");
         workbook.write(response.getOutputStream());
         workbook.close();
     }

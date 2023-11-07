@@ -6,16 +6,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
-import swp.studentprojectportal.utils.InstanceSingleton;
+import swp.studentprojectportal.utils.instance.InstanceSingleton;
 import swp.studentprojectportal.utils.SheetHandle;
 
 import java.util.List;
@@ -34,15 +34,21 @@ public class StudentController {
 
     @GetMapping("class/student")
     public String studentList(Model model,
-                           HttpSession session,
-                           @RequestParam(defaultValue = "-1") int classId) {
+                              HttpSession session,
+                              @RequestParam(defaultValue = "-1") int classId,
+                              @RequestParam(defaultValue = "-1", required = false) int id) {
+        Optional<User> user = userService.findUserById(id);
+        model.addAttribute("user", user.isPresent() ? user.get() : userService.findUserById(1).get());
+        model.addAttribute("roleList", settingService.getAllRole());
+
         final int roleId = 1;
         Class c = classService.getClass(classId);
-        if(c == null) {
+        if (c == null) {
             return "redirect:class/student";
         }
-        if(session.getAttribute("numberStudentAdded") != null) {
-            model.addAttribute("numberStudentAdded", session.getAttribute("numberStudentAdded"));
+        if (session.getAttribute("numberStudentAdded") != null) {
+            String mess = "Sync FAP successfully! " + session.getAttribute("numberStudentAdded") + " student added";
+            model.addAttribute("smessage", mess);
             session.removeAttribute("numberStudentAdded");
         }
         model.addAttribute("classId", classId);
@@ -51,12 +57,60 @@ public class StudentController {
         model.addAttribute("semester", c.getSemester().getSettingTitle());
         model.addAttribute("totalPage", userService.getTotalPage(10, roleId));
         model.addAttribute("studentList", classService.getAllStudent(classId));
+
         return "class_manager/student/studentList";
     }
 
+    @PostMapping("class/updateStudent")
+    public String updateUser(
+            @RequestParam(defaultValue = "-1") int classId,
+            @RequestParam int id,
+            @RequestParam(defaultValue = "") String note,
+            @RequestParam boolean status,
+            Model model, RedirectAttributes attributes) {
+        User userUpdate = userService.findUserById(id).get();
+        model.addAttribute("user", userUpdate);
+        model.addAttribute("roleList", settingService.getAllRole());
+
+        //update
+        boolean ans = userService.updateStudent(id, status, note);
+
+        if (ans) model.addAttribute("msg", "Update success");
+        else model.addAttribute("errorMsg", "Update failed");
+
+        final int roleId = 1;
+        Class c = classService.getClass(classId);
+
+        if (c == null) {
+            return "redirect:/class/student?classId=" + classId;
+        }
+        System.out.println("111");
+        model.addAttribute("classId", classId);
+        model.addAttribute("className", c.getClassName());
+        model.addAttribute("class", c);
+        model.addAttribute("semester", c.getSemester().getSettingTitle());
+        model.addAttribute("totalPage", userService.getTotalPage(10, roleId));
+        model.addAttribute("studentList", classService.getAllStudent(classId));
+
+        attributes.addFlashAttribute("toastMessage", "Update student successfully");
+
+        return "redirect:/class/student?classId=" + classId;
+    }
+
+    @GetMapping("/class/student/updateStatus")
+    public String updateSubjectSettingStatus(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        User student = userService.getUserById(id);
+        student.setStatus(status);
+        userService.saveUser(student);
+        return "redirect:/";
+    }
+
+
     @GetMapping("/class-manager/class/studentDetails")
     public String studentDetails(Model model,
-                           @RequestParam(defaultValue = "-1") int studentId) {
+                                 @RequestParam(defaultValue = "-1") int studentId) {
         Optional<User> user = userService.findUserById(studentId);
         model.addAttribute("user", user.isPresent() ? user.get() : null);
         model.addAttribute("roleList", settingService.getAllRole());
@@ -67,7 +121,7 @@ public class StudentController {
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId,
             @RequestParam(name = "studentId") Integer studentId) {
-        boolean result =  studentClassService.removeStudentFromClass(classId, studentId);
+        studentClassService.removeStudentFromClass(classId, studentId);
         return "redirect:/class/student?classId=" + classId;
     }
 
@@ -81,11 +135,11 @@ public class StudentController {
         int numberStudentAdded = 0;
 
         String responseBody = InstanceSingleton.getInstance().callApiFap(apiEndpoint);
-        if(responseBody != null) {
+        if (responseBody != null) {
             studentIdList = responseBody.split(",");
 
             for (String studentId : studentIdList) {
-                if(studentClassService.addNewStudentToClass(classId, studentId)) {
+                if (studentClassService.addNewStudentToClass(classId, studentId)) {
                     numberStudentAdded++;
                 }
             }
@@ -102,21 +156,21 @@ public class StudentController {
         //read sheet data
         List<User> userList = new SheetHandle().importSheetUser(file);
 
-        if(userList == null) return "redirect:./student?classId=" + classId;
+        if (userList == null) return "redirect:./student?classId=" + classId;
 
         //remove all student in current class
         studentClassService.removeAllStudentFromClass(classId);
 
-        for(User userData : userList) {
+        for (User userData : userList) {
             try {
                 //find by email
                 User user = userService.findByEmail(userData.getEmail());
 
                 //find by phone
-                if (user==null) {
-                    user = userService.findByPhone(user.getPhone());
+                if (user == null) {
+                    user = userService.findByPhone(userData.getPhone());
 
-                    if (user==null) continue;
+                    if (user == null) continue;
                 }
 
                 //add student to class
