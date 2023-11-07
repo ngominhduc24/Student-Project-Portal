@@ -314,8 +314,24 @@
                   <td th:text="${item.getGradeSubmission()}"></td>
                   <td th:text="${item.workGrade}"></td>
                   <td th:text="${item.workPoint}"></td>
-                  <td></td>
-                  <td></td>
+                  <td>
+                    <div class="view view-value " >
+                      <label th:text="${item.bonusAndPenalty}"></label>
+                    </div>
+                    <div class="edit edit-value " hidden="hidden">
+                      <input type="number" oninput="checkValue(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
+                      <input type="hidden" name="evalStudentId" th:value="${item.studentId}">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="view view-value " >
+                      <label th:text="${item.commentPersonal}"></label>
+                    </div>
+                    <div class="edit edit-value " hidden="hidden">
+                      <input type="text" name="evalCommentPersonal" th:value="${item.commentPersonal}" style="width: 300px" >
+                      <input type="hidden" name="evalStudentId" th:value="${item.studentId}">
+                    </div>
+                  </td>
                   <th:block  th:each="evalGrade : ${item.getCriteriaGradeList()}">
                     <td>
                       <div class="view view-value " >

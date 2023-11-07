@@ -12,8 +12,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.Evaluation;
 import swp.studentprojectportal.model.EvaluationDTO;
+import swp.studentprojectportal.model.SubmissionPersonal;
 import swp.studentprojectportal.model.SubmitIssue;
 import swp.studentprojectportal.service.servicesimpl.EvaluationService;
+import swp.studentprojectportal.service.servicesimpl.SubmissionPersonalService;
 import swp.studentprojectportal.service.servicesimpl.SubmissionService;
 import swp.studentprojectportal.service.servicesimpl.SubmitIssueService;
 import swp.studentprojectportal.utils.dto.Mapper;
@@ -33,6 +35,9 @@ public class AssignmentEvaluationsController {
     @Autowired
     SubmissionService submissionService;
 
+    @Autowired
+    SubmissionPersonalService submissionPersonalService;
+
     @GetMapping("/evaluation")
     public String evaluationList(HttpSession session, Model model,
                                 @RequestParam(defaultValue = "-1") Integer submissionId
@@ -46,10 +51,22 @@ public class AssignmentEvaluationsController {
         // Map evaluation to evaluationDTO
         List<EvaluationDTO> evaluationDTO = Mapper.evaluationMapper(evaluation);
 
+        // Set work point and work grade
         evaluationDTO.forEach(item -> {
             EvaluationDTO temp = submitIssueService.setWorkPoint(item);
             item.setWorkPoint(temp.getWorkPoint());
             item.setWorkGrade(temp.getWorkGrade());
+        });
+
+        // Set bonus and comment personal
+        List<SubmissionPersonal> submissionPersonalList = submissionPersonalService.getAllSubmissionPersonalBySubmissionId(1);
+        evaluationDTO.forEach(item -> {
+            submissionPersonalList.forEach(e -> {
+                if(e.getStudent().getId() == item.getStudentId()) {
+                    item.setBonusAndPenalty(e.getBonus());
+                    item.setCommentPersonal(e.getComment());
+                }
+            });
         });
 
         // set atriibute

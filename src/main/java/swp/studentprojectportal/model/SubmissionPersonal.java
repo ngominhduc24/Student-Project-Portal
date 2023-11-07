@@ -34,9 +34,6 @@ public class SubmissionPersonal {
     @Column(name = "comment")
     private String comment = "";
 
-    @Column(name = "status")
-    private Integer status = 1; // Default value 1
-
     @Column(name = "create_by")
     private Integer createBy = 0;
 
