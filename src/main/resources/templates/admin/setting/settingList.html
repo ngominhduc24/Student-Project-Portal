@@ -550,8 +550,9 @@
             return await response.json();
         }
 
-        function submitForm() {
-            if (!isExisted()) {
+        async function submitForm() {
+            const existed = await isExisted();
+            if (!existed) {
                 let form = $('#form');
                 form.attr('method', 'post');
                 form.submit();
