@@ -1,7 +1,10 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -11,26 +14,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "evaluation")
-public class Evaluation {
+@Table(name = "submission_personal")
+public class SubmissionPersonal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "submit_id")
+    @OneToOne
+    @JoinColumn(name = "submission_id")
     private Submission submission;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "student_id")
     private User student;
 
-    private String criteria;
+    @Column(name = "bonus")
+    private Integer bonus;
 
-    private Integer weight;
-
-    private Float grade = 1.0f; // Default value 1.0
-
+    @Column(name = "comment")
     private String comment = "";
 
     @Column(name = "create_by")

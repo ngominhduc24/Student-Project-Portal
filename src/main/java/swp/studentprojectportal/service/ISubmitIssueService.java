@@ -1,5 +1,6 @@
 package swp.studentprojectportal.service;
 
+import swp.studentprojectportal.model.EvaluationDTO;
 import swp.studentprojectportal.model.SubmitIssue;
 
 import java.util.List;
@@ -10,4 +11,15 @@ public interface ISubmitIssueService {
 
     public List<SubmitIssue> findAllBySubmissionId(Integer submissionId);
 
+    EvaluationDTO setWorkPoint(EvaluationDTO evaluationDTO);
+
+    public SubmitIssue findById(Integer submitIssueId);
+
+    public List<Integer> findAllComplexitySubjectSettingValueById(Integer subjectId);
+
+    public List<Integer> findAllQualitySubjectSettingValueById(Integer subjectId);
+
+    public int findIdBySubjectIdAndValue(Integer subjectId, Integer settingValue,Integer type);
+
+    public SubmitIssue saveSubmitIssue(SubmitIssue submitIssue);
 }

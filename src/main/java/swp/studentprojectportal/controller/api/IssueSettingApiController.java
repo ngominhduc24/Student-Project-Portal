@@ -12,6 +12,7 @@ import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
+import swp.studentprojectportal.service.servicesimpl.SubjectService;
 import swp.studentprojectportal.utils.Validate;
 
 import java.util.Date;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class IssueSettingApiController {
     @Autowired
     ClassService classService;
+    @Autowired
+    SubjectService subjectService;
     @Autowired
     IssueSettingService issueSettingService;
     @Autowired
@@ -48,7 +51,7 @@ public class IssueSettingApiController {
 
     }
     @GetMapping("/update/issue-setting")
-    public ResponseEntity updateIssueSetting(
+    public ResponseEntity updateIssueSettingForClass(
             @RequestParam(name = "issueSettingId") Integer issueSettingId,
             @RequestParam(name = "classId") int classId,
             @RequestParam(name = "title") String title,
@@ -70,7 +73,37 @@ public class IssueSettingApiController {
                 return ResponseEntity.badRequest().body("Issue setting existed. Update failed!");
             }
             else {
-                issueSettingService.saveSubjectSetting(issueSetting);
+                issueSettingService.saveIssueSetting(issueSetting);
+                return ResponseEntity.ok().body("1");
+
+            }
+        }
+
+    }
+    @GetMapping("/update2/issue-setting")
+    public ResponseEntity updateIssueSettingForSubject(
+            @RequestParam(name = "issueSettingId") Integer issueSettingId,
+            @RequestParam(name = "subjectId") int subjectId,
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "group") String group,
+            @RequestParam(name = "status") Integer status) {
+
+        IssueSetting issueSetting = issueSettingService.findById(issueSettingId);
+        issueSetting.setDescription(description);
+        issueSetting.setSettingTitle(title);
+        issueSetting.setSettingGroup(group);
+        issueSetting.setStatus(status == 1 ? true : false);
+        if(Validate.validNotempty(group) == false){
+            return ResponseEntity.badRequest().body("Group can not empty. Update failed!");
+        }
+        else{
+            IssueSetting findIssueSetting = issueSettingService.findBySubjectAndGroupAndTitle(subjectId,group,title);
+            if(findIssueSetting!=null && findIssueSetting.getId() != issueSettingId){
+                return ResponseEntity.badRequest().body("Issue setting existed. Update failed!");
+            }
+            else {
+                issueSettingService.saveIssueSetting(issueSetting);
                 return ResponseEntity.ok().body("1");
 
             }
@@ -78,8 +111,9 @@ public class IssueSettingApiController {
 
     }
 
+
     @GetMapping(path="/add/issue-setting")
-    public ResponseEntity addNewIssueSetting(@RequestParam(name = "classId") int classId,
+    public ResponseEntity addNewIssueSettingForClass(@RequestParam(name = "classId") int classId,
                                              @RequestParam(name = "title") String title,
                                              @RequestParam(name = "description") String description,
                                              @RequestParam(name = "group") String group){
@@ -102,7 +136,38 @@ public class IssueSettingApiController {
                 return ResponseEntity.badRequest().body("Issue setting existed. Add failed!");
             }
             else {
-                issueSettingService.saveSubjectSetting(issueSetting);
+                issueSettingService.saveIssueSetting(issueSetting);
+                return ResponseEntity.ok().body("1");
+
+            }
+        }
+    }
+
+    @GetMapping(path="/add2/issue-setting")
+    public ResponseEntity addNewIssueSettingForSubject(@RequestParam(name = "subjectId") int subjectId,
+                                             @RequestParam(name = "title") String title,
+                                             @RequestParam(name = "description") String description,
+                                             @RequestParam(name = "group") String group){
+        IssueSetting issueSetting = new IssueSetting();
+        issueSetting.setSubject(subjectService.findSubjectById(subjectId));
+        issueSetting.setSettingGroup(group);
+        issueSetting.setSettingTitle(title);
+        issueSetting.setDescription(description);
+        System.out.println("group "+group);
+        System.out.println("title "+title);
+        System.out.println("description"+description);
+        issueSetting.setStatus(true);
+
+        if(Validate.validNotempty(group) == false){
+            return ResponseEntity.badRequest().body("Group can not empty. Add failed!");
+        }
+        else{
+            IssueSetting findIssueSetting = issueSettingService.findBySubjectAndGroupAndTitle(subjectId,group,title);
+            if(findIssueSetting!=null){
+                return ResponseEntity.badRequest().body("Issue setting existed. Add failed!");
+            }
+            else {
+                issueSettingService.saveIssueSetting(issueSetting);
                 return ResponseEntity.ok().body("1");
 
             }

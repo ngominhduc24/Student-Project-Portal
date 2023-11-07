@@ -109,12 +109,22 @@ public class IssueSettingController {
 
 
     @GetMapping(value={"/class/issue-setting/updateStatus", "/class-manager/project/issue-setting/updateStatus"})
-    public String updateSubjectSettingStatus(
+    public String updateIssueSettingStatus(
             @RequestParam int id,
             @RequestParam boolean status) {
         IssueSetting issueSetting = issueSettingService.findById(id);
         issueSetting.setStatus(status);
-        issueSettingService.saveSubjectSetting(issueSetting);
+        issueSettingService.saveIssueSetting(issueSetting);
+        return "redirect:/";
+    }
+
+    @GetMapping(path="/issue-setting/updateStatus")
+    public String updateIssueSettingStatus2(
+            @RequestParam int id,
+            @RequestParam boolean status) {
+        IssueSetting issueSetting = issueSettingService.findById(id);
+        issueSetting.setStatus(status);
+        issueSettingService.saveIssueSetting(issueSetting);
         return "redirect:/";
     }
 
@@ -141,7 +151,7 @@ public class IssueSettingController {
             if (!isExist) {
                 IssueSetting issueSetting = Mapper.labelConvert(label);
                 issueSetting.setAclass(classService.findById(classId));
-                issueSettingService.saveSubjectSetting(issueSetting);
+                issueSettingService.saveIssueSetting(issueSetting);
             }
         }
 
@@ -241,7 +251,7 @@ public class IssueSettingController {
                     String errmsg = "Issue setting existed. Add failed!";
                     model.addAttribute("errmsg", errmsg);
                 } else {
-                    issueSettingService.saveSubjectSetting(setting);
+                    issueSettingService.saveIssueSetting(setting);
                     setting = new IssueSetting();
                     setting.setProject(project);
                     setting.setSettingGroup("Not Empty");

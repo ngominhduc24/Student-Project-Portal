@@ -94,7 +94,7 @@ public class IssueUpdateApiController {
         else{
             IssueUpdate findIssueUpdate = issueUpdateService.findByIssueAndTitle(issueId,title);
             if(findIssueUpdate!=null){
-                return ResponseEntity.badRequest().body("Wỏk existed. Add failed!");
+                return ResponseEntity.badRequest().body("Work existed. Add failed!");
             }
             else {
                 issueUpdateService.saveIssueUpdate(issueUpdate);

@@ -77,4 +77,11 @@ public class Validate {
 
         return true;
     }
+
+    public static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        return str.matches("\\d+"); // \\d+ kiểm tra xem chuỗi có toàn bộ là các chữ số hay không
+    }
 }

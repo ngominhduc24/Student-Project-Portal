@@ -189,10 +189,10 @@
         <div class="topnav">
             <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
             <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
-<!--            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>-->
-<!--            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>-->
-<!--            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>-->
-<!--            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
+            <!--            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;">Milestones</p></a>-->
+            <!--            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>-->
+            <!--            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>-->
+            <!--            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
         </div>
 
         <!--    Settings -->
@@ -200,7 +200,7 @@
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h3 style="margin-top: -14px;margin-bottom: 20px;" >Wỏk List</h3>
+                        <h3 style="margin-top: -14px;margin-bottom: 20px;" >Work List</h3>
                         <ol class="breadcrumb mb-2">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
@@ -367,10 +367,13 @@
                                     <td th:text="${work.title}"></td>
                                     <td th:text="${work.description}"></td>
                                     <td th:text="${#dates.format(work.updateAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-<!--                                    <td th:text="${work.updateAt}"></td>-->
+                                    <!--                                    <td th:text="${work.updateAt}"></td>-->
                                     <td>
-                                            <div th:onclick="'details(' + ${work.id} + ')'" style="border: none; background-color: white; color: blue"><i
-                                                    class="fas fa-pen-to-square"></i></div>
+                                        <a th:onclick="'details(' + ${work.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                class="fas fa-pen-to-square"></i></a>
+                                        <a th:onclick="'showDialog(this,' + ${work.id} + ')'" th:attr="data-title=${work.title}">
+                                            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="fa-regular fa-trash-can text-danger action action2"></i></a>
+
                                     </td>
                                 </tr>
                                 </tbody>
@@ -411,58 +414,57 @@
                                     document.getElementById('form').submit();
                                 }
                             </script>
-                            <script>
-                                let id;
-                                let status;
-                                let initialStatus;
-                                let confirmClicked = false;
 
-                                function showConfirmationDialog(checkbox) {
-                                    id = checkbox.getAttribute("update-id");
-                                    var settingGroup = checkbox.getAttribute('data-title');
-                                    status = checkbox.checked;
-                                    initialStatus = !status;
-                                    confirmClicked = false;
-                                    if (status) {
-                                        $('#confirmationModal .modal-body p').html(`Are you sure you want to <strong>activate</strong> ${settingGroup}?`);
-                                        $('#confirmationModal').modal('show');
-                                    } else {
-                                        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>deactivate</strong> ${settingGroup}?`);
-                                        $('#confirmationModalRed').modal('show');
-                                    }
-                                }
-
-                                function handleCancelClick() {
-                                    let checkbox = document.querySelector('input[update-id="' + id + '"]');
-                                    checkbox.checked = initialStatus;
-                                    confirmClicked = false;
-                                    $('#confirmationModal').modal('hide');
-                                    $('#confirmationModalRed').modal('hide');
-                                }
-
-                                $(".confirmButton").click(function () {
-                                    fetch(`/issue-setting/updateStatus?id=${id}&status=${status}`)
-                                        .then(() => {
-                                            confirmClicked = true;
-                                            $('#confirmationModal').modal('hide');
-                                            $('#confirmationModalRed').modal('hide');
-                                        });
-                                });
-
-                                $(".cancelButton, .closeButton").click(function () {
-                                    handleCancelClick();
-                                });
-
-                                $('#confirmationModal, #confirmationModalRed').on('hidden.bs.modal', function (event) {
-                                    if (event.target === this && !confirmClicked) {
-                                        handleCancelClick();
-                                    }
-                                });
-                            </script>
 
                         </form>
                     </div>
                 </div>
+
+                <div id="confirmationModalRed" class="modal fade" style="padding-top: 100px;">
+                    <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                            <div class="modal-header flex-column">
+                                <div class="icon-box" style="border-color: #f15e5e">
+                                    <i  class="material-icons" style="color: #f15e5e">&#xE5CD;</i>
+                                </div>
+                                <h4 class="modal-title w-100">Are you sure?</h4>
+                                <button type="button" class="close closeButton" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p></p>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn cancelButton" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn confirmButton" style="background-color: #f15e5e">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let id;
+                    let status;
+                    function showDialog(checkbox, workId) {
+                        id = workId;
+                        var title = checkbox.getAttribute('data-title');
+
+                        $('#confirmationModalRed .modal-body p').html(`Are you sure you want to <strong>delete</strong> work ${title}?`);
+                        $('#confirmationModalRed').modal('show');
+
+                    }
+                    $(".confirmButton").click(function () {
+                        notify('success', 'Delete Work successfully.', 'Success');
+                        // Delay the page reload for a few seconds
+                        setTimeout(() => {
+                            window.location.href=`/student/work/delete?id=${id}`;
+                        }, 1000);
+
+                    });
+                    $(".cancelButton, .closeButton").click(function () {
+                        $('#confirmationModalRed').modal('hide');
+                        $('#confirmationModalClose').modal('hide');
+                    });
+                </script>
 
                 <!--  Detail Modal-->
                 <div class="modal fade" id="detailsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -477,21 +479,21 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <label class="form-label">Subject Code</label>-->
-<!--                                            <input type="text" name="subjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly disabled>-->
-<!--                                        </div>-->
-<!--                                        <div class="mb-3 col-md-6">-->
-<!--                                            <label class="form-label">Class Name</label>-->
-<!--                                            <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly disabled>-->
-<!--                                        </div>-->
+                                        <!--                                        <div class="mb-3 col-md-6">-->
+                                        <!--                                            <label class="form-label">Subject Code</label>-->
+                                        <!--                                            <input type="text" name="subjectCode" class="form-control" th:value="${setting.aclass.subject.subjectCode}" readonly disabled>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div class="mb-3 col-md-6">-->
+                                        <!--                                            <label class="form-label">Class Name</label>-->
+                                        <!--                                            <input type="text" name="className" class="form-control" th:value="${setting.aclass.className}" readonly disabled>-->
+                                        <!--                                        </div>-->
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <input type="text" id="details-title" class="form-control" >
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Update At</label>
-<!--                                            <input type="text" id="details-update-at" class="form-control" >-->
+                                            <!--                                            <input type="text" id="details-update-at" class="form-control" >-->
                                             <input type="text" id="details-update-at" class="form-control" disabled>
                                         </div>
                                         <div class="mb-3 col-md-12">
