@@ -23,7 +23,7 @@ public class ClassManagerHomeController {
     SettingService settingService;
 
     @GetMapping("/class-manager/home")
-    public String ClassManagerHome(@RequestParam(defaultValue = "0") Integer pageNo,
+    public String classManagerHome(@RequestParam(defaultValue = "0") Integer pageNo,
                                    @RequestParam(defaultValue = "9") Integer pageSize,
                                    @RequestParam(defaultValue = "8") Integer semesterId,
                                     Model model, HttpSession session){

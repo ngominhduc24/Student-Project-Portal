@@ -24,6 +24,11 @@ public class SubjectService implements ISubjectService {
 
     @Autowired
     ISettingRepository settingRepository;
+
+    @Override
+    public Subject findSubjectById(int id){
+        return subjectRepository.findById(id).get();
+    }
     @Override
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
@@ -117,6 +122,11 @@ public class SubjectService implements ISubjectService {
     @Override
     public List<Subject> findAllSubjectByUserAndStatus(User user, Boolean status) {
         return subjectRepository.findAllSubjectByUserAndStatus(user, status);
+    }
+
+    @Override
+    public List<Subject> findSubjectForProject(Integer projectMentorId) {
+        return subjectRepository.findSubjectByClassesProjectsProjectMentorId(projectMentorId);
     }
 
     public Object getTotalPage(int pageSize) {

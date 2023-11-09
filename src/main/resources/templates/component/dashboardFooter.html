@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title th:text="${@title}"></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
-    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
-    <meta name="author" content="Shreethemes"/>
-    <meta name="email" content="support@shreethemes.in"/>
-    <meta name="website" content="../../../index.html"/>
-    <meta name="Version" content="v1.2.0"/>
-    <!-- favicon -->
-    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
-    <!-- Bootstrap -->
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
-    <!-- simplebar -->
-    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
-    <!-- Select2 -->
-    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
-    <!-- Date picker -->
-    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
-    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
-    <!-- Icons -->
-    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
-    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
-    <!-- Css -->
-    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
-</head>
-<body>
-<!-- Footer Start -->
-<footer class="bg-white shadow py-3" th:fragment="footer">
+<footer class="bg-white shadow py-3" th:fragment="dashboardFooter">
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col">
@@ -44,5 +12,3 @@
         </div><!--end row-->
     </div><!--end container-->
 </footer><!--end footer-->
-</body>
-</html>

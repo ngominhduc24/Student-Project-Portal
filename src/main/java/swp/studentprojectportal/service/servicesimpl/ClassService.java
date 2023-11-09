@@ -35,7 +35,12 @@ public class ClassService implements IClassService {
 
     @Override
     public List<Class> findAllByClassManagerId(int classManagerId) {
-        return classRepository.findAllByUserId(classManagerId);
+        List<Class> data = new ArrayList<>();
+
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 0)); //pending
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 2)); //started
+
+        return data;
     }
 
     @Override
@@ -98,6 +103,22 @@ public class ClassService implements IClassService {
     @Override
     public void delete(Class classA) {
         classRepository.delete(classA);
+    }
+
+    @Override
+    public List<Class> findAllByStudentUserId(Integer userId) {
+        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(userId);
+        List<Class> classList = new ArrayList<>();
+
+        for (StudentClass studentClass : studentClassList)
+            classList.add(studentClass.getAclass());
+
+        return classList;
+    }
+
+    @Override
+    public List<Class> findClassForProject(Integer projectMentorId) {
+        return classRepository.findClassByProjectsProjectMentorId(projectMentorId);
     }
 
 

@@ -6,7 +6,7 @@
     <title th:text="${@title}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
-    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="keywords" content="Appointment,  <table, Dashboard, Health"/>
     <meta name="author" content="Shreethemes"/>
     <meta name="email" content="support@shreethemes.in"/>
     <meta name="website" content="../../../index.html"/>
@@ -98,7 +98,7 @@
             margin-bottom: 36px;
         }
         .custom-toast {
-            background-color: #20ee68 !important;
+            background-color: #16ce7e !important;
             color: #FFFFFF;
             position: absolute;
             top: 88px;
@@ -254,6 +254,7 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
                             <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                                 <ul class="pagination justify-content-end">
                                     <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
@@ -262,7 +263,6 @@
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <input type="hidden" name="pageNo" id="pageNoInput">
                                     <li  th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:text="${i}" style="cursor: pointer"
                                            th:onclick="'goToPage('+ ${i-1}+')'">
@@ -344,9 +344,11 @@
     window.addEventListener('DOMContentLoaded', event => {
 
     const datatablesSimple = document.getElementById('datatablesSimple');
-    if (datatablesSimple) {
-        new simpleDatatables.DataTable(datatablesSimple);
-    }
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple, {
+                paging: false // Tắt phân trang
+            });
+        }
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

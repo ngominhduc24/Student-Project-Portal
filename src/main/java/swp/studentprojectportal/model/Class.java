@@ -1,15 +1,14 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,6 +23,9 @@ public class Class {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "gitlab_group_id")
+    private String gitlabGroupId;
 
     @Column(name = "status")
     private Integer status = 0;

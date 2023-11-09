@@ -1,10 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<footer class="bg-footer" th:fragment="footer">
+    <div class="container-fluid" style="padding: 0 72px">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                <a href="#" class="logo-footer">
+                    <img th:src="@{/images/logo.png}" height="80" alt="">
+                </a>
+                <p class="mt-4 me-xl-5">Student portal project website is a one-stop digital platform for students,
+                    offering easy access to academic info, schedules, grades, and communication tools to enhance the
+                    overall student experience.</p>
+            </div><!--end col-->
 
-</body>
-</html>
+            <div class="col-xl-8 col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-3 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <h5 class="text-light title-dark footer-head">Company</h5>
+                        <ul class="list-unstyled footer-list mt-4">
+                            <li><a href="" class="text-foot"> About us</a>
+                            </li>
+                            <li><a href="" class="text-foot"> Services</a>
+                            </li>
+                            <li><a href="" class="text-foot"> Team</a></li>
+                            <li><a href="" class="text-foot"> Project</a></li>
+                        </ul>
+                    </div><!--end col-->
+
+                    <div class="col-md-3 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <h5 class="text-light title-dark footer-head">Support</h5>
+                        <ul class="list-unstyled footer-list mt-4">
+                            <li><a href="" class="text-foot"> Forum</a>
+                            </li>
+                            <li><a href="" class="text-foot">
+                                Contact</a></li>
+                        </ul>
+                    </div><!--end col-->
+
+                    <div class="col-md-6 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <h5 class="text-light title-dark footer-head">Contact us</h5>
+                        <ul class="list-unstyled footer-list mt-4">
+                            <li class="d-flex align-items-center">
+                                <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                <a href="mailto:Group3Se1741@gmail.com" class="text-foot ms-2">Group3Se1741@gmail.com</a>
+                            </li>
+
+                            <li class="d-flex align-items-center">
+                                <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                <a href="tel:+152534-468-854" class="text-foot ms-2">(+84) 834 235 369</a>
+                            </li>
+
+                            <li class="d-flex align-items-center">
+                                <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                <a class="text-foot ms-2">FPT University, Khu Công nghệ cao Hòa Lạc – Km29 Đại lộ Thăng Long, H. Thạch Thất, TP. Hà Nội
+                                    map</a>
+                            </li>
+                        </ul>
+
+                        <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                            <li class="list-inline-item"><a href="https://www.facebook.com/maidung2003" class="rounded-pill"><i data-feather="facebook"
+                                                                                             class="fea icon-sm fea-social"></i></a>
+                            </li>
+                            <li class="list-inline-item"><a href="https://www.instagram.com/meii_duzgn/" class="rounded-pill"><i data-feather="instagram"
+                                                                                             class="fea icon-sm fea-social"></i></a>
+                            </li>
+                            <li class="list-inline-item"><a href="https://www.linkedin.com/in/maidung1602/" class="rounded-pill"><i data-feather="linkedin"
+                                                                                             class="fea icon-sm fea-social"></i></a>
+                            </li>
+                        </ul><!--end icon-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+
+    <div class="container-fluid mt-5" style="padding: 0 72px">
+        <div class="pt-4 footer-bar">
+            <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <div class="text-sm-start text-center">
+                        <p class="mb-0">
+                            <script>document.write(new Date().getFullYear())</script>
+                            Copyright © Student Project Portal 2023 - All rights reserved.
+                        </p>
+                    </div>
+                </div><!--end col-->
+
+                <div class="col-sm-6 mt-4 mt-sm-0">
+                    <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                        <li class="list-inline-item"><a href="" class="text-foot me-2">Terms</a></li>
+                        <li class="list-inline-item"><a href="" class="text-foot me-2">Privacy</a></li>
+                        <li class="list-inline-item"><a href="" class="text-foot me-2">About</a></li>
+                        <li class="list-inline-item"><a href="" class="text-foot me-2">Contact</a></li>
+                    </ul>
+                </div><!--end col-->
+            </div><!--end row-->
+        </div>
+    </div><!--end container-->
+</footer><!--end footer-->

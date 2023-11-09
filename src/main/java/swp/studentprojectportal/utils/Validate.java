@@ -69,4 +69,19 @@ public class Validate {
         }
         return  true;
     }
+
+    public static  boolean validTilteDescription(String title, String description){
+
+        if(title.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~-].*")) return false;
+        if(description.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~-].*")) return false;
+
+        return true;
+    }
+
+    public static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        return str.matches("\\d+"); // \\d+ kiểm tra xem chuỗi có toàn bộ là các chữ số hay không
+    }
 }

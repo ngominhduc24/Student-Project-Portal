@@ -1,10 +1,11 @@
 package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.model.Project;
-import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IProjectRepository;
@@ -13,7 +14,6 @@ import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IStudentClassService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentClassService implements IStudentClassService {
@@ -149,10 +149,30 @@ public class StudentClassService implements IStudentClassService {
         }
     }
 
+    @Override
+    public StudentClass findByStudentIdAndAclassId(Integer userId, Integer classId) {
+        return studentClassRepository.findByStudentIdAndAclassId(userId, classId);
+    }
+
+    @Override
+    public List<StudentClass> findAllByStudentId(Integer studentId) {
+        return studentClassRepository.findAllByStudentId(studentId);
+    }
+
     public boolean removeStudentFromClass(int classId, int studentId) {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
         if (studentClass == null) return false;
         studentClassRepository.delete(studentClass);
         return true;
+    }
+    @Override
+    public Page<User> filter(Integer projectId, String search, Integer pageNo, Integer pageSize,
+                         String sortBy, Integer sortType, Integer status) {
+        Sort sort;
+        if (sortType == 1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return userRepository.filterProjectMember(projectId, search, status, PageRequest.of(pageNo, pageSize, sort));
     }
 }

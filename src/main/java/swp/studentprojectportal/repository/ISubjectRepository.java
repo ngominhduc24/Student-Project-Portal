@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.User;
 
@@ -46,4 +47,6 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
             "AND s.subject_manager_id = :subjectManagerId"
             ,nativeQuery = true)
     Page<Subject> searchSubjectAndFilterByManagerAndStatus(@Param("searchTerm") String searchTerm, @Param("subjectManagerId") Integer subjectManagerId, @Param("status") Integer status, Pageable pageable);
+    List<Subject> findSubjectByClassesProjectsProjectMentorId(@Param("projectMentorId") Integer projectMentorId);
+
 }
