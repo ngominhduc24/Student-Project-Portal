@@ -56,7 +56,7 @@ For building and running the application you need:
 1. Clone repository
 ```
 cd existing_repo
-git remote add origin [https://github.com/daylapvlong/SWP391_Student-project-portal.git]
+git remote add origin [https://github.com/daylapvlong/SWP391_Student-project-portal.git](https://github.com/ngominhduc24/Student-Project-Portal)]
 ```
 2. Run database file (sql/database.sql)
 3. Run the project
