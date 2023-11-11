@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
 import swp.studentprojectportal.service.servicesimpl.UserService;
-import swp.studentprojectportal.utils.Validate;
 import swp.studentprojectportal.utils.instance.InstanceSingleton;
 import swp.studentprojectportal.utils.SheetHandle;
 
@@ -122,7 +120,7 @@ public class StudentController {
     public String removeStudentFromClass(
             @RequestParam(name = "classId") Integer classId,
             @RequestParam(name = "studentId") Integer studentId) {
-        boolean result = studentClassService.removeStudentFromClass(classId, studentId);
+        studentClassService.removeStudentFromClass(classId, studentId);
         return "redirect:/class/student?classId=" + classId;
     }
 

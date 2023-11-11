@@ -27,6 +27,13 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
             "AND c.semester_id = :semesterId", nativeQuery = true)
     Page<Class> filterClassBySemester(@Param("semesterId") Integer semesterId, @Param("teacherId") Integer teacherId, Pageable pageable);
 
+    @Query(value = "SELECT c.* FROM class c " +
+            "WHERE c.semester_id = 8", nativeQuery = true)
+    List<Class> findClassBySemesterFall23();
+
+    @Query(value = "SELECT c.* FROM class c " +
+            "WHERE c.semester_id = 7", nativeQuery = true)
+    List<Class> findClassBySemesterSummer23();
 
     @Query(value = "SELECT DISTINCT c.*\n" +
             "FROM class c JOIN class_issue_setting cis ON c.id = cis.class_id WHERE c.teacher_id = :teacherId", nativeQuery = true)
@@ -58,5 +65,5 @@ public interface IClassRepository extends JpaRepository<Class, Integer> {
                                             @Param("status") Integer status,
                                             Pageable pageable);
 
-
+    List<Class> findClassByProjectsProjectMentorId(@Param("projectMentorId") Integer projectMentorId);
 }

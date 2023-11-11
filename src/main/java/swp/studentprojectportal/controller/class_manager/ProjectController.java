@@ -2,14 +2,13 @@ package swp.studentprojectportal.controller.class_manager;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Project;
-import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
 import swp.studentprojectportal.service.servicesimpl.StudentClassService;
@@ -76,8 +75,7 @@ public class ProjectController {
                          @RequestParam int mentorId,
                          @RequestParam int leaderId) {
 
-        Project project = projectService.update(projectId,title,groupName,description,mentorId,leaderId);
-
+        projectService.update(projectId,title,groupName,description,mentorId,leaderId);
         model.addAttribute("project", projectService.findById(projectId));
         model.addAttribute("projectMemberList", studentClassService.findAllByProjectId(projectId));
         model.addAttribute("projectMentorList", userService.findAllProjectMentor());
@@ -160,6 +158,24 @@ public class ProjectController {
         model.addAttribute("noGroupStudentList", studentClassService.findAllNoGroupInClass(classId));
 
         return "class_manager/project/projectMember";
+    }
+
+    @GetMapping("/members")
+    public String projectMember(Model model, @RequestParam Integer projectId,
+                                @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize,
+                                @RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") Integer status,
+                                @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "1") Integer sortType) {
+        Page<User> studentList = studentClassService.filter(projectId, search, pageNo, pageSize, sortBy, sortType, status);
+        model.addAttribute("project", projectService.findById(projectId));
+        model.addAttribute("studentList", studentList);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("search", search);
+        model.addAttribute("status", status);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("totalPage", studentList.getTotalPages());
+        return "class_manager/project/projectMemberList";
     }
 
     @GetMapping("/arrange/{classId}")

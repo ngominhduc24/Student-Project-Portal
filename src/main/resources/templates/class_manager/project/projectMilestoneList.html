@@ -167,9 +167,9 @@
     <div th:replace="~{dashboardHeader}"></div>
     <input type="hidden" name="id" th:value="${project.id}">
     <div class="topnav">
-      <a style="cursor: pointer;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/${project.id}}" ><p style="margin:0;">General</p></a>
-      <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/project/details/${project.id}}" ><p style="margin:0;">General</p></a>
-      <a style="cursor: pointer;" th:href="@{/class-manager/project/member(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==1}" th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}" ><p style="margin:0;">General</p></a>
+      <a style="cursor: pointer;" th:href="@{/class-manager/project/members(projectId=${project.id})}" ><p style="margin:0;">Members</p></a>
       <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class-manager/project/milestone(projectId=${project.id})}"><p style="margin:0;"  >Milestones</p></a>
       <a style="cursor: pointer;" th:href="@{/class-manager/project/issue-setting(id=${project.id})}" ><p style="margin:0;">Settings</p></a>
     </div>
@@ -183,8 +183,8 @@
             <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
               <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
               <li class="breadcrumb-item">/</li>
-              <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/class-manager/project/list${project.class.id}}">Project List</a></li>
-              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list${project.class.id}}">Project List</a></li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/student/project}" >Project List</a></li>
+              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list/{classId}(classId=${project.aclass.id})}" >Project List</a></li>
               <li class="breadcrumb-item">/</li>
               <li class="breadcrumb-item active">Milestone List</li>
             </ol>
@@ -475,7 +475,7 @@
                   }
                 });
               </script>
-              <input type="hidden" name="pageNo" id="pageNoInput" value="${pageNo}">
+              <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
               <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
                 <ul class="pagination justify-content-end">
                   <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
@@ -548,7 +548,7 @@
             </div>
           </div>
         </div>
-        <!--                milestone details-->
+        <!--milestone details-->
         <script>
           function details(id) {
             let endPoint = '/api/v1/milestone?milestoneId=' + id;

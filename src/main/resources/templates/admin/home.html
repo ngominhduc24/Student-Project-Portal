@@ -144,31 +144,18 @@
                     <div class="col-xl-8 col-lg-7 mt-4">
                         <div class="card shadow border-0 p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="align-items-center mb-0">Patients visit by Gender</h6>
-
-                                <div class="mb-0 position-relative">
-                                    <select class="form-select form-control" id="yearchart">
-                                        <option selected>2020</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2018">2018</option>
-                                    </select>
-                                </div>
+                                <h6 class="align-items-center mb-0">Class count by Semester</h6>
                             </div>
-                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                        </div>
-                    </div><!--end col-->
+                            <div class="card-body">
+                                <canvas id="myChart" width="100%" height="40"></canvas>
+                            </div>
+                        </div><!--end col-->
+                    </div>
 
                     <div class="col-xl-4 col-lg-5 mt-4">
                         <div class="card shadow border-0 p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="align-items-center mb-0">Patients by Department</h6>
-
-                                <div class="mb-0 position-relative">
-                                    <select class="form-select form-control" id="dailychart">
-                                        <option selected>Today</option>
-                                        <option value="2019">Yesterday</option>
-                                    </select>
-                                </div>
+                                <h6 class="align-items-center mb-0">Score distribution</h6>
                             </div>
                             <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                         </div>
@@ -190,9 +177,63 @@
 
 <script th:src="@{https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js}"></script>
 
-<script th:src="@{/js/chart-area-demo.js}"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/chart.js}"></script>
 
-<script th:src="@{/js/chart-bar-demo.js}"></script>
+
+<script th:inline="javascript">
+    var fall23Data = /*[[${classCountByFall23}]]*/ [];
+    var summer23Data = /*[[${classCountBySummer23}]]*/ [];
+
+    // Get the canvas element
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    // Define your pie chart data
+    var chartData = {
+        labels: ['SWP391', 'PRJ301', 'SWR302', 'SWT301'],
+        datasets: [
+            {
+                label: 'Fall 2023',
+                data: [30, 40, 30, 20],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar fill color for Fall 2023
+                borderColor: 'rgba(75, 192, 192, 1)',     // Bar border color for Fall 2023
+                borderWidth: 1
+            },
+            {
+                label: 'Summer 2023',
+                data: [30, 40, 30, 20],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Bar fill color for Summer 2023
+                borderColor: 'rgba(255, 99, 132, 1)',     // Bar border color for Summer 2023
+                borderWidth: 1
+            }
+        ]
+    };
+
+    // Create the pie chart
+    var myPieChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData
+    });
+</script>
+
+<script>
+    // Get the canvas element
+    var pie = document.getElementById('myBarChart').getContext('2d');
+
+    // Define your pie chart data
+    var pieChartData = {
+        labels: ['0-5', '5-8', '8-10'],
+        datasets: [{
+            data: [30, 40, 30],
+            backgroundColor: ['red', 'yellow', 'green']
+        }]
+    };
+
+    // Create the pie chart
+    var myPieChart = new Chart(pie, {
+        type: 'pie',
+        data: pieChartData
+    });
+</script>
 
 </body>
 </html>
