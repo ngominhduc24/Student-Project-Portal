@@ -9,9 +9,7 @@ RUN mvn clean package
 
 # Copy the built JAR file to the root directory of the container.
 RUN echo $(ls)
-#COPY target/*-SNAPSHOT.jar app.jar
-COPY target/Student-Project-Portal-*-SNAPSHOT.jar app.jar
-
+COPY target/*-SNAPSHOT.jar app.jar
 # Production stage
 FROM eclipse-temurin:17-jdk-alpine AS runner
 
