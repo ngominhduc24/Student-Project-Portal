@@ -35,6 +35,8 @@ public class EvaluationDTO {
 
     private Float workGrade = 0f;
 
+    private String CommentPersonal;
+
     private List<CriteriaDTO> criteriaGradeList;
 
     public Float getGradeSubmission() {

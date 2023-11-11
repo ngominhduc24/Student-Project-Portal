@@ -33,7 +33,7 @@ public class GitlabApiService {
                 projectIdOrPath, milestone.getId(),
                 milestone.getTitle(), milestone.getDescription(),
                 milestone.getDueDate(), milestone.getStartDate(),
-                Constants.MilestoneState.ACTIVE);
+                Constants.MilestoneState.ACTIVATE);
         return newMilestone != null;
     }
 
@@ -77,5 +77,15 @@ public class GitlabApiService {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
         Label newLabel = gitLabApi.getLabelsApi().createProjectLabel(projectIdOrPath, label);
         return newLabel != null;
+    }
+
+    public boolean updateProjectMilestone(String projectIdOrPath, String personToken, Milestone milestone) throws GitLabApiException {
+        gitLabApi = new GitLabApi("https://gitlab.com", personToken);
+        Milestone newMilestone = gitLabApi.getMilestonesApi().updateMilestone(
+                projectIdOrPath, milestone.getId(),
+                milestone.getTitle(), milestone.getDescription(),
+                milestone.getDueDate(), milestone.getStartDate(),
+                Constants.MilestoneState.ACTIVATE);
+        return newMilestone != null;
     }
 }

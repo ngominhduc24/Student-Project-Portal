@@ -41,6 +41,23 @@ public class EvaluationService implements IEvaluationService {
         return evaluation.getGrade()*evaluation.getWeight()/100;
     }
 
+    @Override
+    public boolean updateComment(Integer evaluationId, String comment) {
+        try {
+            Evaluation evaluation = evaluationRepository.findById(evaluationId).get();
+            evaluation.setComment(comment);
+            evaluationRepository.save(evaluation);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public Evaluation getEvaluationById(Integer evaluationId) {
+        return evaluationRepository.findEvaluationById(evaluationId);
+    }
+
     public List<Evaluation> createEvaluation(int submissionId) {
         List<Evaluation> output = new ArrayList<>();
         Submission submission =  submissionService.findById(submissionId);

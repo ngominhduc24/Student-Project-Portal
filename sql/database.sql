@@ -27,9 +27,9 @@ USE `swp391` ;
 DROP TABLE IF EXISTS `swp391`.`setting` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`setting` (
-                                                  `id` INT NOT NULL AUTO_INCREMENT,
-                                                  `type_id` INT NULL,
-                                                  `setting_title` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `type_id` INT NULL,
+    `setting_title` VARCHAR(45) NULL,
     `description` LONGTEXT NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `display_order` INT ,
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`setting` (
 DROP TABLE IF EXISTS `swp391`.`user` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`user` (
-                                               `id` INT NOT NULL AUTO_INCREMENT,
-                                               `email` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(45) NULL,
     `phone` VARCHAR(45) NULL,
     `password` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
@@ -78,9 +78,9 @@ CREATE TABLE IF NOT EXISTS `swp391`.`user` (
 DROP TABLE IF EXISTS `swp391`.`subject` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
-                                                  `id` INT NOT NULL AUTO_INCREMENT,
-                                                  `subject_manager_id` INT NULL,
-                                                  `subject_name` VARCHAR(255) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `subject_manager_id` INT NULL,
+    `subject_name` VARCHAR(255) NULL,
     `subject_code` VARCHAR(45) NULL,
     `description` VARCHAR(255) NULL,
     `status` BIT(1) NULL DEFAULT 1,
@@ -103,9 +103,9 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject` (
 DROP TABLE IF EXISTS `swp391`.`assignment` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`assignment` (
-                                                     `id` INT NOT NULL AUTO_INCREMENT,
-                                                     `subject_id` INT NULL,
-                                                     `title` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `subject_id` INT NULL,
+    `title` VARCHAR(45) NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `description` VARCHAR(245) NULL,
     `is_subject_assignment` BIT(1) NULL,
@@ -128,9 +128,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`assignment` (
 DROP TABLE IF EXISTS `swp391`.`class` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`class` (
-                                                `id` INT NOT NULL AUTO_INCREMENT,
-                                                `class_name` VARCHAR(245) NULL,
-
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `class_name` VARCHAR(245) NULL,
     `description` LONGTEXT NULL,
     `subject_id` INT NULL,
     `semester_id` INT NULL,
@@ -165,8 +164,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`class` (
 DROP TABLE IF EXISTS `swp391`.`milestone` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
-                                                    `id` INT NOT NULL AUTO_INCREMENT,
-                                                    `title` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(45) NULL,
     `description` VARCHAR(245) NULL,
     `class_id` INT NULL,
     `subject_assignment_id` INT DEFAULT null,
@@ -197,11 +196,11 @@ CREATE TABLE IF NOT EXISTS `swp391`.`milestone` (
 DROP TABLE IF EXISTS `swp391`.`project` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`project` (
-                                                  `id` INT NOT NULL AUTO_INCREMENT,
-                                                  `class_id` INT NULL,
-                                                  `project_mentor_id` INT NULL,
-                                                  `team_leader_id` INT NULL,
-                                                  `title` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `class_id` INT NULL,
+    `project_mentor_id` INT NULL,
+    `team_leader_id` INT NULL,
+    `title` VARCHAR(45) NULL,
     `status` BIT(1) NULL,
     `group_name` VARCHAR(45) NULL,
     `description` VARCHAR(200) NULL,
@@ -234,15 +233,15 @@ CREATE TABLE IF NOT EXISTS `swp391`.`project` (
 DROP TABLE IF EXISTS `swp391`.`student_class` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
-                                                        `id` INT NOT NULL AUTO_INCREMENT,
-                                                        `student_id` INT NOT NULL,
-                                                        `class_id` INT NOT NULL,
-                                                        `project_id` INT NULL,
-                                                        `create_by` INT NULL DEFAULT 0,
-                                                        `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-                                                        `update_by` INT NULL DEFAULT 0,
-                                                        `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-                                                        PRIMARY KEY (`id`, `student_id`, `class_id`),
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `class_id` INT NOT NULL,
+    `project_id` INT NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`, `student_id`, `class_id`),
     INDEX `b_idx` (`class_id` ASC) VISIBLE,
     INDEX `a_idx` (`project_id` ASC) VISIBLE,
     FOREIGN KEY (`student_id`)
@@ -265,11 +264,11 @@ CREATE TABLE IF NOT EXISTS `swp391`.`student_class` (
 DROP TABLE IF EXISTS `swp391`.`issue_setting` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`issue_setting` (
-                                                        `id` INT NOT NULL AUTO_INCREMENT,
-                                                        `subject_id` INT NULL,
-                                                        `class_id` INT NULL,
-                                                        `project_id` INT NULL,
-                                                        `setting_group` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `subject_id` INT NULL,
+    `class_id` INT NULL,
+    `project_id` INT NULL,
+    `setting_group` VARCHAR(45) NULL,
     `setting_title` VARCHAR(45) NULL,
     `description` VARCHAR(200) NULL,
     `status` BIT(1) NULL DEFAULT 1,
@@ -297,8 +296,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`issue_setting` (
 DROP TABLE IF EXISTS `swp391`.`criteria` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`criteria` (
-                                                   `id` INT NOT NULL AUTO_INCREMENT,
-                                                   `name` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(45) NULL,
     `weight` INT NULL,
     `assignment_id` INT NULL,
     `status` BIT(1) NULL DEFAULT 1,
@@ -315,10 +314,10 @@ CREATE TABLE IF NOT EXISTS `swp391`.`criteria` (
 DROP TABLE IF EXISTS `swp391`.`subject_setting` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
-                                                          `id` INT NOT NULL AUTO_INCREMENT,
-                                                          `subject_id` INT NULL,
-                                                          `type_id` INT NULL,
-                                                          `setting_title` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `subject_id` INT NULL,
+    `type_id` INT NULL,
+    `setting_title` VARCHAR(45) NULL,
     `setting_value` INT NULL,
     `status` BIT(1) NULL DEFAULT 1,
     `display_order` INT ,
@@ -338,11 +337,11 @@ CREATE TABLE IF NOT EXISTS `swp391`.`subject_setting` (
 DROP TABLE IF EXISTS `swp391`.`submission` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`submission` (
-                                                     `id` INT NOT NULL AUTO_INCREMENT,
-                                                     `milestone_id` INT NULL,
-                                                     `project_id` INT NULL,
-                                                     `submit_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP NULL,
-                                                     `note` VARCHAR(255) NULL,
+     `id` INT NOT NULL AUTO_INCREMENT,
+     `milestone_id` INT NULL,
+     `project_id` INT NULL,
+     `submit_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP NULL,
+     `note` VARCHAR(255) NULL,
     `file_location` VARCHAR(255) NULL DEFAULT 1,
     `evaluation` float ,
     `comment` VARCHAR(255) ,
@@ -354,27 +353,51 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submission` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`create_by`)
     REFERENCES `swp391`.`user` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`milestone_id`)
     REFERENCES `swp391`.`milestone` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`project_id`)
     REFERENCES `swp391`.`project` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`submission_personal`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `swp391`.`submission_personal` ;
+
+CREATE TABLE IF NOT EXISTS `swp391`.`submission_personal` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `submission_id` INT NOT NULL,
+    `student_id` INT NOT NULL,
+    `bonus` INT default 0,
+    `comment` VARCHAR(145) NULL,
+    `create_by` INT NULL DEFAULT 0,
+    `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_by` INT NULL DEFAULT 0,
+    `update_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`submission_id`)
+    REFERENCES `swp391`.`submission` (`id`),
+    FOREIGN KEY (`student_id`)
+    REFERENCES `swp391`.`user` (`id`))
+    ENGINE = InnoDB;
+
+
 -- -----------------------------------------------------
 -- Table `swp391`.`evaluation`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `swp391`.`evaluation` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`evaluation` (
-                                                     `id` INT NOT NULL AUTO_INCREMENT,
-                                                     `submit_id` INT NULL,
-                                                     `student_id` INT NULL,
-                                                     `criteria` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `submit_id` INT NULL,
+    `student_id` INT NULL,
+    `criteria` VARCHAR(45) NULL,
     `weight` INT NULL,
     `grade` float NULL DEFAULT 1,
     `comment` VARCHAR(255) ,
@@ -385,12 +408,12 @@ CREATE TABLE IF NOT EXISTS `swp391`.`evaluation` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`submit_id`)
     REFERENCES `swp391`.`submission` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`student_id`)
     REFERENCES `swp391`.`user` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -399,8 +422,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`evaluation` (
 DROP TABLE IF EXISTS `swp391`.`issue` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`issue` (
-                                                `id` INT NOT NULL AUTO_INCREMENT,
-                                                `title` VARCHAR(45) NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(45) NULL,
     `project_id` INT NULL,
     `milestone_id` INT NULL,
     `type_id`INT NULL,
@@ -414,28 +437,28 @@ CREATE TABLE IF NOT EXISTS `swp391`.`issue` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`milestone_id`)
     REFERENCES `swp391`.`milestone` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`project_id`)
     REFERENCES `swp391`.`project` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`type_id`)
     REFERENCES `swp391`.`issue_setting` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`status_id`)
     REFERENCES `swp391`.`issue_setting` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`process_id`)
     REFERENCES `swp391`.`issue_setting` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`assignee_id`)
     REFERENCES `swp391`.`user` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `swp391`.`submit_issue`
@@ -443,10 +466,10 @@ CREATE TABLE IF NOT EXISTS `swp391`.`issue` (
 DROP TABLE IF EXISTS `swp391`.`submit_issue` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`submit_issue` (
-                                                       `id` INT NOT NULL AUTO_INCREMENT,
-                                                       `issue_id` INT NULL,
-                                                       `submit_id` INT NULL,
-                                                       `is_final`  BIT(1) NULL DEFAULT 1,
+   `id` INT NOT NULL AUTO_INCREMENT,
+   `issue_id` INT NULL,
+   `submit_id` INT NULL,
+   `is_final`  BIT(1) NULL DEFAULT 1,
     `quality_id`INT NULL,
     `complexity_id`INT NULL,
     `function_loc` INT NULL,
@@ -458,20 +481,20 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submit_issue` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`issue_id`)
     REFERENCES `swp391`.`issue` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`submit_id`)
     REFERENCES `swp391`.`submission` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`quality_id`)
     REFERENCES `swp391`.`subject_setting` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION,
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     FOREIGN KEY (`complexity_id`)
     REFERENCES `swp391`.`subject_setting` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `swp391`.`issue_update`
@@ -479,9 +502,9 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submit_issue` (
 DROP TABLE IF EXISTS `swp391`.`issue_update` ;
 
 CREATE TABLE IF NOT EXISTS `swp391`.`issue_update` (
-                                                       `id` INT NOT NULL AUTO_INCREMENT,
-                                                       `issue_id` INT NULL,
-                                                       `title` VARCHAR(45),
+   `id` INT NOT NULL AUTO_INCREMENT,
+   `issue_id` INT NULL,
+   `title` VARCHAR(45),
     `description`  VARCHAR(255) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -490,8 +513,8 @@ CREATE TABLE IF NOT EXISTS `swp391`.`issue_update` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`issue_id`)
     REFERENCES `swp391`.`issue` (`id`)
-                                                        ON DELETE NO ACTION
-                                                        ON UPDATE NO ACTION)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
     ENGINE = InnoDB;
 
 
@@ -778,7 +801,7 @@ INSERT INTO submission(milestone_id, project_id, submit_date, note, file_locatio
 VALUES
     (1, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
     (2, 1, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G2.zip', 6, 'Overall, the group did quite well', 1, 6),
-    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 2, 6),
+    (19, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 7, NULL, 1, 6),
     (21, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G3.zip', 8, 'Overall, the group did quite well', 1, 6),
     (22, 1, '2023-10-03', 'the file include RDS document, project tracking, link source code, ...', 'G4.zip', 7, 'Overall, the group did quite well', 1, 6),
     (23, 1, '2023-10-02', 'the file include RDS document, project tracking, link source code, ...', 'G1.zip', 8, 'Overall, the group did quite well', 1, 6),
@@ -875,3 +898,9 @@ VALUES
     (1 ,"Job4","Remember with cookie"),
     (1 ,"Job5","Login with gg"),
     (1 ,"Job6","Hash password");
+
+INSERT INTO submission_personal (submission_id, student_id, bonus, comment) VALUES
+(1, 6, 1, 'Good job on the project'),
+(1, 7, 0, 'Could use some improvements'),
+(1, 8, -1, 'Keep up the good work')
+

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface IEvaluationRepository extends JpaRepository<Evaluation, Integer> {
     List<Evaluation> findEvaluationBySubmissionId(Integer submissionId);
+
+    Evaluation findEvaluationById(Integer evaluationId);
 }

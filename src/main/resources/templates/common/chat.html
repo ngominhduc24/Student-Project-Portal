@@ -100,7 +100,7 @@
     </main>
 </div>
 
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="http://54.206.28.51/socket.io/socket.io.js"></script>
 <script>
     const classId = [[${classId}]];
     const chatBody = document.querySelector('.chat-body');
@@ -132,14 +132,14 @@
         return token;
     }
 
-    const socket = io('http://localhost:3000');
+    const socket = io('http://54.206.28.51/');
 
     //async run
     (async () => {
 
         //get message data
         let token = await getToken({classId: classId});
-        await fetch(`http://localhost:3000/api/v1/chat/${token}`)
+        await fetch(`http://54.206.28.51/api/v1/chat/${token}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error');
