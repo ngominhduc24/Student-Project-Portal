@@ -31,7 +31,7 @@ public class Evaluation {
 
     private Float grade = 1.0f; // Default value 1.0
 
-    private String comment;
+    private String comment = "";
 
     @Column(name = "create_by")
     private Integer createBy = 0;

@@ -33,6 +33,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+
+    <script th:src="@{/js/notify.js}"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
 
 
 
@@ -399,8 +408,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" href="#"><i class="fas fa-pen-to-square"></i></a>&nbsp
-                                        <a th:href="@{/subject-manager/subject/criteria(id=${assignment.id})}">Criteria</a>
+                                        <a th:onclick="'assignmentDetail(' + ${assignment.id} + ')'" style="margin-left: 12px" href="#"><i class="fas fa-pen-to-square"></i></a>&nbsp
+                                        <a th:href="@{/subject-manager/subject/criteria(id=${assignment.id})}" style="float: right; margin-right: 12px">View Criteria</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -522,12 +531,125 @@
                     <div class="col-xl-5 col-md-6"></div>
 
                     <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                        <a href="subject-manager/issue-setting/add" class="btn btn-primary"
-                           style="margin-left: 24px">Add
-                            New</a>
+                        <button type="button" class="btn btn-primary"  id="addNewButton" style="margin-bottom: 8px; width: 155px" >
+                            <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                            Add New
+                        </button>
                     </div><!--end col-->
 
                 </div><!--end row-->
+
+                <!-- Add new -->
+
+                <div class="modal fade" id="createIssueSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createIssueSettingModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createIssueSettingModalLabel">New Issue Setting</h5>
+                                <button type="button" class="close" data-dismiss="modal" id="closeModalBtn1" aria-label="Close" style="border: none; background-color: white;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 row" style="margin-top: 12px;">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Subject Code</label>
+                                            <input type="text" name="subjectCode" class="form-control" required th:value="${subject.subjectCode}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Group<span class="text-danger">*</span></label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Title</label>
+                                            <div class="d-flex">
+                                                <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" >
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <div class="d-flex">
+                                                <textarea type="text" rows="3" name="newDescription" class="form-control" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn">Close</button>
+                                <button type="button" class="btn btn-primary"  id="addIssueSettingButton" >
+                                    Add New
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Issue Setting-->
+
+                <script>
+                    var addNewButton = document.getElementById('addNewButton');
+
+                    addNewButton.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('show');
+                    });
+
+                    var closeModalBtn = document.getElementById('closeModalBtn');
+                    var closeModalBtn1 = document.getElementById('closeModalBtn1');
+
+                    closeModalBtn.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('hide');
+                    });
+                    closeModalBtn1.addEventListener('click', function() {
+                        $('#createIssueSettingModal').modal('hide');
+                    });
+
+                    // Get a reference to the button
+                    var addIssueSettingButton = document.getElementById('addIssueSettingButton');
+
+                    // Add a click event listener to the button
+                    addIssueSettingButton.addEventListener('click', function() {
+                        console.log("Da bam nut");
+                        // Get values from the form fields
+                        const subjectId = document.querySelector('input[name="id"]').value;
+                        const group = document.querySelector('input[id="newSettingGroup"]').value;
+                        const title = document.querySelector('input[id="newSettingTitle"]').value;
+                        const description = document.querySelector('textarea[name="newDescription"]').value;
+
+                        // Prepare the URL with query parameters
+                        var endPoint = '/api/v1/add2/issue-setting' +
+                            '?subjectId=' + subjectId +
+                            '&group=' + group+
+                            '&title=' + title +
+                            '&description=' + description ;
+
+                        // Make an API request using fetch with GET method
+                        fetch(endPoint)
+                            .then(response => {
+                                if (response.ok) {
+                                    notify('success', 'Add Issue setting successfully.', 'Success');
+                                    // Delay the page reload for a few seconds
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000); // Adjust the delay duration as needed
+                                } else {
+                                    // Handle API errors
+                                    return response.text();
+                                }
+                            })
+                            .then(errorText =>{
+                                if(errorText && !errorText.startsWith('Add'))
+                                    notify('error',errorText,'Error')
+                            })
+                            .catch(error => {
+                                // Handle network errors
+                                console.error('Network error:', error);
+                            });
+                    });
+                </script>
+
                 <div class="container-fluid px-4">
                     <div class="card mb-4">
                         <div class="card-body rounded-3">
@@ -624,11 +746,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a th:href="@{/subject-manager/issue-setting/detail(id=${setting.id})}"><i
-                                                class="fas fa-pen-to-square"></i></a></td>
+                                        <div th:onclick="'detailsSetting(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                class="fas fa-pen-to-square"></i></div>
                                 </tr>
                                 </tbody>
                             </table>
+
+
 
                             <input type="hidden" name="pageNoS" id="pageNoInputSetting" th:value="${pageNoS}">
                             <nav th:if="${totalPageS!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
@@ -653,6 +777,116 @@
                                     </li>
                                 </ul>
                             </nav>
+                            <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
+                            <!--  Detail Modal-->
+                            <div class="modal fade" id="detailsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="detailsModalLongTitle">Issue Setting details</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-12 row" style="margin-top: 12px;">
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Subject Code</label>
+                                                        <input type="text" name="subjectCode" class="form-control" th:value="${subject.subjectCode}" readonly disabled>
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Group<span class="text-danger">*</span></label>
+                                                        <input type="text" id="details-issue-setting-group" class="form-control" >
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <label class="form-label">Title</label>
+                                                        <input type="text" id="details-issue-setting-title" class="form-control" >
+                                                    </div>
+                                                    <div class="mb-3 col-md-6">
+                                                        <div class="form-switch">
+                                                            <label class="form-label" style="margin-left: -40px">Status</label>
+                                                            <input class="form-check-input" type="checkbox" id="detail-status" style="width: 45px; height: 20px; margin-left: 20px">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 col-md-12">
+                                                        <label class="form-label">Description</label>
+                                                        <textarea type="text" rows="3" name="detail-description" class="form-control" content="description"></textarea>
+                                                    </div>
+                                                </div><!--end col-->
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal">Close</button>
+                                            <button type="button" class="btn btn-primary" id="updateIssueSettingButton">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detail-->
+                            <script>
+                                function detailsSetting(id) {
+                                    console.log('show detail'+id)
+                                    let endPoint = '/api/v1/issue-setting?issueSettingId=' + id;
+                                    fetch(endPoint)
+                                        .then(response => {
+                                            if (response.ok) {
+                                                // Handle a successful API response
+                                                response.json().then(data => {
+                                                    document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
+                                                    document.querySelector('input[id="details-issue-setting-title"]').value = data.title;
+                                                    document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                                    document.getElementById('detail-status').checked = data.status == 1 ? true : false;
+                                                    document.getElementById('updateIssueSettingButton').setAttribute('onclick', 'updateIssueSetting(' + data.id + ')');
+                                                });
+                                            } else {
+                                                // Handle API errors
+                                                console.error('Error getting issue setting.');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            // Handle network errors
+                                            console.error('Network error:', error);
+                                        });
+                                    document.getElementById('btndetails').click();
+                                }
+                            </script>
+
+                            <!--Update Issue Setting-->
+                            <script>
+                                function updateIssueSetting(id){
+                                    const subjectId = document.querySelector('input[name="id"]').value;
+                                    const group = document.querySelector('input[id="details-issue-setting-group"]').value;
+                                    const title = document.querySelector('input[id="details-issue-setting-title"]').value;
+                                    const description = document.querySelector('textarea[name="detail-description"]').value;
+                                    const status = document.getElementById('detail-status').checked ? 1 : 0;
+                                    let endPoint = '/api/v1/update2/issue-setting?issueSettingId=' + id + '&subjectId=' + subjectId +'&title=' + title + '&description=' + description + '&group=' + group + '&status=' + status;
+
+                                    fetch(endPoint, {
+                                        method: 'GET',
+                                    })
+                                        .then(response => {
+                                            if(response.ok) {
+                                                notify('success','Update issue setting successfully' , 'Success');
+                                                setTimeout(() => {
+                                                    location.reload();
+                                                }, 1000);
+                                            } else  {
+                                                // notify('error' ,response.text()  ,'Error' );
+                                                return response.text();
+                                            }
+                                        })
+                                        .then(errorText =>{
+                                            if(errorText && !errorText.startsWith('Update'))
+                                                notify('error',errorText,'Error')
+                                        })
+                                        .catch(error => {
+                                            alert("Network error " + error);
+                                        });
+                                }
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -715,12 +949,267 @@
                         <div class="col-xl-5 col-md-6"></div>
 
                         <div class="col-xl-2 col-md-6 d-flex align-items-center justify-content-center mb-2">
-                            <a href="/subject-manager/subject-setting/add" class="btn btn-primary"
-                               style="margin-left: 24px">Add
-                                New</a>
+                            <button type="button" class="btn btn-primary"  id="addNewButton2" style="margin-bottom: 8px; width: 155px" >
+                                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
+                                Add New
+                            </button>
                         </div><!--end col-->
 
                     </div><!--end row-->
+                    <!-- Add new -->
+
+                    <div class="modal fade" id="createSubjectSettingModal" style="padding-top:70px" tabindex="-1" aria-labelledby="createSubjectSettingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createSubjectSettingModalLabel">New Subject Setting</h5>
+                                    <button type="button" class="close" data-dismiss="modal" id="closeModalBtn3" aria-label="Close" style="border: none; background-color: white;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Subject Code</label>
+                                                <input type="text" name="subjectCode" class="form-control" required th:value="${subject.subjectCode}" readonly disabled>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Type<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <select id="newSubjectSettingType" name="newSubjectSettingType" class="form-select">
+                                                        <option value="1" selected>Complexity</option>
+                                                        <option value="2" >Quality</option>
+                                                    </select>
+
+<!--                                                    <input type="text" id="newSubjectSettingType" name="newSubjectSettingType" class="form-control"  required>-->
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <input type="text" id="newSubjectSettingTitle" name="newSubjectSettingTitle" class="form-control" >
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Value<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <input type="text" id="newSubjectSettingValue" name="newSubjectSettingValue" class="form-control" >
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Display Order<span class="text-danger">*</span></label>
+                                                <div class="d-flex">
+                                                    <input type="text" id="newSubjectSettingDisplayOrder" name="newSubjectSettingDisplayOrder" class="form-control" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn4">Close</button>
+                                    <button type="button" class="btn btn-primary"  id="addSubjectSettingButton" >
+                                        Add New
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add Subject Setting-->
+
+                    <script>
+                        var addNewButton2 = document.getElementById('addNewButton2');
+
+                        addNewButton2.addEventListener('click', function() {
+                            $('#createSubjectSettingModal').modal('show');
+                        });
+
+                        var closeModalBtn3 = document.getElementById('closeModalBtn3');
+                        var closeModalBtn4 = document.getElementById('closeModalBtn4');
+
+                        closeModalBtn3.addEventListener('click', function() {
+                            $('#createSubjectSettingModal').modal('hide');
+                        });
+                        closeModalBtn4.addEventListener('click', function() {
+                            $('#createSubjectSettingModal').modal('hide');
+                        });
+
+                        // Get a reference to the button
+                        var addSubjectSettingButton = document.getElementById('addSubjectSettingButton');
+
+                        // Add a click event listener to the button
+                        addSubjectSettingButton.addEventListener('click', function() {
+                            console.log("Da bam nut");
+                            // Get values from the form fields
+                            const subjectId = document.querySelector('input[name="id"]').value;
+                            const typeId = document.querySelector('select[id="newSubjectSettingType"]').value;
+                            const title = document.querySelector('input[id="newSubjectSettingTitle"]').value;
+                            const value = document.querySelector('input[id="newSubjectSettingValue"]').value;
+                            const displayOrder = document.querySelector('input[id="newSubjectSettingDisplayOrder"]').value;
+
+                            // Prepare the URL with query parameters
+                            var endPoint = '/api/v1/add/subject-setting' +
+                                '?subjectId=' + subjectId +
+                                '&typeId=' + typeId +
+                                '&value=' + value+
+                                '&title=' + title +
+                                '&displayOrder=' + displayOrder ;
+
+                            // Make an API request using fetch with GET method
+                            fetch(endPoint)
+                                .then(response => {
+                                    if (response.ok) {
+                                        notify('success', 'Add Subject setting successfully.', 'Success');
+                                        // Delay the page reload for a few seconds
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000); // Adjust the delay duration as needed
+                                    } else {
+                                        // Handle API errors
+                                        return response.text();
+                                    }
+                                })
+                                .then(errorText =>{
+                                    if(errorText && !errorText.startsWith('Add'))
+                                        notify('error',errorText,'Error')
+                                })
+                                .catch(error => {
+                                    // Handle network errors
+                                    console.error('Network error:', error);
+                                });
+                        });
+                    </script>
+
+                    <button type="button" id="btndetails1" data-toggle="modal" data-target="#detailsModalCenter1" hidden="hidden"></button>
+                    <!--  Detail Modal-->
+                    <div class="modal fade" id="detailsModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLongTitle1">Subject Setting details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background-color: white;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Subject Code</label>
+                                                <input type="text" name="subjectCode" class="form-control" th:value="${subject.subjectCode}" readonly disabled>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Type<span class="text-danger">*</span></label>
+                                                <select id="details-subject-setting-type" class="form-select">
+                                                    <option value="1">Complexity</option>
+                                                    <option value="2">Quality</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Title<span class="text-danger">*</span></label>
+                                                <input type="text" id="details-subject-setting-title" class="form-control" >
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Value<span class="text-danger">*</span></label>
+                                                <input type="text" id="details-subject-setting-value" class="form-control" >
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Display Order<span class="text-danger">*</span></label>
+                                                <input type="text" id="details-subject-setting-display-order" class="form-control" >
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <div class="form-switch">
+                                                    <label class="form-label" style="margin-left: -40px">Status</label> <br>
+                                                    <input class="form-check-input" type="checkbox" id="detail-subject-setting-status" style="width: 45px; height: 20px; margin-left: 20px">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal1">Close</button>
+                                    <button type="button" class="btn btn-primary" id="updateSubjectSettingButton">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail-->
+                    <script>
+                        function detailsSubjectSetting(id) {
+                            console.log('show detail'+id)
+                            let endPoint = '/api/v1/subject-setting?subjectSettingId=' + id;
+                            fetch(endPoint)
+                                .then(response => {
+                                    if (response.ok) {
+                                        // Handle a successful API response
+                                        response.json().then(data => {
+                                            document.querySelector('input[id="details-subject-setting-title"]').value = data.title;
+                                            document.querySelector('input[id="details-subject-setting-value"]').value = data.value;
+                                            document.querySelector('input[id="details-subject-setting-display-order"]').value = data.displayOrder;
+                                            var selectElement = document.querySelector('select[id="details-subject-setting-type"]');
+                                            var dataValue = data.typeId;
+                                            for (var i = 0; i < selectElement.options.length; i++) {
+                                                // Nếu giá trị của option khớp với giá trị từ dữ liệu, đặt selected
+                                                if (selectElement.options[i].value == dataValue) {
+                                                    selectElement.options[i].selected = true;
+                                                    break; // Dừng vòng lặp nếu đã tìm thấy giá trị khớp
+                                                }
+                                            }
+                                            // document.querySelector('select[id="details-subject-setting-type"]').value = data.typeId;
+                                            document.getElementById('detail-subject-setting-status').checked = data.status == 1 ? true : false;
+                                            document.getElementById('updateSubjectSettingButton').setAttribute('onclick', 'updateSubjectSetting(' + data.id + ')');
+                                        });
+                                    } else {
+                                        // Handle API errors
+                                        console.error('Error getting issue setting.');
+                                    }
+                                })
+                                .catch(error => {
+                                    // Handle network errors
+                                    console.error('Network error:', error);
+                                });
+                            document.getElementById('btndetails1').click();
+                        }
+                    </script>
+
+                    <!--Update Subject Setting-->
+                    <script>
+                        function updateSubjectSetting(id){
+                            console.log('updateSubjectSetting '+ id);
+                            const subjectId = document.querySelector('input[name="id"]').value;
+                            const typeId = document.querySelector('select[id="details-subject-setting-type"]').value;
+                            const title = document.querySelector('input[id="details-subject-setting-title"]').value;
+                            const value = document.querySelector('input[id="details-subject-setting-value"]').value;
+                            const displayOrder = document.querySelector('input[id="details-subject-setting-display-order"]').value;
+                            const status = document.getElementById('detail-subject-setting-status').checked ? 1 : 0;
+                            let endPoint = '/api/v1/update/subject-setting?subjectSettingId=' + id +
+                                '&subjectId=' + subjectId +'&typeId=' +typeId + '&title=' + title + '&value=' +
+                                value + '&displayOrder=' + displayOrder + '&status=' + status;
+
+                            fetch(endPoint, {
+                                method: 'GET',
+                            })
+                                .then(response => {
+                                    if(response.ok) {
+                                        notify('success','Update subject setting successfully' , 'Success');
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000);
+                                    } else  {
+                                        // notify('error' ,response.text()  ,'Error' );
+                                        return response.text();
+                                    }
+                                })
+                                .then(errorText =>{
+                                    if(errorText && !errorText.startsWith('Update'))
+                                        notify('error',errorText,'Error')
+                                })
+                                .catch(error => {
+                                    alert("Network error " + error);
+                                });
+                        }
+                    </script>
                     <div class="container-fluid px-4">
                         <div class="card mb-4">
                             <div class="card-body rounded-3">
@@ -794,7 +1283,7 @@
                                             <i th:class="${(sortBySe eq 'type_id' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                                onclick="sortDataSe('type_id',2)"></i>
                                         </th>
-                                        <th data-sortable="false">Name
+                                        <th data-sortable="false">Title
                                             <i th:class="${(sortBySe eq 'setting_title' && sortTypeSe == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
                                                onclick="sortDataSe('setting_title',1)"></i>
                                             <i th:class="${(sortBySe eq 'setting_title' && sortTypeSe == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
@@ -832,8 +1321,8 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a th:href="@{/subject-manager/subject-setting/detail?id={id}(id=${setting.id})}"><i
-                                                    class="fas fa-pen-to-square"></i></a>
+                                            <div th:onclick="'detailsSubjectSetting(' + ${setting.id} + ')'" style="border: none; background-color: white; color: blue"><i
+                                                    class="fas fa-pen-to-square"></i></div>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -976,7 +1465,7 @@
                     $('#confirmationModalRed').modal('hide');
                 });
         else if (typeId==2)
-            fetch(`issue-setting/updateStatus?id=${id}&status=${status}`)
+            fetch(`/issue-setting/updateStatus?id=${id}&status=${status}`)
                 .then(() => {
                     confirmClicked = true;
                     $('#confirmationModal').modal('hide');

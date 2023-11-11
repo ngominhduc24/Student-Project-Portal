@@ -46,7 +46,7 @@ public class IssueSettingService implements IIssueSettingService {
     }
 
     @Override
-    public IssueSetting saveSubjectSetting(IssueSetting issueSetting) {
+    public IssueSetting saveIssueSetting(IssueSetting issueSetting) {
         return issueSettingRepository.save(issueSetting);
     }
 
@@ -94,6 +94,11 @@ public class IssueSettingService implements IIssueSettingService {
     @Override
     public IssueSetting findByClassAndGroupAndTitle(int classId,String settingGroup, String settingTitle){
         return issueSettingRepository.findIssueSettingByAclassAndSettingGroupAndSettingTitle(classId, settingGroup, settingTitle).orElse(null);
+    }
+
+    @Override
+    public IssueSetting findBySubjectAndGroupAndTitle(int subjectId,String settingGroup, String settingTitle){
+        return issueSettingRepository.findIssueSettingBySubjectAndSettingGroupAndSettingTitle(subjectId, settingGroup, settingTitle).orElse(null);
     }
 
     public List<IssueSetting> findAllSettingServiceByClassId(int classId){

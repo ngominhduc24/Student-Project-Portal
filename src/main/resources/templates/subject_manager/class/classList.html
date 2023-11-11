@@ -57,7 +57,7 @@
             color: #962c35 !important;
         }
         th:first-child {
-            width: 10%;
+            width: 6%;
         }
         th:nth-child(2) {
             width: 20%;
@@ -338,7 +338,7 @@
                                                                     th:selected="${teacher.id == class.user.id}"></option>
                                                         </select>
                                                     </div>
-                                                    <div class="mb-3 col-md-12">
+                                                    <div class="mb-3 col-md-12" style="display: none">
                                                         <label class="form-label">Description</label>
                                                         <textarea type="text" rows="3" name="description" class="form-control" th:field="${class.description}"></textarea>
                                                     </div>

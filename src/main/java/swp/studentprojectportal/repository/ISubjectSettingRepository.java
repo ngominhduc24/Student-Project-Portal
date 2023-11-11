@@ -32,4 +32,12 @@ public interface ISubjectSettingRepository extends JpaRepository<SubjectSetting,
             @Param("subjectId") Integer subjectId,
             @Param("typeId") Integer typeId,
             @Param("status") Integer status, Pageable pageable);
+
+    @Query(value ="SELECT * FROM subject_setting\n"+
+            "WHERE subject_id = :subjectId AND type_id = :typeId AND setting_title = :title"
+            ,nativeQuery = true)
+    SubjectSetting findSubjectSettingByIdAndTypeIdAndSettingTitle(
+            @Param("subjectId") int subjectId,
+            @Param("typeId") int typeId,
+            @Param("title") String title);
 }

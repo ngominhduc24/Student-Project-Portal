@@ -1,11 +1,16 @@
 package swp.studentprojectportal.utils.dto;
 
 import org.gitlab4j.api.models.Label;
+import swp.studentprojectportal.model.CriteriaDTO;
+import swp.studentprojectportal.model.Evaluation;
+import swp.studentprojectportal.model.EvaluationDTO;
 import swp.studentprojectportal.model.IssueSetting;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mapper {
     // Convert from swp.studentprojectportal.model.IssueSetting to org.gitlab4j.api.models.Label
@@ -84,5 +89,36 @@ public class Mapper {
     // Compare two swp.studentprojectportal.model.Milestone objects
     public static boolean milestoneEquals(swp.studentprojectportal.model.Milestone milestone, org.gitlab4j.api.models.Milestone milestoneGitlab) {
         return milestone.getTitle().equals(milestoneGitlab.getTitle());
+    }
+
+    // Convert Evaluation to EvaluationDTO
+    public static List<EvaluationDTO> evaluationMapper(List<Evaluation> evaluation) {
+        if(evaluation == null || evaluation.size() == 0)
+            return new ArrayList<>();
+
+        List<EvaluationDTO> evaluationDTOList= new ArrayList<>();
+        evaluation.forEach(item -> {
+            if(evaluationDTOList.stream().noneMatch(evaluationDTO -> evaluationDTO.getStudentId().equals(item.getStudent().getId()))) {
+                EvaluationDTO evaluationDTO = new EvaluationDTO();
+                evaluationDTO.setStudentId(item.getStudent().getId());
+                evaluationDTO.setSubmissionId(item.getSubmission().getId());
+                evaluationDTO.setUsername(item.getStudent().getDisplayName());
+                evaluationDTO.setFullname(item.getStudent().getFullName());
+                evaluationDTO.setGroupname(item.getSubmission().getProject().getGroupName());
+                evaluationDTO.setWeight(item.getWeight());
+                evaluationDTO.setCommentGroup(item.getSubmission().getComment());
+
+                // add criteria grade list
+                List<CriteriaDTO> criteriaDTOList = new ArrayList<>();
+                criteriaDTOList.add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment(), item.getWeight()));
+                evaluationDTO.setCriteriaGradeList(criteriaDTOList);
+                evaluationDTOList.add(evaluationDTO);
+            } else {
+                evaluationDTOList.stream().filter(evaluationDTO -> evaluationDTO.getStudentId().equals(item.getStudent().getId())).forEach(evaluationDTO -> {
+                     evaluationDTO.getCriteriaGradeList().add(new CriteriaDTO(item.getId(), item.getCriteria(), item.getGrade(), item.getComment(), item.getWeight()));
+                });
+            }
+        });
+        return evaluationDTOList;
     }
 }

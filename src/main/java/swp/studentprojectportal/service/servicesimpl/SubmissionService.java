@@ -52,4 +52,20 @@ public class SubmissionService implements ISubmissionService {
     public Submission findById(Integer submissionId) {
         return submissionRepository.findById(submissionId).orElseGet(null);
     }
+
+    @Override
+    public boolean updateComment(Integer submissionId, String comment) {
+        try {
+            Submission submission = submissionRepository.findById(submissionId).get();
+
+            submission.setComment(comment);
+
+            submissionRepository.save(submission);
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
 }
