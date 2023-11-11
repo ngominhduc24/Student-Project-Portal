@@ -36,8 +36,12 @@ public class Milestone {
     @Column(name = "status")
     private boolean status = true;
 
-    @Column(name = "is_subject_assignment")
-    private boolean isSubjectAssignment = false;
+    @Column(name = "gitlab_milestone_id")
+    private Integer gitlabMilestoneId;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_assignment_id")
+    private Assignment subjectAssignment;
 
     @ManyToOne
     @JoinColumn(name = "class_id")

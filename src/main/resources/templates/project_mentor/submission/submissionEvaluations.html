@@ -44,6 +44,21 @@
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <style>
+  table.scroll {
+    white-space: nowrap;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+  input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+  }
+
   .multiselect {
     width: 200px;
     position: relative;
@@ -79,11 +94,21 @@
   }
 
   #checkboxes label {
+    user-select: none;
     display: block;
+    margin-left: 10px;
+  }
+
+  #checkboxes label input{
+    margin-right: 5px;
   }
 
   #checkboxes label:hover {
     background-color: #1e90ff;
+  }
+
+  .form-select option {
+    font-weight: initial;
   }
 
   .gl-label{
@@ -151,6 +176,8 @@
     </div>
     <div class="container-fluid">
       <div class="layout-specing" style="padding: 35px 14px 24px !important;">
+        <form action="/project-mentor/evaluation" method="post">
+        <input type="hidden" name="submissionId" th:value="${submissionId}">
         <div class="row px-4">
           <div class="col-xl-5 col-md-6">
             <h3 style="margin-top: -14px;margin-bottom: 20px;" >Assignment Evaluations</h3>
@@ -169,22 +196,23 @@
               <div class="row">
                 <div class="col-md-6">
                   <select name="milestone" class="form-select" id="a">
-                    <option value="-1" >bcd</option>
-                    <option value="2" >123</option>
+                    <th:block  th:each="milestone : ${milestoneList}">
+                      <option th:value="${milestone.id}" th:text="${milestone.title}" >All Assignments</option>
+                    </th:block>
                   </select>
                 </div>
 
                 <div class="col-md-6">
                 <select name="milestone" class="form-select" id="milestone">
-                  <option value="-1" >All Milestones</option>
-                  <option value="2" >123</option>
+                  <th:block  th:each="project : ${projectList}">
+                    <option th:value="${project.id}" th:text=" ${project.getAclass().className} + ' - ' +${project.groupName}" >All Assignments</option>
+                  </th:block>
                 </select>
                 </div>
               </div>
 
               <div class="row" style="margin-top: 5px">
-                <form>
-                  <div class="col-md-6" style="padding-left: 0px">
+                  <div class="col-md-6" >
                     <div class="multiselect">
                       <div class="selectBox" onclick="showCheckboxes()">
                         <select class="form-select">
@@ -193,12 +221,11 @@
                         <div class="overSelect"></div>
                       </div>
                       <div id="checkboxes">
-                        <label for="one">
-                          <input type="checkbox" id="one" />First checkbox</label>
-                        <label for="two">
-                          <input type="checkbox" id="two" />Second checkbox</label>
-                        <label for="three">
-                          <input type="checkbox" id="three" />Third checkbox</label>
+                        <th:block  th:each="item : ${evaluationDTO.get(0).getCriteriaGradeList()}">
+                          <label th:for="${item.criteriaName}">
+                            <input type="checkbox" th:id="${item.criteriaName}" th:text="${item.criteriaName}" onchange="updateEvalDisplay(this)" checked />
+                          </label>
+                        </th:block>
                       </div>
                     </div>
                   </div>
@@ -206,15 +233,40 @@
 
                   </div>
 
-                </form>
               </div>
             </div>
 
-            <div class="col-md-6 text-md-end" style="margin-top: -14px;">
-              <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">
-                <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
-                Add student to class</button>
-            </div><!--end col-->
+              <div class="col-md-6 d-flex flex-column justify-content-start edit"  >
+                <div class="view">
+                  <div class="row">
+
+                    <div class="col-md-4" style="padding: 0px 3px"></div>
+                    <div class="col-md-4" style="padding: 0px 3px">
+                      <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 160px">Edit</button>
+                    </div>
+                    <div class="col-md-4" style="padding: 0px 3px">
+                      <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
+                    </div>
+                  </div>
+                </div><!--end col-->
+
+                <div class="edit" hidden="">
+                    <div class="row">
+
+                      <div class="col-md-4" style="padding: 0px 3px">
+                        <button type="submit" class="btn btn-primary" style="width: 160px;">Save Changes</button>
+                      </div>
+                      <div class="col-md-4" style="padding: 0px 3px">
+                        <a onclick="reverseChange()" class="btn btn-secondary" style="width: 160px; margin-left: 7px;">Reverse Changes</a>
+                      </div>
+                      <div class="col-md-4" style="padding: 0px 3px">
+                        <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
+                      </div>
+                    </div>
+                  </div><!--end col-->
+
+              </div>
+
           </div><!--end row-->
 
         </div>
@@ -223,43 +275,115 @@
           <div class="card mb-4">
             <div class="card-body">
 
-              <table id="myTable" class="display">
+              <table id="myTable" class="display scroll">
                 <thead>
                 <tr>
-                  <th>Checkbox</th>
                   <th>Student</th>
-                  <th>Process</th>
-                  <th>Status</th>
-                  <th>Group</th>
-                  <th>Milestone</th>
-                  <th>Assignee</th>
-                  <th>Group</th>
-                  <th>Milestone</th>
-                  <th>Assignee</th>
+                  <th>Full Name</th>
+                  <th>Mark</th>
+                  <th>WG</th>
+                  <th>WP</th>
+                  <th>B/P</th>
+                  <th>Comments</th>
+                  <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
+                      <th th:text="${evalGrade.criteriaName}" th:name="${evalGrade.criteriaName}"></th>
+                  </th:block>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="issue : ${issueList}">
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                  <td>8</td>
-                  <td>9</td>
-                  <td>10</td>
+                <tr>
+                  <td>GROUP</td>
+                  <td th:text="${submission.getProject().groupName}"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <div class="view view-value" >
+                      <label th:text="${submission.comment}"></label>
+                    </div>
+                    <div class="edit edit-value" hidden="hidden">
+                      <input type="text" name="commentGroup" th:value="${submission.comment}" style="width: 300px" >
+                    </div>
+                  </td>
+                  <th:block  th:each="evalGrade : ${evaluationDTO.get(0).getCriteriaGradeList()}">
+                    <td></td>
+                  </th:block>
+                </tr>
+                <tr th:each="item : ${evaluationDTO}">
+                  <td th:text="${item.username}"></td>
+                  <td th:text="${item.fullname}"></td>
+                  <td th:text="${item.getGradeSubmission()}"></td>
+                  <td th:text="${item.workGrade}"></td>
+                  <td th:text="${item.workPoint}"></td>
+                  <td>
+                    <div class="view view-value " >
+                      <label th:text="${item.bonusAndPenalty}"></label>
+                    </div>
+                    <div class="edit edit-value " hidden="hidden">
+                      <input type="number" oninput="checkValueBonus(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
+                    </div>
+                  </td>
+                  <td>
+                    <div class="view view-value " >
+                      <label th:text="${item.commentPersonal}"></label>
+                    </div>
+                    <div class="edit edit-value " hidden="hidden">
+                      <input type="text" name="evalCommentPersonal" th:value="${item.commentPersonal}" style="width: 300px" >
+                      <input type="hidden" name="evalStudentId" th:value="${item.studentId}">
+                    </div>
+                  </td>
+                  <th:block  th:each="evalGrade : ${item.getCriteriaGradeList()}">
+                    <td th:name="${evalGrade.criteriaName}">
+                      <div class="view view-value " >
+                        <label th:text="${evalGrade.grade}"></label>
+                      </div>
+                      <div class="edit edit-value " hidden="hidden">
+                        <input type="number" oninput="checkValue(this)" name="evalGrade" th:value="${evalGrade.grade}" style="width: 37px" >
+                        <input type="hidden" name="evalGradeId" th:value="${evalGrade.criteriaGradeId}">
+                        <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\', ' + ${evalGrade.getCriteriaGradeId()} + ')'       " >...</label>
+                      </div>
+                    </td>
+                  </th:block>
                 </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        </form>
 
+        <p>WG: converted grade from Work Point (WP): WG = WP/Expected-Work*10</p>
+        <p>WP is calculated after having work evaluations (from the Work Evals page)</p>
+        <p>B/P is Bonus/Penalty </p>
+
+        <!--  Modal for comment criteria-->
+        <!-- Button trigger modal -->
+        <button type="hidden" class="btn btn-primary" id="btn-modal-comment" data-toggle="modal" data-target="#exampleModalCenter" hidden="hidden">
+          Launch demo modal
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div><h6 class="modal-title" id="exampleModalLongTitle">Modal title</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button></div>
+                <input type="hidden"  id="id-modal" >
+                <textarea type="text" rows="3"  id="comment-modal" name="description" class="form-control"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="updateCommentEvaluation()" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- End Modal -->
       </div>
     </div><!--end container-->
-    <div th:replace="~{footer}"></div>
 
     <!-- End -->
   </main>
@@ -285,9 +409,115 @@
   $(document).ready(function () {
     $('#myTable').DataTable({
       "dom": 'frtipl',
+      "ordering": false,
       "bInfo" : false
     });
   });
+</script>
+
+<script>
+  function editMark() {
+    var view = document.getElementsByClassName("view");
+    var edit = document.getElementsByClassName("edit");
+    for (var i = 0; i < view.length; i++) {
+      view[i].hidden = true;
+    }
+    for (var i = 0; i < edit.length; i++) {
+      edit[i].hidden = false;
+    }
+  }
+  function reverseChange() {
+    // Find all "view-value" elements
+    var viewValueElements = document.querySelectorAll(".view-value");
+
+// Loop through the "view-value" elements
+    viewValueElements.forEach(function(viewValueElement) {
+      var viewValue = viewValueElement.querySelector("label");
+      var editValueElement = viewValueElement.nextElementSibling;
+      var inputField = editValueElement.getElementsByTagName("input")[0];
+
+      inputField.value = viewValue.innerHTML ;
+    });
+  }
+
+  function updateEvalDisplay(checkbox) {
+    // Get the ID and state of the checkbox
+    const checkboxId = checkbox.id;
+    const isChecked = checkbox.checked;
+
+    // Log the checkbox ID and its state
+    console.log(`Checkbox with ID "${checkboxId}" is checked: ${isChecked}`);
+    var evalColumn = document.getElementsByName(checkboxId);
+    if(isChecked) {
+      console.log(2)
+      for(var i = 0; i < evalColumn.length; i++){
+        evalColumn[i].hidden = false;
+      }
+    }else {
+          console.log(1)
+        for(var i = 0; i < evalColumn.length; i++){
+            evalColumn[i].hidden = true;
+        }
+    }
+  }
+
+</script>
+
+
+<script>
+  function showComment(comment, criteria, criteriaId) {
+    var btnComment = document.getElementById("btn-modal-comment");
+    var titleComment = document.getElementById("exampleModalLongTitle");
+    var contentComment = document.getElementById("comment-modal");
+    var id = document.getElementById("id-modal");
+    //
+    // labelComment.innerHTML = `Comments for Criteria ${criteria} Grading`;
+    // commentModal.value = comment;
+
+    titleComment.innerHTML = `Comments for Criteria ${criteria} Grading ${comment}`;
+    contentComment.value = comment;
+    id.value = criteriaId;
+
+    btnComment.click();
+  }
+
+  function updateCommentEvaluation() {
+    var contentComment = document.getElementById("comment-modal").value;
+    var id = document.getElementById("id-modal").value;
+
+    var endPoint = "/api/v1/evaluation/update?evaluationId=" + id + "&comment=" + contentComment;
+
+    fetch(endPoint).then(response => {
+      notify('success', 'Successfully!', 'Update comment successfully!');
+
+    });
+  }
+
+  // check input is > 0 and < 10
+
+  function checkValue(input) {
+    const min = 0;
+    const max = 10;
+    const value = parseFloat(input.value);
+
+    if (value < min) {
+      input.value = min;
+    } else if (value > max) {
+      input.value = max;
+    }
+  }
+
+  function checkValueBonus(input) {
+    const min = -10;
+    const max = 10;
+    const value = parseFloat(input.value);
+
+    if (value < min) {
+      input.value = min;
+    } else if (value > max) {
+      input.value = max;
+    }
+  }
 </script>
 
 <script>

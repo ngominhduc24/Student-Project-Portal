@@ -39,7 +39,7 @@ public class IssueUpdate {
 //    private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
     @Column(name = "update_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Timestamp updateAt;
+    private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
 
     // Getters and setters for the fields
 
