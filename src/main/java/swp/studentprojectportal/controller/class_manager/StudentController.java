@@ -85,7 +85,6 @@ public class StudentController {
         if (c == null) {
             return "redirect:/class/student?classId=" + classId;
         }
-        System.out.println("111");
         model.addAttribute("classId", classId);
         model.addAttribute("className", c.getClassName());
         model.addAttribute("class", c);
@@ -178,25 +177,25 @@ public class StudentController {
 
                 if(user == null) {
                     //if add with email -> send mail
-                    if(!user.getEmail().isEmpty() && !user.getFullName().isEmpty()) {
+                    if(!userData.getEmail().isEmpty() && !userData.getFullName().isEmpty()) {
                         // gen token
                         String token = RandomString.make(30); // generate token
-                        user.setToken(token);
+                        userData.setToken(token);
 
-                        user.setActive(false);
-                        user.setStatus(true);
-                        user.setSetting(settingService.findById(1));
+                        userData.setActive(false);
+                        userData.setStatus(true);
+                        userData.setSetting(settingService.findById(1));
                         //save new user
-                        user = userService.saveUser(userData);
+                        User newUser = userService.saveUser(userData);
 
                         // send mail
                         String href = "reset-password";
                         String tokenSender = Utility.getSiteURL() + "/" + href + "?key=" + token;
 
-                        emailservice.sendEmail(user.getFullName(), user.getEmail(), tokenSender);
+                        emailservice.sendEmail(newUser.getFullName(), newUser.getEmail(), tokenSender);
 
                         //add student to class
-                        studentClassService.addNewStudentToClass(classId, user.getId());
+                        studentClassService.addNewStudentToClass(classId, newUser.getId());
                     }
                 }
             } catch (Exception e) {
