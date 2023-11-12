@@ -61,7 +61,7 @@ public class SheetHandle {
                 User user = new User();
                 user.setEmail(row.get(0));
                 user.setPhone(row.get(1));
-                user.setFullName(row.get(2));
+//                user.setFullName(row.get(2));
 
                 userList.add(user);
             }
