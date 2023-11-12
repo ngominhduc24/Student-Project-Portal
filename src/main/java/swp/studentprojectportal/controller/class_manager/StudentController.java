@@ -169,13 +169,19 @@ public class StudentController {
                 //find by phone
                 if (user == null) {
                     user = userService.findByPhone(userData.getPhone());
-
-                    if (user == null) continue;
                 }
-
+                if(user != null) {
                 //add student to class
                 studentClassService.addNewStudentToClass(classId, user.getId());
+                }
 
+                if(user == null) {
+                    //save new user
+                    user = userService.saveUser(userData);
+
+                    //add student to class
+                    studentClassService.addNewStudentToClass(classId, user.getId());
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }
