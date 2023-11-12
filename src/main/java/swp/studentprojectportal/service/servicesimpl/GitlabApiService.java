@@ -27,13 +27,13 @@ public class GitlabApiService {
     }
 
     // update class milestone
-    public boolean updateClassMilestone(String projectIdOrPath, String personToken, Milestone milestone) throws GitLabApiException {
+    public boolean updateClassMilestone(String projectIdOrPath, String personToken, Milestone milestone, boolean status) throws GitLabApiException {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
         Milestone newMilestone = gitLabApi.getMilestonesApi().updateGroupMilestone(
                 projectIdOrPath, milestone.getId(),
                 milestone.getTitle(), milestone.getDescription(),
                 milestone.getDueDate(), milestone.getStartDate(),
-                Constants.MilestoneState.ACTIVATE);
+                status ? Constants.MilestoneState.ACTIVATE : Constants.MilestoneState.CLOSE);
         return newMilestone != null;
     }
 
@@ -52,10 +52,10 @@ public class GitlabApiService {
     }
 
     // -------------------------- PROJECT --------------------------
-    public boolean createGrouptMilestone(String groupIdOrPath, String personToken, Milestone milestone) throws GitLabApiException {
+    public Milestone createGrouptMilestone(String groupIdOrPath, String personToken, Milestone milestone) throws GitLabApiException {
         gitLabApi = new GitLabApi("https://gitlab.com", personToken);
         Milestone newMilestone = gitLabApi.getMilestonesApi().createGroupMilestone(groupIdOrPath, milestone.getTitle(), milestone.getDescription(), milestone.getDueDate(), milestone.getStartDate());
-        return newMilestone != null;
+        return newMilestone;
     }
 
     public List<Milestone> getProjectMilestoneGitlab(String projectIdOrPath, String personToken) throws GitLabApiException {

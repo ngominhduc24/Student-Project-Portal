@@ -37,7 +37,7 @@ public class Milestone {
     private boolean status = true;
 
     @Column(name = "gitlab_milestone_id")
-    private Integer gitlabMilestoneId;
+    private Long gitlabMilestoneId;
 
     @ManyToOne
     @JoinColumn(name = "subject_assignment_id")

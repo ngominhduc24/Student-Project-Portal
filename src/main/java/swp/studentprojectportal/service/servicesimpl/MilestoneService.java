@@ -11,6 +11,7 @@ import swp.studentprojectportal.repository.*;
 import swp.studentprojectportal.service.IMilestoneService;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class MilestoneService implements IMilestoneService {
 
     @Override
     public Milestone save(Milestone milestone) {
+        milestone.setUpdateAt(Timestamp.valueOf(LocalDateTime.now()));
         return milestoneRepository.save(milestone);
     }
 

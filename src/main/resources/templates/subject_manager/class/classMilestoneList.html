@@ -579,7 +579,7 @@
                 </script>
 <!--                milestone update-->
                 <script>
-                    function updateMilestone(id){
+                    async function updateMilestone(id){
                         const title = document.querySelector('input[id="details-milestone-title"]').value;
                         const description = document.querySelector('textarea[name="detail-description"]').value;
                         const startDate = document.getElementById('detail-start-date').value;
@@ -590,25 +590,17 @@
                             .then(response => {
                                 if (response.ok) {
                                     // Handle a successful API response
-                                    notify('success', 'Successfully!', 'Update milestone successful');
-                                    // Delay the page reload for a few seconds
-                                    setTimeout(() => {
-                                        location.reload();
-                                    }, 2000); // Adjust the delay duration as needed
-                                    // Close the modal
-                                    document.getElementById('detailcloseModal').click();
-                                    // reload page
-                                    location.reload();
+                                    notify('success', 'Successfully!', 'Milestone updated successfully.');
                                 } else {
                                     // Handle API errors
                                     console.error('Error updating milestone.');
                                 }
                             })
                             .catch(error => {
-                                // Handle network errors
                                 console.error('Network error:', error);
                             });
-                        location.reload();
+                        await new Promise(r => setTimeout(r, 700));
+                        window.location.reload();
                     }
                 </script>
 
