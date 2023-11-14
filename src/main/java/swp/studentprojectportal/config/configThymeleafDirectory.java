@@ -95,7 +95,8 @@ public class configThymeleafDirectory {
     @Bean
     public ClassLoaderTemplateResolver subjectManagerSubjectSettingTemplateResolver() {
         ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
-        yourTemplateResolver.setPrefix("templates/subject_manager/subject_setting/");
+//        yourTemplateResolver.setPrefix("templates/subject_manager/subject_setting/");
+        yourTemplateResolver.setPrefix("templates/subject_manager/");
         yourTemplateResolver.setSuffix(".html");
         yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
         yourTemplateResolver.setCharacterEncoding("UTF-8");
@@ -118,18 +119,18 @@ public class configThymeleafDirectory {
         return yourTemplateResolver;
     }
 
-    @Bean
-    public ClassLoaderTemplateResolver projectClassManagerTemplateResolver() {
-        ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
-        yourTemplateResolver.setPrefix("templates/class_manager/project/");
-        yourTemplateResolver.setSuffix(".html");
-        yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
-        yourTemplateResolver.setCharacterEncoding("UTF-8");
-        yourTemplateResolver.setOrder(1); // this is iportant. This way springboot will listen to both places 0 and 1
-        yourTemplateResolver.setCheckExistence(true);
-
-        return yourTemplateResolver;
-    }
+//    @Bean
+//    public ClassLoaderTemplateResolver projectClassManagerTemplateResolver() {
+//        ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
+//        yourTemplateResolver.setPrefix("templates/class_manager/project/");
+//        yourTemplateResolver.setSuffix(".html");
+//        yourTemplateResolver.setTemplateMode(TemplateMode.HTML);
+//        yourTemplateResolver.setCharacterEncoding("UTF-8");
+//        yourTemplateResolver.setOrder(1); // this is iportant. This way springboot will listen to both places 0 and 1
+//        yourTemplateResolver.setCheckExistence(true);
+//
+//        return yourTemplateResolver;
+//    }
 
     @Bean
     public ClassLoaderTemplateResolver ClassSettingTemplateResolver() {
