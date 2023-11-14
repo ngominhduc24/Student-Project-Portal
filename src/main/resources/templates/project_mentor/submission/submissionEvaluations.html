@@ -194,6 +194,24 @@
               <!-- filter -->
             <div class="col-md-6">
               <div class="row">
+                <div class="col-md-3">
+                  <select name="milestone" class="form-select" id="classFilter" onchange="classFilterFunction()" >
+                    <option value="1">None</option>
+                    <th:block  th:each="class : ${classList}">
+                      <option th:value="${class.id}" th:text=" ${class.className}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="col-3">
+                  <select class="form-select" id="projectFilter">
+                    <th:block th:each="project : ${projectList}">
+                      <option class="project-option" th:data-class-id="${project.getAclass().id}" value="${project.id}" th:text="${project.groupName}" hidden=""></option>
+                    </th:block>
+                  </select>
+                </div>
+
+
                 <div class="col-md-6">
                   <select name="milestone" class="form-select" id="a">
                     <th:block  th:each="milestone : ${milestoneList}">
@@ -202,14 +220,25 @@
                   </select>
                 </div>
 
-                <div class="col-md-6">
-                <select name="milestone" class="form-select" id="milestone">
-                  <th:block  th:each="project : ${projectList}">
-                    <option th:value="${project.id}" th:text=" ${project.getAclass().className} + ' - ' +${project.groupName}" >All Assignments</option>
-                  </th:block>
-                </select>
-                </div>
               </div>
+
+              <script>
+                const classFilterFunction = () => {
+                  var classFilter = document.getElementById("classFilter");
+                  var classId = classFilter.value;
+                  var option = document.getElementsByClassName("project-option");
+
+                  Array.from(option).forEach(function (item) {
+                    console.log(item.dataset.classId);
+                    if (item.dataset.classId === classId) {
+                      item.hidden = false;
+                    } else {
+                      item.hidden = true;
+                    }
+                  });
+                }
+
+              </script>
 
               <div class="row" style="margin-top: 5px">
                   <div class="col-md-6" >

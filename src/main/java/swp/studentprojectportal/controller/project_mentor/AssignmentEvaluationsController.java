@@ -77,11 +77,16 @@ public class AssignmentEvaluationsController {
         // Get project list and milestone list of mentor
         User user = (User) session.getAttribute("user");
 //        List<Submission> submissionList = submissionService.findAllByProjectMentorId(user.getId());
+
         List<Project> projectList = projectService.findAllByProjectMentorId(user.getId());
         model.addAttribute("projectList", projectList);
+
         List<Milestone> milestoneList = milestoneService.findAllByProjectMentor(user.getId());
-        //filter milestone list where   status = Submitted
         model.addAttribute("milestoneList", milestoneList);
+
+        model.addAttribute("classList",projectList.stream().map(Project::getAclass).distinct().toList());
+
+
         return "project_mentor/submission/submissionEvaluations";
     }
 

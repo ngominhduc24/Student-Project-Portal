@@ -38,8 +38,8 @@ Student Project Portal is a web application that allows students to create, mana
 	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png" alt="JavaScript" title="JavaScript"/></code>
 	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/183891303-41f257f8-6b3d-487c-aa56-c497b880d0fb.png" alt="Spring Boot" title="Spring Boot"/></code>
 	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/183896128-ec99105a-ec1a-4d85-b08b-1aa1620b2046.png" alt="MySQL" title="MySQL"/></code>
-	<code><img width="50" src="https://github.com/tandpfun/skill-icons/blob/main/icons/NodeJS-Dark.svg" alt="NodeJS" title="NodeJS"/></code>
-	<code><img width="50" src="https://github.com/tandpfun/skill-icons/blob/main/icons/MongoDB.svg" alt="MongoDB" title="MongoDB"/></code>
+	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/183568594-85e280a7-0d7e-4d1a-9028-c8c2209e073c.png" alt="NodeJS" title="NodeJS"/></code>
+	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/182884177-d48a8579-2cd0-447a-b9a6-ffc7cb02560e.png" alt="MongoDB" title="MongoDB"/></code>
 </div>
 
 ## Requirements
@@ -56,7 +56,7 @@ For building and running the application you need:
 1. Clone repository
 ```
 cd existing_repo
-git remote add origin [https://github.com/daylapvlong/SWP391_Student-project-portal.git]
+git remote add origin [https://github.com/daylapvlong/SWP391_Student-project-portal.git](https://github.com/ngominhduc24/Student-Project-Portal)]
 ```
 2. Run database file (sql/database.sql)
 3. Run the project
@@ -69,10 +69,9 @@ git remote add origin [https://github.com/daylapvlong/SWP391_Student-project-por
 
 ## Contact
 <p align="left">
-  <a href="https://www.linkedin.com/in/pham-long-1b3591257/"><img alt="Linkedin" title="Long Pham Linkedin" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a>
-  <a href="mailto:phmvtlong@gmail.com"><img alt="Gmail" title="Long Pham Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"></a>
-  <a href="https://github.com/daylapvlong"><img alt="Github" title="Long Pham Github" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a>
-  <a href="https://www.facebook.com/profile.php?id=100012864726826"><img alt="Facebook" title="Long Pham FB" src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white"></a>
-  <a href="https://www.instagram.com/_.longpham._/"><img alt="Instagram" title="JLong Pham Instagram" src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white"></a>
-</p>
+  <a href="https://www.linkedin.com/in/ngominhduc24/"><img alt="Linkedin" title="DucNM Linkedin" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a>
+  <a href="mailto:ngominhduc100@gmail.com"><img alt="Gmail" title="Long Pham Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"></a>
+  <a href="https://github.com/ngominhduc24"><img alt="Github" title="Long Pham Github" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://www.facebook.com/ngominhduc24"><img alt="Facebook" title="Long Pham FB" src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white"></a>
+  </p>
 
