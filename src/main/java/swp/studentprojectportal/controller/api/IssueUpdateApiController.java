@@ -65,7 +65,7 @@ public class IssueUpdateApiController {
         }
         else{
             IssueUpdate findIssueUpdate = issueUpdateService.findByIssueAndTitle(issueId,title);
-            if(findIssueUpdate!=null && findIssueUpdate.getId() != issueId){
+            if(findIssueUpdate!=null && findIssueUpdate.getId() != issueUpdateId){
                 return ResponseEntity.badRequest().body("Work existed. Update failed!");
             }
             else {

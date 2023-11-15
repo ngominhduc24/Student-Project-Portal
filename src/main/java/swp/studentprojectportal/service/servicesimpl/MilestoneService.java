@@ -143,6 +143,11 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
+    public List<Milestone> findAllBySubjectAndClassOfProject(Integer classId) {
+        return milestoneRepository.findAllByAclass_Id(classId);
+    }
+
+    @Override
     public List<Milestone> findAllByStudentId(Integer studentId) {
         return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
     }

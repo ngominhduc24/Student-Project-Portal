@@ -7,12 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Milestone;
-import swp.studentprojectportal.model.Project;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.servicesimpl.MilestoneService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
+import swp.studentprojectportal.service.servicesimpl.SubmissionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,8 @@ public class MilestoneProjectMentorController {
     MilestoneService milestoneService;
     @Autowired
     ProjectService projectService;
+    @Autowired
+    SubmissionService submissionService;
 
     @GetMapping("/milestone/list")
     public String milestoneList(HttpSession session) {
@@ -54,10 +55,19 @@ public class MilestoneProjectMentorController {
 
         User user = (User) session.getAttribute("user");
 
-        model.addAttribute("projectId", projectId);
+        Project project = projectService.findById(projectId);
+
+        List<Milestone> milestoneList = milestoneService.findAllBySubjectAndClassOfProject(project.getAclass().getId());
+
+        //filter submission of milestone
+        for (Milestone milestone : milestoneList)
+            if(milestone.getSubmissionList() != null)
+                milestone.getSubmissionList().removeIf(submission -> submission.getProject().getId() != projectId);
+
+        model.addAttribute("project", project);
         model.addAttribute("projectList", projectService.findAllByProjectMentorId(user.getId()));
         model.addAttribute("isMentor", user.getSetting().getId() == 4);
-        model.addAttribute("milestoneList", milestoneService.findAllByProjectId(projectId));
+        model.addAttribute("milestoneList", milestoneList);
         return "project_mentor/milestone/milestoneList";
 
     }

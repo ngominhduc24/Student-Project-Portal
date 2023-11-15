@@ -36,4 +36,6 @@ public interface IMilestoneService {
     List<Milestone> findAllByStudentId(Integer studentId);
 
     List<Milestone> findAllByProjectId(Integer projectId);
+
+    List<Milestone> findAllBySubjectAndClassOfProject(Integer projectId);
 }

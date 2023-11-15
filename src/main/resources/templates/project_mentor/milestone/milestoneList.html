@@ -65,10 +65,10 @@
 
                     <div class="col-3">
                         <select class="form-select" onchange="changeProject(this.value)">
-                            <option th:each="project : ${projectList}"
-                                    th:value="${project.id}"
-                                    th:text="${project.groupName} + ' - ' + ${project.aclass.className}"
-                                    th:selected="${project.id == projectId}"></option>
+                            <option th:each="p : ${projectList}"
+                                    th:value="${p.id}"
+                                    th:text="${p.groupName} + ' - ' + ${p.aclass.className}"
+                                    th:selected="${p.id == project.id}"></option>
                         </select>
                     </div>
 
@@ -111,8 +111,8 @@
                                      th:text="${submission.createBy.fullName}"></div>
                             </td>
 
-                            <td th:text="${milestone.project.aclass.className}"></td>
-                            <td th:text="${milestone.project.groupName}" th:if="${isMentor}"></td>
+                            <td th:text="${milestone.aclass.className}"></td>
+                            <td th:text="${project.groupName}" th:if="${isMentor}"></td>
                             <td th:text="${milestone.title}"></td>
 
                             <td>
@@ -140,10 +140,10 @@
                             <td>
 <!--                                student-->
                                 <a th:if="${!isMentor && submission==null}"
-                                    th:href="'../submit/' + ${milestone.id}">Submit</a>
+                                    th:href="'../submit/' + ${milestone.id} + '?projectId=' + ${project.id}">Submit</a>
 
                                 <a th:if="${!isMentor && submission!=null && submission.status==1}"
-                                   th:href="'../submit/' + ${milestone.id}">Resubmit</a>
+                                   th:href="'../submit/' + ${milestone.id} + '?projectId=' + ${project.id}">Resubmit</a>
 
                                 <a th:if="${!isMentor && submission!=null}"
                                    th:href="'/student/submission/details/' + ${submission.id}">Details</a>
