@@ -27,7 +27,6 @@ public class StudentHomeController {
                             Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Page<Project> projectList = projectService.filterByStudendDashboard(user.getId(), pageNo, pageSize);
-        int countAllAssignment = milestoneService.countAllByStudentId(user.getId());
 
         model.addAttribute("projects", projectList);
         model.addAttribute("pageNo", pageNo);
