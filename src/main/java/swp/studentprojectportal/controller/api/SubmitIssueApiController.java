@@ -37,7 +37,9 @@ public class SubmitIssueApiController {
     @GetMapping("/submit-issue")
     public ResponseEntity getSubmitIssueById(@RequestParam(name = "submitIssueId") Integer submitIssueId) {
         SubmitIssue submitIssue = submitIssueService.findById(submitIssueId);
-        System.out.println("var?? "+submitIssue.getIssue().getTitle());
+        System.out.println("var1?? "+submitIssue.getIssue().getTitle());
+        if(submitIssue.getComplexity()!=null) System.out.println("var2?? "+submitIssue.getComplexity().getSettingValue());
+        if(submitIssue.getQuality()!=null) System.out.println("var3?? "+submitIssue.getQuality().getSettingValue());
         if(submitIssue != null){
             Map<String, Object> response = new HashMap<>();
             response.put("id", submitIssue.getId());

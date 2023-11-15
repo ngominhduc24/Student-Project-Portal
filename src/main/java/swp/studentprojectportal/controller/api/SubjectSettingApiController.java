@@ -36,7 +36,6 @@ public class SubjectSettingApiController {
     @GetMapping("/subject-setting")
     public ResponseEntity getSubjectSettingById(@RequestParam(name = "subjectSettingId") Integer subjectSettingId) {
         SubjectSetting subjectSetting = subjectSettingService.findById(subjectSettingId);
-        // create response entity with milestone object
         if(subjectSetting != null){
             Map<String, Object> response = new HashMap<>();
             response.put("id", subjectSetting.getId());
@@ -63,7 +62,6 @@ public class SubjectSettingApiController {
             @RequestParam(name = "status") Integer status) {
 
         SubjectSetting subjectSetting = subjectSettingService.findById(subjectSettingId);
-        //ubjectSetting.setSubject(subjectService.findSubjectById(subjectId));
         subjectSetting.setSettingTitle(title);
         subjectSetting.setStatus(status == 1 ? true : false);
         if(!Validate.validNotempty(title))
