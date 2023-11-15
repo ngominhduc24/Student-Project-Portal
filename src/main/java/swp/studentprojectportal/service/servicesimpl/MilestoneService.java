@@ -151,7 +151,14 @@ public class MilestoneService implements IMilestoneService {
 
     @Override
     public List<Milestone> findAllByStudentId(Integer studentId) {
-        return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
+        List<Milestone> milestoneList = new ArrayList<>();
+        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(studentId);
+
+        for(StudentClass studentClass : studentClassList)
+//            if(studentClass.getProject() != null)
+                milestoneList.addAll(findAllBySubjectAndClassOfProject(studentClass.getAclass().getId()));
+
+        return milestoneList;
     }
 
 }

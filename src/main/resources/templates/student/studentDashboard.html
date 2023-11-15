@@ -158,7 +158,7 @@
                     </div>
                 </div><!--end row-->
 
-                <h5 class="px-2">Assignemnt Dashboard</h5>
+                <h5 class="px-2">Assignment Dashboard</h5>
                 <div class="row">
                     <div class="col-xl-5 mt-4">
                         <div class="card shadow border-0 p-4">
@@ -189,7 +189,7 @@
                                     <iconify-icon icon="ant-design:project-outlined" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">14</h5>
+                                    <h5 class="mb-0" th:text="${countSubmitted}"></h5>
                                     <p class="text-muted mb-0">Submitted Assignment</p>
                                 </div>
                             </div>
@@ -201,7 +201,7 @@
                                     <iconify-icon icon="ant-design:project-outlined" class="h3 mb-0"></iconify-icon>
                                 </div>
                                 <div class="flex-1 ms-2">
-                                    <h5 class="mb-0">2</h5>
+                                    <h5 class="mb-0" th:text="${countPending}"></h5>
                                     <p class="text-muted mb-0">Pending Assignment</p>
                                 </div>
                             </div>
@@ -311,8 +311,8 @@
     // var summer23Data = /*[[${classCountBySummer23}]]*/ [];
 
     // Get the canvas element
-    var labels = ['SWT301', 'SWR302', 'SWP391', 'PRJ301'];
-    var count = [13,9,21,8];
+    var labels = /*[[${barLabel}]]*/ [];
+    var count = /*[[${barCount}]]*/ [];
     var ctx = document.getElementById('myAssignmentChart').getContext('2d');
 
     // Define your bar chart data
@@ -363,7 +363,7 @@
     var doughnutChartData = {
         labels: ['Submitted', 'Pending'],
         datasets: [{
-            data: [80, 20],
+            data: [ [[${countSubmitted}]], [[${countPending}]] ],
             backgroundColor: ['rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
             borderWidth: 1, // Add this line to set the border width
         }]
