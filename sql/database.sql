@@ -475,6 +475,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submit_issue` (
     `complexity_id`INT NULL,
     `function_loc` INT NULL,
     `is_rejected`  BIT(1) NULL,
+    `comment` VARCHAR(255) NULL ,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,

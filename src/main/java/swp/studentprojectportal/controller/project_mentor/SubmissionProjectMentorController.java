@@ -36,8 +36,6 @@ public class SubmissionProjectMentorController {
         else if(submission.getMilestone().getProject()!=null){
             subjectId = submission.getMilestone().getProject().getAclass().getSubject().getId();
         }
-        System.out.println(submissionId);
-        System.out.println(subjectId);
         model.addAttribute("subjectId",subjectId);
         model.addAttribute("submitIssueList", submitIssueService.findAllBySubmissionId(submissionId));
         model.addAttribute("submission", submissionService.findById(submissionId));
