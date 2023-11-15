@@ -101,6 +101,11 @@ public class IssueSettingService implements IIssueSettingService {
         return issueSettingRepository.findIssueSettingBySubjectAndSettingGroupAndSettingTitle(subjectId, settingGroup, settingTitle).orElse(null);
     }
 
+    @Override
+    public IssueSetting findByProjectAndGroupAndTitle(int projectId,String settingGroup, String settingTitle){
+        return issueSettingRepository.findIssueSettingByProjectAndSettingGroupAndSettingTitle(projectId,settingGroup,settingTitle).orElse(null);
+    }
+
     public List<IssueSetting> findAllSettingServiceByClassId(int classId){
         return issueSettingRepository.findAllByAclass_Id(classId);
     }
