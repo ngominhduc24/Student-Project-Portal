@@ -6,6 +6,7 @@ import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.model.Submission;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IMilestoneRepository;
+import swp.studentprojectportal.repository.IProjectRepository;
 import swp.studentprojectportal.repository.ISubmissionRepository;
 import swp.studentprojectportal.service.ISubmissionService;
 
@@ -17,9 +18,11 @@ public class SubmissionService implements ISubmissionService {
     ISubmissionRepository submissionRepository;
     @Autowired
     IMilestoneRepository milestoneRepository;
+    @Autowired
+    IProjectRepository projectRepository;
 
     @Override
-    public Submission insertSubmission(Integer milestoneId, String note, User user) {
+    public Submission insertSubmission(Integer milestoneId, String note, User user, Integer projectId) {
         Milestone milestone = milestoneRepository.findMilestoneById(milestoneId);
         Submission submission = new Submission();
 
@@ -27,6 +30,7 @@ public class SubmissionService implements ISubmissionService {
         submission.setProject(milestone.getProject());
         submission.setNote(note);
         submission.setCreateBy(user);
+        submission.setProject(projectRepository.findById(projectId).get());
 
         submissionRepository.save(submission);
         return submission;

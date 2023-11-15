@@ -100,7 +100,8 @@ public class MilestoneStudentController {
                                       @RequestParam("file") MultipartFile file,
                                       @RequestParam("note") String note,
                                       @RequestParam("issueId") List<Integer> issueIds,
-                                      @RequestParam("assignee") List<Integer> assigneeIds) {
+                                      @RequestParam("assignee") List<Integer> assigneeIds,
+                                      @RequestParam Integer projectId) {
         // check empty
         if(issueIds == null) issueIds = new ArrayList<>();
         if(assigneeIds == null) assigneeIds = new ArrayList<>();
@@ -113,7 +114,7 @@ public class MilestoneStudentController {
             issueService.updateIssueAssignee(issueIds.get(i), assigneeIds.get(i));
 
         //add new submission
-        Submission submission = submissionService.insertSubmission(milestoneId, note, user);
+        Submission submission = submissionService.insertSubmission(milestoneId, note, user, projectId);
 
         //upload file
         submissionService.updateFileLocation(submission.getId(), saveFile(file, milestoneId + "/" + submission.getId()));
@@ -123,7 +124,7 @@ public class MilestoneStudentController {
             submitIssueService.insertSubmitIssue(issueId, submission.getId());
 
 
-        return "redirect:../list/";
+        return "redirect:../list/" + projectId;
     }
 
     private String saveFile(MultipartFile file, String folderName) {

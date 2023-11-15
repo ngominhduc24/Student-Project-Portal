@@ -830,21 +830,9 @@ VALUES
     ("LOC Evaluation" ,1, 3, 6, 4, 1, 7),
     ("Issue" ,1, 3, 6, 4, 1, 7),
     ("Issue Details" ,1, 3, 6, 4, 1, 8),
-    ("Login" ,2, 1, 6, 4, 1, 11),
-    ("Register" ,2, 1, 6, 4, 1, 11),
-    ("Password Reset" ,2, 1, 6, 4, 1, 12),
-    ("Password Change" ,2, 1, 6, 4, 1, 13),
-    ("User List" ,2, 1, 6, 4, 1, 13),
-    ("Class List" ,2, 2, 6, 4, 1, 11),
-    ("Class Details" ,2, 2, 6, 4, 1, 12),
-    ("Milestone List" ,2, 2, 6, 4, 1, 13),
-    ("Milestone Details" ,2, 2, 6, 4, 1, 14),
-    ("Assignment List" ,2, 3, 6, 4, 1, 4),
-    ("Assignment Submit" ,2, 3, 6, 4, 1, 4),
-    ("Assignment Evaluation" ,2, 3, 6, 4, 1, 4),
-    ("LOC Evaluation" ,2, 3, 6, 4, 1, 12),
-    ("Issue" ,2, 3, 6, 4, 1, 11),
-    ("Issue Details" ,2, 3, 6, 4, 1, 12);
+
+    ("Issue" ,1, 10, 6, 4, 1, 7),
+    ("Issue Details" ,1, 10, 6, 4, 1, 8);
 
 INSERT INTO submit_issue(issue_id, submit_id, is_final, quality_id, complexity_id, function_loc, is_rejected)
 VALUES
@@ -875,15 +863,10 @@ VALUES
     (1 ,"Job3","Check user verified"),
     (1 ,"Job4","Remember with cookie"),
     (1 ,"Job5","Login with gg"),
-    (1 ,"Job6","Hash password"),
-    (12,"Job1","Basic login "),
-    (12,"Job2","Check user blocked"),
-    (12,"Job3","Check user verified"),
-    (12,"Job4","Remember with cookie"),
-    (12,"Job5","Login with gg"),
-    (12,"Job6","Hash password");
+    (1 ,"Job6","Hash password");
 
 INSERT INTO submission_personal (submission_id, student_id, bonus, comment) VALUES
                                                                                 (1, 6, 1, 'Good job on the project'),
                                                                                 (1, 7, 0, 'Could use some improvements'),
                                                                                 (1, 8, -1, 'Keep up the good work')
+

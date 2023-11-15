@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ISubmissionService {
 
-    public Submission insertSubmission(Integer milestoneId, String note, User user);
+    public Submission insertSubmission(Integer milestoneId, String note, User user, Integer projectId);
 
     public boolean updateFileLocation(Integer submissionId, String fileLocation);
 
