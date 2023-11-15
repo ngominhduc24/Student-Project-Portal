@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface IMilestoneService {
 
+    int milestoneCount();
+
     Page<Milestone> filterMilestone(int classId, String search, Integer pageNo,
                                     Integer pageSize, String sortBy, Integer sortType, Integer status);
 
@@ -31,7 +33,7 @@ public interface IMilestoneService {
 
     List<Milestone> findAllByProjectMentor(Integer projectMentorId);
 
-    List<Milestone> findAllByStudentId(Integer sutdentId);
+    List<Milestone> findAllByStudentId(Integer studentId);
 
     List<Milestone> findAllByProjectId(Integer projectId);
 }

@@ -84,7 +84,6 @@ public class StudentController {
         if (c == null) {
             return "redirect:/class/student?classId=" + classId;
         }
-        System.out.println("111");
         model.addAttribute("classId", classId);
         model.addAttribute("className", c.getClassName());
         model.addAttribute("class", c);

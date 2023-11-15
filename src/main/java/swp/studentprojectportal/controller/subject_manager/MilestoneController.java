@@ -165,9 +165,9 @@ public class MilestoneController {
         if(user != null){
             // if personal token is change then update
             if(user.getPersonalTokenGitlab() == null || user.getPersonalTokenGitlab().equals(personalToken)){
-                    user.setPersonalTokenGitlab(personalToken);
-                    session.setAttribute("user", user);
-                    userService.saveUser(user);
+                user.setPersonalTokenGitlab(personalToken);
+                session.setAttribute("user", user);
+                userService.saveUser(user);
             }
         }
 
@@ -181,10 +181,10 @@ public class MilestoneController {
 
     @GetMapping("/class-manager/project/milestone")
     public String projectMilestonePage(@RequestParam("projectId") Integer projectId,@RequestParam(defaultValue = "0") Integer pageNo,
-                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
-                                @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
-                                @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") Integer milestoneId,
-                                Model model, HttpSession session) {
+                                       @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
+                                       @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
+                                       @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") Integer milestoneId,
+                                       Model model, HttpSession session) {
         Project project = projectService.findById(projectId);
         Page<Milestone> milestoneList= milestoneService.filterMilestoneByProject(project.getAclass().getId(), projectId, search, pageNo, pageSize,sortBy, sortType, status);
         User user = (User) session.getAttribute("user");

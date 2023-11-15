@@ -23,11 +23,24 @@ public class UserService implements IUserService {
     IUserRepository userRepository;
     @Autowired
     ISettingRepository settingRepository;
+    @Autowired
+    private int userRoleId;
+    @Autowired
+    public int classManagerRoleId;
 
     @Override
     public User saveUser(User user) {
         // TO-DO: set enable here
         return userRepository.save(user);
+    }
+    @Override
+    public int countStudent(){
+        return userRepository.countAllBySettingId(userRoleId);
+    }
+
+    @Override
+    public int countTeacher(){
+        return userRepository.countAllBySettingId(classManagerRoleId);
     }
 
     @Override
@@ -105,6 +118,10 @@ public class UserService implements IUserService {
     @Override
     public Optional<User> findUserById(int id) {
         return userRepository.findById(id);
+    }
+
+    public User findById(int id){
+        return userRepository.findUserById(id);
     }
 
     @Override

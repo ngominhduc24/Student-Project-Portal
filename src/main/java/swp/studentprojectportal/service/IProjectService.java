@@ -11,6 +11,8 @@ import java.util.List;
 public interface IProjectService {
     List<Project> findAllByClassId (int classId);
 
+    int projectCount();
+
     Project findById(int projectId);
 
     List<Project> findAllByClassManagerId (int classManagerId);
