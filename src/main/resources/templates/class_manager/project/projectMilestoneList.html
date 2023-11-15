@@ -548,7 +548,7 @@
             </div>
           </div>
         </div>
-        <!--                milestone details-->
+        <!--milestone details-->
         <script>
           function details(id) {
             let endPoint = '/api/v1/milestone?milestoneId=' + id;
@@ -576,38 +576,42 @@
             document.getElementById('btndetails').click();
           }
         </script>
+
         <!--                milestone update-->
         <script>
-          function updateMilestone(id){
+          async function updateMilestone(id){
             const title = document.querySelector('input[id="details-milestone-title"]').value;
             const description = document.querySelector('textarea[name="detail-description"]').value;
             const startDate = document.getElementById('detail-start-date').value;
             const endDate = document.getElementById('detail-end-date').value;
             const status = document.getElementById('detail-status').checked ? 1 : 0;
             let endPoint = '/api/v1/updateMilestone?milestoneId=' + id + '&title=' + title + '&description=' + description + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status;
+            let flag = false;
+
+            // Validate date time input value
+            if (new Date(endDate) < new Date(startDate)) {
+              notify('error', 'fail!', 'End date must be greater than start date');
+              return;
+            }
+
             fetch(endPoint)
                     .then(response => {
                       if (response.ok) {
                         // Handle a successful API response
-                        notify('success', 'Successfully!', 'Update milestone successful');
-                        // Delay the page reload for a few seconds
-                        setTimeout(() => {
-                          location.reload();
-                        }, 2000); // Adjust the delay duration as needed
-                        // Close the modal
-                        document.getElementById('detailcloseModal').click();
-                        // reload page
-                        location.reload();
+                        notify('success', 'Successfully!', 'Milestone updated successfully.');
+                        flag = true;
                       } else {
                         // Handle API errors
+                        notify('error', 'Successfully!', 'Milestone updated fail');
                         console.error('Error updating milestone.');
                       }
                     })
                     .catch(error => {
-                      // Handle network errors
+                      notify('error', 'Successfully!', 'Milestone updated fail');
                       console.error('Network error:', error);
                     });
-            location.reload();
+            await new Promise(r => setTimeout(r, 1000));
+            window.location.reload();
           }
         </script>
 
@@ -625,6 +629,12 @@
             var description = document.querySelector('textarea[name="description"]').value;
             var classId = document.querySelector('input[name="classId"]').value;
 
+            // Validate date time input value
+            if (new Date(endDate) < new Date(startDate)) {
+              notify('error', 'fail!', 'End date must be greater than start date');
+              return;
+            }
+
             // Prepare the URL with query parameters
             var endPoint = 'http://localhost:8080/api/v1/newMilestone' +
                     '?classId=' + classId +
@@ -638,18 +648,20 @@
             fetch(endPoint)
                     .then(response => {
                       if (response.ok) {
-                        notify('success', 'Milestone created successfully.', 'Success');
+                        notify('success', 'Milestone add successfully.', 'Success');
                         // Delay the page reload for a few seconds
                         setTimeout(() => {
                           location.reload();
                         }, 2000); // Adjust the delay duration as needed
                       } else {
                         // Handle API errors
+                        notify('error', 'error', 'Milestone add fail');
                         console.error('Error creating milestone.');
                       }
                     })
                     .catch(error => {
                       // Handle network errors
+                      notify('error', 'error', 'Milestone add fail');
                       console.error('Network error:', error);
                     });
           });

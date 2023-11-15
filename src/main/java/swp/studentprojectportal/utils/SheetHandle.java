@@ -23,31 +23,33 @@ public class SheetHandle {
             List<List<String>> data = new ArrayList<>();
 
             XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-            XSSFSheet worksheet = workbook.getSheetAt(0); //get data from first row
+            XSSFSheet worksheet = workbook.getSheetAt(0);
 
-            //loop through rows
-            for (Row row : worksheet) {
-                Iterator<Cell> cellIterator = row.cellIterator();
-                List<String> dataRow = new ArrayList<>();
+            if (worksheet.getPhysicalNumberOfRows() > 0) {
+                Row headerRow = worksheet.getRow(0);
+                int columnCount = headerRow.getPhysicalNumberOfCells();
 
-                //loop through cells
-                while (cellIterator.hasNext()) {
+                for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+                    Row row = worksheet.getRow(i);
+                    List<String> dataRow = new ArrayList<>();
 
-                    Cell cell = cellIterator.next();
-                    dataRow.add(cell.toString());
+                    for (int j = 0; j < columnCount; j++) {
+                        Cell cell = row.getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                        dataRow.add(cell.toString());
+                    }
+
+                    data.add(dataRow);
                 }
-
-                data.add(dataRow);
             }
 
             workbook.close();
-            data.remove(0); //remove header in data
             return data;
 
         } catch (IOException e) {
             System.out.println("Import sheet: " + e);
             return null;
         }
+
     }
 
     public List<User> importSheetUser(MultipartFile file) {
@@ -61,6 +63,7 @@ public class SheetHandle {
                 User user = new User();
                 user.setEmail(row.get(0));
                 user.setPhone(row.get(1));
+                user.setFullName(row.get(2));
 
                 userList.add(user);
             }

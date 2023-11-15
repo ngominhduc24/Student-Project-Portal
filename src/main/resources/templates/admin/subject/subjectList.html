@@ -310,7 +310,6 @@
 
     // Function to fetch user data and populate the table
     const  populateUserTable =  (pageNo) => {
-        pageNo = pageNo - 1;
         // replace the pageNo in the apiUrl
         apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
         fetch(apiUrl)
@@ -402,10 +401,11 @@
             // replace the search value in the apiUrl
             populateUserTable(1);
         });
-        document.addEventListener("DOMContentLoaded", () => {
-            populateUserTable(1);
-        });
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        populateUserTable(1);
+    });
 </script>
 
 <script>

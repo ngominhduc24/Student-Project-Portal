@@ -9,6 +9,13 @@ import java.util.List;
 
 public interface IClassService {
     List<StudentClass> getAllStudent(int classId);
+
+    int classCount();
+
+    int classCountBySemFall23();
+
+    int classCountBySemSummer23();
+
     Class getClass(int classId);
 
     List<Class> findAllByClassManagerId(int classManagerId);

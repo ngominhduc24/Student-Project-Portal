@@ -36,4 +36,8 @@ public interface IProjectRepository extends JpaRepository<Project, Integer> {
             "OR LOWER(s.subject_code) LIKE LOWER(CONCAT('%', :search, '%'))) \n" +
             "and (:status = -1 OR p.status = :status)", nativeQuery = true)
     Page<Project> filterByStudent(Integer studentId, String search, Integer status, Pageable pageable);
+
+    @Query(value="SELECT p.id, p.class_id, p.project_mentor_id, p.team_leader_id, p.title, p.status, p.group_name, p.description, p.create_by, p.create_at, p.update_by, p.update_at FROM project p join class c on p.class_id = c.id join subject s on s.id = c.subject_id join student_class sc on p.id = sc.project_id \n" +
+            "WHERE sc.student_id = :studentId", nativeQuery = true)
+    Page<Project> filterByStudentDashboard(Integer studentId, Pageable pageable);
 }

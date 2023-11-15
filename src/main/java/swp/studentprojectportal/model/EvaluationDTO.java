@@ -25,7 +25,7 @@ public class EvaluationDTO {
 
     private Integer weight;
 
-    private Integer bonusAndPenalty;
+    private Float bonusAndPenalty;
 
     private String commentGroup;
 

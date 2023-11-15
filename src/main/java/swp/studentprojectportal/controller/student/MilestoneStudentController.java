@@ -63,18 +63,33 @@ public class MilestoneStudentController {
 
         User user = (User) session.getAttribute("user");
 
+        Project project = projectService.findById(projectId);
+
+        List<Milestone> milestoneList = milestoneService.findAllBySubjectAndClassOfProject(project.getAclass().getId());
+
+        //filter submission of milestone
+        for (Milestone milestone : milestoneList)
+            if(milestone.getSubmissionList() != null)
+                milestone.getSubmissionList().removeIf(submission -> submission.getProject().getId() != projectId);
+
+        model.addAttribute("project", project);
         model.addAttribute("projectList", projectService.findAllByStudentUserId(user.getId()));
         model.addAttribute("isMentor", user.getSetting().getId() == 4);
-        model.addAttribute("milestoneList", milestoneService.findAllByProjectId(projectId));
+        model.addAttribute("milestoneList", milestoneList);
         return "project_mentor/milestone/milestoneList";
 
     }
 
     @GetMapping("/milestone/submit/{milestoneId}")
-    public String milestoneSubmit(Model model, @PathVariable Integer milestoneId) {
+    public String milestoneSubmit(Model model, @PathVariable Integer milestoneId, @RequestParam Integer projectId) {
+
+        Project project = projectService.findById(projectId);
+        Milestone milestone = milestoneService.findMilestoneById(milestoneId);
+
+        milestone.setProject(project);
 
         model.addAttribute("issueList", issueService.findAllByMilestoneId(milestoneId));
-        model.addAttribute("milestone", milestoneService.findMilestoneById(milestoneId));
+        model.addAttribute("milestone", milestone);
 
         return "student/milestone/milestoneSubmit";
     }
@@ -85,7 +100,8 @@ public class MilestoneStudentController {
                                       @RequestParam("file") MultipartFile file,
                                       @RequestParam("note") String note,
                                       @RequestParam("issueId") List<Integer> issueIds,
-                                      @RequestParam("assignee") List<Integer> assigneeIds) {
+                                      @RequestParam("assignee") List<Integer> assigneeIds,
+                                      @RequestParam Integer projectId) {
         // check empty
         if(issueIds == null) issueIds = new ArrayList<>();
         if(assigneeIds == null) assigneeIds = new ArrayList<>();
@@ -98,7 +114,7 @@ public class MilestoneStudentController {
             issueService.updateIssueAssignee(issueIds.get(i), assigneeIds.get(i));
 
         //add new submission
-        Submission submission = submissionService.insertSubmission(milestoneId, note, user);
+        Submission submission = submissionService.insertSubmission(milestoneId, note, user, projectId);
 
         //upload file
         submissionService.updateFileLocation(submission.getId(), saveFile(file, milestoneId + "/" + submission.getId()));
@@ -108,7 +124,7 @@ public class MilestoneStudentController {
             submitIssueService.insertSubmitIssue(issueId, submission.getId());
 
 
-        return "redirect:../list/";
+        return "redirect:../list/" + projectId;
     }
 
     private String saveFile(MultipartFile file, String folderName) {

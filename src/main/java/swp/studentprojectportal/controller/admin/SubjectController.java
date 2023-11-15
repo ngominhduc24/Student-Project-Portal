@@ -27,8 +27,7 @@ public class SubjectController {
     @GetMapping("/admin/subject")
     public String subjectPage(Model model,
                               @RequestParam(defaultValue = "0") int page) {
-//        subjectList = subjectService.getSubject(0, 10);
-//        model.addAttribute("SubjectList", subjectList);
+
         model.addAttribute("page", page);
         model.addAttribute("totalPage", subjectService.getTotalPage(10));
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
