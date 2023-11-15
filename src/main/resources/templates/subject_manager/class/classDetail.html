@@ -36,50 +36,10 @@
         .breadcrumb .breadcrumb-item:after {
             content: none !important;
         }
-        .form-select:disabled {
-            background-color: white !important;
-        }
-
-        .topnav {
-            overflow: hidden;
-            border-bottom: 1px solid darkgray;
-            margin-top: 70px;
-            background: white;
-        }
-
-        .topnav a {
-            float: left;
-            display: block;
-            color: black;
-            text-align: center;
-            padding: 10px 26px;
-            text-decoration: none;
-            font-size: 14px;
-            border-bottom: 3px solid transparent;
-            margin:0
-        }
-
-        .topnav a:hover {
-            border-bottom: 3px solid blue;
-        }
-
-        .topnav a.active {
-            border-bottom: 3px solid blue;
-        }
     </style>
 
 </head>
 <body>
-<!-- Loader -->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-</div>
-<!-- Loader -->
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
@@ -117,11 +77,11 @@
                                         <div class="mb-3 col-md-6">
                                             <input type="hidden" name="id" th:value="${class.id}">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <input type="text" name="className" class="form-control" required th:value="${class.className}">
+                                            <input type="text" th:disabled="${class.status==3}" name="className" class="form-control" required th:value="${class.className}">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subjectId" class="form-select">
+                                            <select name="subjectId" class="form-select"  th:disabled="${class.status==3}">
                                                 <option th:each="subject : ${subjectList}"
                                                         th:value="${subject.id}"
                                                         th:text="${subject.subjectCode}"
@@ -131,7 +91,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Semester<span class="text-danger">*</span></label>
-                                            <select name="semesterId" class="form-select">
+                                            <select name="semesterId" class="form-select"  th:disabled="${class.status==3}">
                                                 <option th:each="semester : ${semesterList}"
                                                         th:value="${semester.id}"
                                                         th:text="${semester.settingTitle}"
@@ -141,7 +101,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <select name="classManagerId" class="form-select">
+                                            <select name="classManagerId" class="form-select"  th:disabled="${class.status==3}">
                                                 <option th:each="teacher : ${teacherList}"
                                                         th:value="${teacher.id}"
                                                         th:text="${teacher.fullName}"
@@ -151,7 +111,7 @@
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description</label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${class.description}"></textarea>
+                                            <textarea type="text"  th:disabled="${class.status==3}" rows="3" name="description" class="form-control" required th:field="${class.description}"></textarea>
                                         </div>
                                         <div class="col-md-12">
                                             <label class="form-label">Status:</label>
