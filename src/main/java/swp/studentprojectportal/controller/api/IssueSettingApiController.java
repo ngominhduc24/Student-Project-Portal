@@ -12,6 +12,7 @@ import swp.studentprojectportal.model.IssueSetting;
 import swp.studentprojectportal.model.Milestone;
 import swp.studentprojectportal.service.servicesimpl.ClassService;
 import swp.studentprojectportal.service.servicesimpl.IssueSettingService;
+import swp.studentprojectportal.service.servicesimpl.ProjectService;
 import swp.studentprojectportal.service.servicesimpl.SubjectService;
 import swp.studentprojectportal.utils.Validate;
 
@@ -26,6 +27,8 @@ public class IssueSettingApiController {
     ClassService classService;
     @Autowired
     SubjectService subjectService;
+    @Autowired
+    ProjectService projectService;
     @Autowired
     IssueSettingService issueSettingService;
     @Autowired
@@ -111,6 +114,37 @@ public class IssueSettingApiController {
 
     }
 
+    @GetMapping("/update3/issue-setting")
+    public ResponseEntity updateIssueSettingForProject(
+            @RequestParam(name = "issueSettingId") Integer issueSettingId,
+            @RequestParam(name = "projectId") int projectId,
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "group") String group,
+            @RequestParam(name = "status") Integer status) {
+
+        IssueSetting issueSetting = issueSettingService.findById(issueSettingId);
+        issueSetting.setDescription(description);
+        issueSetting.setSettingTitle(title);
+        issueSetting.setSettingGroup(group);
+        issueSetting.setStatus(status == 1 ? true : false);
+        if(Validate.validNotempty(group) == false){
+            return ResponseEntity.badRequest().body("Group can not empty. Update failed!");
+        }
+        else{
+            IssueSetting findIssueSetting = issueSettingService.findByProjectAndGroupAndTitle(projectId,group,title);
+            if(findIssueSetting!=null && findIssueSetting.getId() != issueSettingId){
+                return ResponseEntity.badRequest().body("Issue setting existed. Update failed!");
+            }
+            else {
+                issueSettingService.saveIssueSetting(issueSetting);
+                return ResponseEntity.ok().body("1");
+
+            }
+        }
+
+    }
+
 
     @GetMapping(path="/add/issue-setting")
     public ResponseEntity addNewIssueSettingForClass(@RequestParam(name = "classId") int classId,
@@ -164,6 +198,38 @@ public class IssueSettingApiController {
         else{
             IssueSetting findIssueSetting = issueSettingService.findBySubjectAndGroupAndTitle(subjectId,group,title);
             if(findIssueSetting!=null){
+                return ResponseEntity.badRequest().body("Issue setting existed. Add failed!");
+            }
+            else {
+                issueSettingService.saveIssueSetting(issueSetting);
+                return ResponseEntity.ok().body("1");
+
+            }
+        }
+    }
+
+    @GetMapping(path="/add3/issue-setting")
+    public ResponseEntity addNewIssueSettingForProject(@RequestParam(name = "projectId") int projectId,
+                                                       @RequestParam(name = "title") String title,
+                                                       @RequestParam(name = "description") String description,
+                                                       @RequestParam(name = "group") String group){
+        IssueSetting issueSetting = new IssueSetting();
+        issueSetting.setProject(projectService.findById(projectId));
+        issueSetting.setSettingGroup(group);
+        issueSetting.setSettingTitle(title);
+        issueSetting.setDescription(description);
+        System.out.println("group "+group);
+        System.out.println("title "+title);
+        System.out.println("description"+description);
+        issueSetting.setStatus(true);
+
+        if(Validate.validNotempty(group) == false){
+            return ResponseEntity.badRequest().body("Group can not empty. Add failed!");
+        }
+        else{
+            IssueSetting findIssueSetting = issueSettingService.findByProjectAndGroupAndTitle(projectId,group,title);
+            if(findIssueSetting!=null){
+                System.out.println("duplicate roi bạn mìnhơi");
                 return ResponseEntity.badRequest().body("Issue setting existed. Add failed!");
             }
             else {
