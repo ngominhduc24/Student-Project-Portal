@@ -875,7 +875,13 @@ VALUES
     (1 ,"Job3","Check user verified"),
     (1 ,"Job4","Remember with cookie"),
     (1 ,"Job5","Login with gg"),
-    (1 ,"Job6","Hash password");
+    (1 ,"Job6","Hash password"),
+    (12,"Job1","Basic login "),
+    (12,"Job2","Check user blocked"),
+    (12,"Job3","Check user verified"),
+    (12,"Job4","Remember with cookie"),
+    (12,"Job5","Login with gg"),
+    (12,"Job6","Hash password");
 
 INSERT INTO submission_personal (submission_id, student_id, bonus, comment) VALUES
                                                                                 (1, 6, 1, 'Good job on the project'),
