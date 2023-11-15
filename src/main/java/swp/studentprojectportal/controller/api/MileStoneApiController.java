@@ -43,10 +43,10 @@ public class MileStoneApiController {
         }
 
         // Check if end date is in the future
-        Date currentDate = new Date();
-        if (endDate.before(currentDate)) {
-            return ResponseEntity.badRequest().body("End date must be in the future.");
-        }
+//        Date currentDate = new Date();
+//        if (endDate.before(currentDate)) {
+//            return ResponseEntity.badRequest().body("End date must be in the future.");
+//        }
 
         boolean result = milestoneService.addNewMilestone(
                 classId,
@@ -98,14 +98,15 @@ public class MileStoneApiController {
 
         // Check if start date is after end date
         if (startDate.after(endDate)) {
+
             return ResponseEntity.badRequest().body("Start date must be before the end date.");
         }
 
         // Check if end date is in the future
-        Date currentDate = new Date();
-        if (endDate.before(currentDate)) {
-            return ResponseEntity.badRequest().body("End date must be in the future.");
-        }
+//        Date currentDate = new Date();
+//        if (endDate.before(currentDate)) {
+//            return ResponseEntity.badRequest().body("End date must be in the future.");
+//        }
 
         boolean result = milestoneService.updateMilestone(
                 milestoneId,

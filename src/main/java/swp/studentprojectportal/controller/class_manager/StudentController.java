@@ -1,6 +1,7 @@
 package swp.studentprojectportal.controller.class_manager;
 
 import jakarta.servlet.http.HttpSession;
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import swp.studentprojectportal.model.User;
-import swp.studentprojectportal.service.servicesimpl.ClassService;
+import swp.studentprojectportal.service.servicesimpl.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.service.servicesimpl.SettingService;
-import swp.studentprojectportal.service.servicesimpl.StudentClassService;
-import swp.studentprojectportal.service.servicesimpl.UserService;
+import swp.studentprojectportal.utils.Utility;
 import swp.studentprojectportal.utils.instance.InstanceSingleton;
 import swp.studentprojectportal.utils.SheetHandle;
 
@@ -31,6 +30,8 @@ public class StudentController {
     SettingService settingService;
     @Autowired
     StudentClassService studentClassService;
+    @Autowired
+    EmailService emailservice;
 
     @GetMapping("class/student")
     public String studentList(Model model,
@@ -168,13 +169,35 @@ public class StudentController {
                 //find by phone
                 if (user == null) {
                     user = userService.findByPhone(userData.getPhone());
-
-                    if (user == null) continue;
                 }
-
+                if(user != null) {
                 //add student to class
                 studentClassService.addNewStudentToClass(classId, user.getId());
+                }
 
+                if(user == null) {
+                    //if add with email -> send mail
+                    if(!userData.getEmail().isEmpty() && !userData.getFullName().isEmpty()) {
+                        // gen token
+                        String token = RandomString.make(30); // generate token
+                        userData.setToken(token);
+
+                        userData.setActive(false);
+                        userData.setStatus(true);
+                        userData.setSetting(settingService.findById(1));
+                        //save new user
+                        User newUser = userService.saveUser(userData);
+
+                        // send mail
+                        String href = "reset-password";
+                        String tokenSender = Utility.getSiteURL() + "/" + href + "?key=" + token;
+
+                        emailservice.sendEmail(newUser.getFullName(), newUser.getEmail(), tokenSender);
+
+                        //add student to class
+                        studentClassService.addNewStudentToClass(classId, newUser.getId());
+                    }
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }

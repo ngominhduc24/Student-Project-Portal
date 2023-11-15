@@ -4,12 +4,12 @@ FROM maven:3.8.4-openjdk-17-slim AS builder
 COPY pom.xml .
 COPY src ./src
 
-# Build the application using Maven.
+# Build the application using Maven.d
 RUN mvn clean package
 
 # Copy the built JAR file to the root directory of the container.
 RUN echo $(ls)
-COPY target/*-SNAPSHOT.jar app.jar
+RUN cp target/*-SNAPSHOT.jar app.jar
 # Production stage
 FROM eclipse-temurin:17-jdk-alpine AS runner
 

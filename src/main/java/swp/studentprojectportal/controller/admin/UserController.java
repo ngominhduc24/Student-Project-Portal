@@ -106,7 +106,6 @@ public class UserController {
         user.setPhone(phone);
         user.setSetting(settingService.findById(roleId));
 
-        int newUserId =  userService.saveUser(user).getId();
 
         //if add with email -> send mail
         if(!email.isEmpty()) {
@@ -122,6 +121,7 @@ public class UserController {
             emailservice.sendEmail(user.getFullName(), user.getEmail(), tokenSender);
         }
 
+        int newUserId =  userService.saveUser(user).getId();
         return "redirect:./userDetails?id=" + newUserId;
     }
 

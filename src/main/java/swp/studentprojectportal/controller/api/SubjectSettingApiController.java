@@ -36,7 +36,6 @@ public class SubjectSettingApiController {
     @GetMapping("/subject-setting")
     public ResponseEntity getSubjectSettingById(@RequestParam(name = "subjectSettingId") Integer subjectSettingId) {
         SubjectSetting subjectSetting = subjectSettingService.findById(subjectSettingId);
-        // create response entity with milestone object
         if(subjectSetting != null){
             Map<String, Object> response = new HashMap<>();
             response.put("id", subjectSetting.getId());
@@ -63,23 +62,22 @@ public class SubjectSettingApiController {
             @RequestParam(name = "status") Integer status) {
 
         SubjectSetting subjectSetting = subjectSettingService.findById(subjectSettingId);
-        //ubjectSetting.setSubject(subjectService.findSubjectById(subjectId));
         subjectSetting.setSettingTitle(title);
         subjectSetting.setStatus(status == 1 ? true : false);
         if(!Validate.validNotempty(title))
-            return ResponseEntity.badRequest().body("Title can not empty. Add failed!");
+            return ResponseEntity.badRequest().body("Title can not empty. Update failed!");
         else{
             if(!Validate.validNotempty(value))
-                return ResponseEntity.badRequest().body("Value can not empty. Add failed!");
+                return ResponseEntity.badRequest().body("Value can not empty. Update failed!");
             else{
                 if(!Validate.validNotempty(displayOrder))
-                    return ResponseEntity.badRequest().body("DisplayOrder can not empty. Add failed!");
+                    return ResponseEntity.badRequest().body("DisplayOrder can not empty. Update failed!");
                 else{
                     if(!Validate.isNumeric(value))
-                        return ResponseEntity.badRequest().body("Value must be positive number. Add failed!");
+                        return ResponseEntity.badRequest().body("Value must be positive number. Update failed!");
                     else{
                         if(!Validate.isNumeric(displayOrder))
-                            return ResponseEntity.badRequest().body("DisplayOrder must be positive number. Add failed!");
+                            return ResponseEntity.badRequest().body("DisplayOrder must be positive number. Update failed!");
                         else{
                             Integer value_real = Integer.parseInt(value);
                             Integer typeId_real = Integer.parseInt(typeId);
@@ -87,14 +85,16 @@ public class SubjectSettingApiController {
                             subjectSetting.setSettingValue(value_real);
                             subjectSetting.setTypeId(typeId_real);
                             subjectSetting.setDisplayOrder(displayOrder_real);
-                            subjectSetting.setStatus(true);
-                            SubjectSetting findSubjectSetting = subjectSettingService.findByIdAndTypeIdAndTitle(subjectId,typeId_real,title);
-                            if(findSubjectSetting!=null && findSubjectSetting.getId() != subjectSettingId){
-                                return ResponseEntity.badRequest().body("Subject setting existed. Add failed!");
-                            }
-                            else{
-                                subjectSettingService.saveSubjectSetting(subjectSetting);
-                                return ResponseEntity.ok().body("1");
+                            if(value_real > 100 && typeId_real == 2)
+                                return ResponseEntity.badRequest().body("Value must be in range [0,100]. Update failed!");
+                            else {
+                                SubjectSetting findSubjectSetting = subjectSettingService.findByIdAndTypeIdAndTitle(subjectId, typeId_real, title);
+                                if (findSubjectSetting != null && findSubjectSetting.getId() != subjectSettingId) {
+                                    return ResponseEntity.badRequest().body("Subject setting existed. Update failed!");
+                                } else {
+                                    subjectSettingService.saveSubjectSetting(subjectSetting);
+                                    return ResponseEntity.ok().body("1");
+                                }
                             }
                         }
                     }
@@ -139,13 +139,16 @@ public class SubjectSettingApiController {
                             subjectSetting.setTypeId(typeId_real);
                             subjectSetting.setDisplayOrder(displayOrder_real);
                             subjectSetting.setStatus(true);
-                            SubjectSetting findSubjectSetting = subjectSettingService.findByIdAndTypeIdAndTitle(subjectId,typeId_real,title);
-                            if(findSubjectSetting!=null){
-                                return ResponseEntity.badRequest().body("Subject setting existed. Add failed!");
-                            }
-                            else{
-                                subjectSettingService.saveSubjectSetting(subjectSetting);
-                                return ResponseEntity.ok().body("1");
+                            if(value_real > 100 && typeId_real == 2)
+                                return ResponseEntity.badRequest().body("Value must be in range [0,100]. Add failed!");
+                            else {
+                                SubjectSetting findSubjectSetting = subjectSettingService.findByIdAndTypeIdAndTitle(subjectId, typeId_real, title);
+                                if (findSubjectSetting != null) {
+                                    return ResponseEntity.badRequest().body("Subject setting existed. Add failed!");
+                                } else {
+                                    subjectSettingService.saveSubjectSetting(subjectSetting);
+                                    return ResponseEntity.ok().body("1");
+                                }
                             }
                         }
                     }

@@ -375,7 +375,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submission_personal` (
                                                               `id` INT NOT NULL AUTO_INCREMENT,
                                                               `submission_id` INT NOT NULL,
                                                               `student_id` INT NOT NULL,
-                                                              `bonus` INT default 0,
+                                                              `bonus` float default 0,
                                                               `comment` VARCHAR(145) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -475,6 +475,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submit_issue` (
     `complexity_id`INT NULL,
     `function_loc` INT NULL,
     `is_rejected`  BIT(1) NULL,
+    `comment` VARCHAR(255) NULL ,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `update_by` INT NULL DEFAULT 0,
@@ -689,23 +690,23 @@ VALUES
     ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,7,'2023-10-18', '2023-11-08');
 
 -- class layer
-INSERT INTO milestone (`title`,`description`,`status`,`class_id`,`start_date`, `end_date`)
+INSERT INTO milestone (`title`,`description`,`status`, `subject_assignment_id`,`class_id`,`start_date`, `end_date`)
 VALUES
-    ('Java Servlet','Intro to JavaServlet + JSP',1,5,'2023-09-05', '2023-09-25'),
-    ('Connect to Database','Learn JDBC',1,5,'2023-09-27', '2023-10-16'),
-    ('Project','Pratice to create a website',1,5,'2023-10-18', '2023-11-08'),
-    ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
-    ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
-    ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
+    ('Java Servlet','Intro to JavaServlet + JSP',1,1,5,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,1,5,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,1,5,'2023-10-18', '2023-11-08'),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,1,6,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,1,6,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,1,6,'2023-10-18', '2023-11-08');
 
 -- project layer
-INSERT INTO milestone (`title`,`description`,`status`,`project_id`,`start_date`, `end_date`)
+INSERT INTO milestone (`title`,`description`,`status`, `subject_assignment_id`,`project_id`,`start_date`, `end_date`)
 VALUES
-    ('Requirement for iter 1','Eliciate and analyze requirement for iteration 1', 1, 1,'2023-09-05', '2023-09-09'),
-    ('Database for iter 1','Design database for iteration 1',1,1,'2023-09-09', '2023-09-13'),
-    ('RDS Requirement for iter 1','Write RDS Requirement for iter 1',1,1,'2023-09-13', '2023-09-16'),
-    ('Coding for iter 1','Code for iteration 1',1,1,'2023-09-16', '2023-09-22'),
-    ('Testing for iter 1','Testing for iteration 1',1 , 1,'2023-09-22', '2023-09-25');
+    ('Requirement for iter 1','Eliciate and analyze requirement for iteration 1',1, 1, 1,'2023-09-05', '2023-09-09'),
+    ('Database for iter 1','Design database for iteration 1',1,1,1,'2023-09-09', '2023-09-13'),
+    ('RDS Requirement for iter 1','Write RDS Requirement for iter 1',1,1,1,'2023-09-13', '2023-09-16'),
+    ('Coding for iter 1','Code for iteration 1',1,1,1,'2023-09-16', '2023-09-22'),
+    ('Testing for iter 1','Testing for iteration 1',1,1 , 1,'2023-09-22', '2023-09-25');
 
 -- issue_setting
 INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
@@ -830,21 +831,9 @@ VALUES
     ("LOC Evaluation" ,1, 3, 6, 4, 1, 7),
     ("Issue" ,1, 3, 6, 4, 1, 7),
     ("Issue Details" ,1, 3, 6, 4, 1, 8),
-    ("Login" ,2, 1, 6, 4, 1, 11),
-    ("Register" ,2, 1, 6, 4, 1, 11),
-    ("Password Reset" ,2, 1, 6, 4, 1, 12),
-    ("Password Change" ,2, 1, 6, 4, 1, 13),
-    ("User List" ,2, 1, 6, 4, 1, 13),
-    ("Class List" ,2, 2, 6, 4, 1, 11),
-    ("Class Details" ,2, 2, 6, 4, 1, 12),
-    ("Milestone List" ,2, 2, 6, 4, 1, 13),
-    ("Milestone Details" ,2, 2, 6, 4, 1, 14),
-    ("Assignment List" ,2, 3, 6, 4, 1, 4),
-    ("Assignment Submit" ,2, 3, 6, 4, 1, 4),
-    ("Assignment Evaluation" ,2, 3, 6, 4, 1, 4),
-    ("LOC Evaluation" ,2, 3, 6, 4, 1, 12),
-    ("Issue" ,2, 3, 6, 4, 1, 11),
-    ("Issue Details" ,2, 3, 6, 4, 1, 12);
+
+    ("Issue" ,1, 10, 6, 4, 1, 7),
+    ("Issue Details" ,1, 10, 6, 4, 1, 8);
 
 INSERT INTO submit_issue(issue_id, submit_id, is_final, quality_id, complexity_id, function_loc, is_rejected)
 VALUES
@@ -875,15 +864,10 @@ VALUES
     (1 ,"Job3","Check user verified"),
     (1 ,"Job4","Remember with cookie"),
     (1 ,"Job5","Login with gg"),
-    (1 ,"Job6","Hash password"),
-    (12,"Job1","Basic login "),
-    (12,"Job2","Check user blocked"),
-    (12,"Job3","Check user verified"),
-    (12,"Job4","Remember with cookie"),
-    (12,"Job5","Login with gg"),
-    (12,"Job6","Hash password");
+    (1 ,"Job6","Hash password");
 
 INSERT INTO submission_personal (submission_id, student_id, bonus, comment) VALUES
                                                                                 (1, 6, 1, 'Good job on the project'),
                                                                                 (1, 7, 0, 'Could use some improvements'),
                                                                                 (1, 8, -1, 'Keep up the good work')
+

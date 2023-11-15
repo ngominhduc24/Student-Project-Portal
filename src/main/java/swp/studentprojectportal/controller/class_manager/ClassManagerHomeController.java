@@ -22,7 +22,7 @@ public class ClassManagerHomeController {
     @Autowired
     SettingService settingService;
 
-    @GetMapping("/class-manager/home")
+    @GetMapping("class-manager/home")
     public String classManagerHome(@RequestParam(defaultValue = "0") Integer pageNo,
                                    @RequestParam(defaultValue = "9") Integer pageSize,
                                    @RequestParam(defaultValue = "8") Integer semesterId,
@@ -36,6 +36,6 @@ public class ClassManagerHomeController {
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("semesterId", semesterId);
         model.addAttribute("totalPage", classList.getTotalPages());
-        return "/class_manager/classManagerHome";
+        return "class_manager/classManagerHome";
     }
 }

@@ -9,10 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
-import swp.studentprojectportal.model.Milestone;
-import swp.studentprojectportal.model.Project;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.service.IMilestoneService;
 import swp.studentprojectportal.service.servicesimpl.*;
 import swp.studentprojectportal.utils.dto.Mapper;
@@ -33,15 +31,17 @@ public class MilestoneController {
     UserService userService;
     @Autowired
     ProjectService projectService;
+    @Autowired
+    AssignmentService assignmentService;
 
 
     @GetMapping("/class/milestone")
-    public String milestonePage(@RequestParam("classId") Integer classId,@RequestParam(defaultValue = "0") Integer pageNo,
+    public String milestonePage(@RequestParam("classId") Integer classId, @RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
                                 @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
                                 @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") Integer milestoneId,
                                 Model model, HttpSession session) {
-        Page<Milestone> milestoneList= milestoneService.filterMilestone(classId, search, pageNo, pageSize,sortBy, sortType, status);
+        Page<Milestone> milestoneList = milestoneService.filterMilestone(classId, search, pageNo, pageSize, sortBy, sortType, status);
         Class classA = classService.findById(classId);
         User user = (User) session.getAttribute("user");
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
@@ -83,43 +83,57 @@ public class MilestoneController {
             HttpSession session, RedirectAttributes attributes
     ) throws GitLabApiException {
         List<org.gitlab4j.api.models.Milestone> milestoneListGitlab = null;
+        List<swp.studentprojectportal.model.Milestone> milestoneListDB = milestoneService.findMilestoneByClassId(classId);
+        List<Assignment> milestoneSubjectListDB = assignmentService.getAssignmentBySubjectId(classService.findById(classId).getSubject().getId());
+
         try {
-            milestoneListGitlab =  gitlabApiService.getClassMilestoneGitlab(groupIdOrPath, personalToken);
+            milestoneListGitlab = gitlabApiService.getClassMilestoneGitlab(groupIdOrPath, personalToken);
         } catch (GitLabApiException e) {
             System.out.printf(e.getMessage());
         }
-        if(milestoneListGitlab == null) {
+        if (milestoneListGitlab == null) {
             attributes.addFlashAttribute("emessage", "GroupId or Token gitlab not valid!");
             return "redirect:/class/milestone?classId=" + classId;
         }
-        List<swp.studentprojectportal.model.Milestone> milestoneListDB = milestoneService.findMilestoneByClassId(classId);
 
         // sync to db
         for (org.gitlab4j.api.models.Milestone milestone : milestoneListGitlab) {
             boolean isExist = false;
-            boolean isUpdate = false;
             for (swp.studentprojectportal.model.Milestone milestoneDB : milestoneListDB) {
                 if (Mapper.milestoneEquals(milestoneDB, milestone)) {
                     isExist = true;
-                    if(milestoneDB.getUpdateAt().before(milestone.getUpdatedAt())){
-                        isUpdate = true;
+                    if(milestoneDB.getGitlabMilestoneId() != null) {
+                        milestoneDB.setGitlabMilestoneId(milestone.getId());
+                        milestoneService.save(milestoneDB);
+                    }
+                }
+
+                if(milestoneDB.getGitlabMilestoneId() == null) {
+                    continue;
+                }
+
+                // if milestone in db is updated then update
+
+
+                if (milestone.getId().longValue() == milestoneDB.getGitlabMilestoneId().longValue()) {
+                    isExist = true;
+                    if (milestoneDB.getUpdateAt().before(milestone.getUpdatedAt())) {
+                        swp.studentprojectportal.model.Milestone milestoneUpdated = Mapper.milestoneConvert(milestone);
+                        milestoneUpdated.setId(milestoneDB.getId());
+                        milestoneUpdated.setAclass(classService.findById(classId));
+                        milestoneService.save(milestoneUpdated);
                     }
                     break;
                 }
+
             }
 
             try {
                 if (!isExist) {
                     swp.studentprojectportal.model.Milestone milestoneDB = Mapper.milestoneConvert(milestone);
+                    milestoneDB.setGitlabMilestoneId(milestone.getId());
                     milestoneDB.setAclass(classService.findById(classId));
                     milestoneService.save(milestoneDB);
-                } else {
-                    if(isUpdate){
-                        swp.studentprojectportal.model.Milestone milestoneDB = Mapper.milestoneConvert(milestone);
-                        milestoneDB.setId(milestoneService.findMilestoneByTitle(milestone.getTitle()).getId());
-                        milestoneDB.setAclass(classService.findById(classId));
-                        milestoneService.save(milestoneDB);
-                    }
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -129,42 +143,43 @@ public class MilestoneController {
         // sync to gitlab
         for (swp.studentprojectportal.model.Milestone milestoneDB : milestoneListDB) {
             boolean isExist = false;
-            boolean isUpdate = false;
-            Long milestoneId = null;
-            String milestoneState = null;
             for (org.gitlab4j.api.models.Milestone milestone : milestoneListGitlab) {
+                // Check exist title to create new milestone
                 if (Mapper.milestoneEquals(milestoneDB, milestone)) {
                     isExist = true;
-                    if(milestoneDB.getUpdateAt().after(milestone.getUpdatedAt())){
-                        isUpdate = true;
+                }
+
+                if(milestoneDB.getGitlabMilestoneId() == null) {
+                    continue;
+                }
+
+                // if exist milestone are sync then update
+                if (milestone.getId().longValue() == milestoneDB.getGitlabMilestoneId().longValue()) {
+                    isExist = true;
+                    if (milestoneDB.getUpdateAt().after(milestone.getUpdatedAt())) {
+                        org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
+                        milestoneGitlab.setId(milestoneDB.getGitlabMilestoneId());
+                        System.out.println("title: " + milestoneGitlab.getTitle() + "status " + milestoneDB.isStatus());
+                        gitlabApiService.updateClassMilestone(groupIdOrPath, personalToken, milestoneGitlab, milestoneDB.isStatus());
                     }
-                    milestoneId = milestone.getId();
-                    milestoneState = milestone.getState();
                     break;
                 }
             }
 
             if (!isExist) {
-                org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
-                gitlabApiService.createGrouptMilestone(groupIdOrPath, personalToken, milestoneGitlab);
-            } else {
-                if(isUpdate){
-                    org.gitlab4j.api.models.Milestone milestoneGitlab = Mapper.milestoneConvert(milestoneDB);
-                    if(milestoneId != null) {
-                        milestoneGitlab.setId(Long.valueOf(milestoneId));
-                        milestoneGitlab.setState(milestoneState);
-                        System.out.println(milestoneGitlab);
-                        gitlabApiService.updateClassMilestone(groupIdOrPath, personalToken, milestoneGitlab);
-                    }
-                }
+                // create milestone in gitlab
+                org.gitlab4j.api.models.Milestone milestoneGitlab = gitlabApiService.createGrouptMilestone(groupIdOrPath, personalToken, Mapper.milestoneConvert(milestoneDB));
+                // update milestone id in db
+                milestoneDB.setGitlabMilestoneId(milestoneGitlab.getId());
+                milestoneService.save(milestoneDB);
             }
         }
 
         // save personal token
         User user = (User) session.getAttribute("user");
-        if(user != null){
+        if (user != null) {
             // if personal token is change then update
-            if(user.getPersonalTokenGitlab() == null || user.getPersonalTokenGitlab().equals(personalToken)){
+            if (user.getPersonalTokenGitlab() == null || user.getPersonalTokenGitlab().equals(personalToken)) {
                 user.setPersonalTokenGitlab(personalToken);
                 session.setAttribute("user", user);
                 userService.saveUser(user);
@@ -180,13 +195,13 @@ public class MilestoneController {
     }
 
     @GetMapping("/class-manager/project/milestone")
-    public String projectMilestonePage(@RequestParam("projectId") Integer projectId,@RequestParam(defaultValue = "0") Integer pageNo,
+    public String projectMilestonePage(@RequestParam("projectId") Integer projectId, @RequestParam(defaultValue = "0") Integer pageNo,
                                        @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String search,
                                        @RequestParam(defaultValue = "-1") Integer status, @RequestParam(defaultValue = "id") String sortBy,
                                        @RequestParam(defaultValue = "1") Integer sortType, @RequestParam(defaultValue = "") Integer milestoneId,
                                        Model model, HttpSession session) {
         Project project = projectService.findById(projectId);
-        Page<Milestone> milestoneList= milestoneService.filterMilestoneByProject(project.getAclass().getId(), projectId, search, pageNo, pageSize,sortBy, sortType, status);
+        Page<Milestone> milestoneList = milestoneService.filterMilestoneByProject(project.getAclass().getId(), projectId, search, pageNo, pageSize, sortBy, sortType, status);
         User user = (User) session.getAttribute("user");
         model.addAttribute("subjectList", subjectService.findAllSubjectByUserAndStatus(user, true));
         model.addAttribute("personalToken", user.getPersonalTokenGitlab());
