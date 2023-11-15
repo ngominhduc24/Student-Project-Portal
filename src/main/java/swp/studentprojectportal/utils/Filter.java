@@ -21,27 +21,56 @@ public class Filter implements jakarta.servlet.Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String url = request.getRequestURL().toString();
-        List<String> acceptUrl = new ArrayList<>();
-        acceptUrl.add("login");
-        acceptUrl.add(".css");
-        acceptUrl.add(".js");
-        acceptUrl.add("images");
-        acceptUrl.add("register");
-        acceptUrl.add("verify");
-        acceptUrl.add("forgotPassword");
-        acceptUrl.add("reset-password");
+        User user = (User) request.getSession().getAttribute("user");
 
+        if(user!=null) {
+            try {
 
-        if(checkAccpectUrl(acceptUrl, url) || url.charAt(url.length()-1)=='/') {
+                if(url.contains("/admin/") && user.getSetting().getId() != 2) throw new Exception();
+                if(url.contains("/student/") && user.getSetting().getId() != 1) throw new Exception();
+                if(url.contains("/class-manager/") && user.getSetting().getId() != 1 && user.getSetting().getId() != 4) throw new Exception();
+                if(url.contains("/project-mentor/") && user.getSetting().getId() != 1 && user.getSetting().getId() != 4) throw new Exception();
+                if(url.contains("/subject-manager/") && user.getSetting().getId() != 3) throw new Exception();
 
-        } else {
-            User user = (User) request.getSession().getAttribute("user");
-
-            if(user == null) {
+            } catch (Exception e) {
                 response.sendRedirect("/");
                 return;
             }
         }
+
+        List<String> authorUrl = new ArrayList<>();
+        authorUrl.add("/admin/");
+        authorUrl.add("/student/");
+        authorUrl.add("/class-manager/");
+        authorUrl.add("/project-mentor/");
+        authorUrl.add("/subject-manager/");
+
+        if(checkAccpectUrl(authorUrl, url) && user==null) {
+            response.sendRedirect("/");
+            return;
+        }
+
+//        List<String> acceptUrl = new ArrayList<>();
+//        acceptUrl.add("login");
+//        acceptUrl.add(".css");
+//        acceptUrl.add(".js");
+//        acceptUrl.add("images");
+//        acceptUrl.add("register");
+//        acceptUrl.add("verify");
+//        acceptUrl.add("forgotPassword");
+//        acceptUrl.add("reset-password");
+//
+//
+//        if(checkAccpectUrl(acceptUrl, url) || url.charAt(url.length()-1)=='/') {
+//
+//        } else {
+//            User user = (User) request.getSession().getAttribute("user");
+//
+//            if(user == null) {
+//                response.sendRedirect("/");
+//                return;
+//            }
+//        }
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
