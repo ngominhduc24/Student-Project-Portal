@@ -375,7 +375,7 @@ CREATE TABLE IF NOT EXISTS `swp391`.`submission_personal` (
                                                               `id` INT NOT NULL AUTO_INCREMENT,
                                                               `submission_id` INT NOT NULL,
                                                               `student_id` INT NOT NULL,
-                                                              `bonus` INT default 0,
+                                                              `bonus` float default 0,
                                                               `comment` VARCHAR(145) NULL,
     `create_by` INT NULL DEFAULT 0,
     `create_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
