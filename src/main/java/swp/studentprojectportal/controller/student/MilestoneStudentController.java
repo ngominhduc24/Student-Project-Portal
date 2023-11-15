@@ -63,18 +63,33 @@ public class MilestoneStudentController {
 
         User user = (User) session.getAttribute("user");
 
+        Project project = projectService.findById(projectId);
+
+        List<Milestone> milestoneList = milestoneService.findAllBySubjectAndClassOfProject(project.getAclass().getId());
+
+        //filter submission of milestone
+        for (Milestone milestone : milestoneList)
+            if(milestone.getSubmissionList() != null)
+                milestone.getSubmissionList().removeIf(submission -> submission.getProject().getId() != projectId);
+
+        model.addAttribute("project", project);
         model.addAttribute("projectList", projectService.findAllByStudentUserId(user.getId()));
         model.addAttribute("isMentor", user.getSetting().getId() == 4);
-        model.addAttribute("milestoneList", milestoneService.findAllByProjectId(projectId));
+        model.addAttribute("milestoneList", milestoneList);
         return "project_mentor/milestone/milestoneList";
 
     }
 
     @GetMapping("/milestone/submit/{milestoneId}")
-    public String milestoneSubmit(Model model, @PathVariable Integer milestoneId) {
+    public String milestoneSubmit(Model model, @PathVariable Integer milestoneId, @RequestParam Integer projectId) {
+
+        Project project = projectService.findById(projectId);
+        Milestone milestone = milestoneService.findMilestoneById(milestoneId);
+
+        milestone.setProject(project);
 
         model.addAttribute("issueList", issueService.findAllByMilestoneId(milestoneId));
-        model.addAttribute("milestone", milestoneService.findMilestoneById(milestoneId));
+        model.addAttribute("milestone", milestone);
 
         return "student/milestone/milestoneSubmit";
     }

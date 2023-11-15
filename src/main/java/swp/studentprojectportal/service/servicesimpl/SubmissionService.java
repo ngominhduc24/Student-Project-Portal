@@ -9,6 +9,8 @@ import swp.studentprojectportal.repository.IMilestoneRepository;
 import swp.studentprojectportal.repository.ISubmissionRepository;
 import swp.studentprojectportal.service.ISubmissionService;
 
+import java.util.List;
+
 @Service
 public class SubmissionService implements ISubmissionService {
     @Autowired
@@ -51,6 +53,11 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public Submission findById(Integer submissionId) {
         return submissionRepository.findById(submissionId).orElseGet(null);
+    }
+
+    @Override
+    public List<Submission> findAllByProjectId(Integer projectId) {
+        return submissionRepository.findAllByProjectId(projectId);
     }
 
     @Override
