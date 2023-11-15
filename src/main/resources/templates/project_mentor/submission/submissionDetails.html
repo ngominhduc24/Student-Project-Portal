@@ -166,8 +166,16 @@
                                             <input type="text" name="subjectCode" class="form-control" th:value="${submission.project.aclass.subject.subjectCode}" readonly disabled>
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Milstone</label>
-                                            <input type="text" name="subjectCode" class="form-control" th:value="${submission.milestone.title}" readonly disabled>
+                                            <label class="form-label">Milestone</label>
+                                            <input type="text" name="mileStone" class="form-control" th:value="${submission.milestone.title}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Issue Title</label>
+                                            <input type="text" name="details-submit-issue-title" class="form-control" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Assignee</label>
+                                            <input type="text" name="details-submit-issue-assignee" class="form-control" readonly disabled>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Complexity<span class="text-danger">*</span></label>
@@ -187,9 +195,9 @@
                                                 ></option>
                                             </select>
                                         </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Function Loc<span class="text-danger">*</span></label>
-                                            <input type="text" id="details-submit-issue-function-loc" class="form-control" >
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Comment</label>
+                                            <textarea type="text" rows="3" name="detail-submit-issue-comment" class="form-control" content="description"></textarea>
                                         </div>
                                     </div><!--end col-->
                                 </div>
@@ -216,7 +224,9 @@
                             .then(response => {
                                 if (response.ok) {
                                     response.json().then(data => {
-                                        document.querySelector('input[id="details-submit-issue-function-loc"]').value = data.functionLoc;
+                                        document.querySelector('input[name="details-submit-issue-title"]').value = data.issueTitle;
+                                        document.querySelector('input[name="details-submit-issue-assignee"]').value = data.issueAssignee;
+                                        document.querySelector('textarea[name="detail-submit-issue-comment"]').value = data.issueComment;
                                         var selectElementComplexity = document.querySelector('select[id="details-submit-issue-complexity"]');
                                         var dataComplexityValue = data.complexityValue;
                                         if(dataComplexityValue == -1) selectElementComplexity.options[0].selected = true;
@@ -263,9 +273,9 @@
                         const subjectId = document.querySelector('input[name="subjectId"]').value;
                         const complexity = document.querySelector('select[id="details-submit-issue-complexity"]').value;
                         const quality = document.querySelector('select[id="details-submit-issue-quality"]').value;
-                        const functionLoc = document.querySelector('input[id="details-submit-issue-function-loc"]').value;
+                        const comment = document.querySelector('textarea[name="detail-submit-issue-comment"]').value;
                         let endPoint = '/api/v1/update/submit-issue?submitIssueId=' + id +
-                            '&functionLoc=' + functionLoc +'&complexity=' +complexity + '&quality=' + quality + '&subjectId=' +subjectId;
+                            '&complexity=' +complexity + '&quality=' + quality + '&subjectId=' +subjectId + '&comment=' + comment;
                         fetch(endPoint, {
                             method: 'GET',
                         })

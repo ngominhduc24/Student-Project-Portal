@@ -42,6 +42,10 @@ public class SubmitIssue {
     @Column(name = "is_rejected")
     private Boolean isRejected;
 
+    @Column(name = "comment")
+    private String comment = "";
+
+
     @Column(name = "create_by")
     private Integer createBy = 0;
 
