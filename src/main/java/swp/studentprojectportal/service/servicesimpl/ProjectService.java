@@ -174,5 +174,9 @@ public class ProjectService implements IProjectService {
             sort = Sort.by(sortBy).descending();
         return projectRepository.filterByStudent(studentId, search , status, PageRequest.of(pageNo, pageSize, sort));
     }
+    @Override
+    public Page<Project> filterByStudendDashboard(Integer studentId, Integer pageNo, Integer pageSize) {
+        return projectRepository.filterByStudentDashboard(studentId, PageRequest.of(pageNo, pageSize));
+    }
 
 }

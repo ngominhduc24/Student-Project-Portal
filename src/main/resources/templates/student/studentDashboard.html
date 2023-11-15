@@ -52,8 +52,51 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <h5 class="mb-0">Dashboard</h5>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-12 mt-4" th:each="project : ${projects}">
+                        <div class="card blog blog-primary border-opacity-10 shadow rounded overflow-hidden">
+                            <div class="img-fluid p-4 pb-5" th:style="'background: url('+@{/images/subjectBackground.png}+'); background-size: cover'">
+                                <a th:href="@{'/class-manager/project/details/' + ${project.id}}" class="text-white title h5" th:text="${project.title}"></a>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 th:text="'Class: ' + ${project.aclass.className}  + ' / ' + ${project.aclass.subject.subjectCode}"></h5>
+                                <div class="post-meta d-flex justify-content-between mt-3">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item me-2 mb-0" th:if="${project.status}"><a th:href="@{'/class-manager/project/details/' + ${project.id}}" class="text-success m-0"><i class="uil uil-notes me-1"></i>Active</a></li>
+                                        <li class="list-inline-item me-2 mb-0" th:if="${!project.status}"><a th:href="@{'/class-manager/project/details/' + ${project.id}}" class="text-danger m-0"><i class="uil uil-notes me-1"></i>Inactive</a></li>
+                                        <li class="list-inline-item"><i class="uil uil-user me-1"></i><a th:href="@{'/class-manager/project/members?projectId=' + ${project.id}}" class="text-muted comments" th:text="${project.groupName}"></a></li>
+                                    </ul>
+                                    <a th:href="@{'/class-manager/project/details/' + ${project.id}}" class="link">View More <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                    </svg></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div>
 
-                </div><!--end row-->
+                <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
+                    <ul class="pagination justify-content-end">
+                        <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" style="cursor: pointer"
+                               th:onclick="'goToPage('+ ${pageNo-1}+')'">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <input type="hidden" name="pageNo" id="pageNoInput">
+                        <li  th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:text="${i}" style="cursor: pointer"
+                               th:onclick="'goToPage('+ ${i-1}+')'">
+                            </a>
+                        </li>
+                        <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link user-select-all" style="cursor: pointer"
+                               th:onclick="'goToPage('+ ${pageNo+1}+')'">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </main>
