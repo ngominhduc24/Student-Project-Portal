@@ -244,15 +244,14 @@
 </script>
 
 <script th:inline="javascript">
-    var fall23Data = /*[[${classCountByFall23}]]*/ [];
-    var summer23Data = /*[[${classCountBySummer23}]]*/ [];
+    // var fall23Data = /*[[${classCountByFall23}]]*/ [];
+    // var summer23Data = /*[[${classCountBySummer23}]]*/ [];
 
     // Get the canvas element
     var labels = ['Spr23', 'Sum22', 'Fal22', 'Spr23', 'Sum23', 'Fal23'];
     var dataSWP391 = [14, 15, 12, 18, 14, 12];
     var dataPRJ301 = [23, 16, 14, 17, 19, 25];
     var dataSWR302 = [12, 17, 14, 22, 15, 13];
-    var dataSWT301 = [16, 12, 15, 18, 13, 17];
     var ctx = document.getElementById('myChart').getContext('2d');
 
     // Define your pie chart data

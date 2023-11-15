@@ -11,8 +11,6 @@ import swp.studentprojectportal.repository.*;
 import swp.studentprojectportal.service.IMilestoneService;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -150,6 +148,22 @@ public class MilestoneService implements IMilestoneService {
     @Override
     public List<Milestone> findAllByStudentId(Integer studentId) {
         return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
+    }
+
+    @Override
+    public int countAllByStudentId(Integer studentId) {
+        return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId)).size();
+    }
+
+    public int countByStatus(Integer studentId, Integer status){
+        int count = 0;
+        if(status == 1){
+
+        } else {
+
+        }
+
+        return count;
     }
 
 }
