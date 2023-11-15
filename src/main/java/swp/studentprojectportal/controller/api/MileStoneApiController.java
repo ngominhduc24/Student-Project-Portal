@@ -43,10 +43,10 @@ public class MileStoneApiController {
         }
 
         // Check if end date is in the future
-        Date currentDate = new Date();
-        if (endDate.before(currentDate)) {
-            return ResponseEntity.badRequest().body("End date must be in the future.");
-        }
+//        Date currentDate = new Date();
+//        if (endDate.before(currentDate)) {
+//            return ResponseEntity.badRequest().body("End date must be in the future.");
+//        }
 
         boolean result = milestoneService.addNewMilestone(
                 classId,

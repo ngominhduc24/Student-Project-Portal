@@ -586,22 +586,34 @@
                         const endDate = document.getElementById('detail-end-date').value;
                         const status = document.getElementById('detail-status').checked ? 1 : 0;
                         let endPoint = '/api/v1/updateMilestone?milestoneId=' + id + '&title=' + title + '&description=' + description + '&startDate=' + startDate + '&endDate=' + endDate + '&status=' + status;
+                        let flag = false;
+
+                        // Validate date time input value
+                        if (new Date(endDate) < new Date(startDate)) {
+                            notify('error', 'fail!', 'End date must be greater than start date');
+                            return;
+                        }
+
+
                         fetch(endPoint)
                             .then(response => {
                                 if (response.ok) {
                                     // Handle a successful API response
                                     notify('success', 'Successfully!', 'Milestone updated successfully.');
+                                    flag = true;
                                 } else {
                                     // Handle API errors
+                                    notify('error', 'Successfully!', 'Milestone updated fail');
                                     console.error('Error updating milestone.');
                                 }
                             })
                             .catch(error => {
+                                notify('error', 'Successfully!', 'Milestone updated fail');
                                 console.error('Network error:', error);
                             });
-                        await new Promise(r => setTimeout(r, 700));
-                        window.location.reload();
-                    }
+                            await new Promise(r => setTimeout(r, 1000));
+                            window.location.reload();
+                       }
                 </script>
 
                 <script>
@@ -618,6 +630,12 @@
                         var description = document.querySelector('textarea[name="description"]').value;
                         var classId = document.querySelector('input[name="classId"]').value;
 
+                        // Validate date time input value
+                        if (new Date(endDate) < new Date(startDate)) {
+                            notify('error', 'fail!', 'End date must be greater than start date');
+                            return;
+                        }
+
                         // Prepare the URL with query parameters
                         var endPoint = 'http://localhost:8080/api/v1/newMilestone' +
                             '?classId=' + classId +
@@ -631,18 +649,20 @@
                         fetch(endPoint)
                             .then(response => {
                                 if (response.ok) {
-                                    notify('success', 'Milestone created successfully.', 'Success');
+                                    notify('success', 'Milestone add successfully.', 'Success');
                                     // Delay the page reload for a few seconds
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000); // Adjust the delay duration as needed
                                 } else {
                                     // Handle API errors
+                                    notify('error', 'error', 'Milestone add fail');
                                     console.error('Error creating milestone.');
                                 }
                             })
                             .catch(error => {
                                 // Handle network errors
+                                notify('error', 'error', 'Milestone add fail');
                                 console.error('Network error:', error);
                             });
                     });
