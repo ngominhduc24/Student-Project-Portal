@@ -135,7 +135,7 @@
                                             </div>
                                         </div>
                                         <div th:if="${!isMentor}">
-                                            <div th:if="${submitIssue.isRejected==false}">
+                                            <div th:if="${submitIssue.isRejected==false && submitIssue.functionLoc!=null}">
                                                 <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link btn">
                                                     Result
                                                 </a>
