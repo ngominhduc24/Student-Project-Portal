@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.service.servicesimpl.MilestoneService;
 import swp.studentprojectportal.service.servicesimpl.ProjectService;
 import swp.studentprojectportal.service.servicesimpl.SettingService;
 
@@ -18,17 +19,22 @@ public class StudentHomeController {
     SettingService settingService;
     @Autowired
     ProjectService projectService;
+    @Autowired
+    MilestoneService milestoneService;
 
     @GetMapping("student/home")
     public String dashboard(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "6") Integer pageSize,
                             Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Page<Project> projectList = projectService.filterByStudendDashboard(user.getId(), pageNo, pageSize);
+        int countAllAssignment = milestoneService.countAllByStudentId(user.getId());
+
         model.addAttribute("projects", projectList);
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("currentSemester", settingService.getLastestSemester().getSettingTitle());
         model.addAttribute("totalPage", projectList.getTotalPages());
+
         return "student/studentDashboard";
     }
 }
