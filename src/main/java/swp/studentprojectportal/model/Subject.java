@@ -1,14 +1,14 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,6 +23,9 @@ public class Subject {
 
     @Column(name = "subject_code")
     private String subjectCode;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "status")
     private boolean status = true;
@@ -42,4 +45,7 @@ public class Subject {
     @ManyToOne
     @JoinColumn(name = "subject_manager_id")
     private User user;
+
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Class> classes;
 }

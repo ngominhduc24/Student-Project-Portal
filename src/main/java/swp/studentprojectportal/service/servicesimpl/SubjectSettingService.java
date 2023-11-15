@@ -5,13 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.model.Subject;
 import swp.studentprojectportal.model.SubjectSetting;
 import swp.studentprojectportal.repository.ISubjectRepository;
 import swp.studentprojectportal.repository.ISubjectSettingRepository;
 import swp.studentprojectportal.service.ISubjectSettingService;
 
-import java.util.ArrayList;
 import java.util.List;
 @Service
 public class SubjectSettingService implements ISubjectSettingService {
@@ -43,5 +41,10 @@ public class SubjectSettingService implements ISubjectSettingService {
 
     public SubjectSetting findById(int id){
         return subjectSettingRepository.findById(id).get();
+    }
+
+    @Override
+    public SubjectSetting findByIdAndTypeIdAndTitle(int subjectId, int typeId, String title){
+        return subjectSettingRepository.findSubjectSettingByIdAndTypeIdAndSettingTitle(subjectId,typeId,title);
     }
 }

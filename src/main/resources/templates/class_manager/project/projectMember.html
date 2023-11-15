@@ -56,7 +56,7 @@
                     <div class="col-xl-5 col-md-6">
                         <h4>Project Member</h4>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item"><a th:href="'../list/' + ${class.id}">Project List</a></li>
                             <li class="breadcrumb-item">/</li>
@@ -187,7 +187,8 @@
                                      th:if="${student.project!=null && student.project.id == project.id}">
 
                                     <p class="form-control"
-                                       th:text="${student.student.fullName + ((project.teamLeader!=null && student.id==project.teamLeader.id)?' - Leader⭐':'')}"></p>
+                                       th:text="${student.student.fullName + ((project.teamLeader!=null && student.id==project.teamLeader.id)?' - Leader⭐':'')}">
+                                    </p>
                                     <img src="https://cdn-icons-png.flaticon.com/512/2311/2311524.png"
                                          onclick="showDialog(this.parentNode)" th:if="${!project.status}">
 

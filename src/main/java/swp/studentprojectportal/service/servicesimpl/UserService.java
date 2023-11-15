@@ -2,8 +2,6 @@ package swp.studentprojectportal.service.servicesimpl;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -144,6 +142,19 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean updateStudent(int id, boolean status, String note) {
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()) return false;
+
+        User userData = user.get();
+        userData.setStatus(status);
+        userData.setNote(note);
+        userRepository.save(userData);
+        return true;
+    }
+
+    @Override
     public User addUser(String fullName, String email, String phone, int roleId) {
         User user = new User();
 
@@ -273,6 +284,16 @@ public class UserService implements IUserService {
     @Override
     public User getUserById(int id) {
         return userRepository.getById(id);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public User findByPhone(String phone) {
+        return userRepository.findUserByPhone(phone);
     }
 
 }

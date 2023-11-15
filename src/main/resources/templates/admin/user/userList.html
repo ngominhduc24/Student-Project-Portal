@@ -9,7 +9,7 @@
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
     <meta name="author" content="Shreethemes"/>
     <meta name="email" content="support@shreethemes.in"/>
-    <meta name="website" content="../../../index.html"/>
+    <meta name="website" content="../../../index.html"footer/>
     <meta name="Version" content="v1.2.0"/>
     <!-- favicon -->
     <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
@@ -80,21 +80,21 @@
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
-            <div class="layout-specing">
+            <div class="layout-specing" style="padding-top: 84px !important;">
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
-                        <h1>User List</h1>
-                        <ol class="breadcrumb mb-4">
+                        <h1 style="margin: 0">User List</h1>
+                        <ol class="breadcrumb mb-1 ms-1">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">User List</li>
                         </ol>
                     </div><!--end col-->
 
-                    <div class="col-xl-4 col-md-6"></div>
+                    <div class="col-xl-5 col-md-6"></div>
 
-                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New User</a>
+                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
+                        <a href="./addUser" class="btn btn-primary" style="margin-left: 24px">Add New</a>
                     </div><!--end col-->
                 </div><!--end row-->
 
@@ -173,13 +173,77 @@
                                 </ul>
                             </nav>
                         </div>
+
+                        <!--            modal lmao-->
+                        <style>
+                            .modalBack{
+                                position: fixed;
+                                top: 0;
+                                right: 0;
+
+                                width: 100%;
+                                height: 100vh;
+
+                                display: none;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .modalCustom{
+                                width: 30%;
+                                aspect-ratio: 16/9;
+
+                                background-color: white;
+                                border-radius: 10px;
+                                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                flex-direction: column;
+                            }
+                        </style>
+
+                        <div class="modalBack">
+                            <div class="modalCustom">
+                                <h4>Are you sure?</h4>
+                                <br>
+                                <br>
+                                <div>
+                                    <button class="btn btn-secondary" onclick="setModalStatus(true)">Yes</button>
+                                    <button class="btn btn-primary" onclick="setModalStatus(false)">No</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            let modal = document.querySelector('.modalBack');
+                            let modalStatus = false;
+                            let yesCallback;
+                            let noCallback;
+
+                            function setModalStatus(status) {
+                                modalStatus = status;
+                                modal.style.display = 'none';
+
+                                status ? yesCallback() : noCallback();
+                            }
+
+                            function confirmCustom(yesCb, noCb) {
+                                modal.style.display = 'flex';
+                                yesCallback = yesCb;
+                                noCallback = noCb;
+                            }
+                        </script>
+                        <!--            modal lmao-->
+
                     </div>
                 </div>
 
             </div>
         </div><!--end container-->
 
-        <div th:replace="~{footer}"></div>
+        <div th:replace="~{dashboardFooter}"></div>
 
         <!-- End -->
     </main>
@@ -234,9 +298,13 @@
     function updateStatus(id, checkbox) {
         let status = checkbox.checked;
 
-        if (confirm('Are you sure?'))
-            fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
-        else checkbox.checked = !status;
+        confirmCustom(
+            ()=>{fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)},
+            ()=>{checkbox.checked = !status;});
+
+        // if (confirm('Are you sure?'))
+        //     fetch(`/admin/updateUserStatus?id=${id}&status=${status}`)
+        // else checkbox.checked = !status;
     }
 </script>
 

@@ -1,6 +1,9 @@
 package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.StudentClass;
@@ -11,6 +14,7 @@ import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IProjectService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,6 +123,53 @@ public class ProjectService implements IProjectService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public Project checkDuplicateGroupNameInClass(int classId, String groupName) {
+        return projectRepository.findByAclass_IdAndGroupName(classId, groupName);
+    }
+
+    @Override
+    public List<Project> findAllByProjectMentorId(Integer projectMentorId) {
+        return projectRepository.findAllByProjectMentorId(projectMentorId);
+    }
+
+    @Override
+    public List<Project> findAllByStudentUserId(Integer studentId) {
+        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(studentId);
+        List<Project> projectList = new ArrayList<>();
+
+        for (StudentClass studentClass : studentClassList)
+            projectList.add(studentClass.getProject());
+
+        return projectList;
+    }
+
+    @Override
+    public List<StudentClass> findAllByProjectId(int projectId) {
+        return studentClassRepository.findAllByProjectId(projectId);
+    }
+
+    @Override
+    public Page<Project> filterByProjectMentor(Integer projectMentorId, String search, Integer pageNo, Integer pageSize,
+                                               String sortBy, Integer sortType, Integer classId, Integer subjectId, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return projectRepository.filterByProjectMentor(projectMentorId, search, classId, subjectId, status, PageRequest.of(pageNo, pageSize, sort));
+    }
+
+    @Override
+    public Page<Project> filterByStudent(Integer studentId, String search, Integer pageNo, Integer pageSize, String sortBy, Integer sortType, Integer status) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return projectRepository.filterByStudent(studentId, search , status, PageRequest.of(pageNo, pageSize, sort));
     }
 
 }

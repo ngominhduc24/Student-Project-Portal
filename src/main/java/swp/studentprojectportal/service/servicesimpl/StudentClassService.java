@@ -1,10 +1,11 @@
 package swp.studentprojectportal.service.servicesimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import swp.studentprojectportal.model.Project;
-import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.User;
+import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IProjectRepository;
@@ -13,7 +14,6 @@ import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.service.IStudentClassService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentClassService implements IStudentClassService {
@@ -46,15 +46,27 @@ public class StudentClassService implements IStudentClassService {
         try {
             StudentClass studentClass = studentClassRepository.findById(studentId).get();
 
-            //check team leader old project
+            //check status current project
             Project oldProject = studentClass.getProject();
-            if (oldProject != null && oldProject.getTeamLeader().getId() == studentId) {
+            if(oldProject!=null && oldProject.isStatus()) return false;
+
+            //check team leader old project
+            if (oldProject != null && oldProject.getTeamLeader()!=null &&
+                    oldProject.getTeamLeader().getId() == studentClass.getStudent().getId()) {
+
                 oldProject.setTeamLeader(null);
                 projectRepository.save(oldProject);
             }
 
             //update new project
-            if (projectId > 0) studentClass.setProject(projectRepository.findById(projectId).get());
+            if (projectId > 0) {
+                Project project = projectRepository.findById(projectId).get();
+
+                //check status
+                if (project.isStatus()) return false;
+
+                studentClass.setProject(project);
+            }
             else studentClass.setProject(null);
 
             studentClassRepository.save(studentClass);
@@ -68,13 +80,11 @@ public class StudentClassService implements IStudentClassService {
 
     public boolean addNewStudentToClass(int classId, int studentId) {
         StudentClass studentClass = new StudentClass();
-
         // get student
         User student = userRepository.findUserById(studentId);
         if (student == null) {
             return false;
         }
-
         // get class
         Class c = classRepository.findClassById(classId);
         if (c == null) {
@@ -90,10 +100,63 @@ public class StudentClassService implements IStudentClassService {
         return true;
     }
 
+    // This function is accept add student to class by studentId (String) ex: HE191919
+    public boolean addNewStudentToClass(int classId, String studentId) {
+        StudentClass studentClass = new StudentClass();
+        // get student
+        User student = userRepository.findUserByEmailContainsIgnoreCase(studentId);
+        if (student == null) {
+            return false;
+        }
+        // get class
+        Class c = classRepository.findClassById(classId);
+        if (c == null) {
+            return false;
+        }
+
+        studentClass.setStudent(student);
+        studentClass.setAclass(c);
+
+        if (checkStudentInClass(classId, student.getId())) return false;
+        if (studentClassRepository.save(studentClass) == null) return false;
+
+        return true;
+    }
+
+
     public boolean checkStudentInClass(int classId, int studentId) {
         StudentClass studentClass = studentClassRepository.findStudentClassByStudent_IdAndAclass_Id(studentId, classId);
         if (studentClass == null) return false;
         return true;
+    }
+
+    @Override
+    public List<StudentClass> findAllByClassManager(int classManagerId) {
+        return studentClassRepository.findAllByAclassUserId(classManagerId);
+    }
+
+    @Override
+    public boolean removeAllStudentFromClass(int classId) {
+        try{
+            List<StudentClass> studentClassList = studentClassRepository.findAllByAclass_Id(classId);
+
+            studentClassRepository.deleteAll(studentClassList);
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    @Override
+    public StudentClass findByStudentIdAndAclassId(Integer userId, Integer classId) {
+        return studentClassRepository.findByStudentIdAndAclassId(userId, classId);
+    }
+
+    @Override
+    public List<StudentClass> findAllByStudentId(Integer studentId) {
+        return studentClassRepository.findAllByStudentId(studentId);
     }
 
     public boolean removeStudentFromClass(int classId, int studentId) {
@@ -101,5 +164,15 @@ public class StudentClassService implements IStudentClassService {
         if (studentClass == null) return false;
         studentClassRepository.delete(studentClass);
         return true;
+    }
+    @Override
+    public Page<User> filter(Integer projectId, String search, Integer pageNo, Integer pageSize,
+                         String sortBy, Integer sortType, Integer status) {
+        Sort sort;
+        if (sortType == 1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        return userRepository.filterProjectMember(projectId, search, status, PageRequest.of(pageNo, pageSize, sort));
     }
 }

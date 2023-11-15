@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link th:href="@{css/tablestyles.css}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+    <style>
+        .datatable-table {
+            border: 1px solid #dee2e6;
+            border-collapse: collapse;
+        }
+        tr, td, th {
+            border: 1px solid #dee2e6 !important;
+        }
+        .action {
+            font-size: 20px;
+            margin-left: 11px;
+            cursor: pointer;
+        }
+        .action1:hover {
+            color: #0f7d49 !important;
+        }
+        .action2:hover {
+            color: #962c35 !important;
+        }
+        th:first-child {
+            width: 6%;
+        }
+        th:nth-child(2) {
+            width: 20%;
+        }
+        th:nth-child(5) {
+            width: 13%;
+        }
+        th:nth-child(6) {
+            width: 12%;
+        }
+        th:last-child {
+            width: 12%;
+        }
+        th {
+            position: relative;
+        }
+        .search-button {
+            border: none;
+            height: 34px;
+            width: 36px;
+            float: right;
+            margin-top: -35px;
+            margin-right: 1px;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+        .datatable-search, .datatable-dropdown, .datatable-bottom, .datatable-sorter::before, .datatable-sorter::after {
+            display: none;
+        }
+        .caret-up{
+            position: absolute;
+            right: 6px;
+            top: 10px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-down{
+            position: absolute;
+            right: 6px;
+            top: 16px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .caret-up:hover, .caret-down:hover {
+            color: black;
+        }
+        .sort-active{
+            color: black;
+        }
+        .datatable-top {
+            margin-bottom: 36px;
+        }
+        .custom-toast {
+            background-color: #16ce7e !important;
+            color: #FFFFFF;
+            position: absolute;
+            top: 88px;
+            right: 0;
+            z-index: 2;
+        }
+        .breadcrumb .breadcrumb-item:after {
+            content: none !important;
+        }
+    </style>
+</head>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+
+<div class="page-wrapper doctris-theme toggled" id="main">
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid" >
+            <div class="layout-specing" style="padding-top: 84px !important;">
+                <div class="row px-4" >
+                    <div class="col-xl-5 col-md-6">
+                        <h1 style="margin: 0">Project List</h1>
+                        <ol class="breadcrumb mb-1 ms-1">
+                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item">/</li>
+                            <li class="breadcrumb-item active">Project List</li>
+                        </ol>
+                    </div><!--end col-->
+
+                    <div class="col-xl-5 col-md-6"></div>
+
+                </div><!--end row-->
+
+                <div class="toast custom-toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                    <div class="toast-header">
+                        <strong class="me-auto">Success</strong>
+                        <small>Now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <span id="toastMessage" th:text="${toastMessage}"></span>
+                    </div>
+                </div>
+
+                <div class="container-fluid px-4">
+                    <div class="card mb-4">
+                        <form action="/project-mentor/project" class="card-body rounded-3" id="form">
+                            <div class="row" style="width: 100%; position: absolute;left: 32px;top:24px;">
+                                <div class="col-md-3 row">
+                                    <div class="mb-3 col-md-5 pe-3">
+                                        <select name="pageSize" class="form-select" onchange="this.form.submit()">
+                                            <option th:selected="${pageSize==5}" value="5">5</option>
+                                            <option th:selected="${pageSize==10}" value="10">10</option>
+                                            <option th:selected="${pageSize==15}" value="15">15</option>
+                                            <option th:selected="${pageSize==20}" value="20">20</option>
+                                            <option th:selected="${pageSize==25}" value="25">25</option>
+                                        </select>
+                                    </div>
+                                    <p class="ps-2 col-md-5 pt-2">per page</p>
+                                </div>
+                                <div class="row col-md-8" style="margin-left: -100px">
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1" th:selected="${status == -1}">All Status</option>
+                                                <option value="1" th:selected="${status == 1}">Active</option>
+                                                <option value="0" th:selected="${status == 0}">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <select name="classId" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1">All Class</option>
+                                                <option th:each="class : ${classList}"
+                                                        th:value="${class.id}"
+                                                        th:text="${class.className}" th:selected="${classId == class.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <select name="subjectId" class="form-select" onchange="this.form.submit()">
+                                                <option value="-1">All Subject</option>
+                                                <option th:each="subject : ${subjectList}"
+                                                        th:value="${subject.id}"
+                                                        th:text="${subject.subjectCode}" th:selected="${subjectId == subject.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input class="form-control form-control-sm" type="text" th:value="${search}"
+                                           name="search" placeholder="Search" style="border-color: #ced4da; height: 36px"
+                                           aria-label="Search">
+                                    <button onclick="this.form.submit()" class="search-button"><i class="fas fa-search" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="sortBy" id="sortBy" th:value="${sortBy}">
+                            <input type="hidden" name="sortType" id="sortType" th:value="${sortType}">
+                            <table id="datatablesSimple" class="display" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th data-sortable="false">Id
+                                        <i th:class="${(sortBy eq 'id' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('id',1)"></i>
+                                        <i th:class="${(sortBy eq 'id' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('id',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Group
+                                        <i th:class="${(sortBy eq 'group_name' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('group_name',1)"></i>
+                                        <i th:class="${(sortBy eq 'group_name' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('group_name',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Title
+                                        <i th:class="${(sortBy eq 'title' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('title',1)"></i>
+                                        <i th:class="${(sortBy eq 'title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('title',2)"></i>
+                                    </th>
+                                    <th data-sortable="false">Subject
+                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
+                                           onclick="sortData('s.subject_code',1)"></i>
+                                        <i th:class="${(sortBy eq 's.subject_code' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
+                                           onclick="sortData('s.subject_code',2)"></i></th>
+                                    <th data-sortable="false">Status</th>
+                                    <th data-sortable="false">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="project : ${projectList}">
+                                    <td th:text="${project.id}"></td>
+                                    <td th:text="${project.groupName} + ' - ' + ${project.aclass.className}"></td>
+                                    <td th:text="${project.title}"></td>
+                                    <td th:text="${project.aclass.subject.subjectCode}"></td>
+                                    <td>
+                                        <p class="text-success m-0" th:if="${project.status}">Active</p>
+                                        <p class="text-danger m-0" th:if="${!project.status}">Inactive</p>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/class-manager/project/details/{projectId}(projectId=${project.id})}"><i
+                                                class="fas fa-pen-to-square"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
+                            <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
+                                <ul class="pagination justify-content-end">
+                                    <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo-1}+')'">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+                                        th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
+                                        <a class="page-link" th:text="${i}" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${i-1}+')'">
+                                        </a>
+                                    </li>
+                                    <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link user-select-all" style="cursor: pointer"
+                                           th:onclick="'goToPage('+ ${pageNo+1}+')'">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </form>
+                    </div>
+                </div>
+
+                <script>
+                    function goToPage(i) {
+                        document.getElementById('pageNoInput').value = i;
+                        document.getElementById('form').submit();
+                    }
+
+                    function sortData(sortBy, sortType) {
+                        document.getElementById('sortBy').value = sortBy;
+                        document.getElementById('sortType').value = sortType;
+                        document.getElementById('form').submit();
+                    }
+
+                    let toastMessage = document.getElementById('toastMessage').textContent.trim();
+                    if (toastMessage) {
+                        var customToast = new bootstrap.Toast(document.getElementById('customToast'));
+                        customToast.show();
+                        setTimeout(function () {
+                            customToast.hide();
+                            document.getElementById('toastMessage').textContent = "";
+                        }, 5000);
+                    }
+                </script>
+
+            </div>
+        </div>
+    </main>
+</div>
+<!-- notify -->
+<script th:inline="javascript">
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const smessage = [[${smessage}]];
+        if (smessage != null) {
+            notify('success', 'Successfully!', smessage);
+        }
+        const emessage = [[${emessage}]];
+
+        if (emessage != null) {
+            notify('error', 'Error!', emessage);
+        }
+    });
+</script>
+<!-- javascript -->
+<!-- simplebar -->
+<script th:src="@{/js/simplebar.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{/js/feather.min.js}"></script>
+
+<script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple, {
+                paging: false // Tắt phân trang
+            });
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script>window.addEventListener('DOMContentLoaded', event => {
+
+    // Toggle the side navigation
+    const sidebarToggle = document.body.querySelector('#sidebarToggle');
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', event => {
+            event.preventDefault();
+            document.body.classList.toggle('sb-sidenav-toggled');
+            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+        });
+    }
+
+});</script>
+
+
+</body>
+</html>

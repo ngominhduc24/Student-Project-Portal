@@ -28,31 +28,39 @@
 
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+
+    <style>
+        .breadcrumb .breadcrumb-item:after {
+            content: none !important;
+        }
+    </style>
+
 </head>
 <body>
-<!-- Loader -->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-</div>
-<!-- Loader -->
 
 <div class="page-wrapper doctris-theme toggled">
     <!-- sidebar-wrapper  -->
     <div th:replace="~{dashboardSidebar}"></div>
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
-        <div class="container-fluid px-4">
-            <div class="layout-specing">
-                <div class="d-md-flex justify-content-between">
-                    <h3 class="mb-0">Class Details</h3>
-                </div>
-                <div>
-                    <ol class="breadcrumb mb-4">
+
+        <div class="topnav">
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer; border-bottom: 3px solid blue;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${class.id})}" ><p style="margin:0;">General</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${class.id})}"><p style="margin:0;"  >Milestones</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${class.id})}" ><p style="margin:0;">Settings</p></a>
+            <a style="cursor: pointer;" th:href="@{/class/student(classId=${class.id})}" ><p style="margin:0;">Students</p></a>
+            <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>
+        </div>
+        <!--    Genenal-->
+        <div id="general" class="container-fluid" >
+            <div class="layout-specing" style="padding: 15px 14px 24px !important;">
+                <div class="row px-4">
+                    <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
+                    <ol class="breadcrumb mb-2 ms-2">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item"><a href="/subject-manager/class">Class List</a></li>
@@ -60,7 +68,7 @@
                         <li class="breadcrumb-item active">Class Details</li>
                     </ol>
                 </div>
-                <div class="row">
+                <div class="row px-4">
                     <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
                             <form action="/subject-manager/class/update" method="post">
@@ -69,11 +77,11 @@
                                         <div class="mb-3 col-md-6">
                                             <input type="hidden" name="id" th:value="${class.id}">
                                             <label class="form-label">Class Name<span class="text-danger">*</span></label>
-                                            <input type="text" name="className" class="form-control" required th:value="${class.className}">
+                                            <input type="text" th:disabled="${class.status==3}" name="className" class="form-control" required th:value="${class.className}">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Subject<span class="text-danger">*</span></label>
-                                            <select name="subjectId" class="form-select">
+                                            <select name="subjectId" class="form-select"  th:disabled="${class.status==3}">
                                                 <option th:each="subject : ${subjectList}"
                                                         th:value="${subject.id}"
                                                         th:text="${subject.subjectCode}"
@@ -83,7 +91,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Semester<span class="text-danger">*</span></label>
-                                            <select name="semesterId" class="form-select">
+                                            <select name="semesterId" class="form-select"  th:disabled="${class.status==3}">
                                                 <option th:each="semester : ${semesterList}"
                                                         th:value="${semester.id}"
                                                         th:text="${semester.settingTitle}"
@@ -93,7 +101,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Class Manager<span class="text-danger">*</span></label>
-                                            <select name="classManagerId" class="form-select">
+                                            <select name="classManagerId" class="form-select"  th:disabled="${class.status==3}">
                                                 <option th:each="teacher : ${teacherList}"
                                                         th:value="${teacher.id}"
                                                         th:text="${teacher.fullName}"
@@ -103,12 +111,24 @@
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Description</label>
-                                            <textarea type="text" rows="3" name="description" class="form-control" required th:field="${class.description}"></textarea>
+                                            <textarea type="text"  th:disabled="${class.status==3}" rows="3" name="description" class="form-control" required th:field="${class.description}"></textarea>
                                         </div>
-                                        <div class="col-md-2">
-                                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                                            <div class="form-check form-switch" style="font-size: 24px">
-                                                <input style="margin-left: -62px" class="form-check-input" value="on" name="status" type="checkbox" th:checked="${class.isStatus()}" >
+                                        <div class="col-md-12">
+                                            <label class="form-label">Status:</label>
+                                            <input type="hidden" id="statusCheck" th:value="${class.status}">
+                                            <div>
+                                                <label th:if="${class.status==0}" class="text-warning pe-3">
+                                                    <input name="status" type="radio" th:checked="${class.status==0}" value="0"> Pending
+                                                </label>
+                                                <label th:if="${class.status==1 || class.status==2}" class="text-danger pe-3">
+                                                    <input name="status" type="radio"  th:checked="${class.status==1}" value="1"> Canceled
+                                                </label>
+                                                <label th:if="${class.status==0 || class.status==1 || class.status==2}" class="text-success pe-3">
+                                                    <input name="status" type="radio"  th:checked="${class.status==2}"  value="2"> Started
+                                                </label>
+                                                <label  th:if="${class.status==2 || class.status==3}" class="text-primary pe-3">
+                                                    <input name="status" type="radio"  th:checked="${class.status==3}" value="3"> Closed
+                                                </label>
                                             </div>
                                         </div>
 
@@ -122,8 +142,12 @@
 
 
                                 <div class="row justify-content-center">
-                                    <div class="col-md-12 ps-4">
+                                    <div th:if="${class.status!=3}" class="col-md-12 ps-4">
                                         <button type="submit" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;">Save</button>
+                                    </div>
+                                    <div th:if="${class.status==3}" class="col-md-12 ps-4">
+                                        <h6><span style="font-size: 13px; color:#a3a1a1; padding-left: 4px; margin: 0px">You can't change the details of this class because it has been closed.</span></h6>
+                                        <a onclick="window.location.href='/subject-manager/class'" class="btn btn-primary col-md-2" style="margin-top: 6px;margin-bottom:12px;"><i style="margin-right: 8px" class="fa-solid fa-arrow-left"></i>Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -132,19 +156,45 @@
                 </div>
             </div>
         </div>
+
     </main>
 </div>
 
 <!-- javascript -->
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <!-- simplebar -->
 <script th:src="@{/js/simplebar.min.js}"></script>
 <!-- Icons -->
 <script th:src="@{/js/feather.min.js}"></script>
 
-<script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
-
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        checkAndSetReadonly();
+    });
+    // Hàm kiểm tra và đặt các ô input và textarea thành readonly nếu trạng thái là "closed"
+    function checkAndSetReadonly() {
+        const status = document.getElementById("statusCheck").value;
+        const inputElements = document.querySelectorAll("input");
+        const textAreaElements = document.querySelectorAll("textarea")
+        const selectElements = document.querySelectorAll("select");
+
+        if (status == 3) {
+            inputElements.forEach(input => {
+                input.readOnly = true;
+            });
+
+            selectElements.forEach(select => {
+                select.disabled = true;
+            })
+
+            textAreaElements.forEach(textArea => {
+                textArea.readOnly = true;
+            });
+        }
+    }
+
+</script>
 
 </body>
 </html>

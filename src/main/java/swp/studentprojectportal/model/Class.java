@@ -1,14 +1,14 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,8 +24,11 @@ public class Class {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "gitlab_group_id")
+    private String gitlabGroupId;
+
     @Column(name = "status")
-    private boolean status = true;
+    private Integer status = 0;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
@@ -50,4 +53,16 @@ public class Class {
 
     @Column(name = "update_at")
     private Timestamp updateAt = Timestamp.valueOf(LocalDateTime.now());
+
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentClass> students;
+
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Milestone> milestones;
+
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<IssueSetting> issueSettings;
+
+    @OneToMany(mappedBy = "aclass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> projects;
 }

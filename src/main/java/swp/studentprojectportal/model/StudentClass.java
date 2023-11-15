@@ -1,14 +1,13 @@
 package swp.studentprojectportal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -18,15 +17,15 @@ public class StudentClass {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private User student;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "class_id")
     private Class aclass;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
