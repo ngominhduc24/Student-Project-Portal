@@ -227,6 +227,8 @@ public class ProjectController {
         List<List<String>> data = new SheetHandle().importSheet(file);
         for(List<String> row : data) {
             try {
+                System.out.println(row.get(0) + " " + row.get(1) + " " + row.get(2));
+
                 //find by email
                 User user = userService.findByEmail(row.get(0));
 
