@@ -51,7 +51,7 @@ public class UserService implements IUserService {
         String[] temp = email.split("@");
         if(temp.length == 0) return false;
         email = temp[temp.length-1];
-        if (settingRepository.findSettingByTypeIdAndSettingTitle(2, email) != null) {
+        if (settingRepository.findSettingByTypeIdAndSettingTitleAndStatus(2, email, true) != null) {
             return true;
         }
         return false;

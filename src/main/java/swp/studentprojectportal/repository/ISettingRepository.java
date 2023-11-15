@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ISettingRepository extends JpaRepository<Setting, Integer> {
-    Setting findSettingByTypeIdAndSettingTitle(Integer typeId, String settingTitle);
+    Setting findSettingByTypeIdAndSettingTitleAndStatus(Integer typeId, String settingTitle, boolean status);
     List<Setting> findSettingByTypeIdOrderByDisplayOrder(Integer typeId);
     Setting findBySettingTitle(String settingTitle);
     Setting findByTypeIdAndDisplayOrder(int typeId, int displayOrder);
