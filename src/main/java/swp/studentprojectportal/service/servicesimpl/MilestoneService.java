@@ -32,6 +32,11 @@ public class MilestoneService implements IMilestoneService {
     ProjectService projectService;
 
     @Override
+    public int milestoneCount(){
+        return milestoneRepository.findAll().size();
+    }
+
+    @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy,
             Integer sortType, Integer status) {
         Sort sort;
@@ -137,6 +142,11 @@ public class MilestoneService implements IMilestoneService {
     @Override
     public List<Milestone> findAllByProjectId(Integer projectId) {
         return milestoneRepository.findAllByProjectId(projectId);
+    }
+
+    @Override
+    public List<Milestone> findAllBySubjectAndClassOfProject(Integer classId) {
+        return milestoneRepository.findAllByAclass_Id(classId);
     }
 
     @Override

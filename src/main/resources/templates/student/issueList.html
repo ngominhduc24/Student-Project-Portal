@@ -2,262 +2,269 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8"/>
-  <title th:text="${@title}"></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
-  <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
-  <meta name="author" content="Shreethemes"/>
-  <meta name="email" content="support@shreethemes.in"/>
-  <meta name="website" content="../../../index.html"/>
-  <meta name="Version" content="v1.2.0"/>
-  <!-- favicon -->
-  <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
-  <!-- Bootstrap -->
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
-  <!-- simplebar -->
-  <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
-  <!-- Select2 -->
-  <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
-  <!-- Date picker -->
-  <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
-  <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
-  <!-- Icons -->
-  <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
-  <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
-  <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
-  <!-- Css -->
-  <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
-  <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <!-- Datatables -->
-  <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
-  <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
-  <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
-  <script th:src="@{/js/notify.js}"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <meta charset="utf-8"/>
+    <title th:text="${@title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template"/>
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
+    <meta name="author" content="Shreethemes"/>
+    <meta name="email" content="support@shreethemes.in"/>
+    <meta name="website" content="../../../index.html"/>
+    <meta name="Version" content="v1.2.0"/>
+    <!-- favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico.png}">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- simplebar -->
+    <link th:href="@{/css/simplebar.css}" rel="stylesheet" type="text/css"/>
+    <!-- Select2 -->
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+    <!-- Date picker -->
+    <link rel="stylesheet" th:href="@{/css/flatpickr.min.css}">
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- Icons -->
+    <link th:href="@{/css/materialdesignicons.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/remixicon.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Css -->
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
+    <link th:href="@{/css/modal.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Datatables -->
+    <link th:href="@{https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css}" rel="stylesheet"/>
+    <link th:href="@{/css/tablestyles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/js/notify.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 </head>
 <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 <script th:src="@{https://code.jquery.com/jquery-3.3.1.min.js}"></script>
-<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<style>
-  .gl-label{
-    line-height: 1rem;
-    display: flex;
-    font-size: 0.75rem;
-    font-weight: 400;
-    overflow: hidden;
-    color: inherit;
-    max-width: 100%;
-  }
-  #myTable_filter {
-    float: left;
-  }
-
-  .topnav {
-    overflow: hidden;
-    border-bottom: 1px solid darkgray;
-    margin-top: 70px;
-    background: white;
-  }
-
-  .topnav a {
-    float: left;
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 10px 26px;
-    text-decoration: none;
-    font-size: 14px;
-    border-bottom: 3px solid transparent;
-    margin:0
-  }
-
-  .topnav a:hover {
-    border-bottom: 3px solid blue;
-  }
-
-  .topnav a.active {
-    border-bottom: 3px solid blue;
-  }
-
-  .dataTables_filter {
-    display: flex;
-  }
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js}"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js}"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </style>
 
 <body>
 <h6 id="loader">System are loading ... Please wait!</h6>
 
 <div class="page-wrapper doctris-theme toggled">
-  <!-- sidebar-wrapper  -->
-  <div th:replace="~{dashboardSidebar}"></div>
+    <!-- sidebar-wrapper  -->
+    <div th:replace="~{dashboardSidebar}"></div>
 
-  <!-- Start Page Content -->
-  <main class="page-content bg-light">
-    <div th:replace="~{dashboardHeader}"></div>
-    <div class="topnav" style="margin-top: 44px">
-      <a style="cursor: pointer;" th:if="${session.user.setting.id==3}" th:href="@{/subject-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
-      <a style="cursor: pointer;" th:if="${session.user.setting.id==4}" th:href="@{/class-manager/classDetail(id=${classId})}" ><p style="margin:0;">General</p></a>
-<!--      <a style="cursor: pointer;" th:href="@{/class/milestone(classId=${classId})}"><p style="margin:0;">Milestones</p></a>-->
-<!--      <a style="cursor: pointer;" th:href="@{/class/issue-setting(id=${classId})}" ><p style="margin:0;">Settings</p></a>-->
-<!--      <a style="cursor: pointer; border-bottom: 3px solid blue;" th:href="@{/class/student(classId=${classId})}" ><p style="margin:0;">Students</p></a>-->
-<!--      <a style="cursor: pointer;" th:href="@{/class-manager/project/list/{id}(id=${class.id})}"><p style="margin:0;">Projects</p></a>-->
-    </div>
-    <div class="container-fluid">
-      <div class="layout-specing" style="padding: 35px 14px 24px !important;">
-        <div class="row px-4">
-          <div class="col-xl-5 col-md-6">
-            <h3 style="margin-top: -14px;margin-bottom: 20px;" >Issue List</h3>
-            <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
-              <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-              <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
-              <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a href="/class-manager/classList">Class List</a></li>
-              <li class="breadcrumb-item active">Issue list</li>
-              <li class="breadcrumb-item active"></li>
-            </ol>
-          </div><!--end col-->
-          <div class="col-xl-4 col-md-6">
-          </div>
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{dashboardHeader}"></div>
+        <div class="container-fluid">
+            <div class="layout-specing" style="padding: 35px 14px 24px !important; margin-top: 40px">
+                <div class="row px-4">
+                    <div class="col-xl-5 col-md-6">
+                        <h3 style="margin-top: -14px;margin-bottom: 20px;">Issue List</h3>
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
+                            <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                            <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a
+                                    href="/subject-manager/class">Class List</a></li>
+                            <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a
+                                    href="/class-manager/classList">Class List</a></li>
+                            <li class="breadcrumb-item active">Issue list</li>
+                            <li class="breadcrumb-item active"></li>
+                        </ol>
+                    </div><!--end col-->
+                    <div class="col-xl-4 col-md-6">
+                    </div>
 
-          <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
-<!--            <button type="button" class="btn btn-primary" style="width: 226px;" data-toggle="modal" data-target=".bd-example-modal-lg">-->
-<!--              <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>-->
-<!--              Add student to class</button>-->
-            </div><!--end col-->
-        </div><!--end row-->
-        <div class="container-fluid px-4">
-          <div class="card mb-4">
-            <div class="card-body">
-              <!-- Filter -->
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="mb-3">
-                    <select id="group" class="form-select">
-                      <option value="-1">All Group</option>
-                      <!-- Loop through the "groups" attribute and populate the options -->
-                      <th:block th:each="group : ${groups}">
-                        <option th:value="${group.getId()}" th:text="${group.getGroupName()}"
-                                th:selected="${group.getId() == projectId}"></option>
-                      </th:block>
-                    </select>
-                  </div>
+                    <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
+                        <a href="/student/issue/add" type="button" class="btn btn-primary" style="width: 226px;">
+                            <i>
+                                <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"
+                                          fill="white"/>
+                                </svg>
+                            </i>
+                            Add issue
+                        </a>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="container-fluid px-2">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <!-- Filter -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <select id="group" class="form-select">
+                                            <option value="-1">All Group</option>
+                                            <!-- Loop through the "groups" attribute and populate the options -->
+                                            <th:block th:each="group : ${groups}">
+                                                <option th:value="${group.getId()}" th:text="${group.getGroupName()}"
+                                                        th:selected="${group.getId() == projectId}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <select id="milestone" class="form-select">
+                                            <option value="-1">All Milestone</option>
+                                            <!-- Loop through the "milestones" attribute and populate the options -->
+                                            <th:block th:each="milestone : ${milestones}">
+                                                <option th:value="${milestone.getId()}"
+                                                        th:text="${milestone.getTitle()}"
+                                                        th:selected="${milestone.getId() == milestoneId}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <select id="assignee" class="form-select">
+                                            <option value="-1">All Assignee</option>
+                                            <!-- Loop through the "assignees" attribute and populate the options -->
+                                            <th:block th:each="assignee : ${assignees}">
+                                                <option th:value="${assignee.getId()}"
+                                                        th:text="${assignee.getDisplayName()}"
+                                                        th:selected="${assignee.getId() == assigneeId}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- End Filter -->
+                            <table id="myTable" class="display">
+                                <thead>
+                                <tr>
+                                    <th>Requirement</th>
+                                    <th>Type</th>
+                                    <th>Process</th>
+                                    <th>Status</th>
+                                    <th>Group</th>
+                                    <th>Milestone</th>
+                                    <th>Assignee</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="issue : ${issueList}">
+                                    <td th:text="${issue.title}"></td>
+                                    <td th:text="${issue.getType().settingTitle}"></td>
+                                    <td th:text="${issue.getProcess().settingTitle}"></td>
+                                    <td th:text="${issue.getStatus().settingTitle}"></td>
+                                    <td th:text="${issue.getProject().groupName}"></td>
+                                    <td th:text="${issue.getMilestone().title }"></td>
+                                    <td th:text="${issue.getAssignee().getDisplayName() }">
+                                    <td>
+                                        <div style="border: none; color: blue">
+                                            <button  style=" user-select: none" th:onclick="'getIssueId(' + ${issue.id} + ')'">
+                                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
+                                                   class="fas fa-pen-to-square action"></i>
+                                            </button>
+                                            <button name="btn-modal"  data-toggle="modal" data-target="#viewIssueModal" style="display: none"></button>
+                                            <a th:href="@{/student/work/{issueId}(issueId=${issue.id})}" >Work List</a>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-                  <div class="mb-3">
-                    <select id="milestone" class="form-select">
-                      <option value="-1">All Milestone</option>
-                      <!-- Loop through the "milestones" attribute and populate the options -->
-                      <th:block th:each="milestone : ${milestones}">
-                        <option th:value="${milestone.getId()}" th:text="${milestone.getTitle()}"
-                                th:selected="${milestone.getId() == milestoneId}"></option>
-                      </th:block>
-                    </select>
-                  </div>
+                <!-- Modal view issue-->
+                <div class="modal fade" id="viewIssueModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" style="width: 130%;">
+                            <form action="/issueUpdate" method="post">
+                                <input type="hidden" name="issueIdPost" th:value="${selectedIssue.id}">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Issue details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12 row" style="margin-top: 12px;">
+                                            <div class="mb-3 col-md-12">
+                                                <label class="form-label">Requirement<span class="text-danger">*</span></label>
+                                                <input type="text" name="title" class="form-control" th:value="${selectedIssue.title}" required>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Type</label>
+                                                <select name="type" class="form-select">
+                                                    <option th:each="selectedType : ${type}"
+                                                            th:value="${selectedType.id}"
+                                                            th:text="${selectedType.settingTitle}" th:selected="${selectedIssue.type == selectedType.id}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Milestone</label>
+                                                <select name="milestone" class="form-select">
+                                                    <th:block th:each="milestone : ${milestones}">
+                                                        <option th:value="${milestone.getId()}"
+                                                                th:text="${milestone.getTitle()}"
+                                                                th:selected="${milestone.getId() == selectedIssue.milestone.id}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Asignee</label>
+                                                <select name="assignee" class="form-select">
+                                                    <th:block th:each="assignee : ${assignees}">
+                                                        <option th:value="${assignee.getId()}"
+                                                                th:text="${assignee.getDisplayName()}"
+                                                                th:selected="${assignee.getId() == selectedIssue.assignee.id}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Process</label>
+                                                <select name="process" class="form-select">
+                                                    <option th:each="selectedProcess : ${process}"
+                                                            th:value="${selectedProcess.id}"
+                                                            th:text="${selectedProcess.settingTitle}" th:selected="${selectedIssue.process == selectedProcess.id}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label">Status</label>
+                                                <select name="status" class="form-select">
+                                                    <option th:each="selectedStatus : ${status}"
+                                                            th:value="${selectedStatus.id}"
+                                                            th:text="${selectedStatus.settingTitle}" th:selected="${selectedIssue.status == selectedStatus.id}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="col-md-3">
-                  <div class="mb-3">
-                    <select id="assignee" class="form-select">
-                      <option value="-1">All Assignee</option>
-                      <!-- Loop through the "assignees" attribute and populate the options -->
-                      <th:block th:each="assignee : ${assignees}">
-                        <option th:value="${assignee.getId()}" th:text="${assignee.getDisplayName()}"
-                                th:selected="${assignee.getId() == assigneeId}"></option>
-                      </th:block>
-                    </select>
-                  </div>
-                </div>
-
-              </div>
-
-
-
-              <!-- End Filter -->
-              <table id="myTable" class="display">
-                <thead>
-                <tr>
-                  <th>Requirement</th>
-                  <th>Type</th>
-                  <th>Process</th>
-                  <th>Status</th>
-                  <th>Group</th>
-                  <th>Milestone</th>
-                  <th>Assignee</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="issue : ${issueList}">
-                  <td th:text="${issue.title}"></td>
-<!--                  <td>-->
-<!--                    <div style="margin-top: 10px">-->
-<!--                      <p th:text="${issue.getType().settingTitle}"-->
-<!--                         style="background-color: #009966; color: white; border-color: #009966; border-style: solid; border-top-left-radius: 17px; border-bottom-left-radius: 17px; border-width: 1px; padding: 4px 6px; font-size: 12px; width: auto; display: inline-block; ">-->
-<!--                      </p>-->
-<!--                      <p th:text="${issue.getProcess().settingTitle}"-->
-<!--                         style="background-color: white; color: black; border-color: #009966; border-style: solid; border-top-right-radius: 17px; border-bottom-right-radius: 17px; border-width: 1px; padding: 4px 6px; font-size: 12px; width: auto; display: inline-block; margin-left: -5px; ">-->
-<!--                      </p>-->
-<!--                    </div>-->
-<!--                  </td>-->
-                  <td th:text="${issue.getType().settingTitle}"></td>
-                  <td th:text="${issue.getProcess().settingTitle}"></td>
-                  <td th:text="${issue.getStatus().settingTitle}"></td>
-                  <td th:text="${issue.getProject().groupName}"></td>
-                  <td th:text="${issue.getMilestone().title }"></td>
-                  <td th:text="${issue.getAssignee().getDisplayName() }" >
-<!--                    <a style=" user-select: none; color: blue;" th:onclick="'viewMemberGroup(' + ')'" data-toggle="modal" data-target="#viewMemberModal">View Member</a>-->
-                  </td>
-                </tr>
-                </tbody>
-              </table>
             </div>
-          </div>
-        </div>
-
-        <!-- Modal view member-->
-        <div class="modal fade" id="viewMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width: 130%;">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Member group</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div id="tableMember" class="modal-body">
-                <table class="table">
-                  <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>Nguyen Van A</td>
-                    <td>Lao@gmail.com</td>
-                    <td>0182378273</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div><!--end container-->
-    <div th:replace="~{footer}"></div>
-
-    <!-- End -->
-  </main>
+        </div><!--end container-->
+        <div th:replace="~{footer}"></div>
+        <!-- End -->
+    </main>
 </div>
 
 </body>
@@ -271,22 +278,23 @@
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
 
 <script th:src="@{https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js}" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
 <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
 <script th:src="@{/js/notify.js}"></script>
 
 <script type="text/javascript">
-  $(document).ready(function () {
-    $('#myTable').DataTable({
-      "dom": 'frtipl',
-      "bInfo" : false
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "dom": 'frtipl',
+            "bInfo": false
+        });
     });
-  });
 </script>
 
 <script>
-  const milestone = document.querySelector('[name="milestone"]');
+    const milestone = document.querySelector('[name="milestone"]');
     const group = document.querySelector('[name="group"]');
     const assignee = document.querySelector('[name="assignee"]');
     const table = document.querySelector('#myTable tbody');
@@ -294,53 +302,71 @@
 
 <script th:inline="javascript">
 
-    document.addEventListener("DOMContentLoaded", function(event) {
-      const toastMessage = [[${toastMessage}]];
-      if (toastMessage != null) {
-        notify('success', 'Successfully!', toastMessage );
-      }
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const toastMessage = [[${toastMessage}]];
+        if (toastMessage != null) {
+            notify('success', 'Successfully!', toastMessage);
+        }
     });
-  </script>
+</script>
 
 <script th:inline="javascript">
-  document.addEventListener("DOMContentLoaded", function(event) {
-    const smessage = [[${smessage}]];
-    if (smessage != null) {
-      notify('success', 'Successfully!', smessage);
-    }
-    const emessage = [[${emessage}]];
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const smessage = [[${smessage}]];
+        if (smessage != null) {
+            notify('success', 'Successfully!', smessage);
+        }
+        const emessage = [[${emessage}]];
 
-    if (emessage != null) {
-      notify('error', 'Error!', emessage);
-    }
-  });
+        if (emessage != null) {
+            notify('error', 'Error!', emessage);
+        }
+    });
 </script>
 <script>
-  // Get references to the select elements
-  const groupSelect = document.getElementById("group");
-  const milestoneSelect = document.getElementById("milestone");
-  const assigneeSelect = document.getElementById("assignee");
+    // Get references to the select elements
+    const groupSelect = document.getElementById("group");
+    const milestoneSelect = document.getElementById("milestone");
+    const assigneeSelect = document.getElementById("assignee");
 
-  // Function to construct the URL and navigate to it
-  function updateURL() {
-    // Get the selected values from the select elements
-    const projectId = document.getElementById("group").value;
-    const milestoneId = document.getElementById("milestone").value;
-    const assigneeId = document.getElementById("assignee").value;
+    // Function to construct the URL and navigate to it
+    function updateURL() {
+        // Get the selected values from the select elements
+        const projectId = document.getElementById("group").value;
+        const milestoneId = document.getElementById("milestone").value;
+        const assigneeId = document.getElementById("assignee").value;
 
-    // Construct the URL with the selected values
-    const url = `/student/issue/list?projectId=${projectId}&milestoneId=${milestoneId}&assigneeId=${assigneeId}`;
+        // Construct the URL with the selected values
+        const url = `/student/issue/list?projectId=${projectId}&milestoneId=${milestoneId}&assigneeId=${assigneeId}`;
 
-    // Navigate to the new URL
-    location.href = url;
-  }
+        // Navigate to the new URL
+        location.href = url;
+    }
 
-  // Add an onchange event handler to each select element
-  groupSelect.addEventListener("change", updateURL);
-  milestoneSelect.addEventListener("change", updateURL);
-  assigneeSelect.addEventListener("change", updateURL);
+    // Add an onchange event handler to each select element
+    groupSelect.addEventListener("change", updateURL);
+    milestoneSelect.addEventListener("change", updateURL);
+    assigneeSelect.addEventListener("change", updateURL);
 
-  // Function to construct the URL and navigate to it
+    // Function to construct the URL and navigate to it
+</script>
+
+<script th:inline="javascript">
+    function getIssueId(issueId) {
+        // Update the URL with the issueId parameter using pushState
+        var newURL = window.location.pathname + "?issueId=" + issueId;
+        history.pushState(null, null, newURL);
+
+        // First, reload the window
+        window.location.reload();
+    }
+
+    var id  = [[${id}]];
+    console.log(id);
+    if(id != -1){
+        var modal = document.getElementsByName('btn-modal');
+        modal.item(0).click();
+    }
 </script>
 
 </html>
