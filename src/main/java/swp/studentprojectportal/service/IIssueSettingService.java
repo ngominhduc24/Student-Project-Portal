@@ -19,6 +19,8 @@ public interface IIssueSettingService {
 
     IssueSetting findBySubjectAndGroupAndTitle(int subjectId,String settingGroup, String settingTitle);
 
+    IssueSetting findByProjectAndGroupAndTitle(int projectId,String settingGroup, String settingTitle);
+
     List<String> findAllDistinctSettingGroup(Integer subjectId);
 
     List<IssueSetting> findProcessTitle(Integer subjectId, String type);
