@@ -144,7 +144,8 @@ public class ProjectService implements IProjectService {
         List<Project> projectList = new ArrayList<>();
 
         for (StudentClass studentClass : studentClassList)
-            projectList.add(studentClass.getProject());
+            if(studentClass.getProject() != null)
+                projectList.add(studentClass.getProject());
 
         return projectList;
     }

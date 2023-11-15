@@ -100,7 +100,7 @@
                     <div class="col-lg-8">
                         <div class="card border-0 p-4 rounded shadow">
 
-                            <form action="../update" method="post">
+                            <form action="../update" method="get">
 
                                 <input type="hidden" name="projectId" th:value="${project.id}">
 
@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-none">
                                         <div class="mb-3">
                                             <label class="form-label">Project mentor</label>
                                             <select name="mentorId" class="form-select" id="select-mentor" required>
@@ -136,14 +136,14 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3" style="position: relative">
-                                            <label class="form-label">Filter</label>
+                                            <label class="form-label">Project mentor</label>
                                             <input type="text" class="form-control" id="search-mentor"
-                                                   placeholder="Search mentor">
+                                                   placeholder="Search mentor" th:value="${project.projectMentor.fullName}">
                                             <div class="autocomplete-suggestions">
                                                 <div class="autocomplete-suggestion"
                                                      th:each="mentor : ${projectMentorList}"
-                                                     th:text="${mentor.fullName}"
-                                                     th:data-id="${mentor.id}" onclick="selectSuggestion(this)"></div>
+                                                     th:text="${mentor.fullName}" th:data-name="${mentor.fullName}"
+                                                     th:data-id="${mentor.id}" onclick="selectSuggestion(this, this.parentNode.parentNode)"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
                                             <input type="text" class="form-control"
-                                                   th:value="${project.status ? 'Active' : 'Inactive'}" readonly>
+                                                   th:value="${project.status ? 'Active' : 'Inactive'}" readonly disabled>
                                         </div>
                                     </div>
 
@@ -214,9 +214,11 @@
                                 const selectMentor = document.getElementById('select-mentor');
                                 const suggestions = suggestionsContainer.querySelectorAll(".autocomplete-suggestion");
 
-                                function selectSuggestion(element) {
+                                function selectSuggestion(element, parentElement) {
                                     searchInput.value = '';
                                     selectMentor.value = element.dataset.id;
+
+                                    parentElement.querySelector('input').value = element.dataset.name;
                                 }
 
                                 searchInput.addEventListener("input", function() {
