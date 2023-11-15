@@ -350,7 +350,7 @@
                       <label th:text="${item.bonusAndPenalty}"></label>
                     </div>
                     <div class="edit edit-value " hidden="hidden">
-                      <input type="number" oninput="checkValueBonus(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
+                      <input type="number" step=0.1 oninput="checkValueBonus(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
                     </div>
                   </td>
                   <td>
@@ -368,7 +368,7 @@
                         <label th:text="${evalGrade.grade}"></label>
                       </div>
                       <div class="edit edit-value " hidden="hidden">
-                        <input type="number" oninput="checkValue(this)" name="evalGrade" th:value="${evalGrade.grade}" style="width: 37px" >
+                        <input type="number" step=0.1 oninput="checkValue(this)" name="evalGrade" th:value="${evalGrade.grade}" style="width: 37px" >
                         <input type="hidden" name="evalGradeId" th:value="${evalGrade.criteriaGradeId}">
                         <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\', ' + ${evalGrade.getCriteriaGradeId()} + ')'       " >...</label>
                       </div>

@@ -33,9 +33,10 @@
     <link th:href="@{/css/notify.css}" rel="stylesheet" type="text/css"/>
     <script th:src="@{/js/notify.js}"></script>
     <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 <!-- Loader -->
@@ -124,15 +125,21 @@
                                     </td>
                                     <td>
                                         <div th:if="${isMentor}" class="btn btn-link">
-                                            <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link">
-                                                Evaluate
-                                            </a>
-                                            <span class="action-separator"> | </span>
-                                            <a th:onclick="'showDialog(this,' + ${submitIssue.id} + ')'" th:attr="data-title=${submitIssue.issue.title}" class="action-link">
-                                                Reject</a>
+                                            <div th:if="${submitIssue.isRejected==false}">
+                                                <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link btn">
+                                                    Evaluate
+                                                </a>
+                                                <span class="action-separator"> | </span>
+                                                <a th:onclick="'showDialog(this,' + ${submitIssue.id} + ')'" th:attr="data-title=${submitIssue.issue.title}" class="action-link btn">
+                                                    Reject</a>
+                                            </div>
                                         </div>
-                                        <div th:if="${!isMentor}" class="btn btn-link">
-                                            <span class="action-link">Result</span>
+                                        <div th:if="${!isMentor}">
+                                            <div th:if="${submitIssue.isRejected==false}">
+                                                <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link btn">
+                                                    Result
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -143,6 +150,7 @@
 
                 </div>
 
+                <input type="hidden" name="isMentor" th:value="${isMentor}">
                 <input type="hidden" name="subjectId" th:value="${subjectId}">
                 <input type="hidden" name="submissionId" th:value="${submission.id}">
 
@@ -166,12 +174,20 @@
                                             <input type="text" name="subjectCode" class="form-control" th:value="${submission.project.aclass.subject.subjectCode}" readonly disabled>
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Milstone</label>
-                                            <input type="text" name="subjectCode" class="form-control" th:value="${submission.milestone.title}" readonly disabled>
+                                            <label class="form-label">Milestone</label>
+                                            <input type="text" name="mileStone" class="form-control" th:value="${submission.milestone.title}" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Issue Title</label>
+                                            <input type="text" name="details-submit-issue-title" class="form-control" readonly disabled>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Assignee</label>
+                                            <input type="text" name="details-submit-issue-assignee" class="form-control" readonly disabled>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Complexity<span class="text-danger">*</span></label>
-                                            <select id="details-submit-issue-complexity" class="form-select">
+                                            <select id="details-submit-issue-complexity" class="form-select" th:disabled="${!isMentor}">
                                                 <option th:each="subjectSettingComplexity : ${listSubjectSettingComplexity}"
                                                         th:value="${subjectSettingComplexity}"
                                                         th:text="${subjectSettingComplexity}"
@@ -180,16 +196,18 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Quality<span class="text-danger">*</span></label>
-                                            <select id="details-submit-issue-quality" class="form-select">
+                                            <select id="details-submit-issue-quality" class="form-select" th:disabled="${!isMentor}">
                                                 <option th:each="subjectSettingQuality : ${listSubjectSettingQuality}"
                                                         th:value="${subjectSettingQuality}"
                                                         th:text="${subjectSettingQuality}+'%'"
                                                 ></option>
                                             </select>
                                         </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Function Loc<span class="text-danger">*</span></label>
-                                            <input type="text" id="details-submit-issue-function-loc" class="form-control" >
+
+
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Comment</label>
+                                            <textarea type="text" rows="3" name="detail-submit-issue-comment" class="form-control" content="description"></textarea>
                                         </div>
                                     </div><!--end col-->
                                 </div>
@@ -216,9 +234,14 @@
                             .then(response => {
                                 if (response.ok) {
                                     response.json().then(data => {
-                                        document.querySelector('input[id="details-submit-issue-function-loc"]').value = data.functionLoc;
+                                        document.querySelector('input[name="details-submit-issue-title"]').value = data.issueTitle;
+                                        document.querySelector('input[name="details-submit-issue-assignee"]').value = data.issueAssignee;
+                                        document.querySelector('textarea[name="detail-submit-issue-comment"]').value = data.issueComment;
                                         var selectElementComplexity = document.querySelector('select[id="details-submit-issue-complexity"]');
                                         var dataComplexityValue = data.complexityValue;
+                                        var isMentor = document.querySelector('input[name="isMentor"]').value;
+                                        console.log("check mentor or not " + isMentor);
+                                        console.log("dataComplexityValue "+dataComplexityValue);
                                         if(dataComplexityValue == -1) selectElementComplexity.options[0].selected = true;
                                         else {
                                             for (var i = 0; i < selectElementComplexity.options.length; i++) {
@@ -229,8 +252,10 @@
                                             }
                                         }
 
+
                                         var selectElementQuality = document.querySelector('select[id="details-submit-issue-quality"]');
                                         var dataQualityValue = data.qualityValue;
+                                        console.log("dataQualityValue "+dataQualityValue)
                                         if(dataQualityValue == -1) selectElementQuality.options[0].selected = true;
                                         else {
                                             for (var i = 0; i < selectElementQuality.options.length; i++) {
@@ -246,7 +271,7 @@
                                     })
                                 } else {
                                     // Handle API errors
-                                    console.error('Error getting issue setting.');
+                                    console.error('Error getting submit issue.');
                                 }
                             })
                             .catch(error => {
@@ -263,9 +288,9 @@
                         const subjectId = document.querySelector('input[name="subjectId"]').value;
                         const complexity = document.querySelector('select[id="details-submit-issue-complexity"]').value;
                         const quality = document.querySelector('select[id="details-submit-issue-quality"]').value;
-                        const functionLoc = document.querySelector('input[id="details-submit-issue-function-loc"]').value;
+                        const comment = document.querySelector('textarea[name="detail-submit-issue-comment"]').value;
                         let endPoint = '/api/v1/update/submit-issue?submitIssueId=' + id +
-                            '&functionLoc=' + functionLoc +'&complexity=' +complexity + '&quality=' + quality + '&subjectId=' +subjectId;
+                            '&complexity=' +complexity + '&quality=' + quality + '&subjectId=' +subjectId + '&comment=' + comment;
                         fetch(endPoint, {
                             method: 'GET',
                         })
