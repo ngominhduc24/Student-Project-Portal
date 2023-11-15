@@ -32,7 +32,7 @@ public class StudentApiController {
         final int roleId = 1;
         final int status = 1;
         if(pageNo < 0 || pageSize < 0) return null;
-        return userService.getUser(pageNo, pageSize, search.trim(), roleId, status);
+        return userService.getClassStudent(pageNo, pageSize, search.trim(), roleId, status);
     }
 
     @GetMapping("/student/checkClass")

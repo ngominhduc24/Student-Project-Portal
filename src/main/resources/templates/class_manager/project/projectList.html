@@ -63,7 +63,7 @@
                         </ol>
                     </div>
 
-                    <div class="col-xl-3 col-md-3 mt-4 text-md-end">
+                    <div class="col-xl-4 col-md-3 mt-4 text-md-end">
 <!--                        <input style="border: #ced4da solid 1px" type="text" class="form-control"-->
 <!--                               placeholder="Search" oninput="search(this.value)">-->
                     </div>
@@ -75,22 +75,25 @@
                 </div>
 
                 <div class="row px-4">
-                    <div class="col-md-6">
-                        <select class="form-select" style="width: 50%" onchange="changeClass(this.value)">
+                    <div class="col-md-3">
+                        <select class="form-select" style="width: 80%" onchange="changeClass(this.value)">
                             <option th:each="item : ${classList}"
                                     th:value="${item.id}"
                                     th:text="${item.className} + ' - ' + ${item.subject.subjectCode}"
                                     th:selected="${item.id == class.id}"></option>
                         </select>
                     </div>
-
-                    <div class="col-md-6 text-end">
+                    <div class="col-md-5 text-md-end">
                         <a th:href="'../arrange/' + ${class.id}" class="btn btn-primary"
                            style="margin-left: 5%;">Arrange members</a>
+                        <a class="btn btn-secondary" onclick="redirect(this)" style="margin-left: 2%;"
+                           th:data-link="'/class-manager/project/freeze/'">Freeze projects</a>
+                    </div>
+                    <div class="col-md-4 text-end">
                         <a onclick="showModal(event)" href="" class="btn"
-                           style="margin-left: 5%; background: #0f5132; color: white"><i class="fa-solid fa-arrow-up-from-bracket" style="padding-right: 5px"></i>Import</a>
+                           style="margin-left: 5%; background: #0f5132; color: white"><i style="padding-right: 2px"><svg width="18" height="18" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>Import</a>
                         <a th:href="'/api/v1/export/studentClass/' + ${class.id}" target="_blank" class="btn"
-                           style="margin-left: 5%; background: #0f7d49; color: white"><i style="padding-right: 2px"><svg width="18" height="18" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>Export</a>
+                           style="margin-left: 5%; background: #0f7d49; color: white"><i class="fa-solid fa-arrow-up-from-bracket" style="padding-right: 5px"></i>Export</a>
                     </div>
                 </div>
 
@@ -494,7 +497,14 @@
             }
         </script>
 
-        <div th:replace="~{footer}"></div>
+<!--        <script>-->
+<!--            function redirect(element) {-->
+<!--                confirmCustom(-->
+<!--                    ()=>{window.location.href = element.dataset.link;},-->
+<!--                    ()=>{});-->
+<!--            }-->
+<!--        </script>-->
+
         <!-- End -->
     </main>
     <!--End page-content" -->

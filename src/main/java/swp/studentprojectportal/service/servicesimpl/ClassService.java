@@ -47,9 +47,9 @@ public class ClassService implements IClassService {
     public List<Class> findAllByClassManagerId(int classManagerId) {
         List<Class> data = new ArrayList<>();
 
-        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 0)); //pending
         data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 2)); //started
-
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 0)); //pending
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 3)); //closed
         return data;
     }
 

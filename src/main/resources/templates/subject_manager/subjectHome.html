@@ -205,7 +205,7 @@
             <div class="layout-specing" style="padding: 15px 14px 24px !important;">
                 <div class="row px-4">
                     <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
-                    <ol class="breadcrumb mb-2 ms-2">
+                    <ol class="breadcrumb mb-2 ms-2" style="background-color: #f8f9fc">
                         <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item active"><a>Subject Details</a></li>
@@ -316,7 +316,7 @@
                 <div class="row px-4" style="width: 100%; justify-content: space-between">
                     <div class="col-xl-5 col-md-6">
                         <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
-                        <ol class="breadcrumb mb-2">
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc">
                             <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Assignment List</li>
@@ -362,7 +362,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text" th:value="${search}"
-                                           name="search" placeholder="Search" style="border-color: #ced4da;"
+                                           name="search" placeholder="Search" style="border-color: #ced4da; height: 35px;"
                                            aria-label="Search">
                                     <button onclick="this.form.submit()" class="search-button"><i class="fas fa-search"
                                                                                                   aria-hidden="true"></i>
@@ -521,7 +521,7 @@
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
                         <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
-                        <ol class="breadcrumb mb-2">
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active"><a>Issue Setting List</a></li>
@@ -553,18 +553,15 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 row" style="margin-top: 12px;">
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Subject Code</label>
-                                            <input type="text" name="subjectCode" class="form-control" required th:value="${subject.subjectCode}" readonly disabled>
-                                        </div>
+                                        <input type="hidden" name="subjectCode" class="form-control" required th:value="${subject.subjectCode}" readonly disabled>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>
+                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="mb-3 col-md-6">
-                                            <label class="form-label">Title</label>
+                                            <label class="form-label">Title<span class="text-danger">*</span></label>
                                             <div class="d-flex">
                                                 <input type="text" id="newSettingTitle" name="newSettingTitle" class="form-control" >
                                             </div>
@@ -694,7 +691,7 @@
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text"
                                            th:value="${searchS}" name="searchS"
-                                           placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                           placeholder="Search" style="border-color: #ced4da; height: 35px;" aria-label="Search">
                                     <button onclick="this.form.submit()" class="search-button"><i
                                             class="fas fa-search"
                                             aria-hidden="true"></i>
@@ -939,7 +936,7 @@
                     <div class="row px-4">
                         <div class="col-xl-5 col-md-6">
                             <h3 class="mb-0" th:text="${subject.subjectCode}"></h3>
-                            <ol class="breadcrumb mb-1 ms-1">
+                            <ol class="breadcrumb mb-1 ms-1" style="background-color: #f8f9fc">
                                 <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                                 <li class="breadcrumb-item">/</li>
                                 <li class="breadcrumb-item active"><a>Subject Setting List</a></li>
@@ -1253,7 +1250,7 @@
                                     <div class="col-md-2">
                                         <input class="form-control form-control-sm" type="text"
                                                th:value="${searchSe}" name="searchSe"
-                                               placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                               placeholder="Search" style="border-color: #ced4da; height: 35px;" aria-label="Search">
                                         <button onclick="this.form.submit()" class="search-button"><i
                                                 class="fas fa-search"
                                                 aria-hidden="true"></i>
