@@ -56,7 +56,7 @@ public class AssignmentEvaluationsController {
         });
 
         // Set bonus and comment personal
-        List<SubmissionPersonal> submissionPersonalList = submissionPersonalService.getAllSubmissionPersonalBySubmissionId(1);
+        List<SubmissionPersonal> submissionPersonalList = submissionPersonalService.getAllSubmissionPersonalBySubmissionId(submissionId);
         evaluationDTO.forEach(item -> {
             submissionPersonalList.forEach(e -> {
                 if(e.getStudent().getId() == item.getStudentId()) {
@@ -125,6 +125,7 @@ public class AssignmentEvaluationsController {
 
         for (int i = 0; i < studentId.length; i++) {
             try {
+//                System.out.println("studentId: " + studentId[i] + " bonus: " + bonus[i] + " comment: " + commentPersonal[i]);
                 submissionPersonalService.updateSubmissionPersonal(Integer.parseInt(submissionId), Integer.parseInt(studentId[i]), bonus[i], commentPersonal[i]);
             } catch (Exception e) {
                 attributes.addFlashAttribute("emessage", "Update failed");
