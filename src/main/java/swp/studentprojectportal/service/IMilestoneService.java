@@ -38,6 +38,4 @@ public interface IMilestoneService {
     List<Milestone> findAllByProjectId(Integer projectId);
 
     List<Milestone> findAllBySubjectAndClassOfProject(Integer projectId);
-
-    int countAllByStudentId(Integer studentId);
 }
