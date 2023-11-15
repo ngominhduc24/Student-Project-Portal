@@ -690,23 +690,23 @@ VALUES
     ('Review Iteration 3','Review docs and code iteration 3 all group',1,3,7,'2023-10-18', '2023-11-08');
 
 -- class layer
-INSERT INTO milestone (`title`,`description`,`status`,`class_id`,`start_date`, `end_date`)
+INSERT INTO milestone (`title`,`description`,`status`, `subject_assignment_id`,`class_id`,`start_date`, `end_date`)
 VALUES
-    ('Java Servlet','Intro to JavaServlet + JSP',1,5,'2023-09-05', '2023-09-25'),
-    ('Connect to Database','Learn JDBC',1,5,'2023-09-27', '2023-10-16'),
-    ('Project','Pratice to create a website',1,5,'2023-10-18', '2023-11-08'),
-    ('Java Servlet','Intro to JavaServlet + JSP',1,6,'2023-09-05', '2023-09-25'),
-    ('Connect to Database','Learn JDBC',1,6,'2023-09-27', '2023-10-16'),
-    ('Project','Pratice to create a website',1,6,'2023-10-18', '2023-11-08');
+    ('Java Servlet','Intro to JavaServlet + JSP',1,1,5,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,1,5,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,1,5,'2023-10-18', '2023-11-08'),
+    ('Java Servlet','Intro to JavaServlet + JSP',1,1,6,'2023-09-05', '2023-09-25'),
+    ('Connect to Database','Learn JDBC',1,1,6,'2023-09-27', '2023-10-16'),
+    ('Project','Pratice to create a website',1,1,6,'2023-10-18', '2023-11-08');
 
 -- project layer
-INSERT INTO milestone (`title`,`description`,`status`,`project_id`,`start_date`, `end_date`)
+INSERT INTO milestone (`title`,`description`,`status`, `subject_assignment_id`,`project_id`,`start_date`, `end_date`)
 VALUES
-    ('Requirement for iter 1','Eliciate and analyze requirement for iteration 1', 1, 1,'2023-09-05', '2023-09-09'),
-    ('Database for iter 1','Design database for iteration 1',1,1,'2023-09-09', '2023-09-13'),
-    ('RDS Requirement for iter 1','Write RDS Requirement for iter 1',1,1,'2023-09-13', '2023-09-16'),
-    ('Coding for iter 1','Code for iteration 1',1,1,'2023-09-16', '2023-09-22'),
-    ('Testing for iter 1','Testing for iteration 1',1 , 1,'2023-09-22', '2023-09-25');
+    ('Requirement for iter 1','Eliciate and analyze requirement for iteration 1',1, 1, 1,'2023-09-05', '2023-09-09'),
+    ('Database for iter 1','Design database for iteration 1',1,1,1,'2023-09-09', '2023-09-13'),
+    ('RDS Requirement for iter 1','Write RDS Requirement for iter 1',1,1,1,'2023-09-13', '2023-09-16'),
+    ('Coding for iter 1','Code for iteration 1',1,1,1,'2023-09-16', '2023-09-22'),
+    ('Testing for iter 1','Testing for iteration 1',1,1 , 1,'2023-09-22', '2023-09-25');
 
 -- issue_setting
 INSERT INTO issue_setting(subject_id,setting_group,setting_title,description, status)
