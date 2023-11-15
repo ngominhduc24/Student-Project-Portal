@@ -59,7 +59,7 @@
 
                 <div>
                     <h4 class="mb-0">Submit Details</h4>
-                    <ol class="breadcrumb mb-4 bg-light">
+                    <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
                         <li class="breadcrumb-item">
@@ -92,7 +92,7 @@
                 <div class="row mt-3">
                     <div class="col-10">
 
-                        <table class="table table-borderless">
+                        <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -100,7 +100,7 @@
                                     <th>Assignee</th>
                                     <th>Status</th>
                                     <th>LOC</th>
-                                    <th class="ps-4">Action</th>
+                                    <th style="text-align: center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,19 +124,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div th:if="${isMentor}" class="btn text-center">
+                                        <div th:if="${isMentor}" class="btn btn-link">
                                             <div th:if="${submitIssue.isRejected==false}">
-                                                <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link">
+                                                <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link btn">
                                                     Evaluate
                                                 </a>
                                                 <span class="action-separator"> | </span>
-                                                <a th:onclick="'showDialog(this,' + ${submitIssue.id} + ')'" th:attr="data-title=${submitIssue.issue.title}" class="action-link">
+                                                <a th:onclick="'showDialog(this,' + ${submitIssue.id} + ')'" th:attr="data-title=${submitIssue.issue.title}" class="action-link btn">
                                                     Reject</a>
                                             </div>
                                         </div>
-                                        <div th:if="${!isMentor}" class="text-center">
-                                            <div th:if="${submitIssue.isRejected==false}">
-                                                <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link">
+                                        <div th:if="${!isMentor}">
+                                            <div th:if="${submitIssue.isRejected==false && submitIssue.functionLoc!=null}">
+                                                <a th:onclick="'detailsSubmitIssue(' + ${submitIssue.id} + ')'" class="action-link btn">
                                                     Result
                                                 </a>
                                             </div>
