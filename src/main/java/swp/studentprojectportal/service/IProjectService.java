@@ -39,4 +39,6 @@ public interface IProjectService {
                          String sortBy, Integer sortType, Integer classId, Integer subjectId, Integer status);
     public Page<Project> filterByStudent(Integer studentId, String search, Integer pageNo, Integer pageSize,
                                                String sortBy, Integer sortType, Integer status);
+
+    Page<Project> filterByStudendDashboard(Integer studentId, Integer pageNo, Integer pageSize);
 }
