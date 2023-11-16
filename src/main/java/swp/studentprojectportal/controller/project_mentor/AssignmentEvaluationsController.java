@@ -82,6 +82,7 @@ public class AssignmentEvaluationsController {
         model.addAttribute("milestoneList", milestoneList);
 
         model.addAttribute("classList",projectList.stream().map(Project::getAclass).distinct().toList());
+        model.addAttribute("isStudent", false);
 
 
         return "project_mentor/submission/submissionEvaluations";

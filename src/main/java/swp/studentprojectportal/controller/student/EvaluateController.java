@@ -82,7 +82,7 @@ public class EvaluateController {
 
         model.addAttribute("classList",projectList.stream().map(Project::getAclass).distinct().toList());
 
-
+        model.addAttribute("isStudent", true);
         return "project_mentor/submission/submissionEvaluations";
     }
 }
