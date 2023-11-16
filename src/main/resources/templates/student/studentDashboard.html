@@ -84,30 +84,7 @@
                     </div><!--end col-->
                 </div>
 
-                <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
-                    <ul class="pagination justify-content-end">
-                        <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
-                            <a class="page-link" style="cursor: pointer"
-                               th:onclick="'goToPage('+ ${pageNo-1}+')'">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <input type="hidden" name="pageNo" id="pageNoInput">
-                        <li  th:each="i : ${#numbers.sequence(1, totalPage)}" th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
-                            <a class="page-link" th:text="${i}" style="cursor: pointer"
-                               th:onclick="'goToPage('+ ${i-1}+')'">
-                            </a>
-                        </li>
-                        <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
-                            <a class="page-link user-select-all" style="cursor: pointer"
-                               th:onclick="'goToPage('+ ${pageNo+1}+')'">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-
-                <h5 class="px-2">Issue Dashboard</h5>
+                <h5 class="px-2 mt-4">Issue Dashboard</h5>
                 <div class="row">
                     <div class="col-xl-5 mt-4">
                         <div class="card shadow border-0 p-4">
@@ -158,7 +135,7 @@
                     </div>
                 </div><!--end row-->
 
-                <h5 class="px-2">Assignment Dashboard</h5>
+                <h5 class="px-2 mt-4">Assignment Dashboard</h5>
                 <div class="row">
                     <div class="col-xl-5 mt-4">
                         <div class="card shadow border-0 p-4">
