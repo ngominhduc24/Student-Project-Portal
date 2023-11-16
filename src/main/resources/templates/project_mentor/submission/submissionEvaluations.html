@@ -445,7 +445,11 @@
   });
 </script>
 
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
 <script>
+  const socket = io('http://localhost:3000');
+
   const submitButton = document.getElementById("submitButton");
   // add event onclick
   submitButton.addEventListener("click", function () {
@@ -474,9 +478,8 @@
       "href": href
     };
 
-    console.log(jsonSendData);
+    socket.emit('noti-evaluated', jsonSendData);
 
-    alert(1)
     const formsubmit = document.getElementById("formsubmit");
     formsubmit.submit();
   });
