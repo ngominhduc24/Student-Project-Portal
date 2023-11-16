@@ -430,7 +430,7 @@
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text"
                                            th:value="${search}" name="search"
-                                           placeholder="Search" style="border-color: #ced4da; height: 58px" aria-label="Search">
+                                           placeholder="Search" style="border-color: #ced4da; height: 35px" aria-label="Search">
                                     <button onclick="this.form.submit()" class="search-button"><i
                                             class="fas fa-search"
                                             aria-hidden="true"></i>
@@ -461,12 +461,12 @@
                                         <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('setting_title',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Description
-                                        <i th:class="${(sortBy eq 'description' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortData('description',1)"></i>
-                                        <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortData('description',2)"></i>
-                                    </th>
+<!--                                    <th data-sortable="false">Description-->
+<!--                                        <i th:class="${(sortBy eq 'description' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"-->
+<!--                                           onclick="sortData('description',1)"></i>-->
+<!--                                        <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"-->
+<!--                                           onclick="sortData('description',2)"></i>-->
+<!--                                    </th>-->
                                     <th data-sortable="false">Status</th>
                                     <th data-sortable="false">Actions</th>
                                 </tr>
@@ -476,7 +476,7 @@
                                     <td th:text="${setting.id}"></td>
                                     <td th:text="${setting.settingGroup}"></td>
                                     <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.description}"></td>
+<!--                                    <td th:text="${setting.description}"></td>-->
                                     <td>
                                         <div class="form-check form-switch">
                                             <input th:if="${setting.aclass!=null}" class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingGroup}" onchange="showConfirmationDialog(this)">

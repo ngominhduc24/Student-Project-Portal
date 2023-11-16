@@ -95,30 +95,13 @@
     </div>
 </div>
 
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script th:script="${@nodeUrl} + '/socket.io/socket.io.js'"></script>
 <script>
-    function loadSocketIO() {
-        const script = document.createElement('script');
-        script.src = 'http://localhost:3000/socket.io/socket.io.js';
-
-        const timer = setTimeout(() => {
-            document.body.removeChild(script);
-        }, 500);
-
-        // Add an event listener to execute when the script has finished loading.
-        script.onload = () => {
-            clearTimeout(timer); // Clear the timeout since the script loaded successfully.
-            initializeSocket();
-        };
-
-        // Append the script to the document, which starts loading it.
-        document.body.appendChild(script);
-    }
 
     async function initializeSocket() {
         const userId = [[${session.user.id}]];
 
-        const socket = io('http://localhost:3000');
+        const socket = io( '[[${@nodeUrl}]]' );
 
         socket.emit('user-connect', await getToken());
 
