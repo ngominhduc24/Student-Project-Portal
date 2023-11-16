@@ -572,7 +572,12 @@
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control" >
+<!--                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control" >-->
+                                                <select id="newSettingGroup" name="newSettingGroup" class="form-select">
+                                                    <option value="Process" selected>Process</option>
+                                                    <option value="Status" >Status</option>
+                                                    <option value="Type">Type</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="mb-3 col-md-6">
@@ -626,7 +631,7 @@
                         console.log("Da bam nut");
                         // Get values from the form fields
                         const subjectId = document.querySelector('input[name="id"]').value;
-                        const group = document.querySelector('input[id="newSettingGroup"]').value;
+                        const group = document.querySelector('select[id="newSettingGroup"]').value;
                         const title = document.querySelector('input[id="newSettingTitle"]').value;
                         const description = document.querySelector('textarea[name="newDescription"]').value;
 
@@ -686,10 +691,13 @@
                                         <div class="mb-3">
                                             <select name="settingGroupS" class="form-select"
                                                     onchange="this.form.submit()">
-                                                <option value="" th:selected="${settingGroupS.isEmpty()}">All Type</option>
-                                                <option th:each="group : ${settingGroupList}"
-                                                        th:value="${group}"
-                                                        th:text="${group}" th:selected="${settingGroupS.equalsIgnoreCase(group)}"></option>
+                                                <option value="" th:selected="${settingGroupS.isEmpty()}">All Group</option>
+                                                <option value="Process" th:selected="${settingGroupS.equalsIgnoreCase('Process')}">Process</option>
+                                                <option value="Status" th:selected="${settingGroupS.equalsIgnoreCase('Status')}">Status</option>
+                                                <option value="Type" th:selected="${settingGroupS.equalsIgnoreCase('Type')}">Type</option>
+<!--                                                <option th:each="group : ${settingGroupList}"-->
+<!--                                                        th:value="${group}"-->
+<!--                                                        th:text="${group}" th:selected="${settingGroupS.equalsIgnoreCase(group)}"></option>-->
                                             </select>
                                         </div>
                                     </div>
@@ -810,7 +818,12 @@
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Group<span class="text-danger">*</span></label>
-                                                        <input type="text" id="details-issue-setting-group" class="form-control" >
+                                                        <select id="details-issue-setting-group" class="form-select">
+                                                            <option value="Process">Process</option>
+                                                            <option value="Status">Status</option>
+                                                            <option value="Type">Type</option>
+                                                        </select>
+<!--                                                        <input type="text" id="details-issue-setting-group" class="form-control" >-->
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label">Title</label>
@@ -847,9 +860,18 @@
                                             if (response.ok) {
                                                 // Handle a successful API response
                                                 response.json().then(data => {
-                                                    document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
+                                                    // document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
                                                     document.querySelector('input[id="details-issue-setting-title"]').value = data.title;
                                                     document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                                    var selectElement = document.querySelector('select[id="details-issue-setting-group"]');
+                                                    var dataValue = data.group;
+                                                    for (var i = 0; i < selectElement.options.length; i++) {
+                                                        // Nếu giá trị của option khớp với giá trị từ dữ liệu, đặt selected
+                                                        if (selectElement.options[i].value == dataValue) {
+                                                            selectElement.options[i].selected = true;
+                                                            break; // Dừng vòng lặp nếu đã tìm thấy giá trị khớp
+                                                        }
+                                                    }
                                                     document.getElementById('detail-status').checked = data.status == 1 ? true : false;
                                                     document.getElementById('updateIssueSettingButton').setAttribute('onclick', 'updateIssueSetting(' + data.id + ')');
                                                 });
@@ -870,7 +892,7 @@
                             <script>
                                 function updateIssueSetting(id){
                                     const subjectId = document.querySelector('input[name="id"]').value;
-                                    const group = document.querySelector('input[id="details-issue-setting-group"]').value;
+                                    const group = document.querySelector('select[id="details-issue-setting-group"]').value;
                                     const title = document.querySelector('input[id="details-issue-setting-title"]').value;
                                     const description = document.querySelector('textarea[name="detail-description"]').value;
                                     const status = document.getElementById('detail-status').checked ? 1 : 0;
