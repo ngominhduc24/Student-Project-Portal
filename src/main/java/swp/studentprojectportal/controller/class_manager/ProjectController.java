@@ -142,6 +142,8 @@ public class ProjectController {
         for (Project project : projectList)
             projectService.updateStatus(project.getId(), true);
 
+        classService.updateClassStatus(classId, 2);
+
         return "redirect:../list/" + classId;
     }
 

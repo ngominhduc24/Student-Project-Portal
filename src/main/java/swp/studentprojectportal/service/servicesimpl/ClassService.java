@@ -131,5 +131,15 @@ public class ClassService implements IClassService {
         return classRepository.findClassByProjectsProjectMentorId(projectMentorId);
     }
 
+    @Override
+    public boolean updateClassStatus(Integer classId, int status) {
+        Class aclass = classRepository.findClassById(classId);
+
+        aclass.setStatus(status);
+        classRepository.save(aclass);
+
+        return true;
+    }
+
 
 }

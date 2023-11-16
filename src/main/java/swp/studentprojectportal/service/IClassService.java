@@ -39,4 +39,6 @@ public interface IClassService {
 
     List<Class> findAllByStudentUserId(Integer userId);
     List<Class> findClassForProject(Integer projectMentorId);
+
+    public boolean updateClassStatus(Integer classId, int status);
 }
