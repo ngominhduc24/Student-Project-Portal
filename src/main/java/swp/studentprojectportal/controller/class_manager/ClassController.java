@@ -15,6 +15,7 @@ import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.service.servicesimpl.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -82,4 +83,7 @@ public class ClassController {
         attributes.addFlashAttribute("toastMessage", "Update class description successfully");
         return "redirect:/class-manager/classList";
     }
+
+
+
 }

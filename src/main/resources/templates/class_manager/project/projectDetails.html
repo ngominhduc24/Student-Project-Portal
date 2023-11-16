@@ -107,24 +107,24 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Title</label>
+                                            <label class="form-label">Title<span style="color: red">*</span></label>
                                             <input name="title" type="text" class="form-control"
-                                                   th:value="${project.title}" required>
+                                                   th:value="${project.title}" required th:disabled="${session.user.setting.id==1}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Group name</label>
+                                            <label class="form-label">Group name <span style="color: red">*</span></label>
                                             <input name="groupName" type="text" class="form-control"
-                                                   th:value="${project.groupName}" required>
+                                                   th:value="${project.groupName}" required th:disabled="${session.user.setting.id==1}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-6 d-none">
                                         <div class="mb-3">
                                             <label class="form-label">Project mentor</label>
-                                            <select name="mentorId" class="form-select" id="select-mentor" required>
+                                            <select name="mentorId" class="form-select" id="select-mentor" required th:disabled="${session.user.setting.id==1}">
                                                 <option selected th:if="${project.projectMentor==null}"></option>
                                                 <option th:each="mentor : ${projectMentorList}"
                                                         th:value="${mentor.id}"
@@ -136,9 +136,9 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3" style="position: relative">
-                                            <label class="form-label">Project mentor</label>
+                                            <label class="form-label">Project mentor<span style="color: red">*</span></label>
                                             <input type="text" class="form-control" id="search-mentor"
-                                                   placeholder="Search mentor" th:value="${project.projectMentor.fullName}">
+                                                   placeholder="Search mentor" th:value="${project.projectMentor.fullName}" th:disabled="${session.user.setting.id==1}">
                                             <div class="autocomplete-suggestions">
                                                 <div class="autocomplete-suggestion"
                                                      th:each="mentor : ${projectMentorList}"
@@ -150,8 +150,8 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Team leader</label>
-                                            <select name="leaderId" class="form-select">
+                                            <label class="form-label">Team leader<span style="color: red">*</span></label>
+                                            <select name="leaderId" class="form-select" th:disabled="${session.user.setting.id==1}">
                                                 <option selected value="-1"></option>
                                                 <option th:each="member : ${projectMemberList}"
                                                         th:value="${member.id}"
@@ -173,7 +173,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Description</label>
                                             <textarea name="description" class="form-control" rows="3"
-                                                      th:text="${project.description}" required></textarea>
+                                                      th:text="${project.description}" required th:disabled="${session.user.setting.id==1}"></textarea>
                                         </div>
                                     </div>
 
@@ -188,11 +188,11 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <div class="mb-3">
+                                        <div class="mb-3" th:if="${session.user.setting.id!=1}">
                                             <div th:if="${!project.status}">
                                                 <button type="submit" class="btn btn-primary">Update</button>
-                                                <a class="btn btn-secondary" onclick="redirect(this)" style="margin-left: 2%;"
-                                                   th:data-link="'/class-manager/project/freeze/' + ${project.id}">Freeze project</a>
+<!--                                                <a class="btn btn-secondary" onclick="redirect(this)" style="margin-left: 2%;"-->
+<!--                                                   th:data-link="'/class-manager/project/freeze/' + ${project.id}">Freeze project</a>-->
 
 <!--                                                <br><br>-->
 <!--                                                <a class="btn btn-danger" onclick="redirect(this)"-->

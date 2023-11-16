@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.ISettingRepository;
@@ -97,7 +98,26 @@ public class UserService implements IUserService {
      * status is the status of user where 1 is active, 0 is inactive and -1 is all
      */
 
-    public List<User> getUser(Integer pageNo, Integer pageSize, String search, Integer roleId, Integer status) {
+    public List<User> getUser(Integer pageNo, Integer pageSize, String search, Integer roleId, Integer status, String sortBy, Integer sortType) {
+        Sort sort;
+        if(sortType==1)
+            sort = Sort.by(sortBy).ascending();
+        else
+            sort = Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        if(status != -1 && roleId != -1) {
+            return userRepository.searchUsersAndFilterByRoleIdAndStatus(search, roleId, status, pageable).getContent();
+        } else if(status != -1) {
+            return userRepository.searchUsersAndFilterByStatus(search, status, pageable).getContent();
+        } else
+        if(roleId != -1){
+            return userRepository.searchUsersAndFilterByRole(search, roleId, pageable).getContent();
+        } else {
+            return userRepository.findUserByFullNameContainsIgnoreCaseOrEmailContainsIgnoreCaseOrPhoneContainsIgnoreCase(search, search, search, pageable).getContent();
+        }
+    }
+
+    public List<User> getClassStudent(Integer pageNo, Integer pageSize, String search, Integer roleId, Integer status) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         if(status != -1 && roleId != -1) {
             return userRepository.searchUsersAndFilterByRoleIdAndStatus(search, roleId, status, pageable).getContent();

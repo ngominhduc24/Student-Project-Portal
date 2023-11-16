@@ -197,7 +197,7 @@
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
                         <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
-                        <ol class="breadcrumb mb-2">
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
@@ -422,7 +422,7 @@
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text"
                                            th:value="${search}" name="search"
-                                           placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                           placeholder="Search" style="border-color: #ced4da; height: 58px" aria-label="Search">
                                     <button onclick="this.form.submit()" class="search-button"><i
                                             class="fas fa-search"
                                             aria-hidden="true"></i>

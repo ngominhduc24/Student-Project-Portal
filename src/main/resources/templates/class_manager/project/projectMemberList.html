@@ -175,7 +175,7 @@
     <div class="container-fluid" >
       <div class="layout-specing" style="padding: 15px 14px 24px !important;">
         <div class="row px-4" style="width: 100%; justify-content: space-between">
-          <div class="col-xl-5 col-md-6">
+          <div class="col-xl-6 col-md-6">
             <h3 class="mb-0" th:text="${project.title} + ' - ' + ${project.aclass.className}"></h3>
             <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
               <li class="breadcrumb-item"><a href="/subject-manager/home">Dashboard</a></li>
@@ -183,17 +183,17 @@
               <li class="breadcrumb-item" th:if="${session.user.setting.id==1}"><a th:href="@{/student/project}" >Project List</a></li>
               <li class="breadcrumb-item" th:if="${session.user.setting.id==4}"><a th:href="@{/class-manager/project/list/{classId}(classId=${project.aclass.id})}" >Project List</a></li>
               <li class="breadcrumb-item">/</li>
-              <li class="breadcrumb-item active">Milestone List</li>
+              <li class="breadcrumb-item active">Member List</li>
             </ol>
           </div><!--end col-->
 
           <!--                    <div class="col-xl-2 col-md-6"></div>-->
 
           <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-bottom: 8px; width: 155px">
-              <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>
-              Add New
-            </button>
+<!--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter" style="margin-bottom: 8px; width: 155px">-->
+<!--              <i><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="white"/></svg></i>-->
+<!--              Add New-->
+<!--            </button>-->
           </div><!--end col-->
         </div><!--end row-->
         <button type="button" id="btndetails" data-toggle="modal" data-target="#detailsModalCenter" hidden="hidden"></button>
@@ -244,19 +244,19 @@
             <form action="/class-manager/project/members" class="card-body rounded-3" id="form">
               <div class="row" style="width: 100%; justify-content: space-between">
                 <input type="hidden" name="projectId" th:value="${project.id}">
-                <div class="col-md-3 row">
-                  <div class="mb-3 col-md-5 pe-3">
-                    <select name="pageSize" class="form-select" onchange="this.form.submit()">
-                      <option th:selected="${pageSize==5}" value="5">5</option>
-                      <option th:selected="${pageSize==10}" value="10">10</option>
-                      <option th:selected="${pageSize==15}" value="15">15</option>
-                      <option th:selected="${pageSize==20}" value="20">20</option>
-                      <option th:selected="${pageSize==25}" value="25">25</option>
-                    </select>
-                  </div>
-                  <p class="ps-2 col-md-5 pt-2">per page</p>
-                </div>
-                <div class="row col-md-8" style="margin-left: -100px">
+<!--                <div class="col-md-3 row">-->
+<!--                  <div class="mb-3 col-md-5 pe-3">-->
+<!--                    <select name="pageSize" class="form-select" onchange="this.form.submit()">-->
+<!--                      <option th:selected="${pageSize==5}" value="5">5</option>-->
+<!--                      <option th:selected="${pageSize==10}" value="10">10</option>-->
+<!--                      <option th:selected="${pageSize==15}" value="15">15</option>-->
+<!--                      <option th:selected="${pageSize==20}" value="20">20</option>-->
+<!--                      <option th:selected="${pageSize==25}" value="25">25</option>-->
+<!--                    </select>-->
+<!--                  </div>-->
+<!--                  <p class="ps-2 col-md-5 pt-2">per page</p>-->
+<!--                </div>-->
+                <div class="row col-md-8" style="margin-left: 8px">
                   <div class="col-md-3">
                     <div class="mb-3">
                       <select name="status" class="form-select" onchange="this.form.submit()">
@@ -418,28 +418,28 @@
                 });
               </script>
               <input type="hidden" name="pageNo" id="pageNoInput" th:value="${pageNo}">
-              <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">
-                <ul class="pagination justify-content-end">
-                  <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">
-                    <a class="page-link" style="cursor: pointer"
-                       th:onclick="'goToPage('+ ${pageNo-1}+')'">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li th:each="i : ${#numbers.sequence(1, totalPage)}"
-                      th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">
-                    <a class="page-link" th:text="${i}" style="cursor: pointer"
-                       th:onclick="'goToPage('+ ${i-1}+')'">
-                    </a>
-                  </li>
-                  <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">
-                    <a class="page-link user-select-all" style="cursor: pointer"
-                       th:onclick="'goToPage('+ ${pageNo+1}+')'">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+<!--              <nav th:if="${totalPage!=0}" aria-label="Page navigation example" style="margin-top: 20px;">-->
+<!--                <ul class="pagination justify-content-end">-->
+<!--                  <li th:class="${pageNo == 0 ? 'page-item disabled' : 'page-item'}">-->
+<!--                    <a class="page-link" style="cursor: pointer"-->
+<!--                       th:onclick="'goToPage('+ ${pageNo-1}+')'">-->
+<!--                      <span aria-hidden="true">&laquo;</span>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li th:each="i : ${#numbers.sequence(1, totalPage)}"-->
+<!--                      th:class="${pageNo == (i - 1) ? 'page-item active' : 'page-item'}">-->
+<!--                    <a class="page-link" th:text="${i}" style="cursor: pointer"-->
+<!--                       th:onclick="'goToPage('+ ${i-1}+')'">-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li th:class="${pageNo == (totalPage-1) ? 'page-item disabled' : 'page-item'}">-->
+<!--                    <a class="page-link user-select-all" style="cursor: pointer"-->
+<!--                       th:onclick="'goToPage('+ ${pageNo+1}+')'">-->
+<!--                      <span aria-hidden="true">&raquo;</span>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </nav>-->
             </form>
           </div>
         </div>
