@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.Issue;
+import swp.studentprojectportal.model.Project;
 
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface IIssueRepository extends JpaRepository<Issue, Integer> {
     List<Issue> findAllByAssigneeId(Integer studentId);
 
     public List<Issue> findAllByMilestoneId(Integer milestoneId);
+
+    public List<Issue> findAllByProjectIn(List<Project> projectList);
 }

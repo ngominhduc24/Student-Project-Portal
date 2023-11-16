@@ -46,7 +46,7 @@ public class Filter implements jakarta.servlet.Filter {
         authorUrl.add("/subject-manager/");
 
         if(checkAccpectUrl(authorUrl, url) && user==null) {
-            response.sendRedirect("/");
+            response.sendRedirect("/login");
             return;
         }
 

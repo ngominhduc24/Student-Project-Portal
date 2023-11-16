@@ -19,4 +19,6 @@ public interface IIssueService {
     public boolean updateIssueAssignee(Integer issueId, Integer assigneeId);
 
     public Issue findById(int id);
+
+    public List<Issue> findAllByStudentId(Integer studentId);
 }
