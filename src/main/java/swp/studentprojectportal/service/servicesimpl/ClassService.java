@@ -141,5 +141,9 @@ public class ClassService implements IClassService {
         return true;
     }
 
+    public List<Class> findAll() {
+        return classRepository.findAll();
+    }
+
 
 }
