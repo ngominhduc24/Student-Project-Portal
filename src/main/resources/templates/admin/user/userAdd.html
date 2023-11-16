@@ -73,11 +73,15 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Address<span class="text-danger">*</span></label>
-                                            <input name="date" type="text" class="form-control"
-                                                   placeholder="" th:value="${phone}">
+                                            <label class="form-label">Role<span class="text-danger">*</span></label>
+                                            <select name="roleId" class="form-select">
+                                                <option th:each="role : ${roleList}"
+                                                        th:value="${role.id}"
+                                                        th:text="${role.settingTitle}"
+                                                        th:selected="${role.id == roleId}"></option>
+                                            </select>
                                         </div>
-                                    </div>
+                                    </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -93,24 +97,7 @@
                                             <input name="phone" type="text" class="form-control"
                                                    placeholder="Phone number" th:value="${phone}">
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Student ID<span class="text-danger">*</span></label>
-                                            <input name="phone" type="text" class="form-control"
-                                                   placeholder="" th:value="${phone}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Date of birth<span class="text-danger">*</span></label>
-                                            <input name="date" type="date" class="form-control"
-                                                   placeholder="" th:value="${phone}">
-                                        </div>
-                                    </div>
-
+                                    </div><!--end col-->
                                 </div><!--end row-->
                                 <p th:text="${error}" style="color: indianred"></p>
 
