@@ -66,14 +66,13 @@ public class EncodeAPIController {
         userList.add(user.getId());
 
         return jwtTokenProvider.encodeData(convertListToJson(userList));
-
     }
 
     public static String convertListToJson(List<Integer> integerList) {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = "";
         try {
-            json = objectMapper.writeValueAsString(Collections.singletonMap("listClassId", integerList));
+            json = objectMapper.writeValueAsString(Collections.singletonMap("userId", integerList));
         } catch (Exception e) {
             e.printStackTrace();
         }

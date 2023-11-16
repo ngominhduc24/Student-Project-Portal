@@ -128,8 +128,63 @@
     </div>
 </div>
 
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>
+    function loadSocketIO() {
+        const script = document.createElement('script');
+        script.src = 'http://localhost:3000/socket.io/socket.io.js';
 
+        const timer = setTimeout(() => {
+            document.body.removeChild(script);
+        }, 500);
+
+        // Add an event listener to execute when the script has finished loading.
+        script.onload = () => {
+            clearTimeout(timer); // Clear the timeout since the script loaded successfully.
+            initializeSocket();
+        };
+
+        // Append the script to the document, which starts loading it.
+        document.body.appendChild(script);
+    }
+
+    async function initializeSocket() {
+        const userId = [[${session.user.id}]];
+
+        const socket = io('http://localhost:3000');
+
+        socket.emit('user-connect', await getToken());
+
+        socket.on("noti-evaluated", data => {
+            console.log(data);
+        });
+    }
+
+    initializeSocket();
+
+    async function getToken() {
+        let token;
+
+        await fetch('/api/v1/encode/getStudentId', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return token = response.text();
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            })
+            .then(data => {})
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        return token;
+    }
 </script>
 
 <!-- javascript -->
