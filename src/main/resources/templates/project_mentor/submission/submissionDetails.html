@@ -208,14 +208,15 @@
 
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Comment</label>
-                                            <textarea type="text" rows="3" name="detail-submit-issue-comment" class="form-control" content="description"></textarea>
+                                            <textarea type="text" rows="3" name="detail-submit-issue-comment" class="form-control" content="description" th:readonly="${!isMentor}"></textarea>
                                         </div>
                                     </div><!--end col-->
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="detailcloseModal1">Close</button>
-                                <button type="button" class="btn btn-primary" id="updateSubmitIssueButton">Update</button>
+<!--                                <div th:if="${isMentor}"></div>-->
+                                <button th:if="${isMentor}" type="button" class="btn btn-primary" id="updateSubmitIssueButton">Update</button>
                             </div>
                         </div>
                     </div>

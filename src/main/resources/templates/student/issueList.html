@@ -62,10 +62,10 @@
     <main class="page-content bg-light">
         <div th:replace="~{dashboardHeader}"></div>
         <div class="container-fluid">
-            <div class="layout-specing" style="padding: 35px 14px 24px !important; margin-top: 40px">
+            <div class="layout-specing" style="padding-top: 54px !important;">
                 <div class="row px-4">
-                    <div class="col-xl-5 col-md-6">
-                        <h3 style="margin-top: -14px;margin-bottom: 20px;">Issue List</h3>
+                    <div class="col-xl-6 col-md-6">
+                        <h1 style="margin: 0">Issue List</h1>
                         <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a
@@ -79,8 +79,8 @@
                     <div class="col-xl-4 col-md-6">
                     </div>
 
-                    <div class="col-xl-3 col-md-6 text-md-end" style="margin-top: -14px;">
-                        <a href="/student/issue/add" type="button" class="btn btn-primary" style="width: 226px;">
+                    <div class="col-xl-2 col-md-6 mt-4 d-flex align-items-center justify-content-center mb-2" >
+                        <a href="/student/issue/add" type="button" class="btn btn-primary" >
                             <i>
                                 <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
@@ -166,12 +166,12 @@
                                     <td th:text="${issue.getAssignee().getDisplayName() }">
                                     <td>
                                         <div style="border: none; color: blue">
-                                            <button  style=" user-select: none" th:onclick="'getIssueId(' + ${issue.id} + ')'">
+                                            <button  style="border: none; color: blue; background-color: transparent;" th:onclick="'getIssueId(' + ${issue.id} + ')'">
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                                    class="fas fa-pen-to-square action"></i>
                                             </button>
                                             <button name="btn-modal"  data-toggle="modal" data-target="#viewIssueModal" style="display: none"></button>
-                                            <a th:href="@{/student/work/{issueId}(issueId=${issue.id})}" >Work List</a>
+<!--                                            <a th:href="@{/student/work/{issueId}(issueId=${issue.id})}" >Work List</a>-->
                                         </div>
 
                                     </td>
@@ -262,7 +262,6 @@
                 </div>
             </div>
         </div><!--end container-->
-        <div th:replace="~{footer}"></div>
         <!-- End -->
     </main>
 </div>
