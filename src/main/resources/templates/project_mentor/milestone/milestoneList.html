@@ -145,6 +145,9 @@
                                 <a th:if="${!isMentor && submission!=null && submission.status==1}"
                                    th:href="'../submit/' + ${milestone.id} + '?projectId=' + ${project.id}">Resubmit</a>
 
+                                <a th:if="${!isMentor && submission!=null && submission.status==2} "
+                                   th:href="'/student/submission/evaluate/' + ${submission.id}">View Result</a>
+
                                 <a th:if="${!isMentor && submission!=null}"
                                    th:href="'/student/submission/details/' + ${submission.id}">Details</a>
 
