@@ -53,7 +53,7 @@
             <div class="layout-specing">
 
                 <div>
-                    <h4 class="mb-0">Assignment List</h4>
+                    <h1 class="mb-0">Assignment List</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../home">Dashboard</a></li>
                         <li class="breadcrumb-item">/</li>
@@ -64,7 +64,7 @@
                 <div class="row">
 
                     <div class="col-3">
-                        <select class="form-select" onchange="changeProject(this.value)">
+                        <select class="form-select" onchange="changeProject(this.value)" style="width: 80%">
                             <option th:each="p : ${projectList}"
                                     th:value="${p.id}"
                                     th:text="${p.groupName} + ' - ' + ${p.aclass.className}"
@@ -73,8 +73,8 @@
                     </div>
 
                     <div class="col-3">
-                        <select class="form-select" onchange="filterByStatus(this.value)">
-                            <option value="all" selected>All</option>
+                        <select class="form-select" onchange="filterByStatus(this.value)" style="width: 80%; margin-left: -30px">
+                            <option value="all" selected>All status</option>
                             <option value="Pending">Pending</option>
                             <option value="Submitted">Submitted</option>
                             <option value="Evaluated">Evaluated</option>

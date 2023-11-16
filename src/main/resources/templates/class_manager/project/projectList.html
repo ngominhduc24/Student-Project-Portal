@@ -29,6 +29,9 @@
     <!-- Css -->
     <link th:href="@{/css/style.min.css}" rel="stylesheet" type="text/css" id="theme-opt"/>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -54,43 +57,60 @@
             <div class="layout-specing">
                 <div class="row px-4">
 
-                    <div class="col-xl-5 col-md-6">
+                    <div class="col-6">
                         <h4>Project List</h4>
-                        <ol class="breadcrumb mb-4">
+                        <ol class="breadcrumb mb-4 bg-light">
                             <li class="breadcrumb-item"><a href="/class-manager/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item active">Project List</li>
                         </ol>
                     </div>
 
-                    <div class="col-xl-3 col-md-3 mt-4 text-md-end">
-<!--                        <input style="border: #ced4da solid 1px" type="text" class="form-control"-->
-<!--                               placeholder="Search" oninput="search(this.value)">-->
+                    <div class="col-3 mt-4 text-md-end">
+                        <input style="border: #ced4da solid 1px" type="text" class="form-control"
+                               placeholder="Search" oninput="search(this.value)">
                     </div>
 
-                    <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <button class="btn btn-primary" style="margin-left: 24px"  onclick="stateAddModal('flex')">Add New Project</button>
+                    <div class="col-2 mt-4 text-md-end">
+                        <!--                        <button class="btn btn-primary" style="margin-left: 24px" data-toggle="modal" data-target="#addProject">Add New Project</button>-->
+
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ⚙️Setting
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <button class="dropdown-item mt-3 btn-primary rounded" data-toggle="modal" data-target="#addProject">Add new project</button>
+                                <a class="dropdown-item mt-3 btn-primary rounded" th:href="'../arrange/' + ${class.id}" >Arrange members</a>
+                                <button class="dropdown-item mt-3 btn-secondary rounded" data-toggle="modal" data-target="#freezeProject">Freeze Projects</button>
+                                <a class="dropdown-item mt-3 rounded" th:href="'/api/v1/export/studentClass/' + ${class.id}" target="_blank" style="background: #0f7d49; color: white">Export</a>
+                                <button class="dropdown-item mt-3 rounded" onclick="showModal(event)" style="background: #0f5132;color: white">Import</button>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
 
                 <div class="row px-4">
-                    <div class="col-md-6">
-                        <select class="form-select" style="width: 50%" onchange="changeClass(this.value)">
+                    <div class="col-md-3">
+                        <select class="form-select" style="width: 80%" onchange="changeClass(this.value)">
                             <option th:each="item : ${classList}"
                                     th:value="${item.id}"
                                     th:text="${item.className} + ' - ' + ${item.subject.subjectCode}"
                                     th:selected="${item.id == class.id}"></option>
                         </select>
                     </div>
-
-                    <div class="col-md-6 text-end">
-                        <a th:href="'../arrange/' + ${class.id}" class="btn btn-primary"
-                           style="margin-left: 5%;">Arrange members</a>
-                        <a onclick="showModal(event)" href="" class="btn"
-                           style="margin-left: 5%; background: #0f5132; color: white"><i class="fa-solid fa-arrow-up-from-bracket" style="padding-right: 5px"></i>Import</a>
-                        <a th:href="'/api/v1/export/studentClass/' + ${class.id}" target="_blank" class="btn"
-                           style="margin-left: 5%; background: #0f7d49; color: white"><i style="padding-right: 2px"><svg width="18" height="18" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>Export</a>
+                    <div class="col-md-5 text-md-end">
+                        <!--                        <a th:href="'../arrange/' + ${class.id}" class="btn btn-primary"-->
+                        <!--                           style="margin-left: 5%;">Arrange members</a>-->
+                        <!--                        <button class="btn btn-secondary" data-toggle="modal" data-target="#freezeProject"-->
+                        <!--                                style="margin-left: 2%;">Freeze projects</button>-->
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <!--                        <a onclick="showModal(event)" href="" class="btn"-->
+                        <!--                           style="margin-left: 5%; background: #0f5132; color: white"><i style="padding-right: 2px"><svg width="18" height="18" viewBox="0 0 24 24" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M5 21h14M8 12l4 4 4-4"/><path data-name="secondary" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" d="M12 3v13"/></svg></i>Import</a>-->
+                        <!--                        <a th:href="'/api/v1/export/studentClass/' + ${class.id}" target="_blank" class="btn"-->
+                        <!--                           style="margin-left: 5%; background: #0f7d49; color: white"><i class="fa-solid fa-arrow-up-from-bracket" style="padding-right: 5px"></i>Export</a>-->
                     </div>
                 </div>
 
@@ -238,6 +258,83 @@
             </div>
         </div>
 
+        <div class="modal" id="freezeProject">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure to freeze all projects!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a th:href="'../freezeAll/' + ${classId}" class="btn btn-danger">Freeze</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="addProject">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <form action="../add" method="post">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add new project</h5>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="col-10">
+                                <div class="mb-3">
+                                    <label class="form-label">Title</label>
+                                    <input name="title" type="text" class="form-control"
+                                           placeholder="Project title" th:value="${title}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-10">
+                                <div class="mb-3">
+                                    <label class="form-label">Group name</label>
+                                    <input name="groupName" type="text" class="form-control"
+                                           placeholder="Group name" th:value="${groupName}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Class</label>
+                                    <select name="classId" class="form-select">
+                                        <option th:each="class : ${classList}"
+                                                th:value="${class.id}"
+                                                th:text="${class.className}"
+                                                th:selected="${classId==class.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-10">
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" class="form-control" rows="5"
+                                              placeholder="Description..." th:text="${description}" required></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
         <!--            modal lmao-->
         <style>
             .modalBack, .moveBack, .modalAddBack{
@@ -373,7 +470,7 @@
                 </form>
             </div>
         </div>
-<!--        modal add back-->
+        <!--        modal add back-->
 
         <!--        dialog-->
         <div class="col-md-4 dialog">
@@ -487,14 +584,21 @@
 
                 //check leader
                 console.log(project.dataset.leader == stuId)
-                    removeLeader(stuId);
+                removeLeader(stuId);
 
                 fetch(`../arrange-member/${stuId.substring(3)}/${projectId}`);
                 moveModal.style.display = 'none';
             }
         </script>
 
-        <div th:replace="~{footer}"></div>
+        <!--        <script>-->
+        <!--            function redirect(element) {-->
+        <!--                confirmCustom(-->
+        <!--                    ()=>{window.location.href = element.dataset.link;},-->
+        <!--                    ()=>{});-->
+        <!--            }-->
+        <!--        </script>-->
+
         <!-- End -->
     </main>
     <!--End page-content" -->

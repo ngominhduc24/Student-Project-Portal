@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.*;
 import swp.studentprojectportal.repository.IIssueRepository;
+import swp.studentprojectportal.repository.IProjectRepository;
 import swp.studentprojectportal.repository.IUserRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.service.IIssueService;
@@ -17,6 +18,8 @@ public class IssueService implements IIssueService {
     IIssueRepository issueRepository;
     @Autowired
     IUserRepository userRepository;
+    @Autowired
+    ProjectService projectService;
 
     @Autowired
     IStudentClassRepository studentClassRepository;
@@ -116,6 +119,11 @@ public class IssueService implements IIssueService {
     @Override
     public Issue findById(int id){
         return issueRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Issue> findAllByStudentId(Integer studentId) {
+        return issueRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
     }
 
 
