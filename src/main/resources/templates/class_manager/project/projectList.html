@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="col-xl-3 col-md-6 mt-4 text-md-end">
-                        <button class="btn btn-primary" style="margin-left: 24px" data-toggle="modal" data-target="#updatePhoneModal">Add New Project</button>
+                        <button class="btn btn-primary" style="margin-left: 24px"  onclick="stateAddModal('flex')">Add New Project</button>
                     </div>
 
                 </div>
@@ -237,65 +237,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal" id="updatePhoneModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <form action="../add" method="post">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title">Add new project</h5>
-                        </div>
-                        <div class="modal-body">
-
-                            <div class="col-10">
-                                <div class="mb-3">
-                                    <label class="form-label">Title</label>
-                                    <input name="title" type="text" class="form-control"
-                                           placeholder="Project title" th:value="${title}" required>
-                                </div>
-                            </div>
-
-                            <div class="col-10">
-                                <div class="mb-3">
-                                    <label class="form-label">Group name</label>
-                                    <input name="groupName" type="text" class="form-control"
-                                           placeholder="Group name" th:value="${groupName}" required>
-                                </div>
-                            </div>
-
-                            <div class="col-8">
-                                <div class="mb-3">
-                                    <label class="form-label">Class</label>
-                                    <select name="classId" class="form-select">
-                                        <option th:each="class : ${classList}"
-                                                th:value="${class.id}"
-                                                th:text="${class.className}"
-                                                th:selected="${classId==class.id}"></option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-10">
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea name="description" class="form-control" rows="5"
-                                              placeholder="Description..." th:text="${description}" required></textarea>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Add</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-
-                    </form>
-
                 </div>
             </div>
         </div>
