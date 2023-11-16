@@ -26,11 +26,11 @@ public class Filter implements jakarta.servlet.Filter {
         if(user!=null) {
             try {
 
-                if(url.contains("/admin/") && user.getSetting().getId() != 2) throw new Exception();
-                if(url.contains("/student/") && user.getSetting().getId() != 1) throw new Exception();
-                if(url.contains("/class-manager/") && user.getSetting().getId() != 1 && user.getSetting().getId() != 4) throw new Exception();
-                if(url.contains("/project-mentor/") && user.getSetting().getId() != 1 && user.getSetting().getId() != 4) throw new Exception();
-                if(url.contains("/subject-manager/") && user.getSetting().getId() != 3) throw new Exception();
+                if(url.contains("/admin/") && user.getSetting().getId() != 2 && !url.contains(request.getContextPath() + "/api/v1/")) throw new Exception();
+                if(url.contains("/student/") && user.getSetting().getId() != 1 && !url.contains(request.getContextPath() + "/api/v1/")) throw new Exception();
+                if(url.contains("/class-manager/") && user.getSetting().getId() != 1 && user.getSetting().getId() != 4 && !url.contains(request.getContextPath() + "/api/v1/")) throw new Exception();
+                if(url.contains("/project-mentor/") && user.getSetting().getId() != 1 && user.getSetting().getId() != 4 && !url.contains(request.getContextPath() + "/api/v1/")) throw new Exception();
+                if(url.contains("/subject-manager/") && user.getSetting().getId() != 3 && !url.contains(request.getContextPath() + "/api/v1/")) throw new Exception();
 
             } catch (Exception e) {
                 response.sendRedirect("/");
