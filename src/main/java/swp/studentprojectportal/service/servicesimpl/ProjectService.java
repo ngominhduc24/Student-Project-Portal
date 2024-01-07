@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Project;
 import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IProjectRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
@@ -34,6 +33,10 @@ public class ProjectService implements IProjectService {
         return classId==0 ? projectRepository.findAll() : projectRepository.findAllByAclass_Id(classId);
     }
 
+    @Override
+    public int projectCount() {
+        return projectRepository.findAll().size();
+    }
     @Override
     public Project findById(int projectId) {
         Optional<Project> project = projectRepository.findById(projectId);
@@ -141,7 +144,8 @@ public class ProjectService implements IProjectService {
         List<Project> projectList = new ArrayList<>();
 
         for (StudentClass studentClass : studentClassList)
-            projectList.add(studentClass.getProject());
+            if(studentClass.getProject() != null)
+                projectList.add(studentClass.getProject());
 
         return projectList;
     }
@@ -170,6 +174,10 @@ public class ProjectService implements IProjectService {
         else
             sort = Sort.by(sortBy).descending();
         return projectRepository.filterByStudent(studentId, search , status, PageRequest.of(pageNo, pageSize, sort));
+    }
+    @Override
+    public Page<Project> filterByStudendDashboard(Integer studentId, Integer pageNo, Integer pageSize) {
+        return projectRepository.filterByStudentDashboard(studentId, PageRequest.of(pageNo, pageSize));
     }
 
 }

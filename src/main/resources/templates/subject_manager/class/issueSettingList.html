@@ -197,7 +197,7 @@
                 <div class="row px-4">
                     <div class="col-xl-5 col-md-6">
                         <h3 class="mb-0" th:text="${class.className} + ' - ' + ${class.subject.subjectCode}"></h3>
-                        <ol class="breadcrumb mb-2">
+                        <ol class="breadcrumb mb-2" style="background-color: #f8f9fc">
                             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
                             <li class="breadcrumb-item">/</li>
                             <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>
@@ -255,7 +255,12 @@
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
                                             <div class="d-flex">
-                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>
+                                                <select id="newSettingGroup" name="newSettingGroup" class="form-select">
+                                                    <option value="Process" selected>Process</option>
+                                                    <option value="Status" >Status</option>
+                                                    <option value="Type">Type</option>
+                                                </select>
+<!--                                                <input type="text" id="newSettingGroup" name="newSettingGroup" class="form-control"  required>-->
                                             </div>
                                         </div>
                                         <div class="mb-3 col-md-6">
@@ -292,7 +297,7 @@
                     addIssueSettingButton.addEventListener('click', function() {
                         // Get values from the form fields
                         const classId = document.querySelector('input[name="id"]').value;
-                        const group = document.querySelector('input[id="newSettingGroup"]').value;
+                        const group = document.querySelector('select[id="newSettingGroup"]').value;
                         const title = document.querySelector('input[id="newSettingTitle"]').value;
                         const description = document.querySelector('textarea[name="newDescription"]').value;
 
@@ -402,9 +407,12 @@
                                             <select name="settingGroup" class="form-select"
                                                     onchange="this.form.submit()">
                                                 <option value="" th:selected="${settingGroup.isEmpty()}">All Group</option>
-                                                <option th:each="group : ${settingGroupList}"
-                                                        th:value="${group}"
-                                                        th:text="${group}" th:selected="${settingGroup.equalsIgnoreCase(group)}"></option>
+                                                <option value="Process" th:selected="${settingGroup.equalsIgnoreCase('Process')}">Process</option>
+                                                <option value="Status" th:selected="${settingGroup.equalsIgnoreCase('Status')}">Status</option>
+                                                <option value="Type" th:selected="${settingGroup.equalsIgnoreCase('Type')}">Type</option>
+<!--                                                <option th:each="group : ${settingGroupList}"-->
+<!--                                                        th:value="${group}"-->
+<!--                                                        th:text="${group}" th:selected="${settingGroup.equalsIgnoreCase(group)}"></option>-->
                                             </select>
                                         </div>
                                     </div>
@@ -422,7 +430,7 @@
                                 <div class="col-md-2">
                                     <input class="form-control form-control-sm" type="text"
                                            th:value="${search}" name="search"
-                                           placeholder="Search" style="border-color: #ced4da;" aria-label="Search">
+                                           placeholder="Search" style="border-color: #ced4da; height: 35px" aria-label="Search">
                                     <button onclick="this.form.submit()" class="search-button"><i
                                             class="fas fa-search"
                                             aria-hidden="true"></i>
@@ -453,12 +461,12 @@
                                         <i th:class="${(sortBy eq 'setting_title' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
                                            onclick="sortData('setting_title',2)"></i>
                                     </th>
-                                    <th data-sortable="false">Description
-                                        <i th:class="${(sortBy eq 'description' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"
-                                           onclick="sortData('description',1)"></i>
-                                        <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"
-                                           onclick="sortData('description',2)"></i>
-                                    </th>
+<!--                                    <th data-sortable="false">Description-->
+<!--                                        <i th:class="${(sortBy eq 'description' && sortType == 1) ? 'fas fa-caret-up caret-up sort-active' : 'fas fa-caret-up caret-up'}"-->
+<!--                                           onclick="sortData('description',1)"></i>-->
+<!--                                        <i th:class="${(sortBy eq 'description' && sortType == 2) ? 'fas fa-caret-down caret-down sort-active' : 'fas fa-caret-down caret-down'}"-->
+<!--                                           onclick="sortData('description',2)"></i>-->
+<!--                                    </th>-->
                                     <th data-sortable="false">Status</th>
                                     <th data-sortable="false">Actions</th>
                                 </tr>
@@ -468,7 +476,7 @@
                                     <td th:text="${setting.id}"></td>
                                     <td th:text="${setting.settingGroup}"></td>
                                     <td th:text="${setting.settingTitle}"></td>
-                                    <td th:text="${setting.description}"></td>
+<!--                                    <td th:text="${setting.description}"></td>-->
                                     <td>
                                         <div class="form-check form-switch">
                                             <input th:if="${setting.aclass!=null}" class="form-check-input" type="checkbox" th:checked="${setting.status}" th:attr="update-id=${setting.id},data-title=${setting.settingGroup}" onchange="showConfirmationDialog(this)">
@@ -638,7 +646,12 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Group<span class="text-danger">*</span></label>
-                                            <input type="text" id="details-issue-setting-group" class="form-control" >
+                                            <select id="details-issue-setting-group" class="form-select">
+                                                <option value="Process">Process</option>
+                                                <option value="Status">Status</option>
+                                                <option value="Type">Type</option>
+                                            </select>
+<!--                                            <input type="text" id="details-issue-setting-group" class="form-control" >-->
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Title</label>
@@ -675,9 +688,18 @@
                                 if (response.ok) {
                                     // Handle a successful API response
                                     response.json().then(data => {
-                                        document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
+                                        // document.querySelector('input[id="details-issue-setting-group"]').value = data.group;
                                         document.querySelector('input[id="details-issue-setting-title"]').value = data.title;
                                         document.querySelector('textarea[name="detail-description"]').value = data.description;
+                                        var selectElement = document.querySelector('select[id="details-issue-setting-group"]');
+                                        var dataValue = data.group;
+                                        for (var i = 0; i < selectElement.options.length; i++) {
+                                            // Nếu giá trị của option khớp với giá trị từ dữ liệu, đặt selected
+                                            if (selectElement.options[i].value == dataValue) {
+                                                selectElement.options[i].selected = true;
+                                                break; // Dừng vòng lặp nếu đã tìm thấy giá trị khớp
+                                            }
+                                        }
                                         document.getElementById('detail-status').checked = data.status == 1 ? true : false;
                                         document.getElementById('updateIssueSettingButton').setAttribute('onclick', 'updateIssueSetting(' + data.id + ')');
                                     });
@@ -698,7 +720,7 @@
                 <script>
                     function updateIssueSetting(id){
                         const classId = document.querySelector('input[name="id"]').value;
-                        const group = document.querySelector('input[id="details-issue-setting-group"]').value;
+                        const group = document.querySelector('select[id="details-issue-setting-group"]').value;
                         const title = document.querySelector('input[id="details-issue-setting-title"]').value;
                         const description = document.querySelector('textarea[name="detail-description"]').value;
                         const status = document.getElementById('detail-status').checked ? 1 : 0;

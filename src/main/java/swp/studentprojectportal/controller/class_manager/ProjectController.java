@@ -57,7 +57,7 @@ public class ProjectController {
 
     @GetMapping("/details/{projectId}")
     public String details(Model model,
-                         @PathVariable int projectId) {
+                          @PathVariable int projectId) {
 
         model.addAttribute("project", projectService.findById(projectId));
         model.addAttribute("projectMemberList", studentClassService.findAllByProjectId(projectId));
@@ -135,6 +135,18 @@ public class ProjectController {
         return "redirect:../details/" + project.getId();
     }
 
+    @GetMapping("/freezeAll/{classId}")
+    public String freezeAll(@PathVariable int classId) {
+        List<Project> projectList = projectService.findAllByClassId(classId);
+
+        for (Project project : projectList)
+            projectService.updateStatus(project.getId(), true);
+
+        classService.updateClassStatus(classId, 2);
+
+        return "redirect:../list/" + classId;
+    }
+
     @GetMapping("/delete/{projectId}")
     public String delete(@PathVariable int projectId) {
 
@@ -150,7 +162,7 @@ public class ProjectController {
 
     @GetMapping("/member/{classId}")
     public String member(Model model,
-                          @PathVariable Integer classId) {
+                         @PathVariable Integer classId) {
 
         model.addAttribute("projectList", projectService.findAllByClassId(classId));
         model.addAttribute("class", classService.getClass(classId));
@@ -227,6 +239,7 @@ public class ProjectController {
         List<List<String>> data = new SheetHandle().importSheet(file);
         for(List<String> row : data) {
             try {
+
                 //find by email
                 User user = userService.findByEmail(row.get(0));
 

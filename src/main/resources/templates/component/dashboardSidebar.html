@@ -37,9 +37,10 @@
 <nav id="sidebar" class="sidebar-wrapper" th:fragment="sidebar">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
-            <a href="/home">
-                <img th:src="@{/images/logo.png}" height="56" alt="">
-            </a>
+            <a th:if="${session.user.setting.id==@adminRoleId}" href="/admin/home"><img th:src="@{/images/logo.png}" height="56" alt=""></a>
+            <a th:if="${session.user.setting.id==@subjectManagerRoleId}" href="/subject-manager/home"><img th:src="@{/images/logo.png}" height="56" alt=""></a>
+            <a th:if="${session.user.setting.id==@classManagerRoleId}" href="/class-manager/home"><img th:src="@{/images/logo.png}" height="56" alt=""></a>
+            <a th:if="${session.user.setting.id==@userRoleId}" href="/student/home"><img th:src="@{/images/logo.png}" height="56" alt=""></a>
         </div>
 
         <ul class="sidebar-menu pt-3">
@@ -47,6 +48,9 @@
             <!--    admin function == 2-->
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+
+            <li th:if="${session.user.setting.id==@adminRoleId}" class="ps-4 mt-4 fw-bolder">Admin</li>
+
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/subject"><i
                     class="uil uil-book me-2 d-inline-block"></i>Subject</a></li>
             <li th:if="${session.user.setting.id==@adminRoleId}"><a href="/admin/user"><i
@@ -57,12 +61,15 @@
             <!--    subject manager function == 3-->
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}"><a href="/subject-manager/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+
+            <li th:if="${session.user.setting.id==@subjectManagerRoleId}" class="ps-4 mt-4 fw-bolder">Subject manager</li>
+
             <li th:if="${session.user.setting.id==@subjectManagerRoleId}" class="sidebar-dropdown">
                 <a href="javascript:void(0)" id="link">
                     <i class="uil uil-globe me-2 d-inline-block"></i>
                     Subject List
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" fill="currentColor"
-                         class="bi bi-chevron-right" viewBox="0 0 16 16" style="margin-left: 60px;" id="rotate-icon">
+                         class="bi bi-chevron-right" viewBox="0 0 16 16" style="float: right" id="rotate-icon">
                         <path fill-rule="evenodd"
                               d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
@@ -87,10 +94,16 @@
             <!--    class manager function == 4-->
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+
+            <li th:if="${session.user.setting.id==@classManagerRoleId}" class="ps-4 mt-4 fw-bolder">Class manager</li>
+
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/class-manager/classList"><i
                     class="uil uil-presentation me-2 d-inline-block"></i>Class List</a></li>
             <li th:if="${session.user.setting.id==@teacherRoleId}"><a href="/class-manager/project/list/"><i
                     class="uil uil-notes me-2 d-inline-block"></i>Project List</a></li>
+
+            <li th:if="${session.user.setting.id==@classManagerRoleId}" class="ps-4 mt-4 fw-bolder">Project manager</li>
+
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/project-mentor/project"><i
                     class="uil uil-clipboard-notes me-2 d-inline-block"></i>Managed Projects</a></li>
             <li th:if="${session.user.setting.id==@classManagerRoleId}"><a href="/project-mentor/milestone/list"><i
@@ -100,6 +113,9 @@
             <!--    student function == 1-->
             <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/home"><i
                     class="uil uil-home me-2 d-inline-block"></i>Home</a></li>
+
+            <li th:if="${session.user.setting.id==@userRoleId}" class="ps-4 mt-4 fw-bolder">Student</li>
+
             <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/issue/list"><i
                     class="uil uil-file-check-alt me-2 d-inline-block"></i>Issue List</a></li>
             <li th:if="${session.user.setting.id==@userRoleId}"><a href="/student/project"><i
@@ -108,9 +124,13 @@
                     class="uil uil-file me-2 d-inline-block"></i>Assignment List</a></li>
 
 <!--            chat-->
-            <li>
+            <li th:if="${session.user.setting.id==@userRoleId || session.user.setting.id==@teacherRoleId}"
+                class="ps-4 mt-4 fw-bolder">Chat</li>
+
+            <li th:if="${session.user.setting.id==@userRoleId || session.user.setting.id==@teacherRoleId}">
                 <a href="/chat/class/"><i
-                    class="uil uil-comment me-2 d-inline-block"></i>Class Chat</a></li>
+                    class="uil uil-comment me-2 d-inline-block"></i>Class Chat</a>
+            </li>
         </ul>
         <!-- sidebar-menu  -->
     </div>
@@ -122,63 +142,6 @@
         </li>
     </ul>
 </nav>
-<script>
-    function loadSocketIO() {
-        const script = document.createElement('script');
-        script.src = 'http://localhost:3000/socket.io/socket.io.js';
-
-        const timer = setTimeout(() => {
-            document.body.removeChild(script);
-        }, 500);
-
-        // Add an event listener to execute when the script has finished loading.
-        script.onload = () => {
-            clearTimeout(timer); // Clear the timeout since the script loaded successfully.
-            initializeSocket();
-        };
-
-        // Append the script to the document, which starts loading it.
-        document.body.appendChild(script);
-    }
-
-    async function initializeSocket() {
-        const classId = [[${classId}]];
-        const chatBody = document.querySelector('.chat-body');
-        const username = '[[${username}]]';
-        const chatInput = document.getElementById('chatInput');
-
-        const socket = io('http://localhost:3000');
-
-        socket.emit('listen-class', await getToken());
-
-        socket.on("receive-message", data => {
-            console.log(data);
-        });
-    }
-    async function getToken() {
-        let token;
-
-        await fetch('/api/v1/encode/getClassId', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    return token = response.text();
-                } else {
-                    throw new Error('Failed to fetch data');
-                }
-            })
-            .then(data => {})
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-
-        return token;
-    }
-</script>
 
 <!-- javascript -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

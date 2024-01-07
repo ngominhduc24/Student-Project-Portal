@@ -51,12 +51,24 @@ public class IssueSettingService implements IIssueSettingService {
     }
 
     public IssueSetting findById(int id){
-        return issueSettingRepository.findById(id).get();
+        IssueSetting setting = new IssueSetting();
+        if(id == -1) {
+            setting.setId(-1);
+            setting.setSettingTitle("");
+        } else {
+            setting = issueSettingRepository.findById(id).get();
+        }
+        return setting;
     }
 
     @Override
     public List<String> findAllDistinctSettingGroup(Integer subjectId) {
         return issueSettingRepository.findAllDistinctSettingGroup(subjectId);
+    }
+
+    @Override
+    public List<IssueSetting> findProcessTitle(Integer subjectId, String type) {
+        return issueSettingRepository.findProcessTitle(subjectId, type);
     }
 
     @Override
@@ -87,6 +99,11 @@ public class IssueSettingService implements IIssueSettingService {
     @Override
     public IssueSetting findBySubjectAndGroupAndTitle(int subjectId,String settingGroup, String settingTitle){
         return issueSettingRepository.findIssueSettingBySubjectAndSettingGroupAndSettingTitle(subjectId, settingGroup, settingTitle).orElse(null);
+    }
+
+    @Override
+    public IssueSetting findByProjectAndGroupAndTitle(int projectId,String settingGroup, String settingTitle){
+        return issueSettingRepository.findIssueSettingByProjectAndSettingGroupAndSettingTitle(projectId,settingGroup,settingTitle).orElse(null);
     }
 
     public List<IssueSetting> findAllSettingServiceByClassId(int classId){

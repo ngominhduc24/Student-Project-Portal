@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import swp.studentprojectportal.model.Class;
 import swp.studentprojectportal.model.StudentClass;
-import swp.studentprojectportal.model.User;
 import swp.studentprojectportal.repository.IClassRepository;
 import swp.studentprojectportal.repository.IStudentClassRepository;
 import swp.studentprojectportal.service.IClassService;
@@ -28,7 +27,18 @@ public class ClassService implements IClassService {
         List<StudentClass> data = studentClassRepository.findAllByAclass_Id(classId);
         return data;
     }
+    @Override
+    public int classCount() {
+        return classRepository.findAll().size();
+    }
 
+    @Override
+    public int classCountBySemFall23() {return classRepository.findClassBySemesterFall23().size();}
+
+    @Override
+    public int classCountBySemSummer23() {return classRepository.findClassBySemesterSummer23().size();}
+
+    @Override
     public Class getClass(int classId) {
         return classRepository.findClassById(classId);
     }
@@ -37,9 +47,9 @@ public class ClassService implements IClassService {
     public List<Class> findAllByClassManagerId(int classManagerId) {
         List<Class> data = new ArrayList<>();
 
-        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 0)); //pending
         data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 2)); //started
-
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 0)); //pending
+        data.addAll(classRepository.findAllByUserIdAndStatus(classManagerId, 3)); //closed
         return data;
     }
 
@@ -119,6 +129,20 @@ public class ClassService implements IClassService {
     @Override
     public List<Class> findClassForProject(Integer projectMentorId) {
         return classRepository.findClassByProjectsProjectMentorId(projectMentorId);
+    }
+
+    @Override
+    public boolean updateClassStatus(Integer classId, int status) {
+        Class aclass = classRepository.findClassById(classId);
+
+        aclass.setStatus(status);
+        classRepository.save(aclass);
+
+        return true;
+    }
+
+    public List<Class> findAll() {
+        return classRepository.findAll();
     }
 
 

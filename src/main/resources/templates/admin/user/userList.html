@@ -134,23 +134,23 @@
                                 <thead>
                                 <tr>
                                     <th>Id
-                                        <i class="fas fa-caret-up caret-up sort-active"></i>
-                                        <i class="fas fa-caret-down caret-down" ></i>
+                                        <i class="fas fa-caret-up caret-up sort-item sort-active" data-sort="id" data-sort-type="1" onclick="sortTable('id', '1')"></i>
+                                        <i class="fas fa-caret-down caret-down sort-item" data-sort="id" data-sort-type="2" onclick="sortTable('id', '2')"></i>
                                     </th>
                                     <th>Fullname
-                                        <i class="fas fa-caret-up caret-up"></i>
-                                        <i class="fas fa-caret-down caret-down" ></i>
+                                        <i class="fas fa-caret-up caret-up sort-item" data-sort="fullName" data-sort-type="1" onclick="sortTable('fullName', '1')"></i>
+                                        <i class="fas fa-caret-down caret-down sort-item" data-sort="fullName" data-sort-type="2"  onclick="sortTable('fullName', '2')"></i>
                                     </th>
                                     <th>Email
-                                        <i class="fas fa-caret-up caret-up"></i>
-                                        <i class="fas fa-caret-down caret-down" ></i>
+                                        <i class="fas fa-caret-up caret-up sort-item" data-sort="email" data-sort-type="1" onclick="sortTable('email', '1')"></i>
+                                        <i class="fas fa-caret-down caret-down sort-item" data-sort="email" data-sort-type="2"  onclick="sortTable('email', '2')"></i>
                                     </th>
                                     <th>Phone
-                                        <i class="fas fa-caret-up caret-up"></i>
-                                        <i class="fas fa-caret-down caret-down" ></i></th>
+                                        <i class="fas fa-caret-up caret-up sort-item" data-sort="phone" data-sort-type="1" onclick="sortTable('phone', '1')"></i>
+                                        <i class="fas fa-caret-down caret-down sort-item" data-sort="phone" data-sort-type="2" onclick="sortTable('phone', '2')"></i></th>
                                     <th>Role
-                                        <i class="fas fa-caret-up caret-up"></i>
-                                        <i class="fas fa-caret-down caret-down" ></i></th>
+<!--                                        <i class="fas fa-caret-up caret-up sort-item" data-sort="setting" data-sort-type="1" onclick="sortTable('setting', '1')"></i>-->
+<!--                                        <i class="fas fa-caret-down caret-down sort-item" data-sort="setting" data-sort-type="2" onclick="sortTable('setting', '2')"></i></th>-->
                                     <th>Status</th>
                                     <th>View Details</th>
                                 </tr>
@@ -236,10 +236,8 @@
                             }
                         </script>
                         <!--            modal lmao-->
-
                     </div>
                 </div>
-
             </div>
         </div><!--end container-->
 
@@ -357,7 +355,9 @@
 <input type="hidden" class="sessionAccountId" th:value="${session.user.id}">
 
 <script>
-    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&status=&search=&roleId=`; // Your API endpoint
+    let apiUrl = `/api/v1/user?pageNo=0&pageSize=10&status=&search=&roleId=&sortBy=&sortType=`; // Your API endpoint
+
+
 
     // Get references to the pagination elements
     const pagination = document.querySelector('.pagination');
@@ -515,6 +515,24 @@
     document.addEventListener("DOMContentLoaded", () => {
         populateUserTable(1);
     });
+
+    function sortTable(sortBy, sortType) {
+        document.querySelectorAll('.sort-item').forEach(item => {
+            item.classList.remove('sort-active');
+        });
+
+        // Add the 'sort-active' class to the clicked sortable column
+        const clickedColumn = document.querySelector(`.sort-item[data-sort="${sortBy}"][data-sort-type="${sortType}"]`);
+        if (clickedColumn) {
+            clickedColumn.classList.add('sort-active');
+        }
+
+        // Update the API URL with the sorting parameters
+        apiUrl = apiUrl.replace(/sortBy=[^&]*/, `sortBy=${sortBy}`);
+        apiUrl = apiUrl.replace(/sortType=[^&]*/, `sortType=${sortType}`);
+        console.log(apiUrl);
+        populateUserTable(1);
+    }
 </script>
 
 </body>

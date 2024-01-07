@@ -176,11 +176,12 @@
     </div>
     <div class="container-fluid">
       <div class="layout-specing" style="padding: 35px 14px 24px !important;">
-        <form action="/project-mentor/evaluation" method="post">
-        <input type="hidden" name="submissionId" th:value="${submissionId}">
+        <form action="/project-mentor/evaluation" id="formsubmit" method="post">
+          <input type="hidden" name="submissionId" th:value="${submissionId}">
+          <input type="hidden" name="createBy" th:value="${submission.getProject().getProjectMentor().fullName}">
         <div class="row px-4">
           <div class="col-xl-5 col-md-6">
-            <h3 style="margin-top: -14px;margin-bottom: 20px;" >Assignment Evaluations</h3>
+            <h1 style="margin-top: -14px;margin-bottom: 20px;" >Assignment Evaluations</h1>
 <!--            <ol class="breadcrumb mb-2" style="background-color: #f8f9fc;">-->
 <!--              <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>-->
 <!--              <li class="breadcrumb-item" th:if="${session.user.setting.id==3}"><a href="/subject-manager/class">Class List</a></li>-->
@@ -270,12 +271,16 @@
                   <div class="row">
 
                     <div class="col-md-4" style="padding: 0px 3px"></div>
-                    <div class="col-md-4" style="padding: 0px 3px">
-                      <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 160px">Edit</button>
-                    </div>
-                    <div class="col-md-4" style="padding: 0px 3px">
-                      <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
-                    </div>
+                      <div class="col-md-4" style="padding: 0px 3px">
+                        <th:block th:if="${!isStudent}">
+                        <button type="button" onclick="editMark()" class="btn btn-primary" style="width: 160px">Edit</button>
+                        </th:block>
+                      </div>
+                      <div class="col-md-4" style="padding: 0px 3px">
+                        <th:block th:if="${!isStudent}">
+                        <button type="button" class="btn btn-warning" style="width: 160px; margin-left: 7px;">Copy Group Evals</button>
+                        </th:block>
+                      </div>
                   </div>
                 </div><!--end col-->
 
@@ -283,7 +288,7 @@
                     <div class="row">
 
                       <div class="col-md-4" style="padding: 0px 3px">
-                        <button type="submit" class="btn btn-primary" style="width: 160px;">Save Changes</button>
+                        <button type="button" id="submitButton" class="btn btn-primary" style="width: 160px;">Save Changes</button>
                       </div>
                       <div class="col-md-4" style="padding: 0px 3px">
                         <a onclick="reverseChange()" class="btn btn-secondary" style="width: 160px; margin-left: 7px;">Reverse Changes</a>
@@ -350,7 +355,7 @@
                       <label th:text="${item.bonusAndPenalty}"></label>
                     </div>
                     <div class="edit edit-value " hidden="hidden">
-                      <input type="number" oninput="checkValueBonus(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
+                      <input type="number" step=0.1 oninput="checkValueBonus(this)" name="evalBonusAndPenalty" th:value="${item.bonusAndPenalty}" style="width: 37px" >
                     </div>
                   </td>
                   <td>
@@ -368,7 +373,7 @@
                         <label th:text="${evalGrade.grade}"></label>
                       </div>
                       <div class="edit edit-value " hidden="hidden">
-                        <input type="number" oninput="checkValue(this)" name="evalGrade" th:value="${evalGrade.grade}" style="width: 37px" >
+                        <input type="number" step=0.1 oninput="checkValue(this)" name="evalGrade" th:value="${evalGrade.grade}" style="width: 37px" >
                         <input type="hidden" name="evalGradeId" th:value="${evalGrade.criteriaGradeId}">
                         <label th:attr="onclick='showComment(\'' + ${evalGrade.comment} + '\', \'' + ${evalGrade.getCriteriaName()} + '\', ' + ${evalGrade.getCriteriaGradeId()} + ')'       " >...</label>
                       </div>
@@ -441,6 +446,46 @@
       "ordering": false,
       "bInfo" : false
     });
+  });
+</script>
+
+<script th:script="${@nodeUrl} + '/socket.io/socket.io.js'"></script>
+
+<script>
+  const socket = io( '[[${@nodeUrl}]]' );
+
+  const submitButton = document.getElementById("submitButton");
+  // add event onclick
+  submitButton.addEventListener("click", function () {
+    var studentIdList = '';
+    var message = "Mentor has updated your evaluation!";
+    const idSubmission = document.getElementsByName("submissionId")[0].value;
+    var href = "/student/submission/evaluate/" + idSubmission;
+    const createBy = document.getElementsByName("createBy")[0].value;
+
+
+    var evalStudentIdList = document.getElementsByName('evalStudentId');
+    evalStudentIdList.forEach(
+            function (item) {
+                studentIdList += item.value + ",";
+            }
+    );
+
+    if(studentIdList.at(-1) === ',') {
+      studentIdList = studentIdList.slice(0, -1);
+    }
+
+    const jsonSendData = {
+      "listUserId": studentIdList,
+      "createdBy": createBy,
+      "message": message,
+      "href": href
+    };
+
+    socket.emit('noti-evaluated', jsonSendData);
+
+    const formsubmit = document.getElementById("formsubmit");
+    formsubmit.submit();
   });
 </script>
 

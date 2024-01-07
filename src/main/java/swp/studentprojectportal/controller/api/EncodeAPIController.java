@@ -57,11 +57,22 @@ public class EncodeAPIController {
 
     }
 
+    @GetMapping("/getStudentId")
+    public String encodeStudentId(HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+
+        List<Integer>  userList = new ArrayList<>();
+        userList.add(user.getId());
+
+        return jwtTokenProvider.encodeData(convertListToJson(userList));
+    }
+
     public static String convertListToJson(List<Integer> integerList) {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = "";
         try {
-            json = objectMapper.writeValueAsString(Collections.singletonMap("listClassId", integerList));
+            json = objectMapper.writeValueAsString(Collections.singletonMap("userId", integerList));
         } catch (Exception e) {
             e.printStackTrace();
         }

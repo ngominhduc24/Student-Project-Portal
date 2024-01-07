@@ -29,7 +29,7 @@ public class SubmissionPersonal {
     private User student;
 
     @Column(name = "bonus")
-    private Integer bonus;
+    private Float bonus;
 
     @Column(name = "comment")
     private String comment = "";

@@ -20,10 +20,12 @@ public class UserApiController {
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "roleId", defaultValue = "-1") Integer roleId,
-            @RequestParam(name = "status", defaultValue = "-1") Integer status)
+            @RequestParam(name = "status", defaultValue = "-1") Integer status,
+            @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
+            @RequestParam(name = "sortType", defaultValue = "1") Integer sortType)
     {
         if(pageNo < 0 || pageSize < 0) return null;
-        return userService.getUser(pageNo, pageSize, search.trim(), roleId, status);
+        return userService.getUser(pageNo, pageSize, search.trim(), roleId, status, sortBy, sortType);
     }
 
     @GetMapping("/user/{id}")

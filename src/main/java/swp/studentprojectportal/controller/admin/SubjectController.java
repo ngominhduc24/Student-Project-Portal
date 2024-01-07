@@ -26,12 +26,17 @@ public class SubjectController {
 
     @GetMapping("/admin/subject")
     public String subjectPage(Model model,
-                              @RequestParam(defaultValue = "0") int page) {
-//        subjectList = subjectService.getSubject(0, 10);
-//        model.addAttribute("SubjectList", subjectList);
-        model.addAttribute("page", page);
+                              @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                              @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                              @RequestParam(name = "search", defaultValue = "") String search,
+                              @RequestParam(name = "subjectManagerId", defaultValue = "-1") Integer subjectManagerId,
+                              @RequestParam(name = "status", defaultValue = "-1") Integer status) {
+
+        model.addAttribute("page", pageNo);
+        model.addAttribute("subjectList", subjectService.getSubject(pageNo, pageSize, search, subjectManagerId, status));
         model.addAttribute("totalPage", subjectService.getTotalPage(10));
         model.addAttribute("subjectManagerList", userService.findAllUserByRoleId(3));
+
         return "admin/subject/subjectList";
     }
 

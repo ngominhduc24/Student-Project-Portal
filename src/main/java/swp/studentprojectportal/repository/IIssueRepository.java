@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import swp.studentprojectportal.model.Issue;
+import swp.studentprojectportal.model.Project;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public interface IIssueRepository extends JpaRepository<Issue, Integer> {
     List<Issue> findAllByProjectId(Integer studentId);
 
+    Issue findIssueById(Integer id);
     @Query(value = "SELECT i.id, i.title, i.project_id, i.milestone_id, i.assignee_id, i.type_id, i.status_id, i.process_id, i.create_by, i.create_at, i.update_by, i.update_at " +
             "FROM issue i " +
             "JOIN project p ON i.project_id = p.id " +
@@ -31,4 +33,6 @@ public interface IIssueRepository extends JpaRepository<Issue, Integer> {
     List<Issue> findAllByAssigneeId(Integer studentId);
 
     public List<Issue> findAllByMilestoneId(Integer milestoneId);
+
+    public List<Issue> findAllByProjectIn(List<Project> projectList);
 }

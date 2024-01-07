@@ -2,34 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <link th:href="@{/css/verifyPhone.css}" rel="stylesheet" type="text/css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/verifyPhone.css}" rel="stylesheet" type="text/css"/>
     <title th:text="${@title}"></title>
 </head>
 <body>
-<div class="container">
-    <header>
-        <i class="bx bxs-check-shield"></i>
-    </header>
-    <h4>Enter OTP Code</h4>
-        <div class="input-field">
-            <input class="otp_number" type="number" />
-            <input class="otp_number" type="number" disabled />
-            <input class="otp_number" type="number" disabled />
-            <input class="otp_number" type="number" disabled />
-            <input class="otp_number" type="number" disabled />
-            <input class="otp_number" type="number" disabled />
-        </div>
-        <button type="button" id="buttonverify" class="otp_btn" >Verify OTP</button>
+<header>
+    <i class="bx bxs-check-shield"></i>
+</header>
+<div id="captcha">
+<div id="recaptcha-container"></div>
 </div>
-
-
-
+<div id="root" hidden>
+    <div class="container">
+        <h4>Enter OTP Code</h4>
+        <div class="input-field">
+            <input class="otp_number" type="number"/>
+            <input class="otp_number" type="number" disabled/>
+            <input class="otp_number" type="number" disabled/>
+            <input class="otp_number" type="number" disabled/>
+            <input class="otp_number" type="number" disabled/>
+            <input class="otp_number" type="number" disabled/>
+        </div>
+        <button type="button" id="buttonverify" class="otp_btn">Verify OTP</button>
+    </div>
+</div>
 <div th:text="${token}" id="token_holder" style="display:none;"></div>
 <input type="text" id="number" th:value="${phone}" hidden="">
-<div id="recaptcha-container"></div>
-
-
 </body>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
@@ -41,32 +40,23 @@
     // iterate over all inputs
     inputs.forEach((input, index1) => {
         input.addEventListener("keyup", (e) => {
-            // This code gets the current input element and stores it in the currentInput variable
-            // This code gets the next sibling element of the current input element and stores it in the nextInput variable
-            // This code gets the previous sibling element of the current input element and stores it in the prevInput variable
             const currentInput = input,
                 nextInput = input.nextElementSibling,
                 prevInput = input.previousElementSibling;
             otp += currentInput.value;
 
-            // if the value has more than one character then clear it
             if (currentInput.value.length > 1) {
                 currentInput.value = "";
                 return;
             }
-            // if the next input is disabled and the current value is not empty
-            //  enable the next input and focus on it
             if (nextInput && nextInput.hasAttribute("disabled") && currentInput.value !== "") {
                 nextInput.removeAttribute("disabled");
                 nextInput.focus();
             }
 
-            // if the backspace key is pressed
             if (e.key === "Backspace") {
                 // iterate over all inputs again
                 inputs.forEach((input, index2) => {
-                    // if the index1 of the current input is less than or equal to the index2 of the input in the outer loop
-                    // and the previous element exists, set the disabled attribute on the input and focus on the previous element
                     if (index1 <= index2 && prevInput) {
                         input.setAttribute("disabled", true);
                         input.value = "";
@@ -74,8 +64,6 @@
                     }
                 });
             }
-            //if the fourth input( which index number is 3) is not empty and has not disable attribute then
-            //add active class if not then remove the active class.
             if (!inputs[5].disabled && inputs[5].value !== "") {
                 button.classList.add("active");
                 return;
@@ -83,10 +71,8 @@
             button.classList.remove("active");
         });
     });
-    //focus the first input which index is 0 on window load
     window.addEventListener("load", () => inputs[0].focus());
     window.addEventListener("load", phoneAuth);
-
 
     // Firebase configuration
     const firebaseConfig = {
@@ -102,16 +88,26 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
-    firebase.auth().settings.appVerificationDisabledForTesting = true;
+    // firebase.auth().settings.appVerificationDisabledForTesting = true;
     var appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
 
+    appVerifier.render().then(function (widgetId) {
+
+        appVerifier.verify().then(function () {
+            // update the input field with the token
+            const rootElement = document.getElementById("root");
+            rootElement.removeAttribute("hidden");
+            var captchaElement = document.getElementById('captcha');
+            captchaElement.setAttribute('hidden', 'true');
+        });
+    });
     let coderesult;
 
     // function for send OTP
     function phoneAuth() {
         var number = document.getElementById('number').value;
-        if(number[0] == '0') {
-            number = "+84" + number.substring(1,number.length);
+        if (number[0] == '0') {
+            number = "+84" + number.substring(1, number.length);
         }
         firebase.auth().signInWithPhoneNumber(number, appVerifier).then(function (confirmationResult) {
             window.confirmationResult = confirmationResult;
@@ -130,6 +126,6 @@
         })
     }
 
-    document.getElementsByTagName('button')[0].addEventListener('click',phoneVerify,false);
+    document.getElementsByTagName('button')[0].addEventListener('click', phoneVerify, false);
 </script>
 </html>

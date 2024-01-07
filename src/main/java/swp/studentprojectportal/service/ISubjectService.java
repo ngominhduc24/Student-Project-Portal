@@ -9,6 +9,8 @@ public interface ISubjectService {
 
     List<Subject> getAllSubjects();
 
+    int subjectCount();
+
     List<Subject> getSubject(Integer pageNo, Integer pageSize, String search, Integer subjectManagerId, Integer status);
 
     Subject getSubjectById(Integer Id);

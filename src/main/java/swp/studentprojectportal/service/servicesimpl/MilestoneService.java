@@ -11,6 +11,7 @@ import swp.studentprojectportal.repository.*;
 import swp.studentprojectportal.service.IMilestoneService;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,11 @@ public class MilestoneService implements IMilestoneService {
     IStudentClassRepository studentClassRepository;
     @Autowired
     ProjectService projectService;
+
+    @Override
+    public int milestoneCount(){
+        return milestoneRepository.findAll().size();
+    }
 
     @Override
     public Page<Milestone> filterMilestone(int classId, String search, Integer pageNo, Integer pageSize, String sortBy,
@@ -58,6 +64,7 @@ public class MilestoneService implements IMilestoneService {
 
     @Override
     public Milestone save(Milestone milestone) {
+        milestone.setUpdateAt(Timestamp.valueOf(LocalDateTime.now()));
         return milestoneRepository.save(milestone);
     }
 
@@ -138,8 +145,20 @@ public class MilestoneService implements IMilestoneService {
     }
 
     @Override
+    public List<Milestone> findAllBySubjectAndClassOfProject(Integer classId) {
+        return milestoneRepository.findAllByAclass_Id(classId);
+    }
+
+    @Override
     public List<Milestone> findAllByStudentId(Integer studentId) {
-        return milestoneRepository.findAllByProjectIn(projectService.findAllByStudentUserId(studentId));
+        List<Milestone> milestoneList = new ArrayList<>();
+        List<StudentClass> studentClassList = studentClassRepository.findAllByStudentId(studentId);
+
+        for(StudentClass studentClass : studentClassList)
+//            if(studentClass.getProject() != null)
+                milestoneList.addAll(findAllBySubjectAndClassOfProject(studentClass.getAclass().getId()));
+
+        return milestoneList;
     }
 
 }

@@ -119,7 +119,19 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                <tr th:each="subject : ${subjectList}">
+                                    <td th:text="${subject.subjectCode}"></td>
+                                    <td th:text="${subject.subjectName}"></td>
+                                    <td th:text="${subject.getUser().fullName}"></td>
+                                    <td>
+                                        <a th:href="'/admin/subjectDetails?id=' + ${subject.id}">View Details</a>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" th:checked="${subject.status}">
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                             <input type="text" id="countPage" th:value="${totalPage}" hidden="">
@@ -310,7 +322,6 @@
 
     // Function to fetch user data and populate the table
     const  populateUserTable =  (pageNo) => {
-        pageNo = pageNo - 1;
         // replace the pageNo in the apiUrl
         apiUrl = apiUrl.replace(/pageNo=\d+/, `pageNo=${pageNo}`);
         fetch(apiUrl)
@@ -402,10 +413,11 @@
             // replace the search value in the apiUrl
             populateUserTable(1);
         });
-        document.addEventListener("DOMContentLoaded", () => {
-            populateUserTable(1);
-        });
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // populateUserTable(1);
+    });
 </script>
 
 <script>

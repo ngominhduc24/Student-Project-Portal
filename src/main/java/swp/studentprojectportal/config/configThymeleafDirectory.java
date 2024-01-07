@@ -28,6 +28,9 @@ public class configThymeleafDirectory {
     public int classManagerRoleId() {return 4;}
 
     @Bean
+    public String nodeUrl() {return "http://localhost:3000";}
+
+    @Bean
     public ClassLoaderTemplateResolver commonTemplateResolver() {
         ClassLoaderTemplateResolver yourTemplateResolver = new ClassLoaderTemplateResolver();
         yourTemplateResolver.setPrefix("templates/common/");
